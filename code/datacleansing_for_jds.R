@@ -9,10 +9,10 @@ main_data_file <-
 enable_sink <- TRUE       
  
 #The "as of" date in "YYYY-MM-DD" format
-projection_date <- "2025-11-20"   
+projection_date <- "2025-11-22"   
 
 #Number of SRs for the year through the projection_date  
-projection_SR_count <- 3110563  
+projection_SR_count <- 3140158
 
 # Okabe-Ito palette for colorblind safe 
 palette(c("#E69F00", "#56B4E9", "#009E73", "#F0E442", 
@@ -86,20 +86,21 @@ load_required_packages()
     "OneDrive",
     "Documents", 
     "datacleaningproject", 
-    "journal_of_data_science"
+    "journal_of_data_science",
+    "nyc_311_data_cleaning"
   )
   cat("Running in STANDALONE mode\n")
   cat("Base directory:", base_dir, "\n")
 #}
 
 # Define all paths relative to base_dir (works in both modes)
-data_dir      <- file.path(base_dir, "data")
-code_dir      <- file.path(base_dir, "code")
 chart_dir     <- file.path(base_dir, "charts")
-functions_dir <- file.path(base_dir, "code", "functions")
+code_dir      <- file.path(base_dir, "code")
 console_dir   <- file.path(base_dir, "console_output")
-write_dir     <- file.path(base_dir, "data")
-
+data_dir      <- file.path(base_dir, "data")
+functions_dir <- file.path(base_dir, "code", "functions")
+misc_dir      <- file.path(base_dir, "misc")
+write_dir     <- file.path(base_dir, "misc")
 
 # Create directories if they don't exist
 dirs_to_create <- c(data_dir, chart_dir, console_dir)
