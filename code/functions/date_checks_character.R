@@ -27,6 +27,9 @@ date_checks_character <- function(DT, date_cols) {
       , .N, by = nchar
     ][order(nchar)]
     
+    setnames(len_table, c("length", "count"))
+    len_table[]
+    
     # Extract HH, MM, AM/PM
     hour_vals   <- substr(vals, 12, 13)
     minute_vals <- substr(vals, 15, 16)
@@ -34,18 +37,18 @@ date_checks_character <- function(DT, date_cols) {
     time_part   <- substr(vals, 12, 22)  # "HH:MM:SS AM/PM"
     
     # Hour table
-    hour_table <- data.table(hour = hour_vals)[
-      !is.na(hour) & hour != "",
-      .N, by = hour
-    ][order(as.integer(hour))]
-    hour_table[, pct := round(100 * N / sum(N), 2)]
-    
+    # hour_table <- data.table(hour = hour_vals)[
+    #   !is.na(hour) & hour != "",
+    #   .N, by = hour
+    # ][order(as.integer(hour))]
+    # hour_table[, pct := round(100 * N / sum(N), 2)]
+     
     # Minute table
-    minute_table <- data.table(minute = minute_vals)[
-      !is.na(minute) & minute != "",
-      .N, by = minute
-    ][order(as.integer(minute))]
-    minute_table[, pct := round(100 * N / sum(N), 2)]
+    # minute_table <- data.table(minute = minute_vals)[
+    #   !is.na(minute) & minute != "",
+    #   .N, by = minute
+    # ][order(as.integer(minute))]
+    # minute_table[, pct := round(100 * N / sum(N), 2)]
     
     # Count specific times (in 12-hour format)
     count_midnight <- sum(time_part == "12:00:00 AM", na.rm = TRUE)
@@ -76,12 +79,12 @@ date_checks_character <- function(DT, date_cols) {
     cat(sprintf("Total rows: %d | Non-empty: %d | NA/empty: %d (%.2f%%)\n",
                 total_rows, total_non_na, na_count, 100 * na_count / total_rows))
     
-    cat("\n", col, " — Hour Distribution\n", sep = "")
-    print(hour_table)
-    
-    cat("\n", col, " — Minute Distribution\n", sep = "")
-    print(minute_table)
-    
+    # cat("\n", col, " — Hour Distribution\n", sep = "")
+    # print(hour_table)
+    # 
+    # cat("\n", col, " — Minute Distribution\n", sep = "")
+    # print(minute_table)
+
     cat("\n", col, " — Counts of Special Times\n", sep = "")
     cat(sprintf("Midnight (12:00:00 AM): %d (%.2f%%)\n",
                 count_midnight, 100 * count_midnight / total_non_na))

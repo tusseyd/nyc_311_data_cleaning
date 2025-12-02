@@ -1,5 +1,5 @@
-######################################################################### 
-######################################################################### 
+################################################################################
+################################################################################
 
 main_data_file <-  
   "5-year_311SR_01-01-2020_thru_12-31-2024_AS_OF_10-10-2025.rds"
@@ -9,16 +9,16 @@ main_data_file <-
 enable_sink <- TRUE       
  
 #The "as of" date in "YYYY-MM-DD" format
-projection_date <- "2025-11-22"   
+projection_date <- "2025-11-26"   
 
 #Number of SRs for the year through the projection_date  
-projection_SR_count <- 3140158
+projection_SR_count <- 3172339
 
 # Okabe-Ito palette for colorblind safe 
 palette(c("#E69F00", "#56B4E9", "#009E73", "#F0E442", 
           "#0072B2", "#D55E00", "#CC79A7", "#999999"))
-
-#########################################################################
+################################################################################
+################################################################################
 # ------------------------------------------------------ -------
 # 📦 INSTALL AND LOAD REQUIRED PACKAGES
 # -------------------------------------------------------------
@@ -94,13 +94,13 @@ load_required_packages()
 #}
 
 # Define all paths relative to base_dir (works in both modes)
+analytics_dir <- file.path(base_dir, "analytics")
 chart_dir     <- file.path(base_dir, "charts")
 code_dir      <- file.path(base_dir, "code")
 console_dir   <- file.path(base_dir, "console_output")
 data_dir      <- file.path(base_dir, "data")
 functions_dir <- file.path(base_dir, "code", "functions")
-misc_dir      <- file.path(base_dir, "misc")
-write_dir     <- file.path(base_dir, "misc")
+raw_data_dir  <- file.path(base_dir,"data", "raw_data")
 
 # Create directories if they don't exist
 dirs_to_create <- c(data_dir, chart_dir, console_dir)
@@ -112,12 +112,14 @@ for (dir in dirs_to_create) {
 }
 
 cat("\nDirectory paths set:\n")
-cat("  Data:", data_dir, "\n")
-cat("  Code:", code_dir, "\n")
+cat("  Analytics:", analytics_dir)
 cat("  Charts:", chart_dir, "\n")
-cat("  Functions:", functions_dir, "\n")
+cat("  Code:", code_dir, "\n")
 cat("  Console output:", console_dir, "\n")
-cat("  Write:", write_dir, "\n")
+cat("  Data:", data_dir, "\n")
+cat("  Functions:", functions_dir, "\n")
+cat("  Raw data:", raw_data_dir)
+
 # Get all .R files in the "functions" sub-directory
 
 function_files <- list.files(functions_dir, pattern = "\\.R$", 
@@ -125,7 +127,8 @@ function_files <- list.files(functions_dir, pattern = "\\.R$",
 
 # More robust sourcing with verification
 source_functions_safely <- function(functions_dir) {
-  function_files <- list.files(functions_dir, pattern = "\\.R$", full.names = TRUE)
+  function_files <- list.files(functions_dir, pattern = "\\.R$", 
+                               full.names = TRUE)
   
   sourced_count <- 0
   failed_count <- 0
@@ -133,13 +136,15 @@ source_functions_safely <- function(functions_dir) {
   for (file in function_files) {
     tryCatch({
       # Get function count before sourcing
-      functions_before <- sum(sapply(ls(.GlobalEnv), function(x) is.function(get(x))))
+      functions_before <- sum(sapply(ls(.GlobalEnv), 
+                                     function(x) is.function(get(x))))
       
       # Source the file
       source(file, local = FALSE)
       
       # Verify sourcing worked
-      functions_after <- sum(sapply(ls(.GlobalEnv), function(x) is.function(get(x))))
+      functions_after <- sum(sapply(ls(.GlobalEnv), 
+                                    function(x) is.function(get(x))))
       
       message("Successfully sourced: ", basename(file), 
               " (added ", functions_after - functions_before, " functions)")
@@ -151,13 +156,14 @@ source_functions_safely <- function(functions_dir) {
     })
   }
   
-  message("\nSourcing complete: ", sourced_count, " files sourced, ", failed_count, " failed")
+  message("\nSourcing complete: ", sourced_count, " files sourced, ", 
+          failed_count, " failed")
 }
 
 # Usage
 source_functions_safely(functions_dir)
 
-#########################################################################
+################################################################################
 options(scipen = 999) # Set scipen option to a large value.
 options(digits = 15) # Set the number of decimal places to 15, the max observed.
 options(datatable.print.class = FALSE)
@@ -175,14 +181,15 @@ as_of_date <- as.POSIXct(
 genesis_date <- as.POSIXct("2003-01-01 00:00:00", tz = "America/New_York")
 
 # Convert to POSIXct format
-max_closed_date <- as.POSIXct(extracted_date, format = "%m-%d-%Y", tz = "America/New_York")
+max_closed_date <- as.POSIXct(extracted_date, format = "%m-%d-%Y", 
+                              tz = "America/New_York")
 #print(paste("Parsed date:", max_closed_date))
 
 # Add time to end of day
 max_closed_date <- max_closed_date + (23*3600 + 59*60 + 59)
 #print(paste("Final datetime:", max_closed_date))
 
-#########################################################################
+################################################################################
 programStart <- as.POSIXct(Sys.time())
 formattedStartTime <- format(programStart, "%Y-%m-%d %H:%M:%S")
 cat("\n***** Program initialization *****")
@@ -200,7 +207,7 @@ if (sink.number(type = "output") > 0L) {
   cat("\nExecution begins at:", formattedStartTime)
 }
 
-#########################################################################
+################################################################################
 # Load the USPS zipcode file
 message("\nReading the USPS zipcode file.")
 
@@ -209,7 +216,7 @@ USPS_zipcode_file_path <- file.path(data_dir, "USPS_zipcodes.rds")
 USPSzipcodes <- readRDS(USPS_zipcode_file_path)
 if (!is.data.table(USPSzipcodes)) setDT(USPSzipcodes)  # converts in place
 
-#########################################################################
+################################################################################
 # Load the main 311 SR data file. Set the read & write paths.
 message("\nReading the main 311 SR data file.")
 
@@ -225,7 +232,7 @@ num_columns_d311 <- ncol(d311)
 stopifnot("unique_key" %in% names(d311))
 setindex(d311, unique_key)   # no reorder; speeds joins/subsets on unique_key
 
-#########################################################################
+################################################################################
 # Regenerate input data if necessary
 
 #copy_raw_data <- d311
@@ -233,7 +240,7 @@ setindex(d311, unique_key)   # no reorder; speeds joins/subsets on unique_key
 
 table(lubridate::year(d311$closed_date)) 
 
- #########################################################################
+################################################################################
 # Check for unique keys and index
 message("\nCreating unique_key index.")
 
@@ -275,11 +282,11 @@ if (all_unique) {
   # Do NOT setindex here to avoid masking an issue.
   }
 
-########################################################################
+################################################################################
 
 cat("\n\n********** Missing entires by column **********")
 
-#########################################################################
+################################################################################
 # --- Per-column completeness analysis (percent filled) ----------------------
 message("\nCounting missing entries by field.")
 
@@ -302,7 +309,8 @@ setorder(completenessPerColumn, pct_of_total)
 completenessPerColumn[, field := factor(field, levels = field)]
 
 cat("\nNumber and % COMPLETE entries per column:\n")
-print(completenessPerColumn[, .(field, filled_count, pct_of_total)], row.names = FALSE)
+print(completenessPerColumn[, .(field, filled_count, pct_of_total)], 
+      row.names = FALSE)
 
 # --- Overall dataset completeness summary ---
 total_cells <- num_rows_d311 * ncol(d311)
@@ -339,7 +347,7 @@ create_basic_bar_chart(
   filename         = "data_completeness_by_field_bar_chart.pdf"
 )
 
-#########################################################################
+################################################################################
 # Determine field usage by Agency. Produce Excel spreadsheet.
 # Initialize the list of fields (excluding "agency")
 message("\nComputing field usage by Agency.")
@@ -386,19 +394,19 @@ setorder(field_usage_summary_dt, -total)
 pct_cols <- paste0(agency_cols, "_pct")
 field_usage_summary_dt[
   , (pct_cols) := lapply(.SD, function(x) fifelse(total > 0, 
-                                                  round(100 * x / total, 5), 0)),
-  .SDcols = agency_cols
+                        round(100 * x / total, 5), 0)), .SDcols = agency_cols
 ]
 
 # Console preview
 cat("\nField usage by agency (counts):\n")
-DT_to_print <- field_usage_summary_dt[, c("field", agency_cols, "total"), with = FALSE]
+DT_to_print <- field_usage_summary_dt[, c("field", agency_cols, "total"), 
+                                      with = FALSE]
 
 # Pre-format columns for alignment
 display_df <- data.frame(
   field = format(DT_to_print$field, justify = "left"),
-  lapply(DT_to_print[, agency_cols, with = FALSE], function(x) format(x, justify = "right")),
-  total = format(DT_to_print$total, justify = "right")
+  lapply(DT_to_print[, agency_cols, with = FALSE], function(x) format(x, 
+      justify = "right")), total = format(DT_to_print$total, justify = "right")
 )
 
 # Set column names to match original
@@ -406,12 +414,12 @@ names(display_df) <- c("field", agency_cols, "total")
 
 print(display_df, row.names = FALSE)
 # Save to CSV fast
-summary_table_file_path <- file.path(write_dir, "field_usage_summary_table.csv")
+summary_table_file_path <- file.path(analytics_dir, "field_usage_summary_table.csv")
 fwrite(field_usage_summary_dt, summary_table_file_path)
 
 #cat("\nCSV written to:\n", summary_table_file_path, "\n")
 
-#########################################################################
+################################################################################
 message("\nRemoving unused fields.")
 # Clean-up memory by removing non-utilzied columns
 
@@ -458,7 +466,7 @@ d311[, setdiff(names(d311), columns_to_keep) := NULL]
 # Make a copy for troubleshooting purposes to avoid re-reading in data
 #copy_d311 <- d311
 
-#########################################################################
+################################################################################
 
 cat("\n\n**********CROSS STREET/INTERSECTION STREET ANALYSYS**********\n")
 message("\nCross_street and Intersection_street analysis.")
@@ -509,14 +517,17 @@ for (i in seq_along(all_comparison_results)) {
   pair_name <- names(all_comparison_results)[i]
   
   cat(sprintf("\n%s:\n", toupper(gsub("_", " ", pair_name))))
-  cat(sprintf("  Match rate:     %5.4f%%\n", result$raw_analysis$match_rate * 100))
-  cat(sprintf("  Cleaned match rate: %5.4f%%\n", result$cleaned_analysis$match_rate * 100))
+  cat(sprintf("  Match rate:     %5.4f%%\n", 
+              result$raw_analysis$match_rate * 100))
+  cat(sprintf("  Cleaned match rate: %5.4f%%\n", 
+              result$cleaned_analysis$match_rate * 100))
   cat(sprintf("  Improvement:        %5.4f%% (%s records)\n", 
               result$comparison$match_rate_improvement * 100,
               scales::comma(result$comparison$match_improvement)))
 }
 
-cat(sprintf("\nTotal street pair analyses completed: %d\n", length(all_comparison_results)))
+cat(sprintf("\nTotal street pair analyses completed: %d\n", 
+            length(all_comparison_results)))
 
 # Remove cross and intersections streets immediately
 d311[, c(
@@ -527,13 +538,11 @@ d311[, c(
   "landmark",
   "street_name") := NULL]  # Remove immediately
 
-#########################################################################
+################################################################################
 
 cat("\n\n**********DATA SUMMARY**********")
 
-options(warn = 2)  
-
-########################################################################
+################################################################################
 # assume d311 is a data.table and created_date is POSIXct
 tz_out  <-  "America/New_York"                    
 fmt_ts  <- "%Y-%m-%d %H:%M:%S"
@@ -554,7 +563,7 @@ latest_date_formatted   <- format(latest_date,   fmt_ts, tz = tz_out)
 earliest_title <- format(earliest_date, fmt_day, tz = tz_out)
 latest_title   <- format(latest_date,   fmt_day, tz = tz_out)
 
-#########################################################################
+################################################################################
 # Probe right before function call
 range(d311$created_date)
 summary(attr(d311$created_date, "tzone"))
@@ -577,7 +586,7 @@ yearly_bar_chart <- plot_annual_counts_with_projection(
   show_projection_bar = TRUE    
   )
 
-#########################################################################
+################################################################################
 # fraction in 0–1 with 4 decimals
 sorted_by_agency <- d311[, .(count = .N), by = agency][order(-count)]
 sorted_by_agency[, percentage := round(count / sum(count), 4)]
@@ -606,12 +615,12 @@ cat("\nAgencies represented:", length(unique(d311$agency)))
 cat("\n\nData contains SRs from", earliest_date_formatted, 
     "through", latest_date_formatted)
 
-#########################################################################
+################################################################################
 # Convert coordinate columns to numeric
 coord_cols <- c("latitude", "longitude")
 d311[, (coord_cols) := lapply(.SD, as.numeric), .SDcols = coord_cols]
 
-#########################################################################
+################################################################################
 message("\nOrganizing complaint_types.")
 
 cat("\n\n********** COMPLAINT TYPES **********")
@@ -649,11 +658,11 @@ to_print_df <- data.frame(
 )
 print(to_print_df, row.names = FALSE)
 
-#########################################################################
+################################################################################
 
 cat("\n\n**********VALIDATING DATA TYPES**********\n")
 
-#########################################################################
+################################################################################
 # determine if the incident_zip field contain 5 numeric digits
 # Find non-compliant ZIP5 values (format-only; no mutation)
 message("\nValdiating data types.")
@@ -696,7 +705,8 @@ find_noncompliant_zip5 <- function(DT, zip_col = "incident_zip", sample_n = 10L,
       format(nrow(noncompliant), big.mark=","), "\n", sep = "")
   if (nrow(noncompliant)) {
     cat("\nBy reason:\n");  print(by_reason, nrows = nrow(by_reason))
-    cat("\nExamples:\n");   print(noncompliant[1:min(.N, sample_n)], nrows = min(.N, sample_n))
+    cat("\nExamples:\n");   print(noncompliant[1:min(.N, sample_n)], 
+                                  nrows = min(.N, sample_n))
     cat("\nBy agency (top 10):\n"); print(by_agency[1:min(10L, .N)])
   }
   
@@ -706,7 +716,7 @@ find_noncompliant_zip5 <- function(DT, zip_col = "incident_zip", sample_n = 10L,
 # Call (NAs are NOT counted as invalid):
 res <- find_noncompliant_zip5(d311, zip_col = "incident_zip", sample_n = 10L)
 
-#########################################################################
+################################################################################
 # determine if various fields are numeric values
 
 # Type-only: TRUE if every non-NA token is numeric text (or the vector is numeric already)
@@ -736,11 +746,11 @@ checks_df <- data.frame(
 )
 print(checks_df, row.names = FALSE)
 
-#########################################################################
+################################################################################
 
 cat("\n\n********** Latitude/Longitude Precision Analysis **********\n")
 
-#########################################################################
+################################################################################
 # --- Analyze decimal precision in lat/lon fields ---
 message("\nAnalyzing decimal precision in the lat/long fields.")
 
@@ -849,11 +859,11 @@ if (!is.null(lat_precision) && !is.null(lon_precision)) {
   print(comparison_with_total, row.names = FALSE)
 }
 
-#########################################################################
+################################################################################
 
 cat("\n\n**********CHECKING FOR DUPLICATE VALUES**********\n")
 
-#########################################################################
+################################################################################
 message("\nChecking fields for duplicates.")
 
 # Filter complete cases
@@ -919,7 +929,7 @@ if (nrow(valid_data) == 0) {
   }
 }
 
-#########################################################################
+################################################################################
 # check to see if there are any non-matches between 'borough' and 'park_borough'
 
 # reference + duplicates
@@ -958,11 +968,11 @@ dup_summary <- data.table::rbindlist(lapply(seq_along(res_list), function(i) {
 dup_summary[order(-pct_duplication)]
 
 
-#########################################################################
+################################################################################
 
 cat("\n\n**********CHECKING FOR ALLOWABLE AND VALID VALUES**********\n")
 
-#########################################################################
+################################################################################
 # Check lat/long values to see if they are within NYC city limits
 message("\nValidating data for allowable and valid values.")
 
@@ -1308,11 +1318,11 @@ d311[, c(
   "open_data_channel_type",
   "vehicle_type") := NULL]  # Remove immediately
 
-#########################################################################
+################################################################################
 
 cat("\n\n**********CHECKING FOR DATE FIELD ISSUES **********\n")
 
-#########################################################################
+################################################################################
 
 # ==============================================================================
 # SECTION 0: DURATION CALCULATIONS -- Do this first
@@ -1875,11 +1885,11 @@ for (col_name in date_cols) {
 }
 
 
-#########################################################################
+################################################################################
 
 cat("\n\n********** DURATION ISSUES **********\n")
 
-#########################################################################
+################################################################################
 
 message("\nChecking for duration anomalies.")
 

@@ -11,75 +11,44 @@
 ################################################################################
 main_data_file <- "raw_data_5_years_AS_OF_10-10-2025.csv"
 
-
 # Boolean flag. TRUE to redirect console output to text file
 # FALSE to display  console output on the screen
-enable_sink <- FALSE    
+enable_sink <- TRUE    
 
 ######################### #######################################################
 # -------------------------------------------------------------
 # 📦 INSTALL AND LOAD REQUIRED PACKAGES
 # -------------------------------------------------------------
 load_required_packages <- function(verbose = TRUE) {
-  # Ordered to avoid common masking issues
-  # Package loading order optimized for large NYC datasets
-  # Load data.table LAST to preserve dplyr functionality
-  
   required_packages <- c(
-    # Time/date packages (load early)
     "fasttime",
     "clock", 
     "zoo",
     "lubridate",
-    
-    # Spatial data
     "sf",
-    
-    # String manipulation 
     "stringr",
     "stringdist",
-    
-    # Arrow for file I/O
     "arrow",
-    
-    # Tidyverse packages (load before data.table)
     "ggplot2",
     "dplyr", 
     "tidyverse",
-    
-    # Plotting extensions
     "ggpmisc",
     "gridExtra",
     "grid",
-    
-    # Quality control charts
     "qcc",
     "qicharts2",
-    
-    # Tables and reporting
     "gt",
     "DT",
-    
-    # Shiny and web
     "bslib",
     "shiny",
     "httr",
-    
-    # Development tools
     "rlang",
     "styler",
     "renv",
-    
-    # Load data.table LAST
     "data.table"
   )
   
-  # Load all packages
-  invisible(lapply(required_packages, library, character.only = TRUE))
-  
-  # Note: S3 method overwrite by 'ggpp' (via ggpmisc) is expected and beneficial
-  # It provides enhanced titleGrob handling for better ggplot2 performance
-  
+  # Check and install if needed
   for (pkg in required_packages) {
     if (!requireNamespace(pkg, quietly = TRUE)) {
       if (verbose) message(sprintf("📦 Installing missing package: %s", pkg))
@@ -89,19 +58,18 @@ load_required_packages <- function(verbose = TRUE) {
                                             pkg, e$message))
       )
     }
-    
-    # Try loading the package
-    tryCatch({
-      suppressPackageStartupMessages(library(pkg, character.only = TRUE))
-      if (verbose) message(sprintf("✅ Loaded: %s", pkg))
-    }, error = function(e) {
-      message(sprintf("❌ Failed to load %s: %s", pkg, e$message))
-    })
   }
+  
+  # Load all packages (suppressing startup messages and conflicts)
+  invisible(suppressPackageStartupMessages({
+    suppressMessages({
+      lapply(required_packages, library, character.only = TRUE, 
+             warn.conflicts = FALSE)
+    })
+  }))
+  
+  if (verbose) message("✅ All packages loaded successfully")
 }
-
-# Default verbose output
-load_required_packages()
 
 ################################################################################
 ########## Set global options for numeric values ###########
@@ -114,7 +82,6 @@ formattedStartTime <- format(programStart, "%Y-%m-%d %H:%M:%S")
 
 cat("\nExecution begins at:", formattedStartTime, "\n")
 
-# Manually set the base directory
 base_dir <- file.path(
   "C:",
   "Users",
@@ -122,19 +89,40 @@ base_dir <- file.path(
   "OneDrive",
   "Documents", 
   "datacleaningproject", 
-   "Journal_of_Data_Science"
+  "journal_of_data_science",
+  "nyc_311_data_cleaning"
 )
 
-# Define the path for the main data file (CSV file)
-data_dir <- file.path(base_dir, "data")
+cat("Base directory:", base_dir, "\n")
 
-raw_data_dir <- file.path(data_dir, "raw_data")
+# Define all paths relative to base_dir (works in both modes)
+analytics_dir <- file.path(base_dir, "data", "analytical_files")
+chart_dir     <- file.path(base_dir, "charts")
+code_dir      <- file.path(base_dir, "code")
+console_dir   <- file.path(base_dir, "console_output")
+data_dir      <- file.path(base_dir, "data")
+functions_dir <- file.path(base_dir, "code", "functions")
+raw_data_dir  <- file.path(base_dir,"data", "raw_data")
+write_dir     <- file.path(base_dir, "misc")
 
-# Define the path for the charts
-chart_dir <- file.path(base_dir, "charts")
+# Create directories if they don't exist
+dirs_to_create <- c(data_dir, chart_dir, console_dir)
+for (dir in dirs_to_create) {
+  if (!dir.exists(dir)) {
+    dir.create(dir, recursive = TRUE)
+    cat("Created directory:", dir, "\n")
+  }
+}
 
-# Define the path to the directory containing the console output
-console_dir <- file.path(base_dir, "console_output")
+cat("\nDirectory paths set:\n")
+cat("  Analytics:", analytics_dir)
+cat("  Charts:", chart_dir, "\n")
+cat("  Code:", code_dir, "\n")
+cat("  Console output:", console_dir, "\n")
+cat("  Data:", data_dir, "\n")
+cat("  Functions:", functions_dir, "\n")
+cat("  Raw data:", raw_data_dir)
+cat("  Write:", write_dir, "\n")
 
 # Define the name of the corresponding RDS file
 # rds_file <- gsub("\\.csv$", ".rds", main_data_file)
@@ -226,7 +214,7 @@ raw_data <- fread(
 
 
 # Make copy for troubleshooting purposes.
-copy_raw_data <- raw_data
+#copy_raw_data <- raw_data
 
 num_rows_raw_data <- nrow(raw_data)
 cat("\nRaw Data row count:", format(num_rows_raw_data, big.mark = ","))
@@ -239,7 +227,7 @@ cat("\n\nColumn names standardized")
 ################################################################################
 # Standardize the representation of missing data to all be NA
 standardize_missing_chars(raw_data)
-#cat("\nMissing data representation standardized to NA.")
+cat("\nMissing data representation standardized to NA.")
 
 ################################################################################
 # Define mandatory fields and ensure they are there
@@ -269,7 +257,7 @@ if (removed_rows > 0) {
 
 ################################################################################
 # consolidate Agencies (DCA, DOITT, NYC311-PRD)
-raw_data <- consolidate_agencies((raw_data))
+#raw_data <- consolidate_agencies((raw_data))
 
 ################################################################################
 # Check date fields for missingHH:MM:SS time values
@@ -353,23 +341,11 @@ for (col in valid_cols) {
 cat("\nAll text Columns converted to uppercase")
 
 ################################################################################
-
-# Year-sliced RDS files (Calendar Years)
-# - End at the latest COMPLETE CY
-# - If start coverage is missing, create the LONGEST POSSIBLE subset
-# - Verify by reading back and print row counts + whether truncated
-
-# Inputs assumed:
-# - raw_data: data.table with POSIXct 'created_date' in local_tz
-# - data_dir: output directory
-# - main_data_file: path string that includes "...AS_OF_YYYY-MM-DD.csv"
-
-###########################
 # Extract AS_OF date from filename (e.g., ...AS_OF_2025-08-10.csv -> 2025-08-10)
 as_of_date <- sub(".*AS_OF_([0-9-]+)\\.csv$", "\\1", main_data_file)
 
-
 local_tz <- "America/New_York"
+
 # Coverage from the data
 min_date <- suppressWarnings(min(raw_data$created_date, na.rm = TRUE))
 max_date <- suppressWarnings(max(raw_data$created_date, na.rm = TRUE))
@@ -381,12 +357,12 @@ min_date <- as.POSIXct(min_date, tz = local_tz)
 max_date <- as.POSIXct(max_date, tz = local_tz)
 
 # Spans to generate
-selected_year_spans <- c(2, 5)
+selected_year_spans <- c(5)
 
 # Ensure output directory exists
 if (!dir.exists(data_dir)) dir.create(data_dir, recursive = TRUE)
 
-# ============================= Calendar Years ===============================
+################################################################################
 # Find max complete year (exclude current partial year)
 current_year <- year(Sys.Date())
 max_complete_year <- raw_data[year(created_date) < current_year, 
@@ -431,7 +407,8 @@ for (span in selected_year_spans) {
   # Collect summary
   summary_list[[length(summary_list) + 1]] <- data.table(
     span_years = span,
-    years_included = sprintf("%d–%d", max_complete_year - span + 1, max_complete_year),
+    years_included = sprintf("%d–%d", max_complete_year - span + 1, 
+                                                            max_complete_year),
     start_date = format(start_date, "%Y-%m-%d"),
     end_date   = format(end_date - 1, "%Y-%m-%d"),  # inclusive end
     rows       = nrow(filtered_data),
@@ -451,7 +428,7 @@ if (length(summary_list) > 0) {
 }
 
 ################################################################################
-usps_data_file <- "zip_code_database_UNITEDSTATESZIPCODESDOTORG_2025.csv"
+usps_data_file <- "zip_code_database.csv"
 usps_path      <- file.path(raw_data_dir, usps_data_file)
 usps_rds_file  <- file.path(data_dir, "USPS_zipcodes.rds")
 
@@ -461,7 +438,7 @@ if (!file.exists(usps_path)) {
 
 cat("\nProcessing USPS Zipcode data...\n")
 
-# Try to read only a 'zip' column; if not found exactly, read headers and detect it
+# Read only the 'zip' column; if not found exactly, read headers and detect it
 zipcode_data <- tryCatch(
   fread(
     usps_path,
@@ -474,9 +451,11 @@ zipcode_data <- tryCatch(
   ),
   error = function(e) {
     # Fallback: read header to find a plausible ZIP column (case-insensitive)
-    hdr <- names(fread(usps_path, nrows = 0, check.names = FALSE, showProgress = FALSE))
+    hdr <- names(fread(usps_path, nrows = 0, check.names = FALSE, 
+                                                          showProgress = TRUE))
     cand <- grep("^zip(code)?$", hdr, ignore.case = TRUE, value = TRUE)
-    if (length(cand) == 0L) stop("No 'zip' column found (case-insensitive) in USPS CSV.")
+    if (length(cand) == 0L) 
+                  stop("No 'zip' column found (case-insensitive) in USPS CSV.")
     fread(
       usps_path,
       select      = cand[1],
@@ -499,18 +478,6 @@ zipcode_data[, zip := trimws(zip)]
 
 # Save just the single column, always overwrite
 saveRDS(zipcode_data[, .(zip)], usps_rds_file)
-
-# Verify
-read_back <- readRDS(usps_rds_file)
-rows_written <- nrow(zipcode_data)
-rows_read    <- nrow(read_back)
-has_zip_char <- ("zip" %in% names(read_back)) && is.character(read_back$zip)
-status <- if (rows_written == rows_read && has_zip_char) "OK" else "MISMATCH"
-
-cat(sprintf(
-  "     USPS_zipcodes.rds | written: %d | read back: %d | %s\n",
-  rows_written, rows_read, status
-))
 
 ################################################################################
 # Store the program end time and calculate the duration
