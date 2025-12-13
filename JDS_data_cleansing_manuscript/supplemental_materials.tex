@@ -5,19 +5,56 @@
 \onehalfspacing
 \usepackage[margin=1in]{geometry}
 
+\usepackage{siunitx} % For alignment of numbers
+\sisetup{
+    group-separator = {,},
+    round-mode = places,
+    round-precision = 2,
+    output-decimal-marker = {.},
+    table-number-alignment = center,
+    table-figures-integer = 6,
+    table-figures-decimal = 2,
+    table-figures-uncertainty = 2
+}
+
+\usepackage{comment}
+\usepackage{multicol}
+\usepackage{fontawesome5}
+\usepackage{booktabs, textgreek}
+\usepackage{subcaption}
+\usepackage{enumitem}
+\usepackage{tikz} % For creating diagrams
+\usepackage{hyperref}   % For clickable links and breaking long URLs
+\usetikzlibrary{positioning} % Required for relative positioning (e.g., "of" keyword)
+
+% image path
+\graphicspath{{./}{./supplemental_images/}}
+
 % Number figures/tables as S1, S2, ... instead of 1, 2, ...
 \renewcommand{\thefigure}{S\arabic{figure}}
 \renewcommand{\thetable}{S\arabic{table}}
 
-\title{Supplementary Materials for:\\
-\textbf{<Full Title of Your JDS Paper>}}
+%% float control
+\renewcommand\floatpagefraction{0.75}
+% \renewcommand\topfraction{.8}
+% \renewcommand\bottomfraction{.8}
+% \renewcommand\textfraction{.2}
+\setcounter{totalnumber}{50}
+\setcounter{topnumber}{50}
+\setcounter{bottomnumber}{50}
 
-\author{David Tussey \\[4pt]
-Supplement to the Journal of Data Science manuscript}
+\hypersetup{
+  colorlinks=true,
+  linkcolor=blue,
+  citecolor=blue,
+  urlcolor=blue
+}
 
-\date{\today}
+\hyphenpenalty=950
 
 \begin{document}
+\doublespacing 
+
 \maketitle
 % --- Front matter lists ---
 \tableofcontents
@@ -29,12 +66,37 @@ Supplement to the Journal of Data Science manuscript}
 \listoftables
 \clearpage
 
+\begin{frontmatter}
+\title{Supplementary Materials for:\\
+\textbf{Principles for Open Data Curation: A Case Study with the New York City 311 Service Request Data}}
+
+
+\author[1]{\inits{D.}\fnms{David}~\snm{Tussey}}
+\author[2]{\inits{J.}\fnms{Jun}~\snm{Yan}}
+\address[1]{\institution{NYC Department of Information Technology and Telecommunications}, \cny{USA}}
+\address[2]{Department of Statistics,
+  \institution{University of Connecticut}, \cny{USA}}
+
+%\date{\today}
+\begin{keywords}
+  \kwd{Data cleansing}
+  \kwd{Data quality}
+  \kwd{Data science}
+  \kwd{Data Validation}
+  \kwd{NYC Open Data}
+\end{keywords}
+
+\end{frontmatter}
+
+
 %---------------------------------------------------------------
 \section{Overview}
 This document provides supplementary materials accompanying the article
-\emph{<Full Title Here>}. It includes additional figures, tables,
-extended methodological details, data-processing steps, and reproducibility
+\emph{<Principles for Open Data Curation: A Case Study with the New York City 311 Service Request Data>}. 
+It includes additional figures, tables,extended methodological details, 
+data-processing steps, console output, and reproducibility
 information that support but are not included in the main manuscript.
+
 
 %---------------------------------------------------------------
 \section{Additional Figures}
@@ -104,8 +166,8 @@ seeking deeper explanation.
 Use the same citation style as the main manuscript. For example:
 
 \begin{itemize}
-\item Grant, E.\ L., and Leavenworth, R.\ S.\ (1996). \textit{Statistical Quality Control}. 7th Edition.
-\item Montgomery, D.\ C.\ (2020). \textit{Introduction to Statistical Quality Control}. Wiley.
+%\item Grant, E.\ L., and Leavenworth, R.\ S.\ (1996). \textit{Statistical Quality Control}. 7th Edition.
+%\item Montgomery, D.\ C.\ (2020). \textit{Introduction to Statistical Quality Control}. Wiley.
 \end{itemize}
 
 \end{document}
