@@ -6,7 +6,7 @@ main_data_file <-
  
 # Boolean flag. TRUE to redirect console output to text file
 # FALSE to display console outpx`t on the screen
-enable_sink <- TRUE       
+enable_sink <- TRUE      
  
 #The "as of" date in "YYYY-MM-DD" format
 projection_date <- "2025-11-26"   
@@ -1338,7 +1338,7 @@ d311 <- calculate_durations(d311, "created_date", "closed_date", tz = "America/N
 # SECTION 1: CREATED DATE ANALYSIS
 # ==============================================================================
 
-cat("\n=== CREATED DATE ANALYSIS ===\n")
+cat("\n=== SUMMARY DATE ANALYSIS ===\n")
 
 # Assuming date_cols is a character vector of column names
 date_cols <- c(
@@ -1376,11 +1376,18 @@ for (col in date_cols) {
     show_labels = TRUE,
     x_label = "",
     y_label = "",
-    console_print_title = paste("Year Distribution for", col)
+    console_print_title = paste("Year Distribution for", col),
+    chart_dir = chart_dir,
+    filename = paste0("Yearly_Distribution - ", col)
+    
   )
   
   cat("\n")
 }
+
+
+cat("\n=== CREATED DATE ANALYSIS ===\n")
+
 
 # total rows in d311
 total_rows <- num_rows_d311
@@ -1989,6 +1996,27 @@ plot_histogram(
   width      = 13,
   height     = 8.5
 )
+
+# plot_result <- plot_boxplot(
+#   DT        = limited_negative_data,
+#   value_col = duration_days,
+#   by_col    = agency,
+#   chart_dir = chart_dir,
+#   filename  = "negative_duration_SR_boxplot.pdf",
+#   title     = " Negative Duration (days) by agency",
+#   top_n     = 30,
+#   y_axis_tick_size = 10,
+#   order_by  = "count",
+#   flip      = TRUE,
+#   x_scale_type = "pseudo_log",
+#   x_limits = c(lower_limit, upper_limit),
+#   min_count = 5,  # FIXED: was min_agency_obs (which defaults to 1)
+#   jitter_size = 1.3,
+#   jitter_alpha = 0.55,
+#   outlier_size = 1.4,
+#   count_label_hjust = label_hjust,
+#   show_count_labels = show_count_labels  
+# )
 
 create_violin_chart(
   dataset = limited_negative_data,

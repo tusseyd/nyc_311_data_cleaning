@@ -407,9 +407,18 @@ plot_barchart <- function(
       dir.create(chart_dir, recursive = TRUE, showWarnings = FALSE)
     }
     
-    filepath <- file.path(chart_dir, filename)
-    ggsave(filepath, plot = p, width = chart_width, height = chart_height, dpi = dpi)
+    filepath <- file.path(chart_dir, paste0(filename, ".pdf"))
+    
+    ggsave(
+      filename = filepath,
+      plot = p,
+      width = chart_width,
+      height = chart_height
+    )
+    
+    message("File saved: ", filepath)
   }
+  
   
   invisible(p)
 }

@@ -1,19 +1,19 @@
 ################################################################################
 # Read-in raw csv data (main_data_file)
 # Convert text columns to upper case
-# Convert data columns to POSIXct format
+# Convert date columns to POSIXct format
 # Modify and standardize column names
-# Check for presence o    f mandatory fields
-# Combine NYC Agencies
+# Check for presence of mandatory fields
+# Combine NYC Agencies to accommodate name changes
 # Replace missing values with NA for standardization
-# Write out several files in RDS format
+# Write out two files in RDS format and one in CSV
 
 ################################################################################
 main_data_file <- "raw_data_5_years_AS_OF_10-10-2025.csv"
 
 # Boolean flag. TRUE to redirect console output to text file
 # FALSE to display  console output on the screen
-enable_sink <- TRUE    
+enable_sink <- FALSE    
 
 ######################### #######################################################
 # -------------------------------------------------------------

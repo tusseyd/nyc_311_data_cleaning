@@ -75,26 +75,7 @@ analyze_duration_category <- function(
     # --- Dataset for charting
     chart_DT <- if (!is.null(alt_DT) && nrow(alt_DT) > 0) alt_DT else DT
     
-    # # DEBUG: Print info about chart_DT
-    # cat("\n=== DEBUG INFO ===\n")
-    # cat("Total rows in chart_DT:", nrow(chart_DT), "\n")
-    # cat("Columns in chart_DT:", paste(names(chart_DT), collapse = ", "), "\n")
-    
-    # Calculate agency counts for summary stats (using min_agency_obs)
-    # agency_counts_summary <- chart_DT[, .N, by = agency][N > min_agency_obs]
-    # cat("\nAgencies with > min_agency_obs (", min_agency_obs, ") for SUMMARY STATS:\n")
-    # print(agency_counts_summary[order(-N)])
-    
-    # Calculate agency counts for plotting (using min_count = 5)
-    # agency_counts_plot <- chart_DT[, .N, by = agency][N >= 5]
-    # cat("\nAgencies with >= 5 observations for BOXPLOT:\n")
-    # print(agency_counts_plot[order(-N)])
-    
-    # cat("\nComparison:")
-    # cat("\n  - Agencies in summary stats:", nrow(agency_counts_summary))
-    # cat("\n  - Agencies that will be plotted:", nrow(agency_counts_plot))
-    # cat("\n==================\n\n")
-    
+   
     # Use the correct filter for pareto decisions
     agency_counts <- chart_DT[, .N, by = agency][N > min_agency_obs]
     
@@ -139,29 +120,29 @@ analyze_duration_category <- function(
       
       # Optional boxplot
       if (make_boxplot) {
-        # cat("\n>>> Starting boxplot section...\n")
-        # cat("make_boxplot is TRUE\n")
+        cat("\n>>> Starting boxplot section...\n")
+        cat("make_boxplot is TRUE\n")
         
         # Check if we have enough agencies with min_count >= 5
-        # agency_counts_plot <- chart_DT[, .N, by = agency][N >= 5]
-        # if (nrow(agency_counts_plot) == 0) {
-        #   cat("\n*** WARNING: No agencies with >= 5 observations. Boxplot will not be created. ***\n")
-        #   cat("*** Summary statistics will still show all agencies with >", min_agency_obs, "observations ***\n\n")
-        # } else {
-        #   cat("Proceeding with boxplot for", nrow(agency_counts_plot), "agencies\n")
-        # }
+        agency_counts_plot <- chart_DT[, .N, by = agency][N >= 5]
+        if (nrow(agency_counts_plot) == 0) {
+          cat("\n*** WARNING: No agencies with >= 5 observations. Boxplot will not be created. ***\n")
+          cat("*** Summary statistics will still show all agencies with >", min_agency_obs, "observations ***\n\n")
+        } else {
+          cat("Proceeding with boxplot for", nrow(agency_counts_plot), "agencies\n")
+        }
         
         # Check if duration_days exists
-        # if (!"duration_days" %in% names(chart_DT)) {
-        #   cat("ERROR: duration_days column not found in chart_DT!\n")
-        #   cat("Available columns:", paste(names(chart_DT), collapse = ", "), "\n")
-        # } else {
-        #   cat("duration_days column exists\n")
-        #   cat("Range of duration_days:", 
-        #       min(chart_DT$duration_days, na.rm = TRUE), "to",
-        #       max(chart_DT$duration_days, na.rm = TRUE), "\n")
-        #   cat("NA values in duration_days:", sum(is.na(chart_DT$duration_days)), "\n")
-        # }
+        if (!"duration_days" %in% names(chart_DT)) {
+          cat("ERROR: duration_days column not found in chart_DT!\n")
+          cat("Available columns:", paste(names(chart_DT), collapse = ", "), "\n")
+        } else {
+          cat("duration_days column exists\n")
+          cat("Range of duration_days:",
+              min(chart_DT$duration_days, na.rm = TRUE), "to",
+              max(chart_DT$duration_days, na.rm = TRUE), "\n")
+          cat("NA values in duration_days:", sum(is.na(chart_DT$duration_days)), "\n")
+        }
         
         # Compute min and max
         min_val <- min(chart_DT$duration_days, na.rm = TRUE)
@@ -176,22 +157,10 @@ analyze_duration_category <- function(
         upper_limit <- ifelse(max_val >= 0, max_val * (1 + margin), 
                               max_val * (1 - margin))
         
-        # cat("Calculated limits: lower =", lower_limit, ", upper =", upper_limit, "\n")
-        
+
         # Determine if we need right-justified labels (for negative data)
         label_hjust <- if (max_val <= 0) 0 else 1 
-        
-        # cat("\n>>> Calling plot_boxplot...\n")
-        # cat("Parameters being sent to plot_boxplot:\n")
-        # cat("  - chart_dir:", chart_dir, "\n")
-        # cat("  - filename:", boxplot_file, "\n")
-        # cat("  - min_count: 5 (FIXED - will filter to agencies with >= 5 observations)\n")
-        # cat("  - top_n: 30\n")
-        # cat("  - Number of rows in data:", nrow(chart_DT), "\n")
-        # cat("  - Number of unique agencies:", length(unique(chart_DT$agency)), "\n")
-        # agency_counts_plot <- chart_DT[, .N, by = agency][N >= 5]
-        # cat("  - Expected number of agencies in plot:", min(nrow(agency_counts_plot), 30), "\n")
-        
+
         # tryCatch({
         plot_result <- plot_boxplot(
           DT        = chart_DT,
@@ -219,23 +188,6 @@ analyze_duration_category <- function(
           print(plot_result$plot)
           Sys.sleep(3)
         }
-        
-        # if (is.null(plot_result)) {
-        #   cat(">>> plot_boxplot returned NULL - likely no groups passed the filters\n")
-        # } else {
-        #   cat(">>> plot_boxplot completed successfully\n")
-        #   cat(">>> Output file:", plot_result$file, "\n")
-        #   if (file.exists(plot_result$file)) {
-        #     cat(">>> Confirmed: PDF file exists\n")
-        #   } else {
-        #     cat(">>> WARNING: PDF file was not created!\n")
-        #   }
-        # }
-        # }, error = function(e) {
-        #   cat("ERROR in plot_boxplot:", e$message, "\n")
-        #   cat("Full error:\n")
-        #   print(e)
-        # })
         
         # Before calling plot_violin_boxplot, assign to a simple name
         violin_data <- chart_DT
@@ -283,23 +235,9 @@ analyze_duration_category <- function(
         
         # Display violin plot in RStudio
         if (!is.null(violin_result) && !is.null(violin_result$plot)) {
-          print(violin_result$plot)
-          Sys.sleep(3)
+          # print(violin_result$plot)
+          # Sys.sleep(3)
         }
-        
-        # if (is.null(violin_result)) {
-        #   cat(">>> plot_violin_boxplot returned NULL\n")
-        # } else {
-        #   cat(">>> plot_violin_boxplot completed successfully\n")
-        #   if (!is.null(violin_result$file) && file.exists(violin_result$file)) {
-        #     cat(">>> Confirmed: Violin PDF file exists\n")
-        #   }
-        # }
-        # }, error = function(e) {
-        #   cat("ERROR in plot_violin_boxplot:", e$message, "\n")
-        #   cat("Full error:\n")
-        #   print(e)
-        # })
         
       } # else {
       #   cat("\nmake_boxplot is FALSE - skipping boxplot generation\n")
