@@ -8,7 +8,7 @@ analyze_duration_category <- function(
     key_col,
     print_cols,
     alt_DT = NULL,
-    min_agency_obs = 1,
+    min_agency_obs = 5,
     make_boxplot = TRUE,
     pareto = TRUE,
     sort_desc = FALSE,

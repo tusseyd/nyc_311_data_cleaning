@@ -18,157 +18,62 @@ projection_SR_count <- 3172339
 palette(c("#E69F00", "#56B4E9", "#009E73", "#F0E442", 
           "#0072B2", "#D55E00", "#CC79A7", "#999999"))
 ################################################################################
-################################################################################
+
 # ------------------------------------------------------ -------
-# 📦 INSTALL AND LOAD REQUIRED PACKAGES
+# 📦 CREATE REQUIRED DIRECTORY STRUCTURE
 # -------------------------------------------------------------
-load_required_packages <- function(verbose = TRUE) {
-  # Ordered to avoid common masking issues
-  required_packages  <- c(
-    "data.table",      # Load first - commonly masked functions
-    "arrow",
-    "fasttime",
-    "lubridate",
-    "here",
-    "zoo",
-    "ggplot2",         # Core plotting (scales is a dependency, auto-loaded)
-    "ggpmisc",
-    "ggpattern",
-    "ggrastr",
-    "qcc",
-    "qicharts2",
-    "grid",
-    "gridExtra",
-    "sf",              # Spatial - can mask some dplyr functions
-    "stringr",         # Load before dplyr/tidyverse
-    "stringdist",
-    "dplyr",           # Load before tidyverse
-    "tidyverse",       # Load late - masks many functions
-    "scales",          # Load AFTER tidyverse to mask purrr::discard and readr::col_factor
-    "bslib",
-    "shiny",
-    "DT",              # Load after dplyr to avoid confusion
-    "gt",
-    "styler",
-    "rlang",
-    "renv",
-    "remotes"
-  )
-  
-  for (pkg in required_packages) {
-    if (!requireNamespace(pkg, quietly = TRUE)) {
-      if (verbose) message(sprintf("📦 Installing missing package: %s", pkg))
-      tryCatch(
-        install.packages(pkg),
-        error = function(e) message(sprintf("❌ Failed to install %s: %s", 
-                                            pkg, e$message))
-      )
-    }
-    
-    # Try loading the package
-    tryCatch({
-      suppressPackageStartupMessages(library(pkg, character.only = TRUE))
-      if (verbose) message(sprintf("✅ Loaded: %s", pkg))
-    }, error = function(e) {
-      message(sprintf("❌ Failed to load %s: %s", pkg, e$message))
-    })
-  }
-}
+################################################################################
+# Main Analysis Script
+################################################################################
 
-# Default verbose output
-load_required_packages()
+# STEP 1: Create directory structure (inline)
+# Set base directory to current working directory
+base_dir <- getwd()
+cat("Base directory:", base_dir, "\n")
 
-# STANDALONE MODE: Use your manual absolute path
-  base_dir <- file.path(
-    "C:",
-    "Users",
-    "David",
-    "OneDrive",
-    "Documents", 
-    "datacleaningproject", 
-    "journal_of_data_science",
-    "nyc_311_data_cleaning"
-  )
-  cat("Running in STANDALONE mode\n")
-  cat("Base directory:", base_dir, "\n")
-#}
-
-# Define all paths relative to base_dir (works in both modes)
+# Define all paths relative to base_dir
 analytics_dir <- file.path(base_dir, "analytics")
 chart_dir     <- file.path(base_dir, "charts")
 code_dir      <- file.path(base_dir, "code")
 console_dir   <- file.path(base_dir, "console_output")
 data_dir      <- file.path(base_dir, "data")
 functions_dir <- file.path(base_dir, "code", "functions")
-raw_data_dir  <- file.path(base_dir,"data", "raw_data")
+raw_data_dir  <- file.path(base_dir, "data", "raw_data")
+# write_dir     <- file.path(base_dir, "misc")
 
-# Create directories if they don't exist
-dirs_to_create <- c(data_dir, chart_dir, console_dir)
+dirs_to_create <- c(analytics_dir, chart_dir, code_dir, console_dir, 
+                    data_dir, functions_dir, raw_data_dir)
+
 for (dir in dirs_to_create) {
   if (!dir.exists(dir)) {
     dir.create(dir, recursive = TRUE)
-    cat("Created directory:", dir, "\n")
+    cat("✅ Created directory:", dir, "\n")
+  } else {
+    cat("📁 Directory exists:", dir, "\n")
   }
 }
 
 cat("\nDirectory paths set:\n")
-cat("  Analytics:", analytics_dir)
+cat("  Analytics:", analytics_dir, "\n")
 cat("  Charts:", chart_dir, "\n")
 cat("  Code:", code_dir, "\n")
 cat("  Console output:", console_dir, "\n")
 cat("  Data:", data_dir, "\n")
 cat("  Functions:", functions_dir, "\n")
-cat("  Raw data:", raw_data_dir)
+cat("  Raw data:", raw_data_dir, "\n")
+# cat("  Write:", write_dir, "\n")
 
-# Get all .R files in the "functions" sub-directory
+# STEP 2: Source and run setup function
+source(file.path(functions_dir, "setup_project.R"))
 
-function_files <- list.files(functions_dir, pattern = "\\.R$", 
-                             full.names = TRUE)
+timing <- setup_project(
+  enable_sink = enable_sink,
+  console_filename = "JDS_datacleaning_console_output.txt",
+  verbose = TRUE
+)
 
-# More robust sourcing with verification
-source_functions_safely <- function(functions_dir) {
-  function_files <- list.files(functions_dir, pattern = "\\.R$", 
-                               full.names = TRUE)
-  
-  sourced_count <- 0
-  failed_count <- 0
-  
-  for (file in function_files) {
-    tryCatch({
-      # Get function count before sourcing
-      functions_before <- sum(sapply(ls(.GlobalEnv), 
-                                     function(x) is.function(get(x))))
-      
-      # Source the file
-      source(file, local = FALSE)
-      
-      # Verify sourcing worked
-      functions_after <- sum(sapply(ls(.GlobalEnv), 
-                                    function(x) is.function(get(x))))
-      
-      message("Successfully sourced: ", basename(file), 
-              " (added ", functions_after - functions_before, " functions)")
-      sourced_count <- sourced_count + 1
-      
-    }, error = function(e) {
-      message("ERROR sourcing: ", basename(file), " - ", e$message)
-      failed_count <- failed_count + 1
-    })
-  }
-  
-  message("\nSourcing complete: ", sourced_count, " files sourced, ", 
-          failed_count, " failed")
-}
-
-# Usage
-source_functions_safely(functions_dir)
 
 ################################################################################
-options(scipen = 999) # Set scipen option to a large value.
-options(digits = 15) # Set the number of decimal places to 15, the max observed.
-options(datatable.print.class = FALSE)
-options(max.print = 100000)
-
 # Extract the date after "AS_OF_"
 extracted_date <- sub(".*AS_OF_([0-9-]+).*", "\\1", main_data_file)
 as_of_date <- as.POSIXct(
@@ -188,24 +93,6 @@ max_closed_date <- as.POSIXct(extracted_date, format = "%m-%d-%Y",
 # Add time to end of day
 max_closed_date <- max_closed_date + (23*3600 + 59*60 + 59)
 #print(paste("Final datetime:", max_closed_date))
-
-################################################################################
-programStart <- as.POSIXct(Sys.time())
-formattedStartTime <- format(programStart, "%Y-%m-%d %H:%M:%S")
-cat("\n***** Program initialization *****")
-
-message("\nExecution begins at:", formattedStartTime)
-
-# Define the console output directory and file name.
-console_output_file <- file.path(console_dir, "JDS_datacleaning_console_output.txt")
-
-if (isTRUE(enable_sink)) {
-  sink(console_output_file)
-}
-
-if (sink.number(type = "output") > 0L) {
-  cat("\nExecution begins at:", formattedStartTime)
-}
 
 ################################################################################
 # Load the USPS zipcode file
@@ -2090,38 +1977,13 @@ complaint_stats <- summarize_complaint_response(
 # ==============================================================================
 
 #########################################################################
-# Conclude program
-# Store the program end time and calculate the duration
-programStop <- as.POSIXct(Sys.time())
-formatted_end_time <- format(programStop, "%Y-%m-%d %H:%M:%S")
 
-# Calculate the duration of the program (in seconds)
-duration_seconds <- as.numeric(difftime(programStop, programStart,  
-                                        units = "secs"))
-
-# Convert the duration to a formatted string (hrs, mins, and secs)
-hours <- floor(duration_seconds / 3600)
-minutes <- floor((duration_seconds %% 3600) / 60)
-seconds <- round(duration_seconds %% 60, 4)  # Round to 4 decimal places
-
-# Create the formatted duration string
-duration_string <- paste0(
-  if (hours > 0) paste0(hours, " hours, ") else "", 
-  if (minutes > 0) paste0(minutes, " minutes, ") else "",
-  seconds, " seconds"
+# Close program
+close_program(
+  program_start = timing$program_start,
+  enable_sink = enable_sink,
+  verbose = TRUE
 )
 
-# Print the final program information to the console
-cat("\n\n*****END OF PROGRAM*****\n")
-cat("\n📅 Execution ends at:", formatted_end_time, "\n")
-cat("\n⏱️ Program run-time:", duration_string, "\n")
-
-if (isTRUE(enable_sink)) {
-  sink()  # restore normal console output
-}
-
-#########################################################################
-# Call the end_program function with the formatted end time and duration string
-end_program(formatted_end_time, duration_string)
 
 #########################################################################

@@ -66,10 +66,10 @@ analyze_decimal_precision <- function(
                 format(low_count, big.mark=","), 
                 100 * low_count / sum(valid_idx)))
     
-    if (nrow(agency_summary)) {
-      cat("\n--- Low Precision by Agency (Pareto) ---\n")
-      print(head(agency_summary, 20), row.names = FALSE)
-    }
+#    if (nrow(agency_summary)) {
+#      cat("\n--- Low Precision by Agency (Pareto) ---\n")
+#      print(head(agency_summary, 20), row.names = FALSE)
+#    }
   }
   
   # === NEW PARETO CHART CREATION ===

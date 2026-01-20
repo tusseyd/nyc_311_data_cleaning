@@ -57,12 +57,14 @@ report_status_closed_date_exceptions <- function(
   cat(sprintf("Denominator A (CLOSED status): %s\n", fmtI(den_closed_status)))
   cat(sprintf("A) CLOSED status but missing %s: %s (%s of CLOSED)\n",
               closed_col, fmtI(n_A), fmtP(pct_A)))
+  
   cat(sprintf("\nDenominator B (has %s): %s\n", closed_col, fmtI(den_has_cdate)))
   cat(sprintf("B) NOT CLOSED status but has %s: %s (%s of has-%s)\n\n",
               closed_col, fmtI(n_B), fmtP(pct_B), closed_col))
   
   # Small previews
-  cols_preview <- unique(na.omit(c(id_col, status_col, closed_col, "created_date", "agency", "complaint_type")))
+  cols_preview <- unique(na.omit(c(id_col, status_col, closed_col, 
+                                   "created_date", "agency", "complaint_type")))
   if (length(cols_preview)) {
     if (n_A > 0) {
       cat(sprintf("Preview A — first %d rows (CLOSED status, missing %s):\n",
