@@ -1,6 +1,6 @@
 analyze_skewed_durations <- function(
     DT,
-    duration_col        = "duration_day",
+    duration_col        = "duration_sec",
     chart_dir           = NULL,
     minimum_cutoff_sec  = 2L,             # drop durations below this many seconds
     upper_cutoff_sec    = 8L * 86400L,    # truncate extreme tail at this many seconds
@@ -195,9 +195,6 @@ analyze_skewed_durations <- function(
       ggplot2::scale_y_continuous(labels = comma_lab) +
       ggplot2::theme_minimal()
     
-    print(p1)
-    Sys.sleep(3)
-    
     # Plot 2: Thresholds by method (show “reasonable” cutoffs < 2 hours)
     reasonable_for_plot <- methods_dt[threshold_seconds > 0 & threshold_seconds < 7200]
     if (nrow(reasonable_for_plot) > 0) {
@@ -216,18 +213,15 @@ analyze_skewed_durations <- function(
         ggplot2::theme_minimal()
     }
     
-    print(p2)
-    Sys.sleep(3)
-    
     # Save plots
     outfile1 <- file.path(chart_dir, paste0(filename_base, "_comparison.pdf"))
     ggplot2::ggsave(outfile1, plot = p1, width = 10, height = 6, dpi = 300)
-#    cat(sprintf("\nSaved comparison plot to: %s\n", outfile1))
+    #    cat(sprintf("\nSaved comparison plot to: %s\n", outfile1))
     
     if (!is.null(p2)) {
       outfile2 <- file.path(chart_dir, paste0(filename_base, "_methods.pdf"))
       ggplot2::ggsave(outfile2, plot = p2, width = 10, height = 8, dpi = 300)
-#      cat(sprintf("Saved methods plot to: %s\n", outfile2))
+      #      cat(sprintf("Saved methods plot to: %s\n", outfile2))
     }
   }
   
@@ -265,5 +259,8 @@ analyze_skewed_durations <- function(
       methods    = if (create_plots) p2 else NULL
     )
   )
+  
+  
   return(invisible(result))
+  
 }

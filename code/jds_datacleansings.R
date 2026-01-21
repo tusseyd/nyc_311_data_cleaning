@@ -6,7 +6,7 @@ main_data_file <-
  
 # Boolean flag. TRUE to redirect console output to text file
 # FALSE to display console outpx`t on the screen
-enable_sink <- TRUE      
+enable_sink <- FALSE      
 
 #The "as of" date in "YYYY-MM-DD" format
 projection_date <- "2025-11-26"   
@@ -1924,18 +1924,21 @@ summary_stats <- positive_data[, .(
   max_days = max(duration_days)
 )]
 
-data.table(
+cat("\n=== Summary Statistics ===\n")
+print(data.table(
   Statistic = c("N", "Median (days)", "Mean (days)", "Std Dev (days)", 
                 "Skewness", "95th percentile", "99th percentile", "Maximum (days)"),
-  Value = sprintf("%.2f", as.numeric(summary_stats[1,]))
-)
+  Value = sprintf("%.4f", as.numeric(summary_stats[1,]))
+))
 
-positive_data[, {
+cat("\n=== Bowley Skewness ===\n")
+print(positive_data[, {
   q <- quantile(duration_days, c(0.25, 0.5, 0.75), na.rm = TRUE)
   .(bowley_skew = round((q[3] + q[1] - 2*q[2]) / (q[3] - q[1]), 4))
-}]
+}])
 
-dip.test(log10(positive_data$duration_days))  # Test for multimodality
+cat("\n=== Hartigan's Dip Test for Multimodality ===\n")
+print(dip.test(log10(positive_data$duration_days)))
 
 # 2. Find the valley/separation point
 density_est <- density(log10(positive_data$duration_days), n = 2048)
@@ -1964,29 +1967,27 @@ valley_region <- log_dens$x > -1 & log_dens$x < 1
 valley_idx <- which.min(log_dens$y[valley_region])
 valley_cutoff <- 10^log_dens$x[valley_region][valley_idx]
 
+cat(sprintf("\n=== Valley Analysis ===\n"))
 cat(sprintf("Valley minimum at: %.3f days\n", valley_cutoff))
 
 # Split data at valley threshold
 positive_data[, mode_group := ifelse(duration_days < valley_cutoff, "Fast", "Standard")]
 
 # Characterize each mode
-positive_data[, .(
+cat("\n=== Mode Characterization ===\n")
+print(positive_data[, .(
   n = .N,
   pct = 100 * .N / nrow(positive_data),
   median_days = median(duration_days),
   mean_days = mean(duration_days),
   p95 = quantile(duration_days, 0.95)
-), by = mode_group]
+), by = mode_group])
 
 # Analyze by agency - which agencies drive each mode?
-positive_data[, .N, by = .(agency, mode_group)][
+cat("\n=== Agency Distribution by Mode ===\n")
+print(positive_data[, .N, by = .(agency, mode_group)][
   , pct := 100 * N / sum(N), by = agency
-][order(agency, mode_group)]
-
-# # Optional: By complaint type
-# positive_data[, .N, by = .(complaint_type, mode_group)][
-#   , pct := 100 * N / sum(N), by = complaint_type
-# ][N > 1000][order(-N)]
+][order(agency, mode_group)])
 
 # Create NYPD subset
 nypd_data <- positive_data[agency == "NYPD"]
@@ -2111,49 +2112,6 @@ Sys.sleep(3)
 ggsave(file.path(chart_dir, "nypd_vs_others_combined.pdf"), p_combined, 
        width = 13, height = 8.5, units = "in")
 
-
-# p_density <- ggplot(combined_data, aes(x = duration_days, color = group, fill = group)) +
-#   geom_density(alpha = 0.3, linewidth = 1.5) +
-#   scale_color_manual(values = c("NYPD" = "#0072B2", "Other Agencies" = "#009E73")) +
-#   scale_fill_manual(values = c("NYPD" = "#0072B2", "Other Agencies" = "#009E73")) +
-#   scale_x_log10(
-#     breaks = c(0.001, 0.01, 0.1, 1, 10, 100, 1000),
-#     labels = c("0.001", "0.01", "0.1", "1", "10", "100", "1,000")
-#   ) +
-#   labs(
-#     title = "Bimodal Distribution: NYPD vs Other Agencies",
-#     subtitle = sprintf("NYPD n = %s, Other n = %s",
-#                        format(nrow(nypd_data), big.mark = ","),
-#                        format(nrow(other_data), big.mark = ",")),
-#     x = "Days (log scale)",
-#     y = "Density",
-#     color = "Agency Group",
-#     fill = "Agency Group"
-#   ) +
-#   david_theme()
-# 
-# print(p_density)
-
-
-# p_stacked <- ggplot(combined_data, aes(x = duration_days, fill = group)) +
-#   geom_histogram(bins = 150, alpha = 0.85, color = "white", linewidth = 0.1) +
-#   scale_fill_manual(values = c("NYPD" = "#0072B2", "Other Agencies" = "#009E73")) +
-#   scale_x_log10(
-#     breaks = c(0.001, 0.01, 0.1, 1, 10, 100, 1000),
-#     labels = c("0.001", "0.01", "0.1", "1", "10", "100", "1,000")
-#   ) +
-#   labs(
-#     title = "Bimodal Distribution: NYPD vs Other Agencies",
-#     subtitle = "Stacked to show relative contributions",
-#     x = "Days (log scale)",
-#     y = "Count",
-#     fill = "Agency Group"
-#   ) +
-#   david_theme()
-# 
-# print(p_stacked)
-
-
 # Set histogram display limits for readability
 upper_limit <- 30*3    # Maximum days to display (90 days)
 lower_limit <- 2       # Minimum days to display
@@ -2164,7 +2122,8 @@ limited_positive_data <- positive_data[
 ]
 
 # Generate summary statistics
-summary(positive_data$duration_day)
+cat("\n=== Summary of duration_days ===\n")
+print(summary(positive_data$duration_days))
 
 # Count records within plotting bounds
 n_plotted <- nrow(limited_positive_data)
@@ -2184,7 +2143,7 @@ plot_histogram(
   add_stats  = TRUE,
   width      = 13,
   height     = 8.5,
-  xlim       = c(0, upper_limit)   # <-- NEW ARGUMENT
+  xlim       = c(0, upper_limit)
 )
 
 # ==============================================================================
@@ -2278,10 +2237,13 @@ create_violin_chart(
 
 cat("\n=== ANALYZING SHORT DURATIONS & SETTING THRESHOLDS ===\n")
 
+# Add duration_sec column
+d311[, duration_sec := duration_days * 86400]
+
 # Run comprehensive skewed duration analysis
 skewed_result <- analyze_skewed_durations(
   DT = d311,
-  duration_col = "duration_days",
+  duration_col = "duration_sec",
   minimum_cutoff_sec = 2,
   upper_cutoff_sec = 60*60*24*2L,  # 2 days in seconds
   print_summary = TRUE,
@@ -2294,9 +2256,13 @@ threshold <- skewed_result$thresholds$log_3sd_lower
 threshold_numeric <- round(as.numeric(threshold), 0)
 
 # Create detailed histogram with threshold visualization
+
+
+
+# Create detailed histogram with threshold visualization
 plot_duration_histogram(
   DT = d311,
-  duration_col = "duration_days",
+  duration_col = "duration_sec",
   bin_width = 1,
   x_label_skip = 2,         # Show every 2nd x-axis label
   x_axis_angle = 45,        # Rotate labels for readability
@@ -2322,6 +2288,10 @@ cat("LogNormal_3SD threshold:", threshold_numeric, "seconds\n")
 cat("\n=== COMPREHENSIVE DURATION CATEGORY ANALYSIS ===\n")
 duraton_analysis <- analyze_duration_QA(d311, 
                                         chart_dir = chart_dir)
+
+# ==============================================================================
+# SECTION 5: RESPONSE TIMES BY COMPLAINT TYPE
+# ==============================================================================
 
 cat("\n=== RESPONSE TIMES BY COMPLAINT CATEGORY ANALYSIS ===\n")
 complaint_stats <- summarize_complaint_response(

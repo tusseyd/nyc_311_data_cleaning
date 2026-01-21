@@ -1,8 +1,8 @@
 ✅ Console output redirected to: C:/Users/David/OneDrive/Documents/datacleaningproject/journal_of_data_science/nyc_311_data_cleaning/console_output/JDS_datacleaning_console_output.txt 
 
-Execution begins at: 2026-01-20 21:13:56 
+Execution begins at: 2026-01-21 00:24:50 
 
-Execution begins at: 2026-01-20 21:13:56 
+Execution begins at: 2026-01-21 00:24:50 
 
 ========================================
 SETUP COMPLETE
@@ -1041,16 +1041,16 @@ Summary of 'due_duration' (days) for SRs with due_date before created_date:
 
 Sample of SRs with 'due_date' before 'created_date' (negative days):
  unique_key agency        created_date            due_date due_duration
-   41932462    DPR 2020-09-25 15:10:23 2019-03-14 11:38:19      -561.15
+   43121407    DPR 2020-09-23 05:39:37 2019-06-29 12:55:52      -451.70
+   42188606    DPR 2020-10-23 15:36:37 2019-04-24 16:28:16      -547.96
    42754470    DPR 2020-09-24 13:20:17 2019-05-26 20:46:31      -486.69
-   40287734    DPR 2020-09-25 15:43:34 2018-09-29 09:26:39      -727.26
-   41499422    DPR 2020-09-24 13:24:00 2019-02-06 10:00:48      -596.10
-   41680133    DPR 2020-09-25 16:00:27 2019-02-26 17:46:25      -576.88
    40962915    DPR 2020-09-25 15:51:54 2018-11-30 17:26:48      -664.89
    41817143    DPR 2020-09-25 15:45:06 2019-03-12 13:39:06      -563.09
-   42095761    DPR 2020-09-25 16:01:34 2019-04-13 15:23:00      -531.03
-   42188606    DPR 2020-10-23 15:36:37 2019-04-24 16:28:16      -547.96
+   41499422    DPR 2020-09-24 13:24:00 2019-02-06 10:00:48      -596.10
+   42726961    DPR 2020-09-25 15:55:11 2019-06-03 15:22:38      -480.02
+   40935119    DPR 2020-09-25 15:51:00 2018-11-28 10:36:24      -667.18
    41926238    DPR 2020-09-25 15:46:41 2019-03-25 11:21:47      -550.18
+   42095761    DPR 2020-09-25 16:01:34 2019-04-13 15:23:00      -531.03
 
 By-agency counts (top 10):
  agency count pct cum_pct rank
@@ -1155,30 +1155,29 @@ Service Requests with resolution_action_updated_date BEFORE created_date: 374,97
 
 Sample problematic records:
  unique_key agency        created_date resolution_action_updated_date res_duration_days
-   56132911    HPD 2022-12-01 07:15:40            2022-12-01 00:00:00             -0.30
-   55933440    DOT 2022-11-08 09:06:00            2022-11-07 09:06:00             -1.00
-   47670273    DOT 2020-09-23 08:21:00            2020-09-22 22:30:00             -0.41
-   46004172    DOB 2020-04-15 09:33:50            2020-04-15 00:00:00             -0.40
-   57208848    HPD 2023-04-02 01:36:42            2023-04-02 00:00:00             -0.07
-   57577059    HPD 2023-05-11 09:05:50            2023-05-11 00:00:00             -0.38
-   55469567    HPD 2022-09-20 12:40:21            2022-09-20 00:00:00             -0.53
-   54847443    DOT 2022-07-20 08:51:00            2022-07-19 08:51:00             -1.00
-   56144324    DOT 2022-12-02 10:51:00            2022-12-01 10:51:00             -1.00
-   54760244   DSNY 2022-07-11 09:25:15            2022-07-07 05:11:44             -4.18
+   60368944    HPD 2024-02-20 20:13:15            2024-02-20 00:00:00             -0.84
+   59888210    HPD 2023-12-31 12:26:14            2023-12-31 00:00:00             -0.52
+   62562194    DOB 2024-09-25 11:34:14            2024-09-25 00:00:00             -0.48
+   46790236    DOT 2020-07-08 09:41:00            2020-07-07 11:04:00             -0.94
+   46102199    DOT 2020-05-01 08:22:00            2020-04-30 08:22:00             -1.00
+   56110460    HPD 2022-11-28 14:58:32            2022-11-28 00:00:00             -0.62
+   56997369    HPD 2023-03-09 12:38:31            2023-03-09 00:00:00             -0.53
+   63271761    HPD 2024-12-02 13:03:14            2024-12-02 00:00:00             -0.54
+   52976385    HPD 2022-01-05 07:32:47            2022-01-05 00:00:00             -0.31
+   53033115    HPD 2022-01-11 17:43:29            2022-01-11 00:00:00             -0.74
 Filtering plotting data to groups with N >= 50
 
 === Summary statistics (All groups with N > 0) for Distribution of Negative Resolution Updates by Agency ===
-      grp     N     Min      Q1  Median    Q3   Max    Mean     SD
- 1:   DEP   194 -476.73   -9.60   -0.21 -0.02  0.00  -83.43 154.51
- 2:   DHS     1   -0.90   -0.90   -0.90 -0.90 -0.90   -0.90     NA
- 3:   DOB 20559   -1.00   -0.54   -0.46 -0.38  0.00   -0.46   0.15
- 4: DOHMH    20 -793.20 -442.46 -404.58 -0.50 -0.01 -294.42 236.55
- 5:   DOT 42670 -372.00   -1.34   -1.00 -1.00  0.00   -2.47  10.63
- 6:   DPR    70  -74.74    0.00    0.00  0.00  0.00   -2.19  11.15
- 7:  DSNY  7765 -762.60   -0.82   -0.15 -0.07  0.00   -7.17  43.09
- 8:   HPD 53510   -1.00   -0.50   -0.39 -0.27  0.00   -0.39   0.19
- 9:  NYPD   183   -2.03   -0.06   -0.02  0.00  0.00   -0.04   0.15
-10:   OSE    10    0.00    0.00    0.00  0.00  0.00    0.00   0.00
+     grp     N     Min      Q1  Median    Q3   Max    Mean     SD
+1:   DEP   205 -471.13   -3.21   -0.28 -0.02  0.00  -68.03 137.28
+2:   DOB 20424   -1.00   -0.54   -0.46 -0.39  0.00   -0.46   0.15
+3: DOHMH    14 -793.20 -441.04 -395.77 -0.57 -0.01 -298.53 251.03
+4:   DOT 42788 -378.00   -1.34   -1.00 -1.00  0.00   -2.45  10.52
+5:   DPR    60  -64.13    0.00    0.00  0.00  0.00   -1.08   8.28
+6:  DSNY  7702 -856.56   -0.83   -0.15 -0.07  0.00   -7.78  45.60
+7:   HPD 53599   -1.03   -0.51   -0.39 -0.28  0.00   -0.39   0.19
+8:  NYPD   179   -2.71   -0.05   -0.02  0.00  0.00   -0.05   0.25
+9:   OSE    11   -0.01    0.00    0.00  0.00  0.00    0.00   0.00
 
 Pareto summary by agency:
  group      N  pct cum_pct
@@ -1967,7 +1966,78 @@ Data Summary for hour vs top_of_hour (first 20 rows):
 ********** DURATION ISSUES **********
 
 === ANALYZING POSITIVE DURATIONS ===
+
+=== Summary Statistics ===
+         Statistic         Value
+1:               N 15353267.0000
+2:   Median (days)        0.4389
+3:     Mean (days)       23.7231
+4:  Std Dev (days)      121.4013
+5:        Skewness        8.5053
+6: 95th percentile       73.6937
+7: 99th percentile      677.7580
+8:  Maximum (days)     3929.4369
+
+=== Bowley Skewness ===
+   bowley_skew
+1:      0.8079
+
+=== Hartigan's Dip Test for Multimodality ===
+
+	Hartigans' dip test for unimodality / multimodality
+
+data:  log10(positive_data$duration_days)
+D = 0.02709638350638, p-value < 0.0000000000000002220446049
+alternative hypothesis: non-unimodal, i.e., at least bimodal
+
+
+=== Valley Analysis ===
 Valley minimum at: 0.432 days
+
+=== Mode Characterization ===
+   mode_group       n              pct        median_days           mean_days                 p95
+1:       Fast 7663869 49.9168613429311 0.0362731481481482  0.0717243933901136   0.280219907407407
+2:   Standard 7689398 50.0831386570689 4.2133449074074072 47.2959447321123534 211.029008680554455
+
+=== Agency Distribution by Mode ===
+    agency mode_group       N               pct
+ 1:   DCWP       Fast    2378  2.04793441098203
+ 2:   DCWP   Standard  113739 97.95206558901798
+ 3:    DEP       Fast  269195 34.77621118285237
+ 4:    DEP   Standard  504883 65.22378881714762
+ 5:   DFTA       Fast     238  9.13627639155470
+ 6:   DFTA   Standard    2367 90.86372360844530
+ 7:    DHS       Fast  104194 64.06497866427280
+ 8:    DHS   Standard   58444 35.93502133572720
+ 9:    DOB       Fast   36359  8.88386639626652
+10:    DOB   Standard  372911 91.11613360373347
+11:    DOE       Fast     720 11.29588955130217
+12:    DOE   Standard    5654 88.70411044869783
+13:  DOHMH       Fast   28826 12.51410908712036
+14:  DOHMH   Standard  201522 87.48589091287964
+15:    DOT       Fast  179129 19.74247460675742
+16:    DOT   Standard  728199 80.25752539324257
+17:    DPR       Fast   56297  9.91472529640092
+18:    DPR   Standard  511515 90.08527470359908
+19:   DSNY       Fast  134292  7.07276853499649
+20:   DSNY   Standard 1764427 92.92723146500352
+21:    EDC       Fast    3968  3.04773608817543
+22:    EDC   Standard  126227 96.95226391182457
+23:    HPD       Fast  119557  3.91458037696954
+24:    HPD   Standard 2934589 96.08541962303046
+25:   NYPD       Fast 6685463 96.81526623947325
+26:   NYPD   Standard  219918  3.18473376052675
+27:    OSE       Fast   33097 47.28953534891696
+28:    OSE   Standard   36891 52.71046465108304
+29:    OTI       Fast      37  3.21180555555556
+30:    OTI   Standard    1115 96.78819444444444
+31:    TLC       Fast   10119  8.64015164452338
+32:    TLC   Standard  106997 91.35984835547661
+    agency mode_group       N               pct
+
+=== Summary of duration_days ===
+             Min.           1st Qu.            Median              Mean           3rd Qu.              Max. 
+   0.000011574074    0.036377314815    0.438888888889   23.723096145352    4.226521990741 3929.436909722222 
 
 Histogram for 'duration_days':
   Total records: 15,353,267
@@ -2976,6 +3046,6 @@ SORT 3: Alphabetically by Complaint Type
 
 *****END OF PROGRAM*****
 
-📅 Execution ends at: 2026-01-20 21:44:17 
+📅 Execution ends at: 2026-01-21 00:47:16 
 
-⏱️ Program run-time: 30 minutes, 21.3279 seconds 
+⏱️ Program run-time: 22 minutes, 25.8847 seconds 

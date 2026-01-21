@@ -1,0 +1,578 @@
+
+Execution begins at: 2025-10-01 23:38:49
+
+**********DATA INPUT AND PREPARATION**********
+Reading RDS file: C:/Users/David/OneDrive/Documents/datacleaningproject/nyc311clean/Journal_of_Data_Science/data/5-year_311SR_01-01-2020_thru_12-31-2024_AS_OF_09-23-2025.rds 
+Keeping columns: created_date, closed_date, agency 
+Total rows: 16,016,700 
+Data preparation complete.
+Found 14482 February 29th dates in column ' created_date '
+Adjusted 14482 dates from Feb 29 to Feb 28
+Remaining Feb 29 dates: 0 
+Sample of adjusted Feb 28 dates:
+[1] "2024-02-28 23:59:31 EST" "2024-02-28 23:59:27 EST" "2024-02-28 23:59:13 EST"
+Found 13024 February 29th dates in column ' closed_date '
+Adjusted 13024 dates from Feb 29 to Feb 28
+Remaining Feb 29 dates: 0 
+Sample of adjusted Feb 28 dates:
+[1] "2025-02-28 11:33:39 EST" "2025-02-28 15:04:44 EST" "2025-02-28 09:36:04 EST"
+
+Total rows: 16,016,700 covering 5 years
+=== Date Range Analysis ===
+Data contains SRs created from 2020-01-01 00:00:00 through 2024-12-31 23:59:38
+Time span: 1827 days (5.0 years)
+
+=== Creating DateTime Aggregations ===
+Creating second-level aggregation...
+Creating minute-level aggregation...
+Creating hour-level aggregation...
+Creating hour-of-day aggregation...
+Creating day-level aggregation...
+Creating calendar month aggregation...
+Creating day-of-week aggregation...
+Creating day-of-year aggregation...
+
+Aggregation Summary:
+  Second-level: 12,791,908 records
+  Minute-level: 2,489,172 records
+  Hour-level: 43,800 records
+  Day-level: 1,825 records
+  Monthly: 60 records
+  Yearly: 5 records
+  Hour-of-day: 24 records (0-23)
+  Day-of-week: 7 records
+  Day-of-year: 365 records
+
+DateTime aggregations complete.
+
+=== Creating Closed Date Aggregations ===
+Creating closed second-level aggregation...
+Creating closed minute-level aggregation...
+Creating closed hour-of-day aggregation...
+
+Closed Date Aggregation Summary:
+  Records with closed_date: 15,785,257 (98.6% of total)
+  Second-level: 10,517,759 unique timestamps
+  Minute-level: 2,437,173 unique minutes
+  Hour-of-day: 24 records (0-23)
+  Closed date range: 1899-12-31 to 2033-03-01
+
+Closed date aggregations complete.
+
+=== Preparing Data for Charting ===
+
+=== Busiest Day Analysis ===
+Busiest day: 2020-08-04 (Tuesday) with 24,415 service requests
+Records on busiest day: 22,609
+Creating hourly breakdown for busiest day...
+Creating minute-level breakdown for busiest day...
+Records with closed_date on busiest day: 19,597 (86.7%)
+Creating closed date minute-level breakdown for busiest day...
+Creating closed date second-level breakdown for busiest day...
+
+Busiest Day Aggregation Summary:
+  Hourly breakdown: 24 records (0-23 hours)
+  Minute breakdown: 1,403 unique minutes
+  Closed minute breakdown: 6,843 unique minutes
+  Closed second breakdown: 14,207 unique seconds
+  Peak creation hour: 14:00 with 3,113 requests
+  Peak closure hour: 00:00 with 2,009 closures
+
+Busiest day analysis complete.
+
+=== Data Preparation Complete ===
+All aggregations created as data.table objects for optimal performance.
+Data preparation workflow complete.
+
+=== Creating Yearly Trend Chart ===
+
+Growth over 5 years is 17.5%
+Year range: 2020 to 2024 (5 year span)
+Yearly trend chart created successfully.
+
+=== Creating Monthly Trend Chart ===
+Monthly data: 60 months, total SRs: 16,016,700
+Busiest month: 2020-08 with 348,463 SRs
+Quietest month: 2020-04 with 159,115 SRs
+
+Monthly SR Count (first 24 rows):
+  YearMonth  count percentage cumulative_percentage
+ 2020-01-01 195235       1.22                  1.22
+ 2020-02-01 173164       1.08                  2.30
+ 2020-03-01 179787       1.12                  3.42
+ 2020-04-01 159115       0.99                  4.42
+ 2020-05-01 234308       1.46                  5.88
+ 2020-06-01 313306       1.96                  7.84
+ 2020-07-01 316558       1.98                  9.81
+ 2020-08-01 348463       2.18                 11.99
+ 2020-09-01 287861       1.80                 13.78
+ 2020-10-01 269525       1.68                 15.47
+ 2020-11-01 233598       1.46                 16.93
+ 2020-12-01 231144       1.44                 18.37
+ 2021-01-01 228045       1.42                 19.79
+ 2021-02-01 195981       1.22                 21.02
+ 2021-03-01 249963       1.56                 22.58
+ 2021-04-01 241650       1.51                 24.09
+ 2021-05-01 274411       1.71                 25.80
+ 2021-06-01 301381       1.88                 27.68
+ 2021-07-01 303152       1.89                 29.57
+ 2021-08-01 282245       1.76                 31.34
+ 2021-09-01 317507       1.98                 33.32
+ 2021-10-01 308315       1.92                 35.24
+ 2021-11-01 269689       1.68                 36.93
+ 2021-12-01 248576       1.55                 38.48
+  YearMonth  count percentage cumulative_percentage
+Chart saved to: C:/Users/David/OneDrive/Documents/datacleaningproject/nyc311clean/Journal_of_Data_Science/charts/timeline_charts/SRs_monthly.pdf 
+Monthly trend chart created successfully.
+
+=== Creating Daily Trend Chart ===
+Daily data: 1825 days from 2020-01-01 to 2024-12-31
+Busiest day: 2020-08-04 (Tuesday) with 24,415 SRs
+Quietest day: 2020-03-29 (Sunday) with 3,785 SRs
+
+Daily SR Count (first 31 rows):
+ created_day count percentage cumulative_percentage
+  2020-01-01  5010       0.03                  0.03
+  2020-01-02  7509       0.05                  0.08
+  2020-01-03  6547       0.04                  0.12
+  2020-01-04  5262       0.03                  0.15
+  2020-01-05  5511       0.03                  0.19
+  2020-01-06  7119       0.04                  0.23
+  2020-01-07  6781       0.04                  0.27
+  2020-01-08  6600       0.04                  0.31
+  2020-01-09  7334       0.05                  0.36
+  2020-01-10  6650       0.04                  0.40
+  2020-01-11  5766       0.04                  0.44
+  2020-01-12  5573       0.03                  0.47
+  2020-01-13  6952       0.04                  0.52
+  2020-01-14  6701       0.04                  0.56
+  2020-01-15  6410       0.04                  0.60
+  2020-01-16  6544       0.04                  0.64
+  2020-01-17  7077       0.04                  0.68
+  2020-01-18  5716       0.04                  0.72
+  2020-01-19  4704       0.03                  0.75
+  2020-01-20  5880       0.04                  0.78
+  2020-01-21  7574       0.05                  0.83
+  2020-01-22  6572       0.04                  0.87
+  2020-01-23  6642       0.04                  0.91
+  2020-01-24  6020       0.04                  0.95
+  2020-01-25  5488       0.03                  0.99
+  2020-01-26  5216       0.03                  1.02
+  2020-01-27  6239       0.04                  1.06
+  2020-01-28  6518       0.04                  1.10
+  2020-01-29  6453       0.04                  1.14
+  2020-01-30  6675       0.04                  1.18
+  2020-01-31  6192       0.04                  1.22
+ created_day count percentage cumulative_percentage
+Chart saved to: C:/Users/David/OneDrive/Documents/datacleaningproject/nyc311clean/Journal_of_Data_Science/charts/timeline_charts/5-year-trend_SRs_daily.pdf 
+Daily trend chart created successfully.
+
+=== Creating Hour-of-Day Chart (workday View) ===
+Hour-of-day analysis (workday view): 24 hours, total SRs: 16,016,700
+Peak hour: 10:00 with 961,596 SRs
+Quietest hour: 04:00 with 170,167 SRs
+
+SRs Created by Hour-of-the-Day (workday: 08:00-00:00) (first 24 rows):
+ work_day_hour_factor  count percentage cumulative_percentage
+                08:00 773681       4.83                  4.83
+                09:00 950259       5.93                 10.76
+                10:00 961596       6.00                 16.77
+                11:00 952897       5.95                 22.72
+                12:00 936427       5.85                 28.56
+                13:00 877267       5.48                 34.04
+                14:00 889396       5.55                 39.59
+                15:00 849373       5.30                 44.90
+                16:00 828336       5.17                 50.07
+                17:00 770001       4.81                 54.88
+                18:00 743060       4.64                 59.51
+                19:00 722544       4.51                 64.03
+                20:00 733756       4.58                 68.61
+                21:00 794084       4.96                 73.56
+                22:00 841964       5.26                 78.82
+                23:00 745371       4.65                 83.48
+                00:00 611736       3.82                 87.29
+                01:00 407753       2.55                 89.84
+                02:00 272353       1.70                 91.54
+                03:00 196263       1.23                 92.77
+                04:00 170167       1.06                 93.83
+                05:00 189998       1.19                 95.02
+                06:00 295051       1.84                 96.86
+                07:00 503367       3.14                100.00
+ work_day_hour_factor  count percentage cumulative_percentage
+Chart saved to: C:/Users/David/OneDrive/Documents/datacleaningproject/nyc311clean/Journal_of_Data_Science/charts/timeline_charts/5-year-trend_SRs_created_by_hour_workday.pdf 
+
+Summary of SRs created by hour-of-the-day (workday order):
+ created_hour_formatted  count
+                  08:00 773681
+                  09:00 950259
+                  10:00 961596
+                  11:00 952897
+                  12:00 936427
+                  13:00 877267
+                  14:00 889396
+                  15:00 849373
+                  16:00 828336
+                  17:00 770001
+                  18:00 743060
+                  19:00 722544
+                  20:00 733756
+                  21:00 794084
+                  22:00 841964
+                  23:00 745371
+                  00:00 611736
+                  01:00 407753
+                  02:00 272353
+                  03:00 196263
+                  04:00 170167
+                  05:00 189998
+                  06:00 295051
+                  07:00 503367
+ created_hour_formatted  count
+workday hour-of-day chart created successfully.
+
+=== Creating Closed Hour-of-Day Chart (workday View) ===
+Closed hour-of-day analysis (workday view): 24 hours, total closures: 15,785,257
+Peak closure hour: 00:00 with 1,615,228 closures
+Quietest closure hour: 04:00 with 242,972 closures
+
+SRs Closed by Hour-of-the-Day (Workday: 08:00-00:00) (first 24 rows):
+ work_day_hour_factor   count percentage cumulative_percentage
+                08:00  649759       4.12                  4.12
+                09:00  826909       5.24                  9.35
+                10:00  860337       5.45                 14.80
+                11:00  838120       5.31                 20.11
+                12:00 1061427       6.72                 26.84
+                13:00  831676       5.27                 32.11
+                14:00  770540       4.88                 36.99
+                15:00  666183       4.22                 41.21
+                16:00  655142       4.15                 45.36
+                17:00  686019       4.35                 49.71
+                18:00  681536       4.32                 54.02
+                19:00  619050       3.92                 57.94
+                20:00  719341       4.56                 62.50
+                21:00  637716       4.04                 66.54
+                22:00  665855       4.22                 70.76
+                23:00  487832       3.09                 73.85
+                00:00 1615228      10.23                 84.08
+                01:00  507052       3.21                 87.29
+                02:00  460986       2.92                 90.22
+                03:00  297199       1.88                 92.10
+                04:00  242972       1.54                 93.64
+                05:00  258603       1.64                 95.28
+                06:00  322280       2.04                 97.32
+                07:00  423495       2.68                100.00
+ work_day_hour_factor   count percentage cumulative_percentage
+Chart saved to: C:/Users/David/OneDrive/Documents/datacleaningproject/nyc311clean/Journal_of_Data_Science/charts/timeline_charts/5-year-trend-SRs_closed_by_hour_workday.pdf 
+
+Summary of SRs closed by hour-of-the-day (workday order):
+ closed_hour_formatted   count
+                 08:00  649759
+                 09:00  826909
+                 10:00  860337
+                 11:00  838120
+                 12:00 1061427
+                 13:00  831676
+                 14:00  770540
+                 15:00  666183
+                 16:00  655142
+                 17:00  686019
+                 18:00  681536
+                 19:00  619050
+                 20:00  719341
+                 21:00  637716
+                 22:00  665855
+                 23:00  487832
+                 00:00 1615228
+                 01:00  507052
+                 02:00  460986
+                 03:00  297199
+                 04:00  242972
+                 05:00  258603
+                 06:00  322280
+                 07:00  423495
+ closed_hour_formatted   count
+Closed hour-of-day chart (workday view) created successfully.
+
+=== Creating Calendar Month Chart ===
+Calendar month analysis: 12 months, total SRs: 16,016,700
+Busiest month (total): July with 1,502,868 SRs
+Busiest month (per day): September with 48,933 SRs/day
+
+Calendar Month with total count and count_per_day:
+     Month   count count_per_day
+   January 1231932         39740
+  February 1078847         38257
+     March 1200172         38715
+     April 1151992         38400
+       May 1350541         43566
+      June 1460081         48669
+      July 1502868         48480
+    August 1467992         47355
+ September 1467984         48933
+   October 1454619         46923
+  November 1323470         44116
+  December 1326202         42781
+
+SRs by Calendar Month (first 12 rows):
+     Month   count percentage cumulative_percentage
+   January 1231932       7.69                  7.69
+  February 1078847       6.74                 14.43
+     March 1200172       7.49                 21.92
+     April 1151992       7.19                 29.11
+       May 1350541       8.43                 37.55
+      June 1460081       9.12                 46.66
+      July 1502868       9.38                 56.04
+    August 1467992       9.17                 65.21
+ September 1467984       9.17                 74.37
+   October 1454619       9.08                 83.46
+  November 1323470       8.26                 91.72
+  December 1326202       8.28                100.00
+Chart saved to: C:/Users/David/OneDrive/Documents/datacleaningproject/nyc311clean/Journal_of_Data_Science/charts/timeline_charts/5-year-trend_SRs_by_calendar_month.pdf 
+Calendar month chart created successfully.
+
+=== Creating Day-of-Year Chart ===
+Day-of-year analysis: 365 days, total SRs: 16,016,700
+Busiest day: 185 - 07/04 with 61,954 SRs
+Second busiest: 186 - 07/05 with 60,187 SRs
+Quietest day: 359 - 12/25 with 29,689 SRs
+
+SRs by Day_of_the_year (first 30 rows):
+   day_info count percentage cumulative_percentage
+  1 - 01/01 29837       0.19                  0.19
+  2 - 01/02 36348       0.23                  0.41
+  3 - 01/03 39063       0.24                  0.66
+  4 - 01/04 40826       0.25                  0.91
+  5 - 01/05 40426       0.25                  1.16
+  6 - 01/06 39108       0.24                  1.41
+  7 - 01/07 35526       0.22                  1.63
+  8 - 01/08 38520       0.24                  1.87
+  9 - 01/09 39526       0.25                  2.12
+ 10 - 01/10 42307       0.26                  2.38
+ 11 - 01/11 44143       0.28                  2.66
+ 12 - 01/12 40769       0.25                  2.91
+ 13 - 01/13 38761       0.24                  3.15
+ 14 - 01/14 38447       0.24                  3.39
+ 15 - 01/15 39098       0.24                  3.64
+ 16 - 01/16 39153       0.24                  3.88
+ 17 - 01/17 43370       0.27                  4.15
+ 18 - 01/18 43435       0.27                  4.42
+ 19 - 01/19 40666       0.25                  4.68
+ 20 - 01/20 38270       0.24                  4.92
+ 21 - 01/21 41004       0.26                  5.17
+ 22 - 01/22 39866       0.25                  5.42
+ 23 - 01/23 39204       0.24                  5.67
+ 24 - 01/24 40711       0.25                  5.92
+ 25 - 01/25 40837       0.25                  6.18
+ 26 - 01/26 40503       0.25                  6.43
+ 27 - 01/27 39132       0.24                  6.67
+ 28 - 01/28 37227       0.23                  6.91
+ 29 - 01/29 40915       0.26                  7.16
+ 30 - 01/30 42643       0.27                  7.43
+   day_info count percentage cumulative_percentage
+Chart saved to: C:/Users/David/OneDrive/Documents/datacleaningproject/nyc311clean/Journal_of_Data_Science/charts/timeline_charts/5-year-trend_SRs_by_day_of_the_year.pdf 
+Day-of-year chart created successfully.
+
+=== Creating Day-of-Week Chart ===
+Day-of-week analysis: 7 days, total SRs: 16,016,700
+Busiest day: 1-Monday with 2,414,428 SRs
+Quietest day: 6-Saturday with 2,122,649 SRs
+Weekdays (Mon-Fri): 11,722,884 SRs (73.2%)
+Weekends (Sat-Sun): 4,293,816 SRs (26.8%)
+
+SRs by Day-of-the-Week (first 7 rows):
+ day_of_week   count percentage cumulative_percentage
+    1-Monday 2414428      15.07                 15.07
+   2-Tuesday 2399675      14.98                 30.06
+ 3-Wednesday 2331100      14.55                 44.61
+  4-Thursday 2279587      14.23                 58.84
+    5-Friday 2298094      14.35                 73.19
+  6-Saturday 2122649      13.25                 86.44
+    7-Sunday 2171167      13.56                100.00
+Chart saved to: C:/Users/David/OneDrive/Documents/datacleaningproject/nyc311clean/Journal_of_Data_Science/charts/timeline_charts/5-year-trend_SRs_by_day_of_the_week.pdf 
+Day-of-week chart created successfully.
+
+=== Creating Top-of-Hour Chart ===
+Records created exactly on the hour: 21,143 (0.17% of all timestamps)
+Top-of-hour analysis: 24 hours, total SRs on the hour: 86,918
+Peak hour: 12:00 with 31,872 SRs
+Second peak: 00:00 with 14,409 SRs
+Quietest hour: 05:00 with 225 SRs
+
+SRs Created Exactly on the Hour (HH:00:00) (first 24 rows):
+ created_hour count percentage cumulative_percentage
+            0 14409      16.58                 16.58
+            1   588       0.68                 17.25
+            2   353       0.41                 17.66
+            3   282       0.32                 17.98
+            4   247       0.28                 18.27
+            5   225       0.26                 18.53
+            6   818       0.94                 19.47
+            7  6331       7.28                 26.75
+            8  1870       2.15                 28.90
+            9  2868       3.30                 32.20
+           10  3117       3.59                 35.79
+           11  2857       3.29                 39.08
+           12 31872      36.67                 75.75
+           13  2455       2.82                 78.57
+           14  2510       2.89                 81.46
+           15  2498       2.87                 84.33
+           16  2248       2.59                 86.92
+           17  2202       2.53                 89.45
+           18  1921       2.21                 91.66
+           19  1725       1.98                 93.65
+           20  1829       2.10                 95.75
+           21  1465       1.69                 97.44
+           22  1161       1.34                 98.77
+           23  1067       1.23                100.00
+ created_hour count percentage cumulative_percentage
+Chart saved to: C:/Users/David/OneDrive/Documents/datacleaningproject/nyc311clean/Journal_of_Data_Science/charts/timeline_charts/5-year-trend_SRs_created_on_the_hour.pdf 
+Top-of-hour chart created successfully.
+
+=== Creating Closed Top-of-Hour Chart ===
+Records closed exactly on the hour: 39,695 (0.38% of all closed timestamps)
+Closed top-of-hour analysis: 24 hours, total closures on the hour: 1,541,782
+Peak closure hour: 00:00 with 1,083,760 closures
+Second peak: 12:00 with 294,815 closures
+Quietest closure hour: 06:00 with 2,143 closures
+
+SRs Closed Exactly on the Hour (HH:00:00) (first 24 rows):
+ closed_hour   count percentage cumulative_percentage
+           0 1083760      70.29                 70.29
+           1    4512       0.29                 70.59
+           2    4595       0.30                 70.88
+           3    2926       0.19                 71.07
+           4    3667       0.24                 71.31
+           5    2512       0.16                 71.47
+           6    2143       0.14                 71.61
+           7    7683       0.50                 72.11
+           8    7494       0.49                 72.60
+           9   12362       0.80                 73.40
+          10   13975       0.91                 74.31
+          11   14299       0.93                 75.23
+          12  294815      19.12                 94.35
+          13   13543       0.88                 95.23
+          14   14140       0.92                 96.15
+          15    7328       0.48                 96.63
+          16    8251       0.54                 97.16
+          17    6249       0.41                 97.57
+          18    7437       0.48                 98.05
+          19    6202       0.40                 98.45
+          20    5508       0.36                 98.81
+          21    6187       0.40                 99.21
+          22    5760       0.37                 99.58
+          23    6434       0.42                100.00
+ closed_hour   count percentage cumulative_percentage
+Chart saved to: C:/Users/David/OneDrive/Documents/datacleaningproject/nyc311clean/Journal_of_Data_Science/charts/timeline_charts/5-year-trend_SRs_closed_on_the_hour.pdf 
+Closed top-of-hour chart created successfully.
+
+=== Analyzing Midnight and Noon Creation Patterns ===
+Total service requests in dataset: 16,016,700
+Created exactly at midnight (00:00:00): 1,781 (0.011%)
+Created exactly at noon (12:00:00): 1,224 (0.008%)
+
+=== Midnight Creation Analysis ===
+
+Pareto summary by agency:
+ group   N  pct cum_pct
+ NYPD  771 0.43    0.43
+ HPD   343 0.19    0.63
+ DSNY  194 0.11    0.73
+ DOT   113 0.06    0.80
+ DEP   101 0.06    0.85
+ DPR    74 0.04    0.90
+ DOB    54 0.03    0.93
+ DOHMH  47 0.03    0.95
+ DHS    35 0.02    0.97
+ EDC    17 0.01    0.98
+ DCWP   16 0.01    0.99
+ TLC    13 0.01    1.00
+ OSE     2 0.00    1.00
+ DOE     1 0.00    1.00
+
+=== Noon Creation Analysis ===
+
+Pareto summary by agency:
+ group   N  pct cum_pct
+ NYPD  534 0.44    0.44
+ HPD   245 0.20    0.64
+ DSNY  120 0.10    0.73
+ DOT    91 0.07    0.81
+ DEP    60 0.05    0.86
+ DPR    53 0.04    0.90
+ DOB    45 0.04    0.94
+ DOHMH  27 0.02    0.96
+ EDC    19 0.02    0.98
+ DHS    14 0.01    0.99
+ TLC     8 0.01    0.99
+ DCWP    7 0.01    1.00
+ DOE     1 0.00    1.00
+
+=== Summary Insights ===
+High concentrations of requests at exact times (midnight/noon) may indicate:
+  • Automated batch processing systems
+  • Manual data entry with timestamp rounding
+  • System maintenance or scheduled operations
+  • Data quality issues requiring investigation
+
+Midnight/noon Creation analysis complete.
+
+=== Analyzing Midnight and Noon Closure Patterns ===
+Total service requests with closed dates: 15,785,257
+Closed exactly at midnight (00:00:00): 2,058 (0.013%)
+Closed exactly at noon (12:00:00): 1,825 (0.012%)
+
+=== Midnight Closure Analysis ===
+
+Pareto summary by agency:
+ group   N  pct cum_pct
+ NYPD  898 0.44    0.44
+ HPD   450 0.22    0.66
+ DSNY  211 0.10    0.76
+ DOT   119 0.06    0.82
+ DEP   107 0.05    0.87
+ DPR    79 0.04    0.91
+ DOB    68 0.03    0.94
+ DOHMH  51 0.02    0.96
+ TLC    27 0.01    0.98
+ EDC    23 0.01    0.99
+ DCWP   13 0.01    0.99
+ DHS    10 0.00    1.00
+ DOE     2 0.00    1.00
+
+=== Noon Closure Analysis ===
+
+Pareto summary by agency:
+ group   N  pct cum_pct
+ NYPD  815 0.45    0.45
+ HPD   362 0.20    0.64
+ DSNY  166 0.09    0.74
+ DOT   121 0.07    0.80
+ DEP   103 0.06    0.86
+ DOHMH  62 0.03    0.89
+ DPR    62 0.03    0.93
+ DOB    52 0.03    0.96
+ DCWP   23 0.01    0.97
+ DHS    22 0.01    0.98
+ EDC    18 0.01    0.99
+ TLC    18 0.01    1.00
+ DOE     1 0.00    1.00
+
+=== Closure Pattern Insights ===
+High concentrations of closures at exact times may indicate:
+  • Automated batch closure processes
+  • End-of-shift or scheduled closure workflows
+  • Manual data entry with timestamp rounding
+  • System maintenance or overnight processing
+
+=== Creation vs Closure Comparison ===
+Midnight - Created: 1,781, Closed: 2,058
+Noon - Created: 1,224, Closed: 1,825
+
+Midnight/noon closure analysis complete.
+
+
+*****END OF PROGRAM*****
+
+📅 Execution ends at: 2025-10-01 23:41:01 
+
+⏱️ Program run-time: 2 minutes, 11.707 seconds 

@@ -53,7 +53,6 @@ setup_project <- function(
     "remotes",
     "moments",
     "diptest"
-#    "mixtools"
   )
   
   for (pkg in required_packages) {
