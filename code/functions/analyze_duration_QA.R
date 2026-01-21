@@ -1,5 +1,5 @@
 # ==========================================================
-# Updated analyze_duration_QA (DST logic removed)
+# Updated analyze_duration_QA (using duration_days only)
 # ==========================================================
 analyze_duration_QA <- function(
     DT,
@@ -12,10 +12,10 @@ analyze_duration_QA <- function(
     upper_pos_days   = 2 * 365.25,
     extreme_pos_days = 5 * 365.25,
     max_outlier_days = 10 * 365.25,
-    near_zero_secs   = threshold_numeric,
+    near_zero_days   = threshold_numeric / 86400,  # Convert seconds to days
     show_examples    = 10,
-    show_samples     = TRUE,        # NEW: control sample display
-    sample_size      = 10,           # NEW: how many samples per category
+    show_samples     = TRUE,
+    sample_size      = 10,
     in_place         = TRUE,
     print_summary    = TRUE,
     extra_keep_cols  = "agency",
@@ -30,7 +30,7 @@ analyze_duration_QA <- function(
   stopifnot(is.numeric(lower_neg_days), is.numeric(extreme_neg_days))
   stopifnot(extreme_neg_days < lower_neg_days, lower_neg_days < 0)
   
-  rsample <- function(DT, n) DT[sample(.N, min(.N, n))]    #will use later
+  rsample <- function(DT, n) DT[sample(.N, min(.N, n))]
   
   if (!all(c(created_col, closed_col) %in% names(DT))) {
     stop("created_col and/or closed_col not found in DT.")
@@ -39,7 +39,7 @@ analyze_duration_QA <- function(
   X <- if (in_place) DT else data.table::copy(DT)
   
   # Check if durations already exist, if not calculate them
-  if (!all(c("duration_sec", "duration_days") %in% names(X))) {
+  if (!all(c("duration_days") %in% names(X))) {
     calculate_durations(
       X, created_col, closed_col, tz,
       in_place = TRUE, keep_parsed_timestamps = TRUE
@@ -71,18 +71,18 @@ analyze_duration_QA <- function(
   N_denom <- sum(denom)
   if (N_denom == 0L) warning("No rows with both timestamps; summary is empty.")
   
-  neg_total <- if (N_denom) X[denom, sum(duration_sec < 0, na.rm = TRUE)] else 0L
-  zero_total <- if (N_denom) X[denom, sum(duration_sec == 0, na.rm = TRUE)] else 0L
-  pos_total <- if (N_denom) X[denom, sum(duration_sec > 0, na.rm = TRUE)] else 0L
-  near_zero_excl_zero <- if (N_denom) X[denom, sum(duration_sec > 0 & 
-                                                     duration_sec <= near_zero_secs, na.rm = TRUE)] else 0L
+  neg_total <- if (N_denom) X[denom, sum(duration_days < 0, na.rm = TRUE)] else 0L
+  zero_total <- if (N_denom) X[denom, sum(duration_days == 0, na.rm = TRUE)] else 0L
+  pos_total <- if (N_denom) X[denom, sum(duration_days > 0, na.rm = TRUE)] else 0L
+  near_zero_excl_zero <- if (N_denom) X[denom, sum(duration_days > 0 & 
+                                                     duration_days <= near_zero_days, na.rm = TRUE)] else 0L
   
   pct <- function(x) if (N_denom) sprintf("%.2f%%", 100 * x / N_denom) else "NA"
   
-  # Skew-oriented quantiles for positive durations (seconds)
+  # Skew-oriented quantiles for positive durations (days)
   qs <- if (N_denom) {
-    X[denom & duration_sec > 0,
-      as.list(stats::quantile(duration_sec,
+    X[denom & duration_days > 0,
+      as.list(stats::quantile(duration_days,
                               probs = c(0, .5, .9, .95, .99, 1),
                               na.rm = TRUE))]
   } else {
@@ -95,8 +95,8 @@ analyze_duration_QA <- function(
       "denominator_rows",
       "negative_total", "zero_total", "positive_total", "near_zero_excl_zero",
       "pct_negative_total", "pct_zero", "pct_positive_total", 
-      "pct_near_zero_excl_zero", "pos_sec_min", "pos_sec_median", "pos_sec_p90", 
-      "pos_sec_p95", "pos_sec_p99", "pos_sec_max"
+      "pct_near_zero_excl_zero", "pos_days_min", "pos_days_median", "pos_days_p90", 
+      "pos_days_p95", "pos_days_p99", "pos_days_max"
     ),
     value = c(
       formatC(N_denom, format = "d", big.mark = ","),
@@ -114,7 +114,7 @@ analyze_duration_QA <- function(
   keep_cols <- intersect(
     c(key_col, created_col, closed_col,
       "created_ts", "closed_ts",
-      "duration_sec", "duration_days",
+      "duration_days",
       extra_keep_cols),
     names(X)
   )
@@ -122,21 +122,21 @@ analyze_duration_QA <- function(
   # =========
   # Subsets
   # =========
-  negative_all <- X[base_filter & duration_sec < 0, .SD, .SDcols = keep_cols]
+  negative_all <- X[base_filter & duration_days < 0, .SD, .SDcols = keep_cols]
   negative_small <- X[base_filter & duration_days < 0 & duration_days > lower_neg_days, .SD, .SDcols = keep_cols]
   negative_large <- X[base_filter & duration_days < 0 & duration_days <= lower_neg_days & duration_days > extreme_neg_days, .SD, .SDcols = keep_cols]
   negative_extreme <- X[base_filter & duration_days < 0 & duration_days <= extreme_neg_days, .SD, .SDcols = keep_cols]
   
-  zero_all       <- X[ base_filter & (duration_sec == 0), .SD, .SDcols = keep_cols ]
-  one_sec_all    <- X[ base_filter & (duration_sec == 1), .SD, .SDcols = keep_cols ]
-  near_zero_ex   <- X[ base_filter & (duration_sec != 0) & (abs(duration_sec) <= as.numeric(near_zero_secs)), .SD, .SDcols = keep_cols ]
+  zero_all       <- X[base_filter & (duration_days == 0), .SD, .SDcols = keep_cols]
+  one_sec_all    <- X[base_filter & (duration_days > 0 & duration_days < 1/86400 * 2), .SD, .SDcols = keep_cols]  # ~1 second = 0.0000116 days
+  near_zero_ex   <- X[base_filter & (duration_days != 0) & (abs(duration_days) <= near_zero_days), .SD, .SDcols = keep_cols]
   
-  positive_all    <- X[base_filter & duration_sec > 0, .SD, .SDcols = keep_cols]
-  positive_small  <- X[base_filter & duration_sec > 0 & duration_days <= upper_pos_days, .SD, .SDcols = keep_cols]
-  positive_large  <- X[base_filter & duration_sec > 0 & duration_days > upper_pos_days & duration_days <= extreme_pos_days, .SD, .SDcols = keep_cols]
-  positive_extreme <- X[base_filter & duration_sec > 0 & duration_days > extreme_pos_days & duration_days < max_outlier_days, .SD, .SDcols = keep_cols]
+  positive_all    <- X[base_filter & duration_days > 0, .SD, .SDcols = keep_cols]
+  positive_small  <- X[base_filter & duration_days > 0 & duration_days <= upper_pos_days, .SD, .SDcols = keep_cols]
+  positive_large  <- X[base_filter & duration_days > 0 & duration_days > upper_pos_days & duration_days <= extreme_pos_days, .SD, .SDcols = keep_cols]
+  positive_extreme <- X[base_filter & duration_days > 0 & duration_days > extreme_pos_days & duration_days < max_outlier_days, .SD, .SDcols = keep_cols]
   
-  excluded_extreme <- X[base_filter & duration_sec > 0 & duration_days > extreme_pos_days & duration_days >= max_outlier_days, .SD, .SDcols = keep_cols]
+  excluded_extreme <- X[base_filter & duration_days > 0 & duration_days > extreme_pos_days & duration_days >= max_outlier_days, .SD, .SDcols = keep_cols]
   if (nrow(excluded_extreme)) {
     cat(sprintf(
       "\nExcluded %s rows with duration_days ≥ %s (beyond max_outlier_days cap):\n",
@@ -149,45 +149,8 @@ analyze_duration_QA <- function(
           row.names = FALSE, right = FALSE)
   }
   
-  
-  # Check what your actual objects are called and their column names
-  ls(pattern = "negative|positive")  # See what objects exist
-  colnames(negative_all)  # Check column names
-  head(negative_all)      # See the data structure
-  
-  # # Check what's actually in your data
-  # cat("\n=== Debugging negative_all ===\n")
-  # cat("Number of rows:", nrow(negative_all), "\n")
-  # cat("Column names:", paste(colnames(negative_all), collapse = ", "), "\n")
-  # cat("First few rows:\n")
-  # print(head(negative_all))
-  # 
-  cat("\n=== Check for NAs ===\n")
-  cat("NAs in duration_hours:", sum(is.na(negative_all$duration_hours)), "\n")
-  cat("NAs in duration_min:", sum(is.na(negative_all$duration_min)), "\n")
-  
-  cat("\n=== Non-NA values ===\n")
-  cat("Non-NA duration_hours:", sum(!is.na(negative_all$duration_hours)), "\n")
-  cat("Non-NA duration_min:", sum(!is.na(negative_all$duration_min)), "\n")
-  
-  cat("\n=== Sample non-NA values ===\n")
-  # Show some actual values if they exist
-  non_na_hours <- negative_all$duration_hours[!is.na(negative_all$duration_hours)]
-  non_na_mins <- negative_all$duration_min[!is.na(negative_all$duration_min)]
-  
-  if(length(non_na_hours) > 0) {
-    cat("Sample duration_hours:", head(non_na_hours, 5), "\n")
-  } else {
-    cat("All duration_hours are NA\n")
-  }
-  
-  if(length(non_na_mins) > 0) {
-    cat("Sample duration_min:", head(non_na_mins, 5), "\n")
-  } else {
-    cat("All duration_min are NA\n")
-  }
-  
-  cat("\n\n")
+  # Always define this once, up top
+  print_cols <- setdiff(keep_cols, c("created_ts","closed_ts"))
   
   # Counts
   total_closed <- X[base_filter, .N]
@@ -203,7 +166,7 @@ analyze_duration_QA <- function(
   pos_large       <- nrow(positive_large)
   pos_extreme_cnt <- nrow(positive_extreme)
   
-  # Averages, mins, and maxs using the correct column names
+  # Averages, mins, and maxs
   avg_neg_all     <- if (neg_count        > 0) round(mean(negative_all$duration_days,     na.rm = TRUE), 2) else NA_real_
   avg_neg_small   <- if (neg_small        > 0) round(mean(negative_small$duration_days,   na.rm = TRUE), 2) else NA_real_
   avg_neg_large   <- if (neg_large        > 0) round(mean(negative_large$duration_days,   na.rm = TRUE), 2) else NA_real_
@@ -219,11 +182,6 @@ analyze_duration_QA <- function(
   max_neg_small   <- if (neg_small > 0) round(max(negative_small$duration_days,   na.rm = TRUE), 2) else NA_real_
   max_neg_large   <- if (neg_large > 0) round(max(negative_large$duration_days,   na.rm = TRUE), 2) else NA_real_
   max_neg_extreme <- if (neg_extreme_cnt > 0) round(max(negative_extreme$duration_days, na.rm = TRUE), 2) else NA_real_
-  
-  avg_neg_all     <- if (neg_count > 0) round(mean(negative_all$duration_days,     na.rm = TRUE), 2) else NA_real_
-  avg_neg_small   <- if (neg_small > 0) round(mean(negative_small$duration_days,   na.rm = TRUE), 2) else NA_real_
-  avg_neg_large   <- if (neg_large > 0) round(mean(negative_large$duration_days,   na.rm = TRUE), 2) else NA_real_
-  avg_neg_extreme <- if (neg_extreme_cnt > 0) round(mean(negative_extreme$duration_days, na.rm = TRUE), 2) else NA_real_
   
   # --- Positive durations ---
   min_pos_all     <- if (pos_count > 0) round(min(positive_all$duration_days,     na.rm = TRUE), 2) else NA_real_
@@ -241,7 +199,6 @@ analyze_duration_QA <- function(
   avg_pos_large   <- if (pos_large > 0) round(mean(positive_large$duration_days,   na.rm = TRUE), 2) else NA_real_
   avg_pos_extreme <- if (pos_extreme_cnt > 0) round(mean(positive_extreme$duration_days, na.rm = TRUE), 2) else NA_real_
   
- 
   # Print negative breakdown
   cat("\nNegative duration breakdown:\n")
   cat("  Total closed:       ", total_closed, "\n")
@@ -285,7 +242,7 @@ analyze_duration_QA <- function(
     max_neg_extreme = max_neg_extreme,
     
     zero_total           = zero_cnt,
-    near_zero_leq_secs   = as.integer(near_zero_secs),
+    near_zero_leq_days   = near_zero_days,
     one_sec_total        = one_sec_cnt,
     near_zero_excl_zero  = nearz_cnt,
     
@@ -322,9 +279,6 @@ analyze_duration_QA <- function(
     pct_near_zero_excl_zero = if (total_closed) round(100 * nearz_cnt / total_closed, 2) else NA_real_
   )
   
-  # Always define this once, up top
-  print_cols <- setdiff(keep_cols, c("created_ts","closed_ts"))
-  
   if (isTRUE(print_summary)) {
     cat("\n\nDuration QA summary (closed rows with non-missing created):\n")
     
@@ -334,7 +288,7 @@ analyze_duration_QA <- function(
     preferred <- c(
       "denominator_closed_rows",
       "negative_total", "negative_small", "negative_large", "negative_extreme",
-      "zero_total", "near_zero_leq_secs", "near_zero_excl_zero",
+      "zero_total", "near_zero_leq_days", "near_zero_excl_zero",
       "one_sec_total",
       "positive_total", "positive_small", "positive_large", "positive_extreme",
       "pct_negative_total", "pct_negative_small", "pct_negative_large", "pct_negative_extreme",
@@ -366,7 +320,7 @@ analyze_duration_QA <- function(
     w   <- max(nchar(dfp$metric), na.rm = TRUE)
     dfp$metric <- format(dfp$metric, width = w, justify = "left")
     dfp$value  <- format(dfp$value,  justify = "right")
-   
+    
     print(noquote(dfp), row.names = FALSE)
   }
   
@@ -383,7 +337,7 @@ analyze_duration_QA <- function(
     key_col        = key_col,
     print_cols     = print_cols,
     sort_desc = FALSE,
-    show_threshold_80_flag = FALSE,   # whether to draw the 80% reference line
+    show_threshold_80_flag = FALSE,
     show_count_labels = TRUE,       
     make_boxplot   = TRUE
   )
@@ -396,7 +350,7 @@ analyze_duration_QA <- function(
     threshold_days = extreme_neg_days,
     show_examples  = show_examples,
     key_col        = key_col,
-    show_threshold_80_flag = FALSE,   # whether to draw the 80% reference line
+    show_threshold_80_flag = FALSE,
     show_count_labels = TRUE,       
     print_cols     = print_cols
   )
@@ -409,45 +363,48 @@ analyze_duration_QA <- function(
     threshold_days = extreme_neg_days,
     show_examples  = show_examples,
     key_col        = key_col,
-    show_threshold_80_flag = TRUE,   # whether to draw the 80% reference line
-    show_count_labels = TRUE,  # <-- ADD THIS to show labels
+    make_boxplot = FALSE,
+    show_threshold_80_flag = TRUE,
+    show_count_labels = TRUE,
     print_cols     = print_cols
   )
   
   analyze_duration_category(
     DT             = zero_all,
     label          = "ZERO",
-    condition_text = "(= 0 seconds)",
+    condition_text = "(= 0 days)",
     chart_dir      = chart_dir,
     show_examples  = show_examples,
     key_col        = key_col,
     print_cols     = print_cols,
-    show_threshold_80_flag = TRUE,   # whether to draw the 80% reference line
-    show_count_labels = TRUE,  # <-- ADD THIS to show labels
+    make_boxplot = FALSE,
+    show_threshold_80_flag = TRUE,
+    show_count_labels = TRUE,
     min_agency_obs = 4
   )
   
   analyze_duration_category(
     DT             = one_sec_all,
     label          = "ONE-SECOND",
-    condition_text = "(= 1 second)",
+    condition_text = "(≈ 1 second)",
     chart_dir      = chart_dir,
     show_examples  = show_examples,
     key_col        = key_col,
     print_cols     = print_cols,
+    make_boxplot = FALSE,
     show_threshold_80_flag = TRUE,
-    show_count_labels = TRUE,  # <-- ADD THIS to show labels
+    show_count_labels = TRUE,
     min_agency_obs = 4
   )
   
   analyze_duration_category(
     DT             = near_zero_ex,
     label          = "NEAR-ZERO",
-    condition_text = sprintf("(0 < secs ≤ %d)", near_zero_secs),
+    condition_text = sprintf("(0 < days ≤ %.4f)", near_zero_days),
     chart_dir      = chart_dir,
     show_examples  = show_examples,
     key_col        = key_col,
-    show_threshold_80_flag = TRUE,   # whether to draw the 80% reference line
+    show_threshold_80_flag = TRUE,
     show_count_labels = TRUE,       
     print_cols     = print_cols
   )
@@ -463,7 +420,7 @@ analyze_duration_QA <- function(
     key_col        = key_col,
     print_cols     = print_cols,
     make_boxplot   = TRUE,
-    show_threshold_80_flag = TRUE,   # whether to draw the 80% reference line
+    show_threshold_80_flag = TRUE,
     show_count_labels = TRUE,       
     min_agency_obs = 4,
     sort_desc      = TRUE
@@ -480,8 +437,8 @@ analyze_duration_QA <- function(
     print_cols     = print_cols,
     min_agency_obs = 3,
     make_boxplot   = TRUE,
-    show_count_labels = TRUE,        # <-- ADD THIS
-    show_threshold_80_flag = FALSE,   # whether to draw the 80% reference line
+    show_count_labels = TRUE,
+    show_threshold_80_flag = FALSE,
     sort_desc      = TRUE
   )
   

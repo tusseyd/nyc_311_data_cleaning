@@ -50,7 +50,10 @@ setup_project <- function(
     "styler",
     "rlang",
     "renv",
-    "remotes"
+    "remotes",
+    "moments",
+    "diptest"
+#    "mixtools"
   )
   
   for (pkg in required_packages) {

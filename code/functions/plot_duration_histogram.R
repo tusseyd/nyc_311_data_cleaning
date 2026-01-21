@@ -122,7 +122,7 @@ plot_duration_histogram <- function(
   # --- 4) Titles --------------------------------------------------------------
   if (is.null(title)) {
     title <- sprintf("Distribution of Durations (%s to %s %s)",
-                     scales::comma(min_value), scales::comma(max_value), data_units)
+                 scales::comma(min_value), scales::comma(max_value), data_units)
   }
   if (is.null(subtitle)) subtitle <- sprintf("n = %s | %s",
                                              scales::comma(nrow(df)), bin_label)
@@ -243,10 +243,12 @@ plot_duration_histogram <- function(
     hist_data_cum <- data.table::copy(hist_data[count > 0][order(duration_binned)])
     hist_data_cum[, cum_count := cumsum(count)]
     hist_data_cum[, cum_pct := 100 * cum_count / sum(count)]
-    cum_title <- if (is.null(title)) paste("Cumulative Distribution of Durations", paste0("(", data_units, ")"))
+    cum_title <- if (is.null(title)) paste("Cumulative Distribution of Durations", 
+                                           paste0("(", data_units, ")"))
     else paste("Cumulative", title)
     
-    p2 <- ggplot2::ggplot(hist_data_cum, ggplot2::aes(x = duration_binned, y = cum_pct)) +
+    p2 <- ggplot2::ggplot(hist_data_cum, ggplot2::aes(x = duration_binned, 
+                                                      y = cum_pct)) +
       ggplot2::geom_line(color = "#0072B2", linewidth = 1.2) +
       ggplot2::geom_point(color = "#0072B2", size = 1, alpha = 0.7) +
       ggplot2::geom_hline(yintercept = c(90), color = c("#CC79A7"),
@@ -279,7 +281,7 @@ plot_duration_histogram <- function(
         ggplot2::annotate(
           "text",
           x = threshold_numeric,
-          y = 90,
+          y = 70,
           label = "Suspicious Threshold",
           hjust = -0.1,
           size = 4,

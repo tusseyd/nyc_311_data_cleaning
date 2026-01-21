@@ -30,37 +30,35 @@ analyze_duration_category <- function(
     # --- Sample and order
     tmp <- rsample(DT, nshow)
     if (sort_desc) {
-      tmp <- tmp[order(-duration_sec, created_ts, get(key_col))]
+      tmp <- tmp[order(-duration_days, created_ts, get(key_col))]
     } else {
-      tmp <- tmp[order(duration_sec, created_ts, get(key_col))]
+      tmp <- tmp[order(duration_days, created_ts, get(key_col))]
     }
     
-    # --- Add computed duration columns
-    tmp[, duration_min   := round(duration_sec / 60, 2)]
-    tmp[, duration_hours := round(duration_sec / 3600, 2)]
-    tmp[, duration_days  := round(duration_days, 2)]
-    tmp[, duration_sec := as.numeric(duration_sec)]
+    # --- Add computed duration columns (for display only)
+    tmp[, duration_min   := round(duration_days * 24 * 60, 2)]      # days to minutes
+    tmp[, duration_hours := round(duration_days * 24, 2)]           # days to hours
+    tmp[, duration_days_display := round(duration_days, 2)]         # rounded days
     
     # --- Decide which duration columns to show
     if (all(abs(tmp$duration_hours) > hours_for_days_only, na.rm = TRUE)) {
-      duration_cols <- c("duration_days")
+      duration_cols <- c("duration_days_display")
     } else if (all(abs(tmp$duration_hours) >= hours_for_min_plus_hours, na.rm = TRUE)) {
       duration_cols <- c("duration_min", "duration_hours")
-    } else if (any(abs(tmp$duration_sec) > 60 & abs(tmp$duration_hours) < 
+    } else if (any(abs(tmp$duration_min) > 1 & abs(tmp$duration_hours) < 
                    hours_for_min_plus_hours, na.rm = TRUE)) {
       duration_cols <- c("duration_min")
     } else {
-      duration_cols <- c("duration_sec", "duration_min")
+      duration_cols <- c("duration_min", "duration_hours")
     }
     
     # --- Force consistent ordering
-    duration_order <- c("duration_sec", "duration_min", "duration_hours", 
-                        "duration_days")
+    duration_order <- c("duration_min", "duration_hours", "duration_days_display")
     duration_cols <- intersect(duration_order, duration_cols)
     
     # --- Clean base_cols (remove durations + agency from print_cols)
-    base_cols <- setdiff(print_cols, c("duration_sec", "duration_min",
-                                       "duration_hours", "duration_days", 
+    base_cols <- setdiff(print_cols, c("duration_days", "duration_min",
+                                       "duration_hours", "duration_days_display", 
                                        "agency"))
     
     # --- Final display columns
@@ -75,7 +73,7 @@ analyze_duration_category <- function(
     # --- Dataset for charting
     chart_DT <- if (!is.null(alt_DT) && nrow(alt_DT) > 0) alt_DT else DT
     
-   
+    
     # Use the correct filter for pareto decisions
     agency_counts <- chart_DT[, .N, by = agency][N > min_agency_obs]
     
@@ -85,7 +83,7 @@ analyze_duration_category <- function(
       
       # Normalize label for filenames (handles Unicode & extra spaces)
       base_name <- tolower(trimws(gsub("[^A-Za-z0-9]+", "_", iconv(label, 
-                                                     to = "ASCII//TRANSLIT"))))
+                                                                   to = "ASCII//TRANSLIT"))))
       base_name <- gsub("_+", "_", base_name)  # collapse multiple underscores
       base_name <- gsub("^_|_$", "", base_name)  # remove leading/trailing underscores
       
@@ -102,7 +100,6 @@ analyze_duration_category <- function(
       }
       
       # Pareto chart
-      # cat("\n>>> Calling plot_pareto_combo...\n")
       plot_pareto_combo(
         DT        = chart_DT,
         x_col     = agency,
@@ -115,7 +112,6 @@ analyze_duration_category <- function(
         show_labels = show_count_labels,
         flip      = FALSE
       )
-      # cat(">>> plot_pareto_combo completed\n")
       Sys.sleep(3)
       
       # Optional boxplot
@@ -157,11 +153,9 @@ analyze_duration_category <- function(
         upper_limit <- ifelse(max_val >= 0, max_val * (1 + margin), 
                               max_val * (1 - margin))
         
-
         # Determine if we need right-justified labels (for negative data)
         label_hjust <- if (max_val <= 0) 0 else 1 
-
-        # tryCatch({
+        
         plot_result <- plot_boxplot(
           DT        = chart_DT,
           value_col = duration_days,
@@ -175,7 +169,7 @@ analyze_duration_category <- function(
           flip      = TRUE,
           x_scale_type = "pseudo_log",
           x_limits = c(lower_limit, upper_limit),
-          min_count = 5,  # FIXED: was min_agency_obs (which defaults to 1)
+          min_count = 5,
           jitter_size = 1.3,
           jitter_alpha = 0.55,
           outlier_size = 1.4,
@@ -205,15 +199,13 @@ analyze_duration_category <- function(
         upper_limit <- ifelse(max_val >= 0, max_val * (1 + margin), 
                               max_val * (1 - margin))
         
-        # cat("\n>>> Calling plot_violin_boxplot...\n")
-        # tryCatch({
         violin_result <- plot_violin_boxplot(
           DT               = violin_data,
           value_col        = duration_days,
           chart_dir        = chart_dir,
           filename         = gsub("boxplot", "violin_boxplot", boxplot_file),
           title     = paste0(title_case, 
-                                  " Duration (days) by agency - Violin chart"),
+                             " Duration (days) by agency - Violin chart"),
           by_col           = agency,
           include_na_group = FALSE,
           top_n            = 30L,
@@ -235,13 +227,10 @@ analyze_duration_category <- function(
         
         # Display violin plot in RStudio
         if (!is.null(violin_result) && !is.null(violin_result$plot)) {
-          # print(violin_result$plot)
-          # Sys.sleep(3)
+          print(violin_result$plot)
+          Sys.sleep(3)
         }
-        
-      } # else {
-      #   cat("\nmake_boxplot is FALSE - skipping boxplot generation\n")
-      # }
+      }
     } else if (pareto) {
       cat(sprintf("\nSkipping %s charts - no agencies with >%d observations\n",
                   label, min_agency_obs))

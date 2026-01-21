@@ -7,7 +7,7 @@ main_data_file <-
 # Boolean flag. TRUE to redirect console output to text file
 # FALSE to display console outpx`t on the screen
 enable_sink <- TRUE      
- 
+
 #The "as of" date in "YYYY-MM-DD" format
 projection_date <- "2025-11-26"   
 
@@ -71,7 +71,6 @@ timing <- setup_project(
   console_filename = "JDS_datacleaning_console_output.txt",
   verbose = TRUE
 )
-
 
 ################################################################################
 # Extract the date after "AS_OF_"
@@ -316,11 +315,8 @@ columns_to_keep <- c(
   "created_date", 
   "closed_date",
   "agency", 
-  #  "agency_name", 
-    "complaint_type",
-  #  "location_type", 
+  "complaint_type",
   "incident_zip",
-  #  "incident_address", 
   "street_name", 
   "cross_street_1",
   "cross_street_2", 
@@ -328,17 +324,14 @@ columns_to_keep <- c(
   "intersection_street_2",
   "address_type", 
   "landmark",
-  #  "facility_type", 
   "status", 
   "due_date",
   "resolution_action_updated_date", 
   "community_board",
-  #  "bbl", 
   "borough", 
   "x_coordinate_state_plane",
   "y_coordinate_state_plane", 
   "open_data_channel_type", 
-  #  "park_facility_name",
   "park_borough", 
   "vehicle_type", 
   "taxi_company_borough",
@@ -347,8 +340,9 @@ columns_to_keep <- c(
   "location"
 )
 
-# Remove unnecessary columns to free up memory
+# Remove unnecessary columns to free up memory. Garbage collection.
 d311[, setdiff(names(d311), columns_to_keep) := NULL]
+gc()
 
 # Make a copy for troubleshooting purposes to avoid re-reading in data
 #copy_d311 <- d311
@@ -389,8 +383,6 @@ for (i in seq_along(street_pairs)) {
   # Store results with descriptive name
   pair_name <- sprintf("%s_vs_%s", pair$street1, pair$street2)
   all_comparison_results[[pair_name]] <- comparison_result
-  
-  #  cat(sprintf("Completed analysis for %s vs %s\n", pair$street1, pair$street2))
 }
 
 # Summary across all pairs
@@ -424,6 +416,7 @@ d311[, c(
   "intersection_street_2",
   "landmark",
   "street_name") := NULL]  # Remove immediately
+gc()
 
 ################################################################################
 
@@ -512,13 +505,104 @@ message("\nOrganizing complaint_types.")
 
 cat("\n\n********** COMPLAINT TYPES **********")
 
+total_rows <- nrow(d311)
+
+# One pass: frequency + agency labeling per complaint_type
+complaint_summary_dt <- d311[
+  , .(
+    count = .N,
+    unique_agency_count = uniqueN(agency, na.rm = TRUE),
+    agency = {
+      u <- unique(agency)
+      u <- u[!is.na(u)]
+      if (length(u) == 1L) u else if (length(u) == 0L) NA_character_ else "MULTIPLE"
+    }
+  ),
+  by = complaint_type
+][
+  order(-count)
+][
+  # compute percents from counts to avoid cumulative rounding drift
+  , `:=`(
+    percent = round(100 * count / total_rows, 2),
+    cumulative_percent = round(100 * cumsum(count) / total_rows, 2)
+  )
+][]
+
+cat("\nThere are", nrow(complaint_summary_dt), "different complaint_type(s).\n")
+
+# ---- Console reports ----
+top_n <- 20L
+cat("\nTop ", top_n, " complaint_type(s) and responsible agency:\n", sep = "")
+top_dt <- complaint_summary_dt[1:min(.N, top_n), .(complaint_type, count, percent, cumulative_percent, agency)]
+top_df <- data.frame(
+  complaint_type = format(top_dt$complaint_type, justify = "left"),
+  count = format(top_dt$count, justify = "right"),
+  percent = format(top_dt$percent, justify = "right"),
+  cumulative_percent = format(top_dt$cumulative_percent, justify = "right"),
+  agency = format(top_dt$agency, justify = "left")
+)
+print(top_df, row.names = FALSE)
+
+cat("\nBottom ", top_n, " complaint_type(s) and responsible agency:\n", sep = "")
+bottom_dt <- tail(complaint_summary_dt[, .(complaint_type, count, agency)], top_n)
+bottom_df <- data.frame(
+  complaint_type = format(bottom_dt$complaint_type, justify = "left"),
+  count = format(bottom_dt$count, justify = "right"),
+  agency = format(bottom_dt$agency, justify = "left")
+)
+print(bottom_df, row.names = FALSE)
+
+cat("\nComplaints with multiple responsible agencies:\n")
+multiple_agency_dt <- complaint_summary_dt[agency == "MULTIPLE", .(complaint_type, count, percent)]
+multiple_df <- data.frame(
+  complaint_type = format(head(multiple_agency_dt, top_n)$complaint_type, justify = "left"),
+  count = format(head(multiple_agency_dt, top_n)$count, justify = "right"),
+  percent = format(head(multiple_agency_dt, top_n)$percent, justify = "right")
+)
+print(multiple_df, row.names = FALSE)
+
+# ---- Noise complaints (prefix "NOISE") ----
+noise_dt <- complaint_summary_dt[startsWith(complaint_type, "NOISE")]
+
+cat("\nThere are", nrow(noise_dt), "categories of noise complaints:\n")
+
+noise_display_dt <- noise_dt[, .(complaint_type, count, percent)]
+
+noise_df <- data.frame(
+  complaint_type = format(noise_display_dt$complaint_type, justify = "left"),
+  count = format(noise_display_dt$count, justify = "right"),
+  percent = format(noise_display_dt$percent, justify = "right")
+)
+
+print(head(noise_df, top_n), row.names = FALSE)
+
+noise_total <- noise_dt[, sum(count)]
+noise_pct   <- round(100 * noise_total / total_rows, 1)
+cat(
+  "\nNoise complaints of all ", nrow(noise_dt), "types number ",
+  format(noise_total, big.mark = ","),
+  ", constituting ", noise_pct, "% of all SRs.\n", sep = ""
+)
+
+# chart
+plot_pareto_combo(
+  DT              = d311,
+  x_col           = complaint_type,
+  title           = "Pareto Analysis of Complaint Types",
+  filename        = "SR_by_complaint_type_pareto_combo_chart.pdf",
+  chart_dir       = chart_dir,
+  show_labels     = FALSE,
+  top_n            = 20,
+  show_threshold_80 = FALSE,   # whether to draw the 80% reference line
+  annotation_size = 3
+)
+
 #########################################################################
 # Determine status of SRs
 cat("\n\nSRs by Status (including NA if present)\n")
 
 # Build a labeled status on the fly:
-# - NA  -> "NA"
-# - ""  -> "(blank)"  (optional; remove that branch if you don't want it)
 status_summary_dt <- d311[
   , .(count = .N),
   by = .(status = fcase(
@@ -651,11 +735,6 @@ lat_precision <- analyze_decimal_precision(
   chart_dir      = chart_dir,       
   generate_plots = TRUE   
   )
-# if (!is.null(lat_precision)) {
-#   print(lat_precision, row.names = FALSE)
-#   cat(sprintf("\nTotal valid latitude values: %s\n", 
-#               format(sum(lat_precision$N), big.mark = ",")))
-# }
 
 ##################
 # Analyze longitude
@@ -667,11 +746,6 @@ lon_precision <- analyze_decimal_precision(
   chart_dir      = chart_dir,       
   generate_plots = TRUE   
 )
-# if (!is.null(lon_precision)) {
-#   print(lon_precision, row.names = FALSE)
-#   cat(sprintf("\nTotal valid longitude values: %s\n", 
-#               format(sum(lon_precision$N), big.mark = ",")))
-# }
 
 ##################
 # Combined summary statistics
@@ -1203,6 +1277,7 @@ print(summary_df, row.names = FALSE)
 d311[, c(
   "address_type", 
   "open_data_channel_type",
+  "incident_zip",
   "vehicle_type") := NULL]  # Remove immediately
 
 ################################################################################
@@ -1447,7 +1522,7 @@ cat("\n=== DUE DATE ANALYSIS ===\n")
     }
   }
 
-    # Handle missing_due_dates separately
+  # Handle missing_due_dates separately
   if (nrow(missing_due_dates) > 0) {
     cat("\n=== Missing Due Dates Summary ===\n")
     cat(sprintf("Total records with missing due_date: %s\n", 
@@ -1726,8 +1801,6 @@ dst_start_summary <- analyze_dst_springforward(
 
 ################################################################################
 
-#zero_screenout <- audit_zero_time_screenout(d311)
-
 # Call with the 2019 file path
 result <- summarize_backlog(
   DT = d311,
@@ -1778,7 +1851,6 @@ for (col_name in date_cols) {
   all_patterns_results[[result_name]] <- results
 }
 
-
 ################################################################################
 
 cat("\n\n********** DURATION ISSUES **********\n")
@@ -1796,7 +1868,291 @@ message("\nChecking for duration anomalies.")
 cat("\n=== ANALYZING POSITIVE DURATIONS ===\n")
 
 # Filter to positive duration records only
-positive_data <- d311[duration_days > 0 & !is.na(duration_days)]
+positive_data <- d311[duration_days > 0 & !is.na(duration_days), 
+                      .(created_date, closed_date, duration_days, 
+                        complaint_type, agency)]
+# Calculate statistics
+n_total <- nrow(positive_data)
+mean_dur <- mean(positive_data$duration_days, na.rm = TRUE)
+median_dur <- median(positive_data$duration_days, na.rm = TRUE)
+
+# Create the plot
+ggplot(positive_data, aes(x = duration_days)) +
+  geom_histogram(bins = 150, fill = "#0072B2", color = "white") +
+  geom_vline(xintercept = mean_dur, color = "#D55E00", 
+             linetype = "dashed", linewidth = 1.5) +
+  geom_vline(xintercept = median_dur, color = "#E69F00", 
+             linetype = "dotted", linewidth = 1.5) +
+  scale_x_log10(
+    labels = comma,
+    breaks = c(0.001, 0.01, 0.1, 1, 10, 100, 1000)
+  ) +
+  labs(
+    x = "Days (log scale)",
+    y = "Count",
+    title = "Distribution of Positive Service Request Durations - All Agencies",
+    subtitle = paste0("n = ", format(n_total, big.mark = ","))
+  ) +
+  annotate("text", x = mean_dur * 3, y = Inf, 
+           label = paste("Mean =", round(mean_dur, 2), "days"),
+           vjust = 2, hjust = 0.23, color = "#D55E00", size = 4.5) +
+  annotate("text", x = median_dur * 3, y = Inf, 
+           label = paste("Median =", round(median_dur, 2), "days"),
+           vjust = 3.5, hjust = 0.23, color = "#E69F00", size = 4.5) +
+  david_theme() +
+  theme(
+    plot.title = element_text(hjust = 0.5),
+    plot.subtitle = element_text(hjust = 0),  # Left-align subtitle
+    panel.grid.minor = element_blank()
+  )
+
+Sys.sleep(3)
+
+# Save to chart directory
+ggsave(file.path(chart_dir, "positve_duration_distribution_log.pdf"), 
+       width = 13, height = 8.5, dpi = 300)
+
+# Create the summary and transpose it
+summary_stats <- positive_data[, .(
+  n = .N,
+  median_days = median(duration_days),
+  mean_days = mean(duration_days),
+  sd_days = sd(duration_days),
+  skewness = skewness(duration_days),
+  p95 = quantile(duration_days, 0.95),
+  p99 = quantile(duration_days, 0.99),
+  max_days = max(duration_days)
+)]
+
+data.table(
+  Statistic = c("N", "Median (days)", "Mean (days)", "Std Dev (days)", 
+                "Skewness", "95th percentile", "99th percentile", "Maximum (days)"),
+  Value = sprintf("%.2f", as.numeric(summary_stats[1,]))
+)
+
+positive_data[, {
+  q <- quantile(duration_days, c(0.25, 0.5, 0.75), na.rm = TRUE)
+  .(bowley_skew = round((q[3] + q[1] - 2*q[2]) / (q[3] - q[1]), 4))
+}]
+
+dip.test(log10(positive_data$duration_days))  # Test for multimodality
+
+# 2. Find the valley/separation point
+density_est <- density(log10(positive_data$duration_days), n = 2048)
+plot(density_est)
+
+ggplot(positive_data, aes(x = duration_days)) +
+  geom_density(fill = "#0072B2", alpha = 0.8, color = "#0072B2") +
+  scale_x_log10(
+    breaks = c(0.001, 0.01, 0.1, 1, 10, 100, 1000),
+    labels = c("0.001", "0.01", "0.1", "1", "10", "100", "1,000")
+  ) +
+  labs(
+    title = "Density Distribution of Positive Durations",
+    x = "Days (log scale)",
+    y = "Density"
+  ) +
+  david_theme()
+
+Sys.sleep(3)
+
+# Find the valley between bimodal peaks
+log_dens <- density(log10(positive_data$duration_days), n = 2048)
+
+# Search for valley between 0.1 and 10 days (log10(-1) to log10(1))
+valley_region <- log_dens$x > -1 & log_dens$x < 1
+valley_idx <- which.min(log_dens$y[valley_region])
+valley_cutoff <- 10^log_dens$x[valley_region][valley_idx]
+
+cat(sprintf("Valley minimum at: %.3f days\n", valley_cutoff))
+
+# Split data at valley threshold
+positive_data[, mode_group := ifelse(duration_days < valley_cutoff, "Fast", "Standard")]
+
+# Characterize each mode
+positive_data[, .(
+  n = .N,
+  pct = 100 * .N / nrow(positive_data),
+  median_days = median(duration_days),
+  mean_days = mean(duration_days),
+  p95 = quantile(duration_days, 0.95)
+), by = mode_group]
+
+# Analyze by agency - which agencies drive each mode?
+positive_data[, .N, by = .(agency, mode_group)][
+  , pct := 100 * N / sum(N), by = agency
+][order(agency, mode_group)]
+
+# # Optional: By complaint type
+# positive_data[, .N, by = .(complaint_type, mode_group)][
+#   , pct := 100 * N / sum(N), by = complaint_type
+# ][N > 1000][order(-N)]
+
+# Create NYPD subset
+nypd_data <- positive_data[agency == "NYPD"]
+other_data <- positive_data[agency != "NYPD"]
+
+# Calculate NYPD mean
+nypd_mean <- mean(nypd_data$duration_days)
+
+# Calculate NYPD median
+nypd_median <- median(nypd_data$duration_days)
+
+# NYPD histogram with mean and median lines
+p1 <- ggplot(nypd_data, aes(x = duration_days)) +
+  geom_histogram(bins = 150, fill = "#0072B2", alpha = 0.85, color = "white", 
+                 linewidth = 0.05) +
+  geom_vline(xintercept = nypd_mean, color = "#999999", linewidth = 1.5, 
+             linetype = "dashed") +
+  annotate("text", x = nypd_mean, y = Inf, 
+           label = sprintf("Mean = %.2f days", nypd_mean),
+           vjust = 3, hjust = -0.1, color = "#999999", size = 4, 
+           fontface = "bold") +
+  geom_vline(xintercept = nypd_median, color = "#D55E00", linewidth = 1.5, 
+             linetype = "dotted") +
+  annotate("text", x = nypd_median, y = Inf, 
+           label = sprintf("Median = %.2f days", nypd_median),
+           vjust = 3.0, hjust = 1.15, color = "#D55E00", size = 4, 
+           fontface = "bold") +
+  scale_x_log10(
+    breaks = c(0.001, 0.01, 0.1, 1, 10, 100, 1000),
+    labels = c("0.001", "0.01", "0.1", "1", "10", "100", "1,000")
+  ) +
+  labs(
+    title = "NYPD-only Service Requests with Positive Durations",
+    subtitle = sprintf("n = %s, Median = %.2f days, Mean = %.2f days", 
+                       format(nrow(nypd_data), big.mark = ","),
+                       nypd_median,
+                       nypd_mean),
+    x = "Days (log scale)",
+    y = "Count"
+  ) +
+  david_theme()
+
+print(p1)
+Sys.sleep(3)
+
+# Calculate other agencies mean and median
+other_mean <- mean(other_data$duration_days)
+other_median <- median(other_data$duration_days)
+
+# Other agencies histogram with mean and median lines
+p2 <- ggplot(other_data, aes(x = duration_days)) +
+  geom_histogram(bins = 150, fill = "#009E73", alpha = 0.85, color = "white", 
+                 linewidth = 0.05) +
+  geom_vline(xintercept = other_mean, color = "#999999", linewidth = 1.5, 
+             linetype = "dashed") +
+  annotate("text", x = other_mean, y = Inf, 
+           label = sprintf("Mean = %.2f days", other_mean),
+           vjust = 3, hjust = -0.1, color = "#999999", size = 4, 
+           fontface = "bold") +
+  geom_vline(xintercept = other_median, color = "#D55E00", linewidth = 1.5, 
+             linetype = "dotted") +
+  annotate("text", x = other_median, y = Inf, 
+           label = sprintf("Median = %.2f days", other_median),
+           vjust = 3.0, hjust = 1.15, color = "#D55E00", size = 4, 
+           fontface = "bold") +
+  scale_x_log10(
+    breaks = c(0.001, 0.01, 0.1, 1, 10, 100, 1000),
+    labels = c("0.001", "0.01", "0.1", "1", "10", "100", "1,000")
+  ) +
+  labs(
+    title = "Non-NYPD Service Requests with Positive Durations",
+    subtitle = sprintf("n = %s, Median = %.2f days, Mean = %.2f days", 
+                       format(nrow(other_data), big.mark = ","),
+                       other_median,
+                       other_mean),
+    x = "Days (log scale)",
+    y = "Count"
+  ) +
+  david_theme()
+print(p2)
+Sys.sleep(3)
+
+# Save individual plots
+ggsave(file.path(chart_dir, "nypd_only_positive_durations.pdf"), p1, 
+       width = 13, height = 8.5, units = "in")
+ggsave(file.path(chart_dir, "others_only_positive_durations.pdf"), p2, 
+       width = 13, height = 8.5, units = "in")
+
+# Combine data with agency group label
+combined_data <- rbind(
+  nypd_data[, .(duration_days, group = "NYPD")],
+  other_data[, .(duration_days, group = "Other Agencies")]
+)
+
+p_combined <- ggplot(combined_data, aes(x = duration_days, fill = group)) +
+  geom_histogram(bins = 150, alpha = 0.7, position = "identity", 
+                 color = "white", linewidth = 0.1) +
+  scale_fill_manual(values = c("NYPD" = "#0072B2", "Other Agencies" = "#009E73")) +
+  scale_x_log10(
+    breaks = c(0.001, 0.01, 0.1, 1, 10, 100, 1000),
+    labels = c("0.001", "0.01", "0.1", "1", "10", "100", "1,000")
+  ) +
+  labs(
+    title = "Bimodal Duration Distribution: NYPD vs Other Agencies",
+    subtitle = sprintf("NYPD n = %s, Other n = %s",
+                       format(nrow(nypd_data), big.mark = ","),
+                       format(nrow(other_data), big.mark = ",")),
+    x = "Days (log scale)",
+    y = "Count",
+    fill = "Agency Group"
+  ) +
+  david_theme() +
+  theme(
+    legend.position = "inside",
+    legend.position.inside = c(0.15, 0.85),  # Upper left (x, y from 0-1)
+    legend.background = element_rect(fill = "white", color = "#999999")
+  )
+
+print(p_combined)
+Sys.sleep(3)
+
+ggsave(file.path(chart_dir, "nypd_vs_others_combined.pdf"), p_combined, 
+       width = 13, height = 8.5, units = "in")
+
+
+# p_density <- ggplot(combined_data, aes(x = duration_days, color = group, fill = group)) +
+#   geom_density(alpha = 0.3, linewidth = 1.5) +
+#   scale_color_manual(values = c("NYPD" = "#0072B2", "Other Agencies" = "#009E73")) +
+#   scale_fill_manual(values = c("NYPD" = "#0072B2", "Other Agencies" = "#009E73")) +
+#   scale_x_log10(
+#     breaks = c(0.001, 0.01, 0.1, 1, 10, 100, 1000),
+#     labels = c("0.001", "0.01", "0.1", "1", "10", "100", "1,000")
+#   ) +
+#   labs(
+#     title = "Bimodal Distribution: NYPD vs Other Agencies",
+#     subtitle = sprintf("NYPD n = %s, Other n = %s",
+#                        format(nrow(nypd_data), big.mark = ","),
+#                        format(nrow(other_data), big.mark = ",")),
+#     x = "Days (log scale)",
+#     y = "Density",
+#     color = "Agency Group",
+#     fill = "Agency Group"
+#   ) +
+#   david_theme()
+# 
+# print(p_density)
+
+
+# p_stacked <- ggplot(combined_data, aes(x = duration_days, fill = group)) +
+#   geom_histogram(bins = 150, alpha = 0.85, color = "white", linewidth = 0.1) +
+#   scale_fill_manual(values = c("NYPD" = "#0072B2", "Other Agencies" = "#009E73")) +
+#   scale_x_log10(
+#     breaks = c(0.001, 0.01, 0.1, 1, 10, 100, 1000),
+#     labels = c("0.001", "0.01", "0.1", "1", "10", "100", "1,000")
+#   ) +
+#   labs(
+#     title = "Bimodal Distribution: NYPD vs Other Agencies",
+#     subtitle = "Stacked to show relative contributions",
+#     x = "Days (log scale)",
+#     y = "Count",
+#     fill = "Agency Group"
+#   ) +
+#   david_theme()
+# 
+# print(p_stacked)
+
 
 # Set histogram display limits for readability
 upper_limit <- 30*3    # Maximum days to display (90 days)
@@ -1816,7 +2172,8 @@ n_plotted <- nrow(limited_positive_data)
 plot_histogram(
   DT         = positive_data,
   value_col  = "duration_days",
-  title      = sprintf("Positive Duration Distribution (<= %s days)", upper_limit),
+  title      = sprintf("Positive Duration Distribution (<= %s days)", 
+                       upper_limit),
   x_label    = "Duration (days)",
   add_labels = TRUE,
   chart_dir  = chart_dir,
@@ -1884,26 +2241,26 @@ plot_histogram(
   height     = 8.5
 )
 
-# plot_result <- plot_boxplot(
-#   DT        = limited_negative_data,
-#   value_col = duration_days,
-#   by_col    = agency,
-#   chart_dir = chart_dir,
-#   filename  = "negative_duration_SR_boxplot.pdf",
-#   title     = " Negative Duration (days) by agency",
-#   top_n     = 30,
-#   y_axis_tick_size = 10,
-#   order_by  = "count",
-#   flip      = TRUE,
-#   x_scale_type = "pseudo_log",
-#   x_limits = c(lower_limit, upper_limit),
-#   min_count = 5,  # FIXED: was min_agency_obs (which defaults to 1)
-#   jitter_size = 1.3,
-#   jitter_alpha = 0.55,
-#   outlier_size = 1.4,
-#   count_label_hjust = label_hjust,
-#   show_count_labels = show_count_labels  
-# )
+plot_result <- plot_boxplot(
+  DT        = limited_negative_data,
+  value_col = duration_days,
+  by_col    = agency,
+  chart_dir = chart_dir,
+  filename  = "negative_duration_SR_boxplot.pdf",
+  title     = " Negative Duration (days) by agency",
+  top_n     = 30,
+  y_axis_tick_size = 10,
+  order_by  = "count",
+  flip      = TRUE,
+  x_scale_type = "pseudo_log",
+  x_limits = c(lower_limit, upper_limit),
+  min_count = 5,  # FIXED: was min_agency_obs (which defaults to 1)
+  jitter_size = 1.3,
+  jitter_alpha = 0.55,
+  outlier_size = 1.4,
+  count_label_hjust = label_hjust,
+  show_count_labels = show_count_labels
+)
 
 create_violin_chart(
   dataset = limited_negative_data,
@@ -1924,7 +2281,7 @@ cat("\n=== ANALYZING SHORT DURATIONS & SETTING THRESHOLDS ===\n")
 # Run comprehensive skewed duration analysis
 skewed_result <- analyze_skewed_durations(
   DT = d311,
-  duration_col = "duration_sec",
+  duration_col = "duration_days",
   minimum_cutoff_sec = 2,
   upper_cutoff_sec = 60*60*24*2L,  # 2 days in seconds
   print_summary = TRUE,
@@ -1939,7 +2296,7 @@ threshold_numeric <- round(as.numeric(threshold), 0)
 # Create detailed histogram with threshold visualization
 plot_duration_histogram(
   DT = d311,
-  duration_col = "duration_sec",
+  duration_col = "duration_days",
   bin_width = 1,
   x_label_skip = 2,         # Show every 2nd x-axis label
   x_axis_angle = 45,        # Rotate labels for readability
@@ -1976,7 +2333,7 @@ complaint_stats <- summarize_complaint_response(
 # END OF DURATION ANALYSIS
 # ==============================================================================
 
-#########################################################################
+################################################################################
 
 # Close program
 close_program(
@@ -1985,5 +2342,5 @@ close_program(
   verbose = TRUE
 )
 
-
-#########################################################################
+################################################################################
+################################################################################

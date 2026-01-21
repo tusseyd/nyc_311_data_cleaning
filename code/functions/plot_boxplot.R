@@ -307,6 +307,12 @@ plot_boxplot <- function(
       ggplot2::labs(subtitle = sprintf("n = %s", format(total_n, big.mark = ",")))
   }
   
+  # Add this right after the ggtitle() section (around line 302):
+  p <- p + ggplot2::labs(
+    x = "Duration (days)",  # Or whatever label you want
+    y = NULL
+  )
+  
   # Apply comprehensive theme
   p <- p + ggplot2::theme_minimal() +
     ggplot2::theme(
