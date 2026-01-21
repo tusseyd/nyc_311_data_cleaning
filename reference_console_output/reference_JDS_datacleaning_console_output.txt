@@ -1,0 +1,2981 @@
+✅ Console output redirected to: C:/Users/David/OneDrive/Documents/datacleaningproject/journal_of_data_science/nyc_311_data_cleaning/console_output/JDS_datacleaning_console_output.txt 
+
+Execution begins at: 2026-01-20 21:13:56 
+
+Execution begins at: 2026-01-20 21:13:56 
+
+========================================
+SETUP COMPLETE
+========================================
+
+
+
+********** Missing entires by column **********
+Number and % COMPLETE entries per column:
+                          field filled_count pct_of_total
+           taxi_company_borough         8564       0.0535
+                      road_ramp        34117       0.2130
+                       due_date        52346       0.3268
+       bridge_highway_direction        55072       0.3438
+         bridge_highway_segment       104298       0.6512
+            bridge_highway_name       104523       0.6526
+          taxi_pick_up_location       136863       0.8545
+                   vehicle_type       181533       1.1334
+                  facility_type       211240       1.3189
+                       landmark      9058628      56.5574
+          intersection_street_1     10251224      64.0033
+          intersection_street_2     10257371      64.0417
+                 cross_street_2     11693685      73.0093
+                 cross_street_1     11696472      73.0267
+                   address_type     13246948      82.7071
+                  location_type     13823312      86.3056
+                            bbl     14128219      88.2093
+                           city     15156737      94.6308
+         resolution_description     15274251      95.3645
+                    street_name     15317675      95.6356
+               incident_address     15318222      95.6391
+                     descriptor     15519553      96.8961
+                       latitude     15713333      98.1059
+                      longitude     15713333      98.1059
+                       location     15713333      98.1059
+       x_coordinate_state_plane     15713468      98.1068
+       y_coordinate_state_plane     15714705      98.1145
+                   incident_zip     15757103      98.3792
+                    closed_date     15785892      98.5590
+ resolution_action_updated_date     15911615      99.3439
+                community_board     15978265      99.7600
+                        borough     15978265      99.7600
+                   park_borough     15978265      99.7600
+             park_facility_name     16005793      99.9319
+                     unique_key     16016700     100.0000
+                   created_date     16016700     100.0000
+                         agency     16016700     100.0000
+                    agency_name     16016700     100.0000
+                 complaint_type     16016700     100.0000
+                         status     16016700     100.0000
+         open_data_channel_type     16016700     100.0000
+                          field filled_count pct_of_total
+
+
+--- Overall Dataset Completeness ---
+Total cells: 656,684,700
+Total NA/missing: 182,973,577
+Total filled: 473,711,123
+Percent missing: 27.86%
+Percent complete: 72.14%
+
+Field usage by agency (counts):
+                          field 3-1-1   DCWP    DEP DFTA    DHS    DOB  DOE  DOHMH     DOT    DPR    DSNY    EDC     HPD    NYPD   OSE  OTI    TLC
+ agency_name                        1 119727 834539 2605 211486 470508 6380 397968 1078415 636299 1923489 150305 3067970 6905945 70955 1174 138934
+ complaint_type                     1 119727 834539 2605 211486 470508 6380 397968 1078415 636299 1923489 150305 3067970 6905945 70955 1174 138934
+ created_date                       1 119727 834539 2605 211486 470508 6380 397968 1078415 636299 1923489 150305 3067970 6905945 70955 1174 138934
+ open_data_channel_type             1 119727 834539 2605 211486 470508 6380 397968 1078415 636299 1923489 150305 3067970 6905945 70955 1174 138934
+ status                             1 119727 834539 2605 211486 470508 6380 397968 1078415 636299 1923489 150305 3067970 6905945 70955 1174 138934
+ unique_key                         1 119727 834539 2605 211486 470508 6380 397968 1078415 636299 1923489 150305 3067970 6905945 70955 1174 138934
+ park_facility_name                 1 119727 834539 2605 205261 470508 6380 397968 1078415 636299 1923489 150305 3067970 6901263 70955 1174 138934
+ borough                            1 119727 834355 2605 211486 470504 6380 397951 1046937 636299 1916744 150305 3067963 6905945 70955 1174 138934
+ community_board                    1 119727 834355 2605 211486 470504 6380 397951 1046937 636299 1916744 150305 3067963 6905945 70955 1174 138934
+ park_borough                       1 119727 834355 2605 211486 470504 6380 397951 1046937 636299 1916744 150305 3067963 6905945 70955 1174 138934
+ resolution_action_updated_date     0 119723 831791 2605 210448 470455 6374 375274 1078207 619278 1917597 130211 3065021 6878684 69988 1152 134807
+ closed_date                        0 116117 827109 2605 162646 470407 6374 370204 1064294 570605 1912910 130246 3058246 6905812 69992 1152 117173
+ incident_zip                       1 119126 833185 1495 165465 467791 6229 396664  958059 630183 1887829 150294 3067458 6865290 70949  829 136256
+ y_coordinate_state_plane           1 118234 826960    0 209892 467791 6334 395064  894601 627664 1879627 150277 3067492 6862817 70928  824 136199
+ x_coordinate_state_plane           1 118204 826957    0 209683 467791 6319 395057  894535 627625 1879507 150276 3067487 6862087 70928  824 136187
+ latitude                           1 118197 826957    0 209680 467791 6317 395056  894515 627620 1879490 150276 3067486 6862021 70928  824 136174
+ location                           1 118197 826957    0 209680 467791 6317 395056  894515 627620 1879490 150276 3067486 6862021 70928  824 136174
+ longitude                          1 118197 826957    0 209680 467791 6317 395056  894515 627620 1879490 150276 3067486 6862021 70928  824 136174
+ descriptor                         1 119727 834531    0   2081 470508 6380 394190 1078405 636299 1923486 150305 3067970 6626708 68854 1174 138934
+ incident_address                   1 119271 739021    0 165512 470508 6259 396799  626521 630338 1871756 150297 3067928 6865946 70952  829 136284
+ street_name                        1 119137 739021    0 165483 470508 6229 396687  626432 630285 1871756 150297 3067928 6865848 70950  829 136284
+ resolution_description             0 119723 807306 2605 210085 469669 6374 374010 1078094 618830 1323843 127863 3054308 6878421 69988 1152 131980
+ city                               0 111660 833024 1495 160696 467803 6175 387433  889972 595553 1827995 148610 3067543 6474218 70610  703 113247
+ bbl                                0 106859 703404    0 136147 461794 6089 379166  429548 573849 1753155 138220 3054045 6212612 68430  674 104227
+ location_type                      1  90759   3130 2605 177591    287 5731 397959  438655 636255 1911675 149349 3067970 6761599 70955  842 107949
+ address_type                       1  69507 834503  113 205455 470508 5049 393387  918599 466833 1920431 135123 3067935 4646909   662  470 111463
+ cross_street_1                     1 118343 738246    0 165268    288 6175 396098  624546 627336 1792709 149978   13562 6856054 70886  828 136154
+ cross_street_2                     1 118451 737971    0 165376    288 6228 396383  618162 629560 1790929 150244   13568 6858637 70910  828 136149
+ intersection_street_2              1 118451  98638    0 165377    287 6228 396343  855438 629560  756712 150244   13568 6858637 70910  828 136149
+ intersection_street_1              1 118343  98637    0 165268    287 6175 396058  855252 627336  756405 149978   13562 6856054 70886  828 136154
+ landmark                           0 110852   2935 1495 142890    282 6138 381470  339427 595475  656882 148610   13577 6474048 70603  702 113242
+ facility_type                      0      0      0    0      0      0    0      0       0      0  211240      0       0       0     0    0      0
+ vehicle_type                       0      0      0    0      0      0    0      0       0      0       0      0       0  177844     0    0   3689
+ taxi_pick_up_location              0      0      0    0      0      0    0      0       0      0       0      0       0       0     0    0 136863
+ bridge_highway_name                0      0     15    0  45896      0    0      0   19234      0     894      0       0   36920     0    0   1564
+ bridge_highway_segment             0      0     15    0  45892      0    0      0   19213      0     892      0       0   36760     0    0   1526
+ bridge_highway_direction           0      0     15    0  18986      0    0      0   19234      0     895      0       0   14336     0    0   1606
+ due_date                           0      0      0    0      0      0    0      0       0     16   52330      0       0       0     0    0      0
+ road_ramp                          0      0     15    0   4614      0    0      0   19213      0     891      0       0    7838     0    0   1546
+ taxi_company_borough               0      0      0    0      0      0    0      0       0      0       0      0       0       0     0    0   8564
+    total
+ 16016700
+ 16016700
+ 16016700
+ 16016700
+ 16016700
+ 16016700
+ 16005793
+ 15978265
+ 15978265
+ 15978265
+ 15911615
+ 15785892
+ 15757103
+ 15714705
+ 15713468
+ 15713333
+ 15713333
+ 15713333
+ 15519553
+ 15318222
+ 15317675
+ 15274251
+ 15156737
+ 14128219
+ 13823312
+ 13246948
+ 11696472
+ 11693685
+ 10257371
+ 10251224
+  9058628
+   211240
+   181533
+   136863
+   104523
+   104298
+    55072
+    52346
+    34117
+     8564
+
+
+**********CROSS STREET/INTERSECTION STREET ANALYSYS**********
+
+================================================================================ 
+STREET PAIR ANALYSIS 1 of 3
+Analyzing: cross_street_1 vs intersection_street_1
+==============================================================================
+
+>>> STEP 1: DATA MATCHING ANALYSIS <<<
+
+Total records: 16,016,700
+
+STREET FIELD MATCHES:
+Total matches:              13,388,498 ( 83.6%)
+  Both fields non-blank:    9,601,460 ( 59.9%)
+  Both fields blank:        3,787,038 ( 23.6%)
+
+STREET FIELD NON-MATCHES:
+Total non-matches:          2,628,202 ( 16.4%)
+  Non-matches both non-blank: 116,574 (  0.7%)
+  Non-matches cross_street_1 blank:  533,190 (  3.3%)
+  Non-matches intersection_street_1 blank:  1,978,438 ( 12.4%)
+
+Generating Pareto chart for street field non-matches by agency...
+
+Pareto summary by agency:
+ group       N  pct cum_pct
+ DSNY  1113755 0.42    0.42
+ DEP    830484 0.32    0.74
+ DOT    612283 0.23    0.97
+ DOHMH   37739 0.01    0.99
+ DHS     33940 0.01    1.00
+ DOB         1 0.00    1.00
+
+>>> ENHANCED ANALYSIS SKIPPED (run_enhanced = FALSE) <<<
+
+================================================================================ 
+STREET PAIR ANALYSIS 2 of 3
+Analyzing: cross_street_2 vs intersection_street_2
+==============================================================================
+
+>>> STEP 1: DATA MATCHING ANALYSIS <<<
+
+Total records: 16,016,700
+
+STREET FIELD MATCHES:
+Total matches:              13,391,661 ( 83.6%)
+  Both fields non-blank:    9,603,211 ( 60.0%)
+  Both fields blank:        3,788,450 ( 23.7%)
+
+STREET FIELD NON-MATCHES:
+Total non-matches:          2,625,039 ( 16.4%)
+  Non-matches both non-blank: 119,595 (  0.7%)
+  Non-matches cross_street_2 blank:  534,565 (  3.3%)
+  Non-matches intersection_street_2 blank:  1,970,879 ( 12.3%)
+
+Generating Pareto chart for street field non-matches by agency...
+
+Pareto summary by agency:
+ group       N  pct cum_pct
+ DSNY  1112745 0.42    0.42
+ DEP    830209 0.32    0.74
+ DOT    604379 0.23    0.97
+ DOHMH   39133 0.01    0.99
+ DHS     38572 0.01    1.00
+ DOB         1 0.00    1.00
+
+>>> ENHANCED ANALYSIS SKIPPED (run_enhanced = FALSE) <<<
+
+================================================================================ 
+STREET PAIR ANALYSIS 3 of 3
+Analyzing: landmark vs street_name
+==============================================================================
+
+>>> STEP 1: DATA MATCHING ANALYSIS <<<
+
+Total records: 16,016,700
+
+STREET FIELD MATCHES:
+Total matches:              9,558,195 ( 59.7%)
+  Both fields non-blank:    8,860,665 ( 55.3%)
+  Both fields blank:        697,530 (  4.4%)
+
+STREET FIELD NON-MATCHES:
+Total non-matches:          6,458,505 ( 40.3%)
+  Non-matches both non-blank: 196,468 (  1.2%)
+  Non-matches landmark blank:  6,260,542 ( 39.1%)
+  Non-matches street_name blank:  1,495 (  0.0%)
+
+Generating Pareto chart for street field non-matches by agency...
+
+Pareto summary by agency:
+ group       N  pct cum_pct
+ HPD   3054700 0.47    0.47
+ DSNY  1226834 0.19    0.66
+ DEP    736128 0.11    0.78
+ NYPD   512760 0.08    0.86
+ DOB    470236 0.07    0.93
+ DOT    294229 0.05    0.97
+ DPR     55885 0.01    0.98
+ TLC     34248 0.01    0.99
+ DHS     32074 0.00    0.99
+ DOHMH   25373 0.00    1.00
+ DCWP    11191 0.00    1.00
+ EDC      1722 0.00    1.00
+ DFTA     1495 0.00    1.00
+ OSE      1288 0.00    1.00
+ DOE       191 0.00    1.00
+ OTI       150 0.00    1.00
+ 3-1-1       1 0.00    1.00
+
+>>> ENHANCED ANALYSIS SKIPPED (run_enhanced = FALSE) <<<
+
+================================================================================ 
+SUMMARY ACROSS ALL STREET PAIRS
+
+CROSS STREET 1 VS INTERSECTION STREET 1:
+  Match rate:     83.5909%
+
+CROSS STREET 2 VS INTERSECTION STREET 2:
+  Match rate:     83.6106%
+
+LANDMARK VS STREET NAME:
+  Match rate:     59.6764%
+
+Total street pair analyses completed: 3
+
+
+**********DATA SUMMARY**********
+Multi-year statistics (Actuals + Projected):
+  Years covered: 2020–2025
+  Total Records: 19,525,499
+  Yearly Mean:   3,254,250
+  Yearly Median: 3,223,236
+  StdDev:        206,378
+  Max Year: 2025 (3,508,799)
+  Min Year: 2020 (2,942,064)
+  Growth %: 19.3%
+  Busiest Month: 2020-08 (348,463)
+  Least Busy Month: 2020-04 (159,115)
+  Busiest Day: 2020-08-04 (24,415)
+  Least Busy Day: 2020-03-29 (3,785)
+
+Year-by-year counts:
+  2020: 2,942,064
+  2021: 3,220,915
+  2022: 3,169,844
+  2023: 3,225,557
+  2024: 3,458,320
+  2025: 3,508,799 (Projected)
+
+
+Pareto summary by agency:
+ group       N  pct cum_pct
+ NYPD  6905945 0.43    0.43
+ HPD   3067970 0.19    0.62
+ DSNY  1923489 0.12    0.74
+ DOT   1078415 0.07    0.81
+ DEP    834539 0.05    0.86
+ DPR    636299 0.04    0.90
+ DOB    470508 0.03    0.93
+ DOHMH  397968 0.02    0.96
+ DHS    211486 0.01    0.97
+ EDC    150305 0.01    0.98
+ TLC    138934 0.01    0.99
+ DCWP   119727 0.01    0.99
+ OSE     70955 0.00    1.00
+ DOE      6380 0.00    1.00
+ DFTA     2605 0.00    1.00
+ OTI      1174 0.00    1.00
+ 3-1-1       1 0.00    1.00
+
+Rows in the 311 SR dataset: 16,016,700
+Columns in the 311 SR dataset: 41
+Agencies represented: 17
+
+Data contains SRs from 2020-01-01 00:00:00 through 2024-12-31 23:59:38
+
+********** COMPLAINT TYPES **********
+There are 252 different complaint_type(s).
+
+Top 20 complaint_type(s) and responsible agency:
+                      complaint_type   count percent cumulative_percent   agency
+ ILLEGAL PARKING                     1900748   11.87              11.87 NYPD    
+ NOISE - RESIDENTIAL                 1824182   11.39              23.26 NYPD    
+ HEAT/HOT WATER                      1125093    7.02              30.28 HPD     
+ NOISE - STREET/SIDEWALK              854813    5.34              35.62 NYPD    
+ BLOCKED DRIVEWAY                     761874    4.76              40.37 NYPD    
+ REQUEST LARGE BULKY ITEM COLLECTION  632148    3.95              44.32 DSNY    
+ UNSANITARY CONDITION                 489370    3.06              47.38 HPD     
+ STREET CONDITION                     342409    2.14              49.51 DOT     
+ NOISE - VEHICLE                      331052    2.07              51.58 NYPD    
+ NOISE - COMMERCIAL                   295133    1.84              53.42 MULTIPLE
+ PLUMBING                             289869    1.81              55.23 MULTIPLE
+ WATER SYSTEM                         288407    1.80              57.03 DEP     
+ ABANDONED VEHICLE                    280249    1.75              58.78 NYPD    
+ PAINT/PLASTER                        263039    1.64              60.43 HPD     
+ NOISE                                245567    1.53              61.96 DEP     
+ STREET LIGHT CONDITION               243832    1.52              63.48 DOT     
+ DERELICT VEHICLES                    223966    1.40              64.88 DSNY    
+ DOOR/WINDOW                          194571    1.21              66.10 HPD     
+ TRAFFIC SIGNAL CONDITION             189752    1.18              67.28 DOT     
+ RODENT                               188989    1.18              68.46 DOHMH   
+
+Bottom 20 complaint_type(s) and responsible agency:
+             complaint_type count agency
+ BUILDING MARSHAL'S OFFICE      6  DOB  
+ LEANING BAR                    6  DOT  
+ DOB POSTED NOTICE OR ORDER     5  DOB  
+ FERRY PERMIT                   5  DOT  
+ SRDE                           4  DEP  
+ DSNY SPILLAGE                  4  DSNY 
+ EMPLOYEE BEHAVIOR              4  DSNY 
+ TRANS FAT                      3  DOHMH
+ DISPATCHED TAXI COMPLIMENT     3  TLC  
+ FACADES                        3  DOB  
+ SRGOVG                         3  DEP  
+ FACADE INSP SAFETY PGM         2  DOB  
+ UNLICENSED DOG                 2  DOHMH
+ ELECTRONICS WASTE              2  DSNY 
+ STALLED SITES                  1  DOB  
+ SUSTAINABILITY ENFORCEMENT     1  DOB  
+ QUALITY OF LIFE                1  DOB  
+ FORENSIC ENGINEERING           1  DOB  
+ DEP BRIDGE CONDITION           1  DOT  
+ CHANGE COLLECTION SCHEDULE     1  DSNY 
+
+Complaints with multiple responsible agencies:
+                      complaint_type  count percent
+ NOISE - COMMERCIAL                  295133    1.84
+ PLUMBING                            289869    1.81
+ ENCAMPMENT                          147044    0.92
+ ELEVATOR                             90575    0.57
+ GRAFFITI                             68586    0.43
+ NONCOMPLIANCE WITH PHASED REOPENING  66317    0.41
+ LOST PROPERTY                        29190    0.18
+ HIGHWAY CONDITION                    17018    0.11
+ HOMELESS STREET CONDITION            15583    0.10
+ ASBESTOS                              6742    0.04
+ MASS GATHERING COMPLAINT              3652    0.02
+ BUILDING CONDITION                      57    0.00
+
+There are 8 categories of noise complaints:
+           complaint_type   count percent
+ NOISE - RESIDENTIAL      1824182   11.39
+ NOISE - STREET/SIDEWALK   854813    5.34
+ NOISE - VEHICLE           331052    2.07
+ NOISE - COMMERCIAL        295133    1.84
+ NOISE                     245567    1.53
+ NOISE - HELICOPTER        150305    0.94
+ NOISE - PARK               41903    0.26
+ NOISE - HOUSE OF WORSHIP    6892    0.04
+
+Noise complaints of all 8types number 3,749,847, constituting 23.4% of all SRs.
+
+Pareto summary by complaint_type (first 20 of 252):
+                               group       N  pct cum_pct
+ ILLEGAL PARKING                     1900748 0.12    0.12
+ NOISE - RESIDENTIAL                 1824182 0.11    0.23
+ HEAT/HOT WATER                      1125093 0.07    0.30
+ NOISE - STREET/SIDEWALK              854813 0.05    0.36
+ BLOCKED DRIVEWAY                     761874 0.05    0.40
+ REQUEST LARGE BULKY ITEM COLLECTION  632148 0.04    0.44
+ UNSANITARY CONDITION                 489370 0.03    0.47
+ STREET CONDITION                     342409 0.02    0.50
+ NOISE - VEHICLE                      331052 0.02    0.52
+ NOISE - COMMERCIAL                   295133 0.02    0.53
+ PLUMBING                             289869 0.02    0.55
+ WATER SYSTEM                         288407 0.02    0.57
+ ABANDONED VEHICLE                    280249 0.02    0.59
+ PAINT/PLASTER                        263039 0.02    0.60
+ NOISE                                245567 0.02    0.62
+ STREET LIGHT CONDITION               243832 0.02    0.63
+ DERELICT VEHICLES                    223966 0.01    0.65
+ DOOR/WINDOW                          194571 0.01    0.66
+ TRAFFIC SIGNAL CONDITION             189752 0.01    0.67
+ RODENT                               188989 0.01    0.68
+
+
+SRs by Status (including NA if present)
+      status      count percent cumulative_percent
+ CLOSED      15,774,141   98.49              98.49
+ IN PROGRESS    149,908    0.94              99.42
+ PENDING         54,332    0.34              99.76
+ OPEN            18,312    0.11              99.88
+ ASSIGNED        13,126    0.08              99.96
+ STARTED          4,294    0.03              99.98
+ UNSPECIFIED      2,586    0.02             100.00
+ CANCEL               1    0.00             100.00
+
+
+**********VALIDATING DATA TYPES**********
+
+Non-compliant incident_zip values (format-only; NA excluded): 14
+
+By reason:
+         reason  N
+1: wrong_length 12
+2:    non_digit  2
+
+Examples:
+    unique_key agency incident_zip       reason zip_length
+ 1:   63528478   DCWP        Unkno    non_digit          5
+ 2:   63119597   DCWP         1172 wrong_length          4
+ 3:   61958164   DSNY         0000 wrong_length          4
+ 4:   61310558   DCWP         3361 wrong_length          4
+ 5:   61123976   DCWP         1155 wrong_length          4
+ 6:   52003981   DCWP        1055O    non_digit          5
+ 7:   51935747   DSNY            0 wrong_length          1
+ 8:   51936203   DSNY            0 wrong_length          1
+ 9:   51936138   DSNY            0 wrong_length          1
+10:   51646769   DSNY            0 wrong_length          1
+
+By agency (top 10):
+   agency N
+1:   DSNY 9
+2:   DCWP 5
+
+
+Type-only numeric checks:
+                   column is_numeric
+ x_coordinate_state_plane       TRUE
+ y_coordinate_state_plane       TRUE
+                 latitude       TRUE
+                longitude       TRUE
+
+
+********** Latitude/Longitude Precision Analysis **********
+
+--- Latitude Precision Analysis ---
+
+=== LATITUDE Precision Summary ===
+ decimal_places        N   pct cum_pct
+              8       60  0.00    0.00
+              9     1195  0.01    0.01
+             10    18766  0.12    0.13
+             11   139816  0.89    1.02
+             12  1539582  9.80   10.82
+             13 14013913 89.18  100.00
+             15        1  0.00  100.00
+
+Low precision threshold: < 10 decimals
+Low precision total: 1,255 (0.01%)
+
+Pareto summary by agency:
+ group   N  pct cum_pct
+ NYPD  536 0.43    0.43
+ DSNY  199 0.16    0.59
+ HPD   127 0.10    0.69
+ DOB    96 0.08    0.76
+ DOT    72 0.06    0.82
+ DEP    63 0.05    0.87
+ DOHMH  58 0.05    0.92
+ DPR    56 0.04    0.96
+ OSE    13 0.01    0.97
+ DHS    11 0.01    0.98
+ DCWP    9 0.01    0.99
+ EDC     8 0.01    0.99
+ TLC     7 0.01    1.00
+
+Saved Pareto chart: C:/Users/David/OneDrive/Documents/datacleaningproject/journal_of_data_science/nyc_311_data_cleaning/charts/pareto_low_precision_latitude_by_agency.pdf
+
+--- Longitude Precision Analysis ---
+
+=== LONGITUDE Precision Summary ===
+ decimal_places        N   pct cum_pct
+              0      216  0.00    0.00
+              7        7  0.00    0.00
+              8       14  0.00    0.00
+              9     1219  0.01    0.01
+             10    12307  0.08    0.09
+             11   138188  0.88    0.97
+             12  1382778  8.80    9.77
+             13 14178603 90.23  100.00
+             15        1  0.00  100.00
+
+Low precision threshold: < 10 decimals
+Low precision total: 1,456 (0.01%)
+
+Pareto summary by agency:
+ group   N  pct cum_pct
+ NYPD  648 0.45    0.45
+ DSNY  217 0.15    0.59
+ HPD   213 0.15    0.74
+ DEP   107 0.07    0.81
+ DOB    65 0.04    0.86
+ DPR    58 0.04    0.90
+ DOT    50 0.03    0.93
+ DOHMH  45 0.03    0.96
+ DCWP   18 0.01    0.98
+ TLC    12 0.01    0.98
+ DHS     8 0.01    0.99
+ EDC     8 0.01    1.00
+ OSE     7 0.00    1.00
+
+Saved Pareto chart: C:/Users/David/OneDrive/Documents/datacleaningproject/journal_of_data_science/nyc_311_data_cleaning/charts/pareto_low_precision_longitude_by_agency.pdf
+
+--- Summary Statistics ---
+Latitude:
+ Min precision: 8,  Max precision: 15,  Median: 11.00
+Longitude:
+ Min precision: 0,  Max precision: 15,  Median: 10.00
+
+--- Side-by-side Comparison ---
+ decimal_places lat_count lat_pct lon_count lon_pct lat_cum_pct lon_cum_pct
+              0         0    0.00       216    0.00        0.00        0.00
+              7         0    0.00         7    0.00        0.00        0.00
+              8        60    0.00        14    0.00        0.00        0.00
+              9      1195    0.01      1219    0.01        0.01        0.01
+             10     18766    0.12     12307    0.08        0.13        0.09
+             11    139816    0.89    138188    0.88        1.02        0.97
+             12   1539582    9.80   1382778    8.80       10.82        9.77
+             13  14013913   89.18  14178603   90.23      100.00      100.00
+             15         1    0.00         1    0.00      100.00      100.00
+          TOTAL  15713333  100.00  15713333  100.00          NA          NA
+
+
+**********CHECKING FOR DUPLICATE VALUES**********
+
+Location redundancy check (5 decimals ±0.00001):
+  Complete rows analyzed: 15713332
+  Latitude matches: 15713332 (100.00%)
+  Longitude matches: 15713332 (100.00%)
+  Both match exactly: 15713332 (100.00%)
+
+  → REDUNDANT: Location column is duplicate of lat/lon columns
+
+— Duplicate Check —
+  Reference:      borough
+  Duplicate:      park_borough
+  Rows:           16,016,700
+  Denominator:    all_rows
+  Duplication:    100.00%
+  Non-matches:    0.00%
+
+  → REDUNDANT: park_borough is 100.00% duplicate of borough
+
+No non-matches.
+
+— Duplicate Check —
+  Reference:      borough
+  Duplicate:      taxi_company_borough
+  Rows:           16,016,700
+  Denominator:    all_rows
+  Duplication:    0.29%
+  Non-matches:    99.71%
+
+  → NOT REDUNDANT: taxi_company_borough contains different information (0.29% duplication)
+
+Sample non-matches:
+ unique_key agency  borough taxi_company_borough
+   63573950   NYPD BROOKLYN                 <NA>
+   63574642   NYPD    BRONX                 <NA>
+   63581093   NYPD BROOKLYN                 <NA>
+   63574822   NYPD    BRONX                 <NA>
+   63580924   NYPD BROOKLYN                 <NA>
+
+Pareto summary by agency:
+ group       N  pct cum_pct
+ NYPD  6905945 0.43    0.43
+ HPD   3067963 0.19    0.62
+ DSNY  1916744 0.12    0.74
+ DOT   1046937 0.07    0.81
+ DEP    834355 0.05    0.86
+ DPR    636299 0.04    0.90
+ DOB    470504 0.03    0.93
+ DOHMH  397951 0.02    0.96
+ DHS    211486 0.01    0.97
+ EDC    150305 0.01    0.98
+ TLC    131532 0.01    0.99
+ DCWP   119727 0.01    0.99
+ OSE     70955 0.00    1.00
+ DOE      6380 0.00    1.00
+ DFTA     2605 0.00    1.00
+ OTI      1174 0.00    1.00
+ 3-1-1       1 0.00    1.00
+
+
+**********CHECKING FOR ALLOWABLE AND VALID VALUES**********
+
+Status vs closed_date — Exceptions Only
+--------------------------------------------------------------
+Denominator A (CLOSED status): 15,774,141
+A) CLOSED status but missing closed_date: 47,910 (0.304% of CLOSED)
+
+Denominator B (has closed_date): 15,785,892
+B) NOT CLOSED status but has closed_date: 59,661 (0.378% of has-closed_date)
+
+Preview A — first 10 rows (CLOSED status, missing closed_date):
+    unique_key status closed_date        created_date agency             complaint_type
+ 1:   63581253 CLOSED        <NA> 2024-12-31 15:23:33    DHS HOMELESS PERSON ASSISTANCE
+ 2:   63579059 CLOSED        <NA> 2024-12-31 14:36:12    DHS HOMELESS PERSON ASSISTANCE
+ 3:   63579296 CLOSED        <NA> 2024-12-31 14:05:08    DHS HOMELESS PERSON ASSISTANCE
+ 4:   63574270 CLOSED        <NA> 2024-12-31 14:02:53    DHS HOMELESS PERSON ASSISTANCE
+ 5:   63575045 CLOSED        <NA> 2024-12-31 13:53:57    DHS HOMELESS PERSON ASSISTANCE
+ 6:   63577354 CLOSED        <NA> 2024-12-31 13:02:45    DHS HOMELESS PERSON ASSISTANCE
+ 7:   63573574 CLOSED        <NA> 2024-12-31 12:42:38    DHS HOMELESS PERSON ASSISTANCE
+ 8:   63577676 CLOSED        <NA> 2024-12-31 11:52:31    DHS HOMELESS PERSON ASSISTANCE
+ 9:   63574379 CLOSED        <NA> 2024-12-31 11:50:19    DHS HOMELESS PERSON ASSISTANCE
+10:   63580055 CLOSED        <NA> 2024-12-31 11:43:26    DHS HOMELESS PERSON ASSISTANCE
+
+Preview B — first 10 rows (NOT CLOSED, has closed_date):
+    unique_key      status         closed_date        created_date agency                complaint_type
+ 1:   63587835    ASSIGNED 2025-02-27 00:00:00 2024-12-31 22:40:13    DOB                  BUILDING/USE
+ 2:   63577424        OPEN 2024-12-31 18:17:20 2024-12-31 18:17:20    DOB                      ELEVATOR
+ 3:   63579119        OPEN 2024-12-31 17:19:20 2024-12-31 17:19:20    DOB                      ELEVATOR
+ 4:   63582202    ASSIGNED 2025-02-12 00:00:00 2024-12-31 15:21:06    DOB                  BUILDING/USE
+ 5:   63582794 UNSPECIFIED 2024-12-31 15:17:40 2024-12-31 15:17:28   NYPD           NOISE - RESIDENTIAL
+ 6:   63573819    ASSIGNED 2025-02-13 00:00:00 2024-12-31 14:41:58    DOB                  BUILDING/USE
+ 7:   63573937    ASSIGNED 2025-01-14 07:15:00 2024-12-31 14:28:00    DOT      TRAFFIC SIGNAL CONDITION
+ 8:   63580506    ASSIGNED 2025-02-21 00:00:00 2024-12-31 13:38:06    DOB GENERAL CONSTRUCTION/PLUMBING
+ 9:   63582227    ASSIGNED 2025-02-21 00:00:00 2024-12-31 08:01:39    DOB                  BUILDING/USE
+10:   63573833    ASSIGNED 2025-01-03 00:00:00 2024-12-31 07:58:17    DOB GENERAL CONSTRUCTION/PLUMBING
+
+Plot A: n=47,910 | file=pareto_closed_status_missing_closed_date_by_agency.pdf
+
+Pareto summary by agency:
+ group     N pct cum_pct
+  DHS  47755   1       1
+  DOT    108   0       1
+  DSNY    47   0       1
+
+Pareto summary by agency:
+ group     N  pct cum_pct
+ DOT   45885 0.77    0.77
+ DOB    9257 0.16    0.92
+ DSNY   3702 0.06    0.99
+ DEP     328 0.01    0.99
+ NYPD    143 0.00    0.99
+ DOHMH   131 0.00    1.00
+ DPR     105 0.00    1.00
+ TLC      57 0.00    1.00
+ HPD      27 0.00    1.00
+ DCWP     21 0.00    1.00
+ OSE       4 0.00    1.00
+ EDC       1 0.00    1.00
+
+Out-of-bounds check (raw coords, ±100 m buffer):
+Latitude out-of-bounds:  1 (0%)
+   unique_key agency          latitude          longitude
+1:   52308247    DHS 0.000002040074755 -0.000000114923504
+
+Longitude out-of-bounds: 1 (0%)
+   unique_key agency          latitude          longitude
+1:   52308247    DHS 0.000002040074755 -0.000000114923504
+
+Both lat & lon out-of-bounds: 1 (0%)
+   unique_key agency          latitude          longitude
+1:   52308247    DHS 0.000002040074755 -0.000000114923504
+
+
+There is/are 1 x_coordinate_state_plane values outside the boundaries of NYC.
+
+Here are the first few rows of x-coordinate outliers:
+   unique_key agency x_coordinate_state_plane
+1:   52308247    DHS                 31130726
+
+
+There are 1 y_coordinate_state_plane values outside the boundaries of NYC.
+
+Here are the first few rows of y-coordinate outliers:
+   unique_key agency y_coordinate_state_plane
+1:   52308247    DHS                 -2280004
+
+All non-blank values of 'agency' are valid.
+
+All non-blank values of 'address_type' are valid.
+(Note: 2,769,752 NA values were excluded.)
+
+All non-blank values of 'status' are valid.
+
+All non-blank values of 'borough' are valid.
+(Note: 38,435 NA values were excluded.)
+
+All non-blank values of 'park_borough' are valid.
+(Note: 38,435 NA values were excluded.)
+
+All non-blank values of 'taxi_company_borough' are valid.
+(Note: 16,008,136 NA values were excluded.)
+
+All non-blank values of 'open_data_channel_type' are valid.
+
+All non-blank values of 'vehicle_type' are valid.
+(Note: 15,835,167 NA values were excluded.)
+
+There are 56,914 invalid community_board entries (0.36% of non-blank entries), 
+comprised of 13 unique values.
+
+Top 10 invalid 'community_board':
+ value            count percentage cumulative_percentage
+ 64 MANHATTAN     13591 23.88      23.88                
+ 83 QUEENS        10317 18.13      42.01                
+ 55 BROOKLYN       7382 12.97      54.98                
+ 81 QUEENS         6851 12.04      67.02                
+ 26 BRONX          4976  8.74      75.76                
+ 80 QUEENS         4580  8.05      83.81                
+ 82 QUEENS         3004  5.28      89.09                
+ 28 BRONX          2548  4.48      93.57                
+ 95 STATEN ISLAND  1166  2.05      95.62                
+ 27 BRONX          1094  1.92      97.54                
+
+There are 3,274 invalid incident_zip entries (0.02% of non-blank entries), 
+comprised of 15 unique values.
+
+Top 10 invalid 'incident_zip':
+ value count percentage cumulative_percentage
+ 10000 3220  98.35      98.35                
+ 00083   26   0.79      99.14                
+ 0        8   0.24      99.38                
+ 00000    5   0.15      99.53                
+ 10400    4   0.12      99.65                
+ 11111    2   0.06      99.71                
+ 0000     1   0.03      99.74                
+ 1055O    1   0.03      99.77                
+ 11443    1   0.03      99.80                
+ 1155     1   0.03      99.83                
+
+Generating Pareto charts for fields with invalid data...
+Skipping agency - no invalid values found
+Skipping address_type - no invalid values found
+Skipping status - no invalid values found
+Skipping borough - no invalid values found
+Skipping park_borough - no invalid values found
+Skipping taxi_company_borough - no invalid values found
+Skipping open_data_channel_type - no invalid values found
+Skipping vehicle_type - no invalid values found
+
+Creating Pareto chart for: community_board (56914 invalid values)
+Number of invalid rows found: 56914 
+
+Pareto summary by agency:
+ group     N  pct cum_pct
+ NYPD  16858 0.30    0.30
+ DPR   15642 0.27    0.57
+ TLC   14735 0.26    0.83
+ DOT    5306 0.09    0.92
+ EDC    1094 0.02    0.94
+ DSNY    811 0.01    0.96
+ DOHMH   722 0.01    0.97
+ DEP     594 0.01    0.98
+ DHS     447 0.01    0.99
+ DCWP    396 0.01    0.99
+ DOB     148 0.00    1.00
+ OSE     116 0.00    1.00
+ HPD      45 0.00    1.00
+
+Creating Pareto chart for: incident_zip (3274 invalid values)
+Number of invalid rows found: 3274 
+
+Pareto summary by agency:
+ group    N  pct cum_pct
+ DOT   1276 0.39    0.39
+ NYPD   868 0.27    0.65
+ EDC    567 0.17    0.83
+ DPR    183 0.06    0.88
+ TLC    119 0.04    0.92
+ DSNY    91 0.03    0.95
+ DOHMH   49 0.01    0.96
+ DCWP    47 0.01    0.98
+ DHS     26 0.01    0.99
+ DEP     21 0.01    0.99
+ DOB     11 0.00    1.00
+ HPD      8 0.00    1.00
+ OSE      8 0.00    1.00
+
+Validation summary (sorted by invalid desc):
+                  field valid invalid nonblank pct_invalid
+ community_board        FALSE   56914 15978265        0.36
+ incident_zip           FALSE    3274 15757103        0.02
+ address_type            TRUE       0 13246948        0.00
+ agency                  TRUE       0 16016700        0.00
+ borough                 TRUE       0 15978265        0.00
+ open_data_channel_type  TRUE       0 16016700        0.00
+ park_borough            TRUE       0 15978265        0.00
+ status                  TRUE       0 16016700        0.00
+ taxi_company_borough    TRUE       0     8564        0.00
+ vehicle_type            TRUE       0   181533        0.00
+
+
+**********CHECKING FOR DATE FIELD ISSUES **********
+
+=== CALCULATING SR DURATIONS FOR LATER USE ===
+
+=== SUMMARY DATE ANALYSIS ===
+
+============================================================
+Date Field: resolution_action_updated_date 
+============================================================
+
+
+Year Distribution for resolution_action_updated_date (first 7 rows):
+ year   count percentage cumulative_percentage
+ 2019     514       0.00                  0.00
+ 2020 2793192      17.55                 17.56
+ 2021 3138306      19.72                 37.28
+ 2022 3061230      19.24                 56.52
+ 2023 3183762      20.01                 76.53
+ 2024 3542369      22.26                 98.79
+ 2025  192242       1.21                100.00
+
+Summary by Year (from 'year' column):
+   year       N   pct
+1: 2019     514  0.00
+2: 2020 2793192 17.55
+3: 2021 3138306 19.72
+4: 2022 3061230 19.24
+5: 2023 3183762 20.01
+6: 2024 3542369 22.26
+7: 2025  192242  1.21
+
+
+============================================================
+Date Field: due_date 
+============================================================
+
+
+Year Distribution for due_date (first 8 rows):
+ year count percentage cumulative_percentage
+ 2018     3       0.01                  0.01
+ 2019    13       0.02                  0.03
+ 2020   833       1.59                  1.62
+ 2021  3218       6.15                  7.77
+ 2022 13189      25.20                 32.97
+ 2023 13910      26.57                 59.54
+ 2024 19640      37.52                 97.06
+ 2025  1540       2.94                100.00
+
+Summary by Year (from 'year' column):
+   year     N   pct
+1: 2018     3  0.01
+2: 2019    13  0.02
+3: 2020   833  1.59
+4: 2021  3218  6.15
+5: 2022 13189 25.20
+6: 2023 13910 26.57
+7: 2024 19640 37.52
+8: 2025  1540  2.94
+
+
+============================================================
+Date Field: created_date 
+============================================================
+
+
+Year Distribution for created_date (first 5 rows):
+ year   count percentage cumulative_percentage
+ 2020 2942064      18.37                 18.37
+ 2021 3220915      20.11                 38.48
+ 2022 3169844      19.79                 58.27
+ 2023 3225557      20.14                 78.41
+ 2024 3458320      21.59                100.00
+
+Summary by Year (from 'year' column):
+   year       N   pct
+1: 2020 2942064 18.37
+2: 2021 3220915 20.11
+3: 2022 3169844 19.79
+4: 2023 3225557 20.14
+5: 2024 3458320 21.59
+
+
+============================================================
+Date Field: closed_date 
+============================================================
+
+
+Year Distribution for closed_date (first 11 rows):
+ year   count percentage cumulative_percentage
+ 1899     103       0.00                  0.00
+ 1900      11       0.00                  0.00
+ 2004       1       0.00                  0.00
+ 2019     523       0.00                  0.00
+ 2020 2797498      17.72                 17.73
+ 2021 3118070      19.75                 37.48
+ 2022 3047652      19.31                 56.78
+ 2023 3143900      19.92                 76.70
+ 2024 3483764      22.07                 98.77
+ 2025  194369       1.23                100.00
+ 2033       1       0.00                100.00
+
+Summary by Year (from 'year' column):
+    year       N   pct
+ 1: 1899     103  0.00
+ 2: 1900      11  0.00
+ 3: 2004       1  0.00
+ 4: 2019     523  0.00
+ 5: 2020 2797498 17.72
+ 6: 2021 3118070 19.75
+ 7: 2022 3047652 19.31
+ 8: 2023 3143900 19.92
+ 9: 2024 3483764 22.07
+10: 2025  194369  1.23
+11: 2033       1  0.00
+
+
+=== CREATED DATE ANALYSIS ===
+Created_date anomaly check (tz = America/New_York):
+  Future created dates:    0 (0.00%) 
+  Past created dates:      0 (0.00%) 
+  Midnight-only created:   14,409 (0.09%) 
+  Noon-only created:       31,872 (0.20%) 
+
+Skipping Future Created Dates - no records
+
+Skipping Past Created Dates: before 2003-01-01 -- 311 launch date - no records
+
+=== Midnight Created Dates ===
+Total observations: 14409
+Number of agencies: 10
+Creating Pareto chart: midnight_created_dates_pareto_combo_chart.pdf
+
+Pareto summary by agency:
+ group     N  pct cum_pct
+ DOHMH 11121 0.77    0.77
+ DOT    2728 0.19    0.96
+ DSNY    216 0.01    0.98
+ DEP     194 0.01    0.99
+ NYPD    132 0.01    1.00
+ HPD      10 0.00    1.00
+ DOB       4 0.00    1.00
+ OSE       2 0.00    1.00
+ EDC       1 0.00    1.00
+ DHS       1 0.00    1.00
+
+=== Noon Created Dates ===
+Total observations: 31872
+Number of agencies: 13
+Creating Pareto chart: noon_created_dates_pareto_combo_chart.pdf
+
+Pareto summary by agency:
+ group     N  pct cum_pct
+ DSNY  30733 0.96    0.96
+ DEP     505 0.02    0.98
+ DOT     487 0.02    1.00
+ NYPD     55 0.00    1.00
+ HPD      54 0.00    1.00
+ DPR      11 0.00    1.00
+ DOHMH    10 0.00    1.00
+ DOB       5 0.00    1.00
+ DHS       4 0.00    1.00
+ TLC       3 0.00    1.00
+ DCWP      2 0.00    1.00
+ OSE       2 0.00    1.00
+ EDC       1 0.00    1.00
+
+=== Missing Created Dates Summary ===
+No records with missing created_date found.
+
+=== DUE DATE ANALYSIS ===
+Due_date anomaly check (tz = America/New_York):
+  Future dates:    1 (0.00%) 
+  Past dates:      0 (0.00%) 
+  Missing dates:   15,964,354 (99.67%) 
+  Midnight-only:   0 (0.00%) 
+  Noon-only:       1 (0.00%) 
+  Due < Created    16 (0.00%) 
+
+Skipping Future Due Dates - need 2+ agencies (have 1 with 1 total observations)
+
+Skipping Past Due Dates - no records
+
+Skipping Midnight Due Dates - no records
+
+Skipping Noon Due Dates - need 2+ agencies (have 1 with 1 total observations)
+
+Skipping Noon Due Dates before Created Date - need 2+ agencies (have 1 with 16 total observations)
+
+=== Missing Due Dates Summary ===
+Total records with missing due_date: 15,964,354
+
+Top agencies with missing due dates:
+    agency       N
+ 1:   NYPD 6905945
+ 2:    HPD 3067970
+ 3:   DSNY 1871159
+ 4:    DOT 1078415
+ 5:    DEP  834539
+ 6:    DPR  636283
+ 7:    DOB  470508
+ 8:  DOHMH  397968
+ 9:    DHS  211486
+10:    EDC  150305
+
+— Due_date-before-Created_date Check (negative days) —
+Non-blank due_date rows: 52,346
+Bad due dates (due < created): 16 (0.03% of non-blank)
+
+Summary of 'due_duration' (days) for SRs with due_date before created_date:
+     min    max        mean  median               sd
+ -727.26 -451.7 -557.968125 -549.07 76.8642677467886
+
+Sample of SRs with 'due_date' before 'created_date' (negative days):
+ unique_key agency        created_date            due_date due_duration
+   41932462    DPR 2020-09-25 15:10:23 2019-03-14 11:38:19      -561.15
+   42754470    DPR 2020-09-24 13:20:17 2019-05-26 20:46:31      -486.69
+   40287734    DPR 2020-09-25 15:43:34 2018-09-29 09:26:39      -727.26
+   41499422    DPR 2020-09-24 13:24:00 2019-02-06 10:00:48      -596.10
+   41680133    DPR 2020-09-25 16:00:27 2019-02-26 17:46:25      -576.88
+   40962915    DPR 2020-09-25 15:51:54 2018-11-30 17:26:48      -664.89
+   41817143    DPR 2020-09-25 15:45:06 2019-03-12 13:39:06      -563.09
+   42095761    DPR 2020-09-25 16:01:34 2019-04-13 15:23:00      -531.03
+   42188606    DPR 2020-10-23 15:36:37 2019-04-24 16:28:16      -547.96
+   41926238    DPR 2020-09-25 15:46:41 2019-03-25 11:21:47      -550.18
+
+By-agency counts (top 10):
+ agency count pct cum_pct rank
+    DPR    16   1       1    1
+
+=== Summary statistics (All groups with N > 0) for Due Date Before Created Date (negative days) ===
+   grp  N     Min      Q1  Median      Q3    Max    Mean    SD
+1: DPR 16 -727.26 -581.68 -549.07 -519.94 -451.7 -557.97 76.86
+
+NOTE: Only 1 unique agency found; skipping Pareto chart.
+
+=== RESOLUTION UPDATE DATE ANALYSIS ===
+Resolution_action_updated_date anomaly check (tz = America/New_York):
+  Future dates:    0 (0.00%) 
+  Past dates:      0 (0.00%) 
+  Missing dates:   105,085 (0.66%) 
+  Midnight-only:   3,773,498 (23.56%) 
+  Noon-only:       475,906 (2.97%) 
+  Updates < Created: 374,974 (2.34%) 
+
+Skipping Future Resolution Action Updated Dates - no records
+
+Skipping Past Resolution Action Updated Dates - no records
+
+=== Midnight Resolution Action Updated Dates ===
+Total observations: 3773498
+Number of agencies: 8
+Creating Pareto chart: midnight_resolution_action_updated_dates_pareto_combo_chart.pdf
+
+Pareto summary by agency:
+ group       N  pct cum_pct
+ HPD   2661746 0.71    0.71
+ DSNY   626551 0.17    0.87
+ DOB    470455 0.12    1.00
+ DOT      8159 0.00    1.00
+ DEP      5920 0.00    1.00
+ DOHMH     586 0.00    1.00
+ NYPD       76 0.00    1.00
+ DCWP        5 0.00    1.00
+
+=== Noon Resolution Action Updated Dates ===
+Total observations: 475906
+Number of agencies: 12
+Creating Pareto chart: noon_resolution_action_updated_dates_pareto_combo_chart.pdf
+
+Pareto summary by agency:
+ group      N  pct cum_pct
+ DSNY  461017 0.97    0.97
+ DEP    11268 0.02    0.99
+ DOT     3323 0.01    1.00
+ DOHMH    175 0.00    1.00
+ NYPD      74 0.00    1.00
+ OSE       24 0.00    1.00
+ DPR       11 0.00    1.00
+ EDC        7 0.00    1.00
+ HPD        3 0.00    1.00
+ TLC        2 0.00    1.00
+ DHS        1 0.00    1.00
+ DOE        1 0.00    1.00
+
+=== Resolution Action Updated Dates before Created Date ===
+Total observations: 374974
+Number of agencies: 10
+Creating Pareto chart: resolution_action_updated_dates_before_created_date_pareto_combo_chart.pdf
+
+Pareto summary by agency:
+ group      N  pct cum_pct
+ HPD   160740 0.43    0.43
+ DOT   128348 0.34    0.77
+ DOB    61080 0.16    0.93
+ DSNY   23371 0.06    1.00
+ DEP      616 0.00    1.00
+ NYPD     514 0.00    1.00
+ DPR      200 0.00    1.00
+ DOHMH     66 0.00    1.00
+ OSE       37 0.00    1.00
+ DHS        2 0.00    1.00
+
+=== Missing Resolution Action Updated Dates Summary ===
+Total records with missing resolution_action_updated_date: 105,085
+
+Top agencies with missing resolution action updated dates:
+    agency     N
+ 1:   NYPD 27261
+ 2:  DOHMH 22694
+ 3:    EDC 20094
+ 4:    DPR 17021
+ 5:   DSNY  5892
+ 6:    TLC  4127
+ 7:    HPD  2949
+ 8:    DEP  2748
+ 9:    DHS  1038
+10:    OSE   967
+
+Service Requests with resolution_action_updated_date BEFORE created_date: 374,974
+  Count:  374,974 (2.34% of total)
+  Min:    -1619.8745 days
+  Max:    -0.0000 days
+  Mean:   -1.8290 days
+  Median: -0.4891 days
+  SD:     19.7909 days
+
+Sample problematic records:
+ unique_key agency        created_date resolution_action_updated_date res_duration_days
+   56132911    HPD 2022-12-01 07:15:40            2022-12-01 00:00:00             -0.30
+   55933440    DOT 2022-11-08 09:06:00            2022-11-07 09:06:00             -1.00
+   47670273    DOT 2020-09-23 08:21:00            2020-09-22 22:30:00             -0.41
+   46004172    DOB 2020-04-15 09:33:50            2020-04-15 00:00:00             -0.40
+   57208848    HPD 2023-04-02 01:36:42            2023-04-02 00:00:00             -0.07
+   57577059    HPD 2023-05-11 09:05:50            2023-05-11 00:00:00             -0.38
+   55469567    HPD 2022-09-20 12:40:21            2022-09-20 00:00:00             -0.53
+   54847443    DOT 2022-07-20 08:51:00            2022-07-19 08:51:00             -1.00
+   56144324    DOT 2022-12-02 10:51:00            2022-12-01 10:51:00             -1.00
+   54760244   DSNY 2022-07-11 09:25:15            2022-07-07 05:11:44             -4.18
+Filtering plotting data to groups with N >= 50
+
+=== Summary statistics (All groups with N > 0) for Distribution of Negative Resolution Updates by Agency ===
+      grp     N     Min      Q1  Median    Q3   Max    Mean     SD
+ 1:   DEP   194 -476.73   -9.60   -0.21 -0.02  0.00  -83.43 154.51
+ 2:   DHS     1   -0.90   -0.90   -0.90 -0.90 -0.90   -0.90     NA
+ 3:   DOB 20559   -1.00   -0.54   -0.46 -0.38  0.00   -0.46   0.15
+ 4: DOHMH    20 -793.20 -442.46 -404.58 -0.50 -0.01 -294.42 236.55
+ 5:   DOT 42670 -372.00   -1.34   -1.00 -1.00  0.00   -2.47  10.63
+ 6:   DPR    70  -74.74    0.00    0.00  0.00  0.00   -2.19  11.15
+ 7:  DSNY  7765 -762.60   -0.82   -0.15 -0.07  0.00   -7.17  43.09
+ 8:   HPD 53510   -1.00   -0.50   -0.39 -0.27  0.00   -0.39   0.19
+ 9:  NYPD   183   -2.03   -0.06   -0.02  0.00  0.00   -0.04   0.15
+10:   OSE    10    0.00    0.00    0.00  0.00  0.00    0.00   0.00
+
+Pareto summary by agency:
+ group      N  pct cum_pct
+ HPD   160740 0.43    0.43
+ DOT   128348 0.34    0.77
+ DOB    61080 0.16    0.93
+ DSNY   23371 0.06    1.00
+ DEP      616 0.00    1.00
+ NYPD     514 0.00    1.00
+ DPR      200 0.00    1.00
+ DOHMH     66 0.00    1.00
+ OSE       37 0.00    1.00
+ DHS        2 0.00    1.00
+
+=== POST-CLOSED RESOLUTION UPDATE ANALYSIS ===
+
+=== Raw Positive Post-Closed Update Duration Summary ===
+    Total post-closed updates: 8,576,533 (53.55%)
+
+             Min.           1st Qu.            Median              Mean           3rd Qu.              Max. 
+    0.00001157407     0.00003472222     0.00004629630     0.95887071545     0.00005787037 45216.61163194444 
+
+
+=== Updated-Late Post-Closed Update Duration Summary ===
+    Total row updated-late: 27,616 (0.17%)
+
+           Min.         1st Qu.          Median            Mean         3rd Qu.            Max. 
+  30.0001157407   48.7932812500   93.4463020833  127.5774187133  162.2929282407 1094.0897106481 
+Summary of postClosedUpdateDuration:
+           Min.         1st Qu.          Median            Mean         3rd Qu.            Max. 
+  30.0001157407   48.7932812500   93.4463020833  127.5774187133  162.2929282407 1094.0897106481 
+
+Range (min, max):
+[1]   30.0001157407407 1094.0897106481482
+
+Number of negative values:
+[1] 0
+
+Negative values (if any):
+Empty data.table (0 rows and 2 cols): unique_key,postClosedUpdateDuration
+
+
+=== Updated-Extremely-Late Post-Closed Update Duration Summary ===
+    Total row updated-EXTRENMELY-late: 248 (0.00%)
+
+          Min.        1st Qu.         Median           Mean        3rd Qu.           Max. 
+ 1096.40126157  1153.31202546  1404.82315972 16960.65394480 44376.93334491 45216.61163194 
+
+
+Trimmed 277 extreme values (1.0%) above 0.99 percentile
+
+Histogram for 'postClosedUpdateDuration':
+  Total records: 27,616
+  Min: 30.0001
+  Max: 1094.0897
+  Mean: 127.5774
+  Median: 93.4463
+  SD: 124.5062
+  Trimmed: 277 values (1.0%)
+
+Post-closed updates summary:
+  Positive updates:         8,576,533
+  Late (>30 & <=1095):      27,616
+  Extreme (>=1095):         248
+
+Late updates (> 30 days) statistics:
+  Median:    93.45
+  Mean:      127.58
+  Std Dev:   124.51
+  Max:       1094.09
+
+All positive post-closed updates statistics:
+  Median:         0.00 days
+  Mean:           0.96 days
+  Max:            45216.61 days (1085198.68 hours)
+  Mean (hours):   23.01 hours
+  Max (hours):    1085198.68 hours
+
+Max late update row(s) (>30 & <=1095 days): 1094.09 days (3.00 years)
+ unique_key agency         closed_date resolution_action_updated_date postClosedUpdateDuration
+   52116772    DPR 2021-10-12 09:12:54            2024-10-10 11:22:05                  1094.09
+
+Extreme max of all row(s) (>1095 days): 45216.61 days (123.80 years)
+ unique_key agency         closed_date resolution_action_updated_date postClosedUpdateDuration
+   51053600    DPR 1899-12-31 19:00:00            2023-10-19 10:40:45                 45216.61
+
+Sample of late post-closed updates:
+ agency         closed_date resolution_action_updated_date postClosedUpdateDuration
+    DPR 2021-06-15 10:16:55            2021-11-02 12:57:10                   140.11
+  DOHMH 2024-09-07 20:20:07            2025-02-27 12:12:00                   172.70
+   DSNY 2023-05-24 00:00:00            2023-07-11 05:56:51                    48.25
+    TLC 2023-06-26 17:02:21            2023-08-29 11:42:59                    63.78
+   DSNY 2024-07-24 00:00:00            2024-12-14 10:37:43                   143.48
+    DEP 2020-07-21 12:37:00            2020-12-29 16:51:00                   161.22
+   DSNY 2022-03-10 00:00:00            2022-04-18 15:40:51                    39.61
+    DPR 2021-07-14 08:39:24            2021-11-01 17:35:53                   110.37
+  DOHMH 2024-06-07 19:46:29            2024-07-10 10:02:32                    32.59
+   DSNY 2024-03-22 00:00:00            2024-12-14 10:37:27                   267.48
+
+By-agency counts (top 10):
+ agency count  pct cum_pct rank
+    TLC  9948 0.36       0    1
+    DPR  8027 0.29       1    2
+  DOHMH  5463 0.20       1    3
+   DSNY  3020 0.11       1    4
+    DOB   414 0.01       1    5
+    DEP   346 0.01       1    6
+    DOT   237 0.01       1    7
+   DCWP   159 0.01       1    8
+    DOE     2 0.00       1    9
+
+Sample of extremely late post-closed updates:
+ agency         closed_date resolution_action_updated_date postClosedUpdateDuration
+    TLC 1899-12-31 19:00:00            2021-01-13 08:47:35                 44207.57
+    TLC 1899-12-31 19:00:00            2021-08-27 08:07:20                 44433.51
+    DOT 2021-12-20 10:18:20            2024-12-30 14:55:30                  1106.19
+    DOT 2021-07-22 13:20:51            2024-12-30 22:38:37                  1257.43
+   DSNY 2004-11-15 00:00:00            2022-12-14 15:45:37                  6603.66
+    TLC 2020-06-18 13:53:29            2023-07-13 14:17:29                  1120.02
+    DEP 2020-10-15 11:00:00            2024-11-22 08:50:00                  1498.95
+    DOT 2021-08-24 13:12:10            2024-12-30 21:29:26                  1224.39
+    TLC 1899-12-31 19:00:00            2021-08-26 08:44:35                 44432.53
+    DPR 1899-12-31 19:00:00            2023-08-22 15:36:41                 45158.82
+
+By-agency counts for extremely late updates (top 10):
+ agency count  pct cum_pct rank
+    DOT   104 0.42    0.42    1
+    TLC    88 0.35    0.77    2
+    DPR    37 0.15    0.92    3
+    DHS     8 0.03    0.96    4
+    DEP     6 0.02    0.98    5
+   DSNY     2 0.01    0.99    6
+  DOHMH     2 0.01    1.00    7
+   DCWP     1 0.00    1.00    8
+Filtering plotting data to groups with N >= 5
+
+=== Summary statistics (All groups with N > 0) for Post-Closed Updates > 30 days (by agency) ===
+     grp    N   Min     Q1 Median     Q3     Max   Mean     SD
+1:  DCWP  159 32.09  81.98 111.46 132.70  846.08 137.31 142.91
+2:   DEP  346 30.14  92.82 179.88 353.01 1061.00 264.44 252.36
+3:   DOB  414 30.91  79.24 167.04 280.00  860.24 231.80 204.73
+4:   DOE    2 43.18 122.94 202.70 282.46  362.22 202.70 225.60
+5: DOHMH 5463 30.00  36.78  47.89  66.45  861.08  58.99  40.65
+6:   DOT  237 30.95 173.00 580.64 950.21 1085.60 570.99 376.10
+7:   DPR 8027 30.90  81.14 123.11 182.83 1094.09 142.28  87.93
+8:  DSNY 3020 30.01  34.67  41.67  58.24  457.64  76.44  77.22
+9:   TLC 9948 30.00  70.09 120.04 183.99 1090.84 149.07 129.00
+Filtered out 1 groups with < 5 observations
+
+Pareto summary by agency:
+ group    N  pct cum_pct
+ TLC   9948 0.36    0.36
+ DPR   8027 0.29    0.65
+ DOHMH 5463 0.20    0.85
+ DSNY  3020 0.11    0.96
+ DOB    414 0.01    0.97
+ DEP    346 0.01    0.99
+ DOT    237 0.01    0.99
+ DCWP   159 0.01    1.00
+ DOE      2 0.00    1.00
+
+===  CLOSED DATE ANALYSIS ===
+closed_date anomaly check (tz = America/New_York):
+  Future closed dates:    3 (0.00%) 
+  Past closed dates:      114 (0.00%) 
+  Missing closed dates:   230,808 (1.44%) 
+  Midnight-only closed:   1,083,862 (6.77%) 
+  Noon-only closed:       294,817 (1.84%) 
+  Closed < Created:       45,296 (0.28%) 
+
+Skipping Future Resolution Action Updated Dates - no records
+
+Skipping Past Resolution Action Updated Dates - no records
+
+=== Midnight Resolution Action Updated Dates ===
+Total observations: 3763431
+Number of agencies: 8
+Creating Pareto chart: midnight_resolution_action_updated_dates_pareto_combo_chart.pdf
+
+Pareto summary by agency:
+ group       N  pct cum_pct
+ HPD   2654928 0.71    0.71
+ DSNY   624497 0.17    0.87
+ DOB    470407 0.12    1.00
+ DOT      7615 0.00    1.00
+ DEP      5873 0.00    1.00
+ NYPD       76 0.00    1.00
+ DOHMH      33 0.00    1.00
+ DCWP        2 0.00    1.00
+
+=== Noon Resolution Action Updated Dates ===
+Total observations: 475240
+Number of agencies: 11
+Creating Pareto chart: noon_resolution_action_updated_dates_pareto_combo_chart.pdf
+
+Pareto summary by agency:
+ group      N  pct cum_pct
+ DSNY  460470 0.97    0.97
+ DEP    11217 0.02    0.99
+ DOT     3258 0.01    1.00
+ DOHMH    175 0.00    1.00
+ NYPD      74 0.00    1.00
+ OSE       24 0.00    1.00
+ DPR       10 0.00    1.00
+ EDC        7 0.00    1.00
+ HPD        3 0.00    1.00
+ TLC        1 0.00    1.00
+ DOE        1 0.00    1.00
+
+=== Resolution Action Updated Dates before Created Date ===
+Total observations: 367223
+Number of agencies: 10
+Creating Pareto chart: resolution_action_updated_dates_before_created_date_pareto_combo_chart.pdf
+
+Pareto summary by agency:
+ group      N  pct cum_pct
+ HPD   153927 0.42    0.42
+ DOT   128192 0.35    0.77
+ DOB    61045 0.17    0.93
+ DSNY   22694 0.06    1.00
+ DEP      604 0.00    1.00
+ NYPD     514 0.00    1.00
+ DPR      192 0.00    1.00
+ OSE       37 0.00    1.00
+ DOHMH     16 0.00    1.00
+ DHS        2 0.00    1.00
+
+=== Missing Closed Dates Summary ===
+Total records with missing closed_date: 230,808
+
+Top agencies with missing closed dates:
+    agency     N
+ 1:    DPR 65694
+ 2:    DHS 48840
+ 3:  DOHMH 27764
+ 4:    TLC 21761
+ 5:    EDC 20059
+ 6:    DOT 14121
+ 7:   DSNY 10579
+ 8:    HPD  9724
+ 9:    DEP  7430
+10:   DCWP  3610
+
+— Closed_date-in-the-Future Check —
+Cutoff (max_closed_date): 2025-10-10 23:59:59
+Non-blank closed_date rows: 15,785,892
+Closed in future: 3 (0% of non-blank)
+
+Sample of SRs with 'closed_date' in the future:
+ unique_key agency        created_date         closed_date      V5      V6
+   63162265    DOT 2024-11-21 05:49:00 2025-11-21 11:45:00  365.25   41.53
+   63071055    DOT 2024-11-13 10:27:00 2025-12-03 13:55:00  385.14   53.62
+   54304503   DSNY 2022-05-28 14:30:51 2033-03-01 00:00:00 3929.44 2698.04
+
+By-agency counts (top 10):
+ agency count  pct cum_pct rank
+    DOT     2 0.67    0.67    1
+   DSNY     1 0.33    1.00    2
+
+=== Summary statistics (All groups with N > 0) for SRs Closed in the Future (days beyond cutoff) ===
+    grp N     Min      Q1  Median      Q3     Max    Mean   SD
+1:  DOT 2   41.53   44.55   47.58   50.60   53.62   47.58 8.55
+2: DSNY 1 2698.04 2698.04 2698.04 2698.04 2698.04 2698.04   NA
+
+Pareto summary by agency:
+ group N  pct cum_pct
+  DOT  2 0.67    0.67
+  DSNY 1 0.33    1.00
+
+
+=== DAYLIGHT SAVING TIME ANALYSIS ===
+
+--- DST Fall-back Analysis ---
+
+DST Fall-back systemic negative durations:
+ dst_end_date n_rows avg_negative_mins
+   2020-11-01     95            -44.13
+   2021-11-07     86            -45.68
+   2022-11-06     80            -55.21
+   2023-11-05    104            -32.51
+   2024-11-03     66            -34.64
+        TOTAL    431            -42.24
+
+Data Summary for dst_end_date vs n_rows (first 5 rows):
+ dst_end_date n_rows percentage cumulative_percentage
+   2020-11-01     95      22.04                 22.04
+   2021-11-07     86      19.95                 42.00
+   2022-11-06     80      18.56                 60.56
+   2023-11-05    104      24.13                 84.69
+   2024-11-03     66      15.31                100.00
+
+Summary by Year (derived from x_col):
+   year   N   pct
+1: 2020  95 22.04
+2: 2021  86 19.95
+3: 2022  80 18.56
+4: 2023 104 24.13
+5: 2024  66 15.31
+
+Examples (first 10):
+        created_date         closed_date dst_end_date      V4
+ 2020-11-01 01:52:23 2020-11-01 01:00:02   2020-11-01 -112.35
+ 2020-11-01 01:49:22 2020-11-01 01:00:17   2020-11-01 -109.08
+ 2020-11-01 01:58:19 2020-11-01 01:00:32   2020-11-01 -117.78
+ 2020-11-01 01:15:42 2020-11-01 01:00:36   2020-11-01  -75.10
+ 2020-11-01 01:59:08 2020-11-01 01:00:39   2020-11-01 -118.48
+ 2020-11-01 01:54:08 2020-11-01 01:00:42   2020-11-01 -113.43
+ 2020-11-01 01:52:53 2020-11-01 01:00:57   2020-11-01 -111.93
+ 2020-11-01 01:37:26 2020-11-01 01:01:13   2020-11-01  -96.22
+ 2020-11-01 01:34:02 2020-11-01 01:01:28   2020-11-01  -92.57
+ 2020-11-01 01:36:52 2020-11-01 01:01:34   2020-11-01  -95.30
+
+--- DST Spring-forward Analysis ---
+
+--- DST Window Summary ---
+   dst_year   dst_date           dst_start             dst_end           win_start             win_end
+1:     2020 2020-03-08 2020-03-08 01:59:59 2020-03-08 03:00:00 2020-03-08 03:00:00 2021-03-14 01:59:59
+2:     2021 2021-03-14 2021-03-14 01:59:59 2021-03-14 03:00:00 2021-03-14 03:00:00 2022-03-13 01:59:59
+3:     2022 2022-03-13 2022-03-13 01:59:59 2022-03-13 03:00:00 2022-03-13 03:00:00 2023-03-12 01:59:59
+4:     2023 2023-03-12 2023-03-12 01:59:59 2023-03-12 03:00:00 2023-03-12 03:00:00 2024-03-10 01:59:59
+5:     2024 2024-03-10 2024-03-10 01:59:59 2024-03-10 03:00:00 2024-03-10 03:00:00 2025-03-09 01:59:59
+
+Total combined rows: 492648 
+Number of rows: 492648 
+
+DST Spring-forward systemic +1 hour durations:
+   dst_date  n_rows
+ 2020-03-08  23,657
+ 2021-03-14  54,492
+ 2022-03-13  74,495
+ 2023-03-12 113,702
+ 2024-03-10 226,302
+      TOTAL 492,648
+
+Data Summary for dst_date vs n_rows (first 5 rows):
+   dst_date n_rows percentage cumulative_percentage
+ 2020-03-08  23657       4.80                  4.80
+ 2021-03-14  54492      11.06                 15.86
+ 2022-03-13  74495      15.12                 30.98
+ 2023-03-12 113702      23.08                 54.06
+ 2024-03-10 226302      45.94                100.00
+
+Summary by Year (derived from x_col):
+   year      N   pct
+1: 2020  23657  4.80
+2: 2021  54492 11.06
+3: 2022  74495 15.12
+4: 2023 113702 23.08
+5: 2024 226302 45.94
+
+Examples (first 10):
+        created_date         closed_date   dst_date           dst_start             dst_end
+ 2020-03-07 23:15:38 2020-03-08 03:00:01 2020-03-08 2020-03-08 01:59:59 2020-03-08 03:00:00
+ 2020-03-08 01:26:34 2020-03-08 03:00:47 2020-03-08 2020-03-08 01:59:59 2020-03-08 03:00:00
+ 2020-03-07 18:03:34 2020-03-08 03:00:52 2020-03-08 2020-03-08 01:59:59 2020-03-08 03:00:00
+ 2020-03-07 22:33:37 2020-03-08 03:01:01 2020-03-08 2020-03-08 01:59:59 2020-03-08 03:00:00
+ 2020-03-08 00:47:13 2020-03-08 03:01:03 2020-03-08 2020-03-08 01:59:59 2020-03-08 03:00:00
+ 2020-03-07 23:17:32 2020-03-08 03:01:14 2020-03-08 2020-03-08 01:59:59 2020-03-08 03:00:00
+ 2020-03-07 13:32:02 2020-03-08 03:01:14 2020-03-08 2020-03-08 01:59:59 2020-03-08 03:00:00
+ 2020-03-07 18:00:51 2020-03-08 03:01:19 2020-03-08 2020-03-08 01:59:59 2020-03-08 03:00:00
+ 2020-03-08 01:37:27 2020-03-08 03:01:28 2020-03-08 2020-03-08 01:59:59 2020-03-08 03:00:00
+ 2020-03-08 01:42:22 2020-03-08 03:01:40 2020-03-08 2020-03-08 01:59:59 2020-03-08 03:00:00
+Using hardcoded backlog from 2019: 18,013
+
+[Backlog by year]
+ year backlog_in backlog_cum
+ 2020     18,013      18,013
+ 2021     20,758      38,771
+ 2022     34,951      73,722
+ 2023     46,984     120,706
+ 2024     54,099     174,805
+
+Annual Backlog Distribution (first 5 rows):
+ year backlog_in percentage cumulative_percentage
+ 2020      18013      10.30                 10.30
+ 2021      20758      11.87                 22.18
+ 2022      34951      19.99                 42.17
+ 2023      46984      26.88                 69.05
+ 2024      54099      30.95                100.00
+
+Summary by Year (from 'year' column):
+   year     N   pct
+1: 2020 18013 10.30
+2: 2021 20758 11.87
+3: 2022 34951 19.99
+4: 2023 46984 26.88
+5: 2024 54099 30.95
+
+=== ANALYZING TEMPORAL PATTERNS ===
+
+--- Resolutionactionupdated Date Pattern Analysis ---
+
+Data Summary for hour_factor vs N (first 24 rows):
+ hour_factor       N percentage cumulative_percentage
+          08  476578       3.00                  3.00
+          09  645220       4.06                  7.05
+          10  700917       4.41                 11.46
+          11  693151       4.36                 15.81
+          12 1109568       6.97                 22.78
+          13  659930       4.15                 26.93
+          14  574671       3.61                 30.54
+          15  481661       3.03                 33.57
+          16  466186       2.93                 36.50
+          17  484071       3.04                 39.54
+          18  472274       2.97                 42.51
+          19  433741       2.73                 45.24
+          20  467058       2.94                 48.17
+          21  557980       3.51                 51.68
+          22  647524       4.07                 55.75
+          23  480599       3.02                 58.77
+          00 4290107      26.96                 85.73
+          01  506637       3.18                 88.92
+          02  415938       2.61                 91.53
+          03  293694       1.85                 93.38
+          04  242730       1.53                 94.90
+          05  240867       1.51                 96.41
+          06  275979       1.73                 98.15
+          07  294534       1.85                100.00
+ hour_factor       N percentage cumulative_percentage
+
+Data Summary for CY vs N (first 7 rows):
+   CY      N percentage cumulative_percentage
+ 2025  49239       1.30                  1.30
+ 2024 851592      22.57                 23.87
+ 2023 786872      20.85                 44.73
+ 2020 358026       9.49                 54.21
+ 2022 789404      20.92                 75.13
+ 2021 938296      24.87                100.00
+ 2019     69       0.00                100.00
+
+Pareto summary by agency:
+ group       N  pct cum_pct
+ HPD   2661746 0.71    0.71
+ DSNY   626551 0.17    0.87
+ DOB    470455 0.12    1.00
+ DOT      8159 0.00    1.00
+ DEP      5920 0.00    1.00
+ DOHMH     586 0.00    1.00
+ NYPD       76 0.00    1.00
+ DCWP        5 0.00    1.00
+
+Data Summary for CY vs N (first 7 rows):
+   CY      N percentage cumulative_percentage
+ 2025    130       0.03                  0.03
+ 2024  52451      11.02                 11.05
+ 2023  54369      11.42                 22.47
+ 2022  51186      10.76                 33.23
+ 2021 171412      36.02                 69.25
+ 2020 146357      30.75                100.00
+ 2019      1       0.00                100.00
+
+Pareto summary by agency:
+ group      N  pct cum_pct
+ DSNY  461017 0.97    0.97
+ DEP    11268 0.02    0.99
+ DOT     3323 0.01    1.00
+ DOHMH    175 0.00    1.00
+ NYPD      74 0.00    1.00
+ OSE       24 0.00    1.00
+ DPR       11 0.00    1.00
+ EDC        7 0.00    1.00
+ HPD        3 0.00    1.00
+ TLC        2 0.00    1.00
+ DHS        1 0.00    1.00
+ DOE        1 0.00    1.00
+
+Resolutionactionupdated Records Exactly at Top-of-the-Hour (00:00):
+  Total records with minute+second data: 15,911,615
+  Top-of-the-hour records (00:00): 4,412,713 (27.733%)
+
+Top-of-the-hour percentages by hour:
+ hour     total top_of_hour     pct
+   00 4,290,107   3,773,498 87.958%
+   01   506,637       4,652  0.918%
+   02   415,938       4,650  1.118%
+   03   293,694       2,859  0.973%
+   04   242,730       3,431  1.414%
+   05   240,867       2,361  0.980%
+   06   275,979       1,991  0.721%
+   07   294,534       7,840  2.662%
+   08   476,578       7,499  1.574%
+   09   645,220      12,234  1.896%
+   10   700,917      13,884  1.981%
+   11   693,151      14,224  2.052%
+   12 1,109,568     475,906 42.891%
+   13   659,930      13,549  2.053%
+   14   574,671      14,241  2.478%
+   15   481,661       7,320  1.520%
+   16   466,186       8,128  1.744%
+   17   484,071       6,264  1.294%
+   18   472,274       7,465  1.581%
+   19   433,741       6,117  1.410%
+   20   467,058       5,514  1.181%
+   21   557,980       6,254  1.121%
+   22   647,524       6,139  0.948%
+   23   480,599       6,693  1.393%
+ hour     total top_of_hour     pct
+
+Data Summary for hour vs top_of_hour (first 20 rows):
+ hour top_of_hour percentage cumulative_percentage
+    0     3773498      85.51                 85.51
+    1        4652       0.11                 85.62
+    2        4650       0.11                 85.73
+    3        2859       0.06                 85.79
+    4        3431       0.08                 85.87
+    5        2361       0.05                 85.92
+    6        1991       0.05                 85.97
+    7        7840       0.18                 86.14
+    8        7499       0.17                 86.31
+    9       12234       0.28                 86.59
+   10       13884       0.31                 86.91
+   11       14224       0.32                 87.23
+   12      475906      10.78                 98.01
+   13       13549       0.31                 98.32
+   14       14241       0.32                 98.64
+   15        7320       0.17                 98.81
+   16        8128       0.18                 98.99
+   17        6264       0.14                 99.13
+   18        7465       0.17                 99.30
+   19        6117       0.14                 99.44
+
+--- Created Date Pattern Analysis ---
+
+Data Summary for hour_factor vs N (first 24 rows):
+ hour_factor      N percentage cumulative_percentage
+          08 773681       4.83                  4.83
+          09 950259       5.93                 10.76
+          10 961596       6.00                 16.77
+          11 952897       5.95                 22.72
+          12 936427       5.85                 28.56
+          13 877267       5.48                 34.04
+          14 889396       5.55                 39.59
+          15 849373       5.30                 44.90
+          16 828336       5.17                 50.07
+          17 770001       4.81                 54.88
+          18 743060       4.64                 59.51
+          19 722544       4.51                 64.03
+          20 733756       4.58                 68.61
+          21 794084       4.96                 73.56
+          22 841964       5.26                 78.82
+          23 745371       4.65                 83.48
+          00 611736       3.82                 87.29
+          01 407753       2.55                 89.84
+          02 272353       1.70                 91.54
+          03 196263       1.23                 92.77
+          04 170167       1.06                 93.83
+          05 189998       1.19                 95.02
+          06 295051       1.84                 96.86
+          07 503367       3.14                100.00
+ hour_factor      N percentage cumulative_percentage
+
+Data Summary for CY vs N (first 5 rows):
+   CY    N percentage cumulative_percentage
+ 2024 2571      17.84                 17.84
+ 2023 2439      16.93                 34.77
+ 2022 4806      33.35                 68.12
+ 2021 2156      14.96                 83.09
+ 2020 2437      16.91                100.00
+
+Pareto summary by agency:
+ group     N  pct cum_pct
+ DOHMH 11121 0.77    0.77
+ DOT    2728 0.19    0.96
+ DSNY    216 0.01    0.98
+ DEP     194 0.01    0.99
+ NYPD    132 0.01    1.00
+ HPD      10 0.00    1.00
+ DOB       4 0.00    1.00
+ OSE       2 0.00    1.00
+ EDC       1 0.00    1.00
+ DHS       1 0.00    1.00
+
+Data Summary for CY vs N (first 5 rows):
+   CY     N percentage cumulative_percentage
+ 2024   191       0.60                  0.60
+ 2023   220       0.69                  1.29
+ 2022   535       1.68                  2.97
+ 2021  1026       3.22                  6.19
+ 2020 29900      93.81                100.00
+
+Pareto summary by agency:
+ group     N  pct cum_pct
+ DSNY  30733 0.96    0.96
+ DEP     505 0.02    0.98
+ DOT     487 0.02    1.00
+ NYPD     55 0.00    1.00
+ HPD      54 0.00    1.00
+ DPR      11 0.00    1.00
+ DOHMH    10 0.00    1.00
+ DOB       5 0.00    1.00
+ DHS       4 0.00    1.00
+ TLC       3 0.00    1.00
+ DCWP      2 0.00    1.00
+ OSE       2 0.00    1.00
+ EDC       1 0.00    1.00
+
+Created Records Exactly at Top-of-the-Hour (00:00):
+  Total records with minute+second data: 16,016,700
+  Top-of-the-hour records (00:00): 86,918 (0.543%)
+
+Top-of-the-hour percentages by hour:
+ hour   total top_of_hour    pct
+   00 611,736      14,409 2.355%
+   01 407,753         588 0.144%
+   02 272,353         353 0.130%
+   03 196,263         282 0.144%
+   04 170,167         247 0.145%
+   05 189,998         225 0.118%
+   06 295,051         818 0.277%
+   07 503,367       6,331 1.258%
+   08 773,681       1,870 0.242%
+   09 950,259       2,868 0.302%
+   10 961,596       3,117 0.324%
+   11 952,897       2,857 0.300%
+   12 936,427      31,872 3.404%
+   13 877,267       2,455 0.280%
+   14 889,396       2,510 0.282%
+   15 849,373       2,498 0.294%
+   16 828,336       2,248 0.271%
+   17 770,001       2,202 0.286%
+   18 743,060       1,921 0.259%
+   19 722,544       1,725 0.239%
+   20 733,756       1,829 0.249%
+   21 794,084       1,465 0.184%
+   22 841,964       1,161 0.138%
+   23 745,371       1,067 0.143%
+ hour   total top_of_hour    pct
+
+Data Summary for hour vs top_of_hour (first 20 rows):
+ hour top_of_hour percentage cumulative_percentage
+    0       14409      16.58                 16.58
+    1         588       0.68                 17.25
+    2         353       0.41                 17.66
+    3         282       0.32                 17.98
+    4         247       0.28                 18.27
+    5         225       0.26                 18.53
+    6         818       0.94                 19.47
+    7        6331       7.28                 26.75
+    8        1870       2.15                 28.90
+    9        2868       3.30                 32.20
+   10        3117       3.59                 35.79
+   11        2857       3.29                 39.08
+   12       31872      36.67                 75.75
+   13        2455       2.82                 78.57
+   14        2510       2.89                 81.46
+   15        2498       2.87                 84.33
+   16        2248       2.59                 86.92
+   17        2202       2.53                 89.45
+   18        1921       2.21                 91.66
+   19        1725       1.98                 93.65
+
+--- Closed Date Pattern Analysis ---
+
+Data Summary for hour_factor vs N (first 24 rows):
+ hour_factor       N percentage cumulative_percentage
+          08  649781       4.12                  4.12
+          09  826943       5.24                  9.35
+          10  860358       5.45                 14.80
+          11  838185       5.31                 20.11
+          12 1061503       6.72                 26.84
+          13  831712       5.27                 32.11
+          14  770651       4.88                 36.99
+          15  666224       4.22                 41.21
+          16  655190       4.15                 45.36
+          17  686065       4.35                 49.71
+          18  681544       4.32                 54.02
+          19  619046       3.92                 57.95
+          20  719339       4.56                 62.50
+          21  637714       4.04                 66.54
+          22  665851       4.22                 70.76
+          23  487830       3.09                 73.85
+          00 1615329      10.23                 84.08
+          01  507051       3.21                 87.30
+          02  460986       2.92                 90.22
+          03  297199       1.88                 92.10
+          04  242972       1.54                 93.64
+          05  258603       1.64                 95.28
+          06  322297       2.04                 97.32
+          07  423519       2.68                100.00
+ hour_factor       N percentage cumulative_percentage
+
+Data Summary for CY vs N (first 10 rows):
+   CY      N percentage cumulative_percentage
+ 2025  19974       1.84                  1.84
+ 2024 104722       9.66                 11.50
+ 2023 106671       9.84                 21.35
+ 2020 339742      31.35                 52.69
+ 2022 136408      12.59                 65.28
+ 2033      1       0.00                 65.28
+ 1900     11       0.00                 65.28
+ 2021 376263      34.72                 99.99
+ 2019     69       0.01                100.00
+ 2004      1       0.00                100.00
+
+Pareto summary by agency:
+ group      N  pct cum_pct
+ DSNY  648499 0.60    0.60
+ DOB   409307 0.38    0.98
+ HPD    10742 0.01    0.99
+ DOT     9362 0.01    0.99
+ DEP     5838 0.01    1.00
+ NYPD      77 0.00    1.00
+ DOHMH     28 0.00    1.00
+ DHS        9 0.00    1.00
+
+Data Summary for CY vs N (first 7 rows):
+   CY      N percentage cumulative_percentage
+ 2025     56       0.02                  0.02
+ 2024   3173       1.08                  1.10
+ 2023   3191       1.08                  2.18
+ 2022   3326       1.13                  3.31
+ 2021 128503      43.59                 46.89
+ 2020 156567      53.11                100.00
+ 2019      1       0.00                100.00
+
+Pareto summary by agency:
+ group      N  pct cum_pct
+ DSNY  280032 0.95    0.95
+ DEP    11223 0.04    0.99
+ DOT     3319 0.01    1.00
+ DOHMH    116 0.00    1.00
+ NYPD      61 0.00    1.00
+ HPD       40 0.00    1.00
+ DPR       10 0.00    1.00
+ EDC        6 0.00    1.00
+ TLC        5 0.00    1.00
+ OSE        4 0.00    1.00
+ DHS        1 0.00    1.00
+
+Closed Records Exactly at Top-of-the-Hour (00:00):
+  Total records with minute+second data: 15,785,892
+  Top-of-the-hour records (00:00): 1,541,893 (9.768%)
+
+Top-of-the-hour percentages by hour:
+ hour     total top_of_hour     pct
+   00 1,615,329   1,083,862 67.099%
+   01   507,051       4,512  0.890%
+   02   460,986       4,595  0.997%
+   03   297,199       2,926  0.985%
+   04   242,972       3,668  1.510%
+   05   258,603       2,511  0.971%
+   06   322,297       2,145  0.666%
+   07   423,519       7,683  1.814%
+   08   649,781       7,495  1.153%
+   09   826,943      12,364  1.495%
+   10   860,358      13,977  1.625%
+   11   838,185      14,298  1.706%
+   12 1,061,503     294,817 27.774%
+   13   831,712      13,541  1.628%
+   14   770,651      14,140  1.835%
+   15   666,224       7,327  1.100%
+   16   655,190       8,253  1.260%
+   17   686,065       6,248  0.911%
+   18   681,544       7,439  1.091%
+   19   619,046       6,202  1.002%
+   20   719,339       5,508  0.766%
+   21   637,714       6,188  0.970%
+   22   665,851       5,760  0.865%
+   23   487,830       6,434  1.319%
+ hour     total top_of_hour     pct
+
+Data Summary for hour vs top_of_hour (first 20 rows):
+ hour top_of_hour percentage cumulative_percentage
+    0     1083862      70.29                 70.29
+    1        4512       0.29                 70.59
+    2        4595       0.30                 70.88
+    3        2926       0.19                 71.07
+    4        3668       0.24                 71.31
+    5        2511       0.16                 71.48
+    6        2145       0.14                 71.61
+    7        7683       0.50                 72.11
+    8        7495       0.49                 72.60
+    9       12364       0.80                 73.40
+   10       13977       0.91                 74.31
+   11       14298       0.93                 75.23
+   12      294817      19.12                 94.35
+   13       13541       0.88                 95.23
+   14       14140       0.92                 96.15
+   15        7327       0.48                 96.63
+   16        8253       0.54                 97.16
+   17        6248       0.41                 97.57
+   18        7439       0.48                 98.05
+   19        6202       0.40                 98.45
+
+
+********** DURATION ISSUES **********
+
+=== ANALYZING POSITIVE DURATIONS ===
+Valley minimum at: 0.432 days
+
+Histogram for 'duration_days':
+  Total records: 15,353,267
+  Min: 0.0000
+  Max: 3929.4369
+  Mean: 23.7231
+  Median: 0.4389
+  SD: 121.4013
+
+=== ANALYZING NEGATIVE DURATIONS ===
+
+Histogram for 'duration_days':
+  Total records: 45,091
+  Min: -364.9319
+  Max: -0.0000
+  Mean: -6.0294
+  Median: -2.8910
+  SD: 22.0088
+Filtering plotting data to groups with N >= 5
+
+=== Summary statistics (All groups with N > 0) for  Negative Duration (days) by agency ===
+    grp     N     Min      Q1  Median      Q3   Max    Mean     SD
+1:  DEP   151 -360.52 -311.08 -253.55 -121.87 -1.22 -216.49 128.33
+2:  DOB    37   -0.84   -0.53   -0.48   -0.39 -0.08   -0.47   0.12
+3:  DOT 44131 -364.93   -5.00   -2.96   -1.13  0.00   -5.41  16.92
+4:  DPR     3    0.00    0.00    0.00    0.00  0.00    0.00   0.00
+5: DSNY    18  -27.52   -4.99   -4.97   -1.88 -1.50   -6.44   7.39
+6:  HPD   320   -1.27   -0.48   -0.37   -0.29  0.00   -0.37   0.18
+7: NYPD   431   -0.08   -0.06   -0.02   -0.01  0.00   -0.03   0.03
+
+=== ANALYZING SHORT DURATIONS & SETTING THRESHOLDS ===
+
+=== SKEWED DURATION OUTLIER ANALYSIS (SECONDS) ===
+Original positive durations (before cutoffs): 15,353,267
+After applying minimum cutoff (2 sec): 5,393,217
+After applying maximum cutoff 172,800 sec: 5,393,217 (100.00% retained)
+
+Distribution comparison (seconds):
+                   Raw Data    Truncated
+Mean:                     67          67
+Median:                    8           8
+Std Dev:                 198         198
+Mean/Median ratio:      7.99        7.99
+
+(A ratio = 1.0 indicates normal distribution. A ratio >1.0 indicates right-skewed)
+
+=== OUTLIER DETECTION METHODS (Applied to Truncated Data) ===
+         method threshold_seconds outlier_count outlier_pct
+  Truncated_2SD 0.000000000000000             0       0.000
+  Truncated_3SD 0.000000000000000             0       0.000
+         MAD_2x 0.000000000000000             0       0.000
+         MAD_3x 0.000000000000000             0       0.000
+  LogNormal_2SD 0.586583204165122             0       0.000
+  LogNormal_3SD 0.124694077031989             0       0.000
+  Percentile_1% 2.040277777777778         53818       0.998
+  Percentile_5% 2.224305555555556        269626       4.999
+ Percentile_10% 2.564953703703704        539315      10.000
+        IQR_1.5 0.000000000000000             0       0.000
+        IQR_3.0 0.000000000000000             0       0.000
+
+Method interpretations:
+• Truncated SD: mean±SD computed on truncated data
+• MAD: robust median ± MAD
+• LogNormal: assumes log-normal; back-transformed to seconds
+• Percentile: bottom X% of truncated data
+• IQR: quartile-based outlier detection
+
+Reasonable cutoff suggestions (seconds):
+         method threshold_seconds outlier_count outlier_pct
+  LogNormal_3SD 0.124694077031989             0       0.000
+  LogNormal_2SD 0.586583204165122             0       0.000
+  Percentile_1% 2.040277777777778         53818       0.998
+  Percentile_5% 2.224305555555556        269626       4.999
+ Percentile_10% 2.564953703703704        539315      10.000
+
+Duration histogram summary (2 to 90 days):
+Total observations: 4,715,874
+Mean:   1,243,032 seconds (14.386950 days)
+Median: 592,680 seconds (6.859722 days)
+Std dev: 1,503,861 seconds (17.405794 days)
+Bin width: 1 days (86,400 seconds, 1.000000 days)
+LogNormal_3SD threshold: 0 seconds
+
+=== COMPREHENSIVE DURATION CATEGORY ANALYSIS ===
+
+Excluded 1 rows with duration_days ≥ 3652.5 (beyond max_outlier_days cap):
+ unique_key        created_date closed_date          created_ts  closed_ts agency duration_days
+   54304503 2022-05-28 14:30:51  2033-03-01 2022-05-28 14:30:51 2033-03-01   DSNY       3929.44
+
+Negative duration breakdown:
+  Total closed:        15785892 
+  Negative total:      45296 
+    Negative small:    45180 
+    Negative large:    1 
+    Negative extreme:  115 
+
+
+Duration QA summary (closed rows with non-missing created):
+                  metric      value
+ denominator_closed_rows 15,785,892
+ negative_total              45,296
+ negative_small              45,180
+ negative_large                   1
+ negative_extreme               115
+ zero_total                 387,329
+ near_zero_leq_days               0
+ near_zero_excl_zero              0
+ one_sec_total                3,460
+ positive_total          15,353,267
+ positive_small          15,212,398
+ positive_large             139,628
+ positive_extreme             1,240
+ pct_negative_total           0.29%
+ pct_negative_small           0.29%
+ pct_negative_large           0.00%
+ pct_negative_extreme         0.00%
+ pct_zero                     2.45%
+ pct_one_sec_total            0.02%
+ pct_near_zero_excl_zero      0.00%
+ pct_positive_total          97.26%
+ pct_positive_small          96.37%
+ pct_positive_large           0.88%
+ pct_positive_extreme         0.01%
+ avg_neg_all                -118.71
+ avg_neg_small                -6.87
+ avg_neg_large              -856.56
+ avg_neg_extreme         -44,050.91
+ min_neg_all             -44,601.59
+ min_neg_small              -548.76
+ min_neg_large              -856.56
+ min_neg_extreme         -44,601.59
+ max_neg_all                      0
+ max_neg_small                    0
+ max_neg_large              -856.56
+ max_neg_extreme          -5,545.43
+ avg_pos_all                  23.72
+ avg_pos_small                 13.7
+ avg_pos_large             1,098.94
+ avg_pos_extreme           1,875.98
+ min_pos_all                      0
+ min_pos_small                    0
+ min_pos_large               730.54
+ min_pos_extreme           1,826.41
+ max_pos_all               3,929.44
+ max_pos_small                730.5
+ max_pos_large             1,826.21
+ max_pos_extreme           2,074.85
+
+
+Examples of NEGATIVE durations  (random 10 of 45,296):
+ unique_key        created_date         closed_date duration_min duration_hours agency
+   46141230 2020-05-06 16:44:00 2020-04-06 16:44:00       -43200        -720.00    DOT
+   46048598 2020-04-22 13:52:00 2020-04-08 13:52:00       -20160        -336.00    DOT
+   46053647 2020-04-23 14:06:00 2020-04-09 14:06:00       -20160        -336.00    DOT
+   57755402 2023-05-30 12:19:00 2023-05-24 12:19:00        -8640        -144.00    DOT
+   52958839 2022-01-03 10:51:00 2021-12-29 10:51:00        -7200        -120.00    DOT
+   47190028 2020-08-10 11:25:00 2020-08-06 11:25:00        -5760         -96.00    DOT
+   50240172 2021-04-09 11:37:00 2021-04-06 11:36:00        -4321         -72.02    DOT
+   52984074 2022-01-06 08:32:00 2022-01-05 08:00:00        -1472         -24.53    DOT
+   56735725 2023-02-06 10:10:00 2023-02-05 09:55:00        -1455         -24.25    DOT
+   56498809 2023-01-11 10:19:00 2023-01-10 10:18:00        -1441         -24.02    DOT
+
+Plotting NEGATIVE charts (6 agencies with >5 observations)
+
+Filtered out 1 groups with < 5 observations
+
+Pareto summary by agency:
+ group     N  pct cum_pct
+  DOT  44143 0.98    0.98
+  NYPD   431 0.01    0.99
+  HPD    320 0.01    0.99
+  DEP    228 0.01    1.00
+  DOB     37 0.00    1.00
+  DSNY    18 0.00    1.00
+
+>>> Starting boxplot section...
+make_boxplot is TRUE
+Proceeding with boxplot for 6 agencies
+duration_days column exists
+Range of duration_days: -548.75625 to -0.0000115740740740741 
+NA values in duration_days: 0 
+Filtering plotting data to groups with N >= 5
+
+=== Summary statistics (All groups with N > 0) for Negative Duration (days) by agency ===
+    grp     N     Min      Q1  Median      Q3   Max    Mean     SD
+1:  DEP   228 -548.76 -405.59 -316.21 -210.58 -1.22 -292.36 151.22
+2:  DOB    37   -0.84   -0.53   -0.48   -0.39 -0.08   -0.47   0.12
+3:  DOT 44143 -378.00   -5.00   -2.96   -1.14  0.00   -5.51  17.95
+4:  DPR     3    0.00    0.00    0.00    0.00  0.00    0.00   0.00
+5: DSNY    18  -27.52   -4.99   -4.97   -1.88 -1.50   -6.44   7.39
+6:  HPD   320   -1.27   -0.48   -0.37   -0.29  0.00   -0.37   0.18
+7: NYPD   431   -0.08   -0.06   -0.02   -0.01  0.00   -0.03   0.03
+Filtered out 1 groups with < 5 observations
+
+
+Examples of LARGE NEGATIVE durations (≤ -730 days and > -1826 days) (random 1 of 1):
+ unique_key        created_date closed_date duration_days_display agency
+   56643490 2023-01-28 12:20:32  2020-09-24               -856.56   DSNY
+
+Skipping LARGE NEGATIVE charts - no agencies with >5 observations
+
+
+Examples of EXTREME NEGATIVE durations (≤ -1826 days) (random 10 of 115):
+ unique_key        created_date         closed_date duration_days_display agency
+   52553403 2021-11-18 03:52:35 1899-12-31 19:00:00             -44516.37    OSE
+   51661567 2021-08-27 14:03:42 1899-12-31 19:00:00             -44433.75    TLC
+   51646769 2021-08-25 14:00:00 1900-01-01 00:00:00             -44431.54   DSNY
+   51580866 2021-08-19 16:07:01 1899-12-31 19:00:00             -44425.84    TLC
+   51449323 2021-08-06 23:48:53 1899-12-31 19:00:00             -44413.16    TLC
+   51307824 2021-07-23 13:01:29 1899-12-31 19:00:00             -44398.71    TLC
+   51053412 2021-06-30 15:23:05 1899-12-31 19:00:00             -44375.81    TLC
+   51053949 2021-06-30 14:42:03 1899-12-31 19:00:00             -44375.78    TLC
+   51054437 2021-06-30 13:31:05 1899-12-31 19:00:00             -44375.73    DPR
+   51054406 2021-06-30 13:17:09 1899-12-31 19:00:00             -44375.72    DPR
+
+Plotting EXTREME NEGATIVE charts (4 agencies with >5 observations)
+
+Filtered out 2 groups with < 5 observations
+
+Pareto summary by agency:
+ group  N  pct cum_pct
+ TLC   57 0.53    0.53
+ DPR   36 0.34    0.87
+ DHS    8 0.07    0.94
+ DOHMH  6 0.06    1.00
+
+
+Examples of ZERO durations (= 0 days) (random 10 of 387,329):
+ unique_key        created_date         closed_date duration_min duration_hours agency
+   46240022 2020-05-19 12:53:35 2020-05-19 12:53:35            0              0    DOB
+   49713665 2021-02-04 09:42:00 2021-02-04 09:42:00            0              0    DOT
+   49978871 2021-03-10 10:00:00 2021-03-10 10:00:00            0              0    DOT
+   50773285 2021-06-04 09:18:06 2021-06-04 09:18:06            0              0  DOHMH
+   51000463 2021-06-25 19:50:40 2021-06-25 19:50:40            0              0  DOHMH
+   51063872 2021-06-30 17:06:00 2021-06-30 17:06:00            0              0    DEP
+   51175882 2021-07-11 09:25:00 2021-07-11 09:25:00            0              0    DEP
+   54489761 2022-06-14 20:50:00 2022-06-14 20:50:00            0              0    DEP
+   56854432 2023-02-20 22:56:00 2023-02-20 22:56:00            0              0    DEP
+   60809319 2024-04-06 18:48:00 2024-04-06 18:48:00            0              0    DOT
+
+Plotting ZERO charts (8 agencies with >4 observations)
+
+Pareto summary by agency:
+ group      N  pct cum_pct
+ DOHMH 139850 0.36    0.36
+ DOT   112823 0.29    0.65
+ DOB    61100 0.16    0.81
+ DEP    52803 0.14    0.95
+ DSNY   14168 0.04    0.98
+ HPD     3780 0.01    0.99
+ DPR     2754 0.01    1.00
+ EDC       51 0.00    1.00
+
+
+Examples of ONE-SECOND durations (≈ 1 second) (random 10 of 3,460):
+ unique_key        created_date         closed_date duration_min duration_hours agency
+   45289397 2020-01-01 17:16:51 2020-01-01 17:16:52         0.02              0    EDC
+   45337583 2020-01-08 07:17:40 2020-01-08 07:17:41         0.02              0    EDC
+   47709285 2020-09-28 09:23:15 2020-09-28 09:23:16         0.02              0    DPR
+   47816020 2020-10-09 10:19:23 2020-10-09 10:19:24         0.02              0    DPR
+   47772812 2020-10-13 09:50:34 2020-10-13 09:50:35         0.02              0    DPR
+   53707830 2022-03-21 00:00:00 2022-03-21 00:00:01         0.02              0  DOHMH
+   53940158 2022-04-18 00:00:00 2022-04-18 00:00:01         0.02              0  DOHMH
+   55055254 2022-08-09 00:00:00 2022-08-09 00:00:01         0.02              0  DOHMH
+   55330223 2022-09-07 00:00:00 2022-09-07 00:00:01         0.02              0  DOHMH
+   57956385 2023-06-20 00:00:00 2023-06-20 00:00:01         0.02              0  DOHMH
+
+Plotting ONE-SECOND charts (5 agencies with >4 observations)
+
+Pareto summary by agency:
+ group    N  pct cum_pct
+ DOHMH 1878 0.54    0.54
+ EDC    842 0.24    0.79
+ DPR    479 0.14    0.92
+ DOT    254 0.07    1.00
+ HPD      7 0.00    1.00
+
+No NEAR-ZERO durations found.
+
+
+Examples of LARGE POSITIVE durations (> 730 and ≤ 1826 days) (random 10 of 139,628):
+ unique_key        created_date         closed_date duration_days_display agency
+   47821772 2020-10-08 13:51:52 2024-06-03 15:41:17               1334.08  DOHMH
+   50027485 2021-03-15 20:05:33 2024-10-23 12:49:44               1317.70    EDC
+   50867883 2021-06-13 21:29:58 2024-10-23 13:34:05               1227.67    EDC
+   52323019 2021-10-27 12:17:54 2024-10-23 14:45:10               1092.10    EDC
+   55581743 2022-10-02 17:42:24 2025-09-18 15:03:25               1081.89    DPR
+   51093848 2021-07-04 16:11:18 2024-06-04 03:17:08               1065.46  DOHMH
+   54071671 2022-05-03 11:37:36 2025-01-09 19:56:11                982.39  DOHMH
+   52498565 2021-11-12 07:41:46 2024-06-04 02:49:52                934.76  DOHMH
+   54740685 2022-07-09 11:26:29 2024-10-24 09:44:41                837.93    EDC
+   51176298 2021-07-11 13:56:46 2023-08-22 15:20:38                772.06    DPR
+
+Plotting LARGE POSITIVE charts (12 agencies with >4 observations)
+
+Filtered out 1 groups with < 4 observations
+
+Pareto summary by agency:
+ group     N  pct cum_pct
+ DPR   56372 0.40    0.40
+ DOHMH 42800 0.31    0.71
+ EDC   32529 0.23    0.94
+ DSNY   2816 0.02    0.96
+ DOB    2236 0.02    0.98
+ DOT    1727 0.01    0.99
+ HPD     418 0.00    0.99
+ DEP     351 0.00    1.00
+ DOE     189 0.00    1.00
+ TLC     142 0.00    1.00
+ DHS      25 0.00    1.00
+ NYPD     20 0.00    1.00
+
+>>> Starting boxplot section...
+make_boxplot is TRUE
+Proceeding with boxplot for 12 agencies
+duration_days column exists
+Range of duration_days: 730.540613425926 to 1826.20987268519 
+NA values in duration_days: 0 
+Filtering plotting data to groups with N >= 5
+
+=== Summary statistics (All groups with N > 0) for Large Positive Duration (days) by agency ===
+      grp     N     Min      Q1  Median      Q3     Max    Mean     SD
+ 1:  DCWP     3 1200.09 1215.14 1230.18 1231.71 1233.24 1221.17  18.32
+ 2:   DEP   351  731.49  817.21  958.19 1218.93 1814.23 1046.57 282.60
+ 3:   DHS    25  770.04 1242.63 1377.21 1716.74 1741.76 1382.27 310.87
+ 4:   DOB  2236  730.61  788.23  860.76  994.06 1816.18  930.60 205.65
+ 5:   DOE   189  731.17  847.12  919.86 1029.21 1178.73  931.37 118.70
+ 6: DOHMH 42800  730.56  921.54 1148.68 1395.29 1824.99 1163.16 271.48
+ 7:   DOT  1727  730.55  807.07  919.70 1138.88 1773.78 1005.19 250.10
+ 8:   DPR 56372  730.62  851.99 1020.23 1302.25 1826.21 1093.54 287.95
+ 9:  DSNY  2816  730.54 1066.00 1177.62 1246.66 1826.06 1133.12 164.42
+10:   EDC 32529  731.56  863.52 1064.31 1196.02 1356.85 1041.29 183.81
+11:   HPD   418  731.04  829.86  952.37 1081.83 1573.61  978.80 177.81
+12:  NYPD    20  734.48  735.32  737.93  743.26 1044.58  771.66  79.43
+13:   TLC   142  730.81  786.35  845.01  994.11 1371.10  909.25 156.38
+Filtered out 1 groups with < 5 observations
+
+
+Examples of EXTREME POSITIVE durations (> 1826 days) (random 10 of 1,240):
+ unique_key        created_date         closed_date duration_days_display agency
+   45332279 2020-01-07 16:05:01 2025-04-22 17:02:52               1932.00    DPR
+   45374077 2020-01-12 14:24:54 2025-04-22 17:02:59               1927.07    DPR
+   45514751 2020-01-31 11:24:07 2025-04-22 17:03:33               1908.19    DPR
+   45517769 2020-01-31 20:59:07 2025-04-22 17:03:43               1907.79    DPR
+   45785252 2020-03-13 18:07:03 2025-04-22 17:08:57               1865.96    DPR
+   45856146 2020-03-18 10:45:09 2025-04-22 17:09:15               1861.27    DPR
+   45913395 2020-03-29 20:07:52 2025-04-22 17:10:04               1849.88    DPR
+   45951169 2020-04-05 14:17:35 2025-04-22 17:10:19               1843.12    DPR
+   45954469 2020-04-06 15:53:53 2025-04-22 17:10:21               1842.05    DPR
+   45978445 2020-04-10 13:08:27 2025-04-22 17:10:38               1838.17    DPR
+
+Plotting EXTREME POSITIVE charts (6 agencies with >3 observations)
+
+Filtered out 1 groups with < 3 observations
+
+Pareto summary by agency:
+ group    N  pct cum_pct
+ DPR   1162 0.94    0.94
+ DOHMH   33 0.03    0.96
+ DOB     17 0.01    0.98
+ DSNY    10 0.01    0.99
+ DEP      9 0.01    0.99
+ DOT      8 0.01    1.00
+
+>>> Starting boxplot section...
+make_boxplot is TRUE
+Proceeding with boxplot for 6 agencies
+duration_days column exists
+Range of duration_days: 1826.4121875 to 2074.85138888889 
+NA values in duration_days: 0 
+Filtering plotting data to groups with N >= 5
+
+=== Summary statistics (All groups with N > 0) for Extreme Positive Duration (days) by agency ===
+     grp    N     Min      Q1  Median      Q3     Max    Mean    SD
+1:   DEP    9 1878.85 1923.76 1938.78 1986.15 2074.85 1960.33 58.75
+2:   DOB   17 1847.65 1879.53 1892.82 1917.33 1990.56 1904.37 41.32
+3: DOHMH   33 1826.41 1828.24 1831.33 1834.26 1836.02 1831.13  3.11
+4:   DOT    8 1827.31 1883.18 1901.48 1933.53 2047.25 1914.48 64.91
+5:   DPR 1162 1826.57 1852.39 1871.95 1899.10 1938.26 1875.75 30.48
+6:  DSNY   10 1836.01 1860.82 1887.84 1898.66 2050.82 1895.75 59.35
+7:   TLC    1 1879.96 1879.96 1879.96 1879.96 1879.96 1879.96    NA
+Filtered out 1 groups with < 5 observations
+
+=== RESPONSE TIMES BY COMPLAINT CATEGORY ANALYSIS ===
+
+=== Complaint Type Response Time Summary ===
+Total complaint types: 199 (N >= 50)
+
+================================================================================ 
+SORT 1: By Median Duration (ascending)
+================================================================================ 
+
+                                complaint_type       N       Min  Median    Mean     Max Median_hours
+                   ANIMAL FACILITY - NO PERMIT     199      0.00    0.00    0.00    0.00       0.0000
+           COVID-19 NON-ESSENTIAL CONSTRUCTION    7322      0.00    0.00    1.84 1895.31       0.0000
+                    ILLEGAL ANIMAL KEPT AS PET    1454      0.00    0.00    0.00    0.00       0.0000
+                           ILLEGAL ANIMAL SOLD     261      0.00    0.00    0.00    0.00       0.0000
+                                      PET SHOP     824      0.00    0.00    0.00    0.00       0.0000
+                         REAL TIME ENFORCEMENT   22902      0.00    0.00    9.97 1756.49       0.0000
+                                        RODENT  178471 -44458.59    0.00    3.52  815.08       0.0000
+                                STANDING WATER    4752      0.00    0.00    0.04   35.19       0.0000
+                        STREET LIGHT CONDITION  240859   -378.00    0.00   21.64 2047.25       0.0000
+                                 UNLEASHED DOG    3780 -44458.48    0.00  -11.76    0.00       0.0000
+                    UNSANITARY ANIMAL FACILITY     210      0.00    0.00    0.00    0.00       0.0000
+                UNSANITARY ANIMAL PVT PROPERTY    9977      0.00    0.00    6.30  429.17       0.0000
+                   UNSANITARY PIGEON CONDITION    4892      0.00    0.00    4.12  275.94       0.0000
+                     BIKE/ROLLER/SKATE CHRONIC   14007      0.00    0.02    0.04    3.11       0.3750
+                              DISORDERLY YOUTH    1459      0.00    0.02    0.05    1.73       0.5756
+                                 DRUG ACTIVITY   59028      0.00    0.02    0.05  233.47       0.4022
+                       FACE COVERING VIOLATION    1797      0.00    0.02    0.14    1.04       0.5833
+                     HOMELESS STREET CONDITION   15583      0.00    0.02    0.06  252.03       0.4381
+                             ILLEGAL FIREWORKS  101395     -0.01    0.02    0.09  737.54       0.3853
+                            NOISE - COMMERCIAL  295131     -0.08    0.02    0.06  738.61       0.5928
+                      NOISE - HOUSE OF WORSHIP    6892      0.00    0.02    0.04   26.70       0.4408
+                                  NOISE - PARK   41903      0.00    0.02    0.16  735.56       0.5244
+                       NOISE - STREET/SIDEWALK  854808     -0.08    0.02    0.11 1044.58       0.5811
+                   NON-EMERGENCY POLICE MATTER  165912      0.00    0.02    0.06  734.54       0.4697
+                                      SQUEEGEE     226      0.00    0.02    0.05    1.77       0.4911
+                                       TRAFFIC   30383      0.00    0.02    0.06  152.41       0.5653
+                                       VENDING    4353      0.00    0.02    0.08   20.82       0.4689
+                                      DRINKING   17117      0.00    0.03    0.09  338.60       0.7003
+                           NOISE - RESIDENTIAL 1824108     -0.08    0.03    0.35  877.52       0.7708
+                               NOISE - VEHICLE  331051     -0.07    0.03    0.07  591.66       0.6106
+                                   PANHANDLING   31211     -0.04    0.03    0.07  241.84       0.6711
+                         POSTING ADVERTISEMENT     438      0.00    0.03    0.08    0.88       0.7331
+                           URINATING IN PUBLIC    5244      0.00    0.03    0.07   17.69       0.6536
+                       VIOLATION OF PARK RULES   23742      0.00    0.03    2.87 1183.87       0.8019
+                                  ANIMAL-ABUSE   38792     -0.08    0.04    0.17  734.48       1.0433
+                                    ENCAMPMENT  147040     -0.07    0.04    1.32  926.37       1.0442
+                               ILLEGAL PARKING 1900724     -0.07    0.04    0.10  877.15       1.0083
+                             ABANDONED VEHICLE  280248      0.00    0.05    0.16  380.44       1.2242
+                              ANIMAL IN A PARK   21725      0.00    0.05    8.76 1285.97       1.2014
+                              BLOCKED DRIVEWAY  761854     -0.08    0.05    0.13  693.13       1.1967
+                                    MOSQUITOES    2025      0.00    0.06   11.18  120.29       1.4892
+                                         PLANT     585      0.00    0.06   15.61  931.00       1.4667
+                            VENDOR ENFORCEMENT   39935      0.00    0.06    0.09   25.92       1.5078
+                           HAZARDOUS MATERIALS    9067   -548.76    0.07    1.06  670.01       1.6667
+                      TRAFFIC SIGNAL CONDITION  189748   -364.93    0.09   12.42 1157.00       2.2167
+                           HOMELESS ENCAMPMENT     193      0.00    0.10    0.14    0.85       2.3986
+                      MASS GATHERING COMPLAINT    3652      0.00    0.11    0.28  520.58       2.7254
+                    HOMELESS PERSON ASSISTANCE  126979 -44601.59    0.13   -1.19 1741.76       3.1950
+                             WATER MAINTENANCE     368      0.00    0.15    1.15   21.05       3.6250
+                                         SEWER  143749   -525.90    0.17    7.00 2009.06       4.0333
+                              INDUSTRIAL WASTE    3634   -477.68    0.21    7.57 1505.05       4.9667
+                                  WATER SYSTEM  285305   -499.16    0.22    4.45 2074.85       5.1833
+                                      ASBESTOS    6715      0.00    0.25    5.02  481.97       5.9500
+                        DEPT OF INVESTIGATIONS     151      0.00    0.37    4.37  137.47       8.9639
+                               SCAFFOLD SAFETY     875      0.00    0.37   15.42 1393.41       8.9483
+                             SEWER MAINTENANCE    2771      0.00    0.37    0.88   31.35       8.7775
+                           CRANES AND DERRICKS     456      0.00    0.38    9.73 1123.58       9.0146
+                             UNSTABLE BUILDING      69     -0.84    0.40    0.53    5.50       9.5028
+                              BEST/SITE SAFETY    2007      0.00    0.49   16.47 1990.56      11.7981
+                            INDOOR AIR QUALITY   30917      0.00    0.62    1.80 1191.90      14.9833
+                            WATER CONSERVATION   17712      0.00    0.63    1.93  337.71      15.1500
+                                          MOLD    1479      0.00    0.67    1.26   49.02      16.1986
+                                 PUBLIC TOILET     175      0.00    0.68    2.10   26.40      16.3606
+           NONCOMPLIANCE WITH PHASED REOPENING   66317      0.00    0.77   10.60  126.81      18.4342
+                                 LOST PROPERTY   29190      0.00    0.84    1.65   54.66      20.2540
+                                         STORM    3005      0.00    0.90    1.21   19.46      21.6500
+                    BUS STOP SHELTER PLACEMENT     795      0.00    0.93    6.86  503.14      22.4303
+                             DERELICT VEHICLES  223846      0.00    0.95    1.50  273.53      22.7500
+ PRIVATE SCHOOL VACCINE MANDATE NON-COMPLIANCE     219      0.00    1.02    0.91    1.04      24.4778
+                VACCINE MANDATE NON-COMPLIANCE    7399      0.96    1.02    1.02    1.04      24.5014
+                    OVERFLOWING LITTER BASKETS    4566      0.00    1.12    1.88   54.79      26.9083
+                              DERELICT BICYCLE    2913 -44458.33    1.14  -11.25   87.55      27.4500
+                          SANITATION CONDITION   62677 -44458.29    1.15    1.80  319.02      27.5833
+                                          LEAD   58362      0.00    1.19    4.91  105.98      28.5500
+                        COLLECTION TRUCK NOISE     470     -4.99    1.21    3.91  319.01      29.0667
+                                   AIR QUALITY   48512   -476.73    1.27    2.57  171.29      30.5333
+                              STREET CONDITION  331330     -2.94    1.28    4.57 1827.31      30.6444
+                                FOOD POISONING   11902      0.00    1.38   11.69 1387.40      33.0235
+                       LITTER BASKET / REQUEST    3921     -2.98    1.47    2.78  319.02      35.3500
+                               DIRTY CONDITION  162789      0.00    1.50    5.04  797.77      36.0736
+                            CONSUMER COMPLAINT  116117      0.01    1.53   14.58 1233.24      36.6603
+                RESIDENTIAL DISPOSAL COMPLAINT   35269      0.00    1.59    4.20  166.89      38.0656
+                                 FERRY INQUIRY    1465      0.00    1.64    4.83  175.97      39.2519
+                          BROKEN PARKING METER   29954      0.00    1.69    5.53  544.07      40.6081
+                           SWEEPING/INADEQUATE     537      0.00    1.79    3.32   68.00      42.9667
+                                HEAT/HOT WATER 1121177     -0.85    1.82    2.22 1414.11      43.6444
+                                   OBSTRUCTION   50600      0.00    1.84    6.80  736.62      44.2053
+                                     E-SCOOTER    1391      0.01    1.93    6.00  225.00      46.3397
+                 COMMERCIAL DISPOSAL COMPLAINT    8957      0.00    1.97    5.60  455.95      47.1983
+             MISSED COLLECTION (ALL MATERIALS)   82690     -4.99    1.97    2.79  326.00      47.1833
+                              BRIDGE CONDITION    1467      0.00    2.00   22.08  505.01      48.0303
+                               SWEEPING/MISSED    2731      0.00    2.00    3.99   55.95      47.9667
+                                         NOISE  245100   -487.71    2.15    4.07 1938.78      51.6667
+                 EMERGENCY RESPONSE TEAM (ERT)   16861      0.00    2.24    7.90 1332.51      53.8719
+           INVESTIGATIONS AND DISCIPLINE (IAD)    2858      0.00    2.29   16.30 1554.14      54.9351
+                                   DEAD ANIMAL   32887      0.00    2.59    4.65  114.65      62.1508
+           REQUEST LARGE BULKY ITEM COLLECTION  630147      0.00    2.63    3.74   61.35      63.2167
+                                       BOILERS   15211      0.00    2.64    8.02 1024.20      63.4628
+                            RETAILER COMPLAINT      51      0.12    2.68    5.06   27.97      64.2992
+                 ELECTRONICS WASTE APPOINTMENT   32585      0.00    2.71    5.88  183.87      65.1000
+                               ILLEGAL POSTING   11703      0.01    2.75    4.02  147.96      65.9142
+                              DIRTY CONDITIONS   68191      0.00    2.79    9.62  374.22      66.8833
+                                   SNOW OR ICE   11330      0.00    2.81    4.11  432.86      67.4740
+                INSTITUTION DISPOSAL COMPLAINT     187      0.01    2.88    5.88   54.79      69.0250
+                         RECYCLING ENFORCEMENT     643      0.00    2.92   10.70  146.75      70.0833
+                             HIGHWAY CONDITION   17014      0.00    2.94   12.88 1068.03      70.5494
+                             OTHER ENFORCEMENT   11789      0.00    3.05   10.53  319.00      73.1500
+                           SEASONAL COLLECTION     790      0.03    3.20    5.64   45.72      76.6956
+                               ILLEGAL DUMPING  109029      0.00    3.47    6.77  830.58      83.2717
+                       X-RAY MACHINE/EQUIPMENT     153      0.01    3.50    6.54   64.32      84.1122
+                                    ELECTRICAL   10237      0.00    3.56   10.39 1648.61      85.5392
+                    RECYCLING BASKET COMPLAINT     253      0.04    3.74    6.95   56.23      89.7194
+                                 WATER QUALITY    7813      0.00    3.83   16.92  612.41      91.9667
+                                INCORRECT DATA     313      0.00    3.86    5.81  112.87      92.7575
+                       LITTER BASKET COMPLAINT    4835      0.00    3.97    8.73  134.72      95.2389
+                          DEP STREET CONDITION     629      0.00    4.02    7.13  301.76      96.5469
+                            DUMPSTER COMPLAINT    5855      0.01    4.08    9.39  229.23      97.9533
+                             MISSED COLLECTION  177205      0.00    4.11    6.74  981.19      98.6925
+                 GENERAL CONSTRUCTION/PLUMBING  182924      0.00    4.34   42.80 1969.40     104.2796
+                               TAXI COMPLIMENT     412      0.04    4.70   14.15  145.81     112.8440
+                         LITTER BASKET REQUEST   11399      0.00    4.73    8.46  159.99     113.5517
+                                  SNOW REMOVAL      92      4.06    4.77   27.06 1182.96     114.5861
+                                 COOLING TOWER      96      0.03    4.78   48.05  767.33     114.6022
+                                          SNOW    9415      0.00    4.82    5.71   33.19     115.6500
+                                ABANDONED BIKE    6681      0.00    4.92    9.52  147.02     117.9689
+                    BEACH/POOL/SAUNA COMPLAINT     894      0.00    4.92   17.06  425.98     118.0189
+        SANITATION WORKER OR VEHICLE COMPLAINT    9773      0.00    4.94    9.03  402.67     118.5408
+                     STREET SWEEPING COMPLAINT   26924      0.00    4.95    8.04  156.06     118.8656
+                                     LIFEGUARD     127      0.06    5.02   14.48  274.93     120.3667
+                               FERRY COMPLAINT    1355      0.00    5.10   10.19  112.67     122.5139
+                       HIGHWAY SIGN - DANGLING     164      0.02    5.11   13.43  369.78     122.7482
+                                 INDOOR SEWAGE    3139      0.00    5.11  120.24 1022.92     122.7064
+                           AHV INSPECTION UNIT     720      0.00    5.25    6.08   76.78     125.9194
+                          RADIOACTIVE MATERIAL      66      0.07    5.49    7.21   29.10     131.6972
+                            SPECIAL OPERATIONS      56      0.00    5.56   20.42  510.37     133.4536
+                        HIGHWAY SIGN - DAMAGED     621      0.00    5.90   14.56  294.43     141.5717
+                        STREET SIGN - DANGLING   17523      0.00    6.07   13.69  628.91     145.6325
+                         STREET SIGN - DAMAGED   24636      0.00    6.20   32.22 1044.04     148.8242
+                    BUS STOP SHELTER COMPLAINT    5269      0.00    6.70   11.32  497.91     160.8889
+                                DRINKING WATER    1406      0.00    6.78  126.02 1099.19     162.7260
+                        HIGHWAY SIGN - MISSING     275      0.08    7.63   21.38  334.72     183.0828
+                         STREET SIGN - MISSING   20473      0.00    8.14   40.70  976.08     195.3375
+                                    VACANT LOT    3036 -44431.54    8.14   51.84  548.04     195.3583
+                                 PAINT/PLASTER  262168     -0.56    8.15   20.60 1349.88     195.6518
+                                      ELECTRIC  124398     -0.64    8.34   23.81 1243.21     200.2375
+                                        SAFETY   52336     -0.37    8.37   21.47 1288.04     200.9178
+                       FOR HIRE VEHICLE REPORT     345      0.49    8.43   19.59  162.73     202.3786
+                            SIDEWALK CONDITION  120832      0.00    9.06   14.29 1310.53     217.3296
+                     PUBLIC PAYPHONE COMPLAINT     396      0.01    9.14   33.54  434.01     219.4776
+                                  DAMAGED TREE  154991 -44375.79    9.16   82.04 1878.06     219.7867
+                                      PLUMBING  288972     -0.91    9.25   25.32 1589.29     222.0758
+                    MUNICIPAL PARKING FACILITY     290      0.01    9.74  119.24  667.96     233.6654
+                                     BIKE RACK     140      0.11   10.93   22.02  152.77     262.2219
+           PRIVATE OR CHARTER SCHOOL REOPENING    1138 -44516.37   10.93 -142.91   97.53     262.3036
+                                       LINKNYC     756      0.02   11.18   21.49  584.74     268.3560
+                               FLOORING/STAIRS  114111     -0.51   11.31   25.14 1343.71     271.4828
+                          UNSANITARY CONDITION  488630     -0.55   11.34   26.00 1573.61     272.1364
+                                    WATER LEAK  184372     -0.55   11.88   28.27 1358.89     285.1017
+                                OUTDOOR DINING   26196      0.00   12.02   27.99  418.87     288.4649
+                                   DOOR/WINDOW  193979     -0.55   12.60   28.16 1329.14     302.3897
+                            SCHOOL MAINTENANCE    6374      0.00   12.83   89.14 1178.73     307.8579
+                              OUTSIDE BUILDING    4560      0.04   13.02   30.85 1080.99     312.5297
+                                WATER DRAINAGE      68     -0.56   13.42   16.47   45.50     322.0496
+                                       GENERAL  133837     -1.27   13.63   32.92 1302.33     327.0319
+         HOME DELIVERED MEAL - MISSED DELIVERY    2593      0.00   14.20   13.86  442.86     340.8172
+                                CURB CONDITION   30818      0.00   14.89   26.38  781.88     357.3697
+                                     APPLIANCE   95909     -0.48   15.19   33.35 1287.26     364.5331
+                                   TAXI REPORT     607 -44516.54   15.78 -122.63  202.33     378.6914
+                           ILLEGAL TREE DAMAGE   18332 -44354.78   21.76  111.22 1804.46     522.1533
+          SPECIAL NATURAL AREA DISTRICT (SNAD)     246      0.00   24.33   49.00  745.26     583.8675
+                       MAINTENANCE OR FACILITY   96489      0.00   24.67  103.50 1908.81     592.0722
+                           BIKE RACK CONDITION    1017      0.00   25.53  107.53  851.16     612.6094
+                                      ELEVATOR   90565      0.00   26.40   35.83 1089.38     633.6211
+       SPECIAL PROJECTS INSPECTION TEAM (SPIT)   19246      0.00   27.54   66.34 1892.82     660.9324
+                           WOOD PILE REMAINING    1893      0.00   27.78  196.13 1757.02     666.6631
+                          GREEN TAXI COMPLAINT    1311      0.28   32.78  133.71  848.78     786.6611
+                  BUILDING DRINKING WATER TANK     144      0.02   34.84  149.55  736.21     836.2256
+                                      GRAFFITI   67992  -5545.43   35.57  168.84 3929.44     853.7217
+                       OVERGROWN TREE/BRANCHES   80170 -44458.54   40.80  257.11 1809.12     979.2051
+                               DEAD/DYING TREE   38856 -44516.51   41.01  157.86 1927.65     984.1419
+                                BOROUGH OFFICE     150      0.00   49.52   91.48  694.53    1188.4901
+                            NOISE - HELICOPTER  130246      0.00   52.74  329.63 1356.85    1265.8424
+                    FOR HIRE VEHICLE COMPLAINT   61929 -44516.54   67.47   55.02 1879.96    1619.3742
+                                  BUILDING/USE   91151      0.00   68.37  126.93 1917.33    1640.8856
+                                TAXI COMPLAINT   23226 -44516.52   75.88   44.77 1371.10    1821.0653
+                                UPROOTED STUMP    1430 -44375.74  106.93  220.18 1568.01    2566.2603
+                                    POISON IVY     677      1.05  108.75  434.80 1804.79    2609.9981
+                                 LOT CONDITION    5016   -856.56  125.10  149.23  907.41    3002.3415
+                             SMOKING OR VAPING    3757     35.54  127.60  140.44  282.81    3062.4600
+                 ROOT/SEWER/SIDEWALK CONDITION   42728 -44458.58  159.99  314.68 1777.09    3839.7481
+                              NEW TREE REQUEST   90249 -44041.74  441.99  601.36 1938.26   10607.7208
+                            MOBILE FOOD VENDOR   17000 -44375.67  503.81  649.49 1836.02   12091.3415
+                            FOOD ESTABLISHMENT   51236      0.01  585.47  660.81 1615.42   14051.2636
+                          NON-RESIDENTIAL HEAT    4216      0.06  594.19  668.15 1614.11   14260.4794
+                                ADOPT-A-BASKET     722      0.00  600.44  628.05 2050.82   14410.5750
+                                       SMOKING   15693      0.00  762.41  781.34 1615.66   18297.9597
+                                     TATTOOING     883     18.28  833.99  833.77 1826.41   20015.7356
+                                      DAY CARE    7325      0.00  874.57  829.31 1622.27   20989.7194
+                                  WINDOW GUARD     106      6.60 1124.81 1026.71 1814.40   26995.3647
+
+
+================================================================================ 
+SORT 2: By Count (N, descending)
+================================================================================ 
+
+                                complaint_type       N       Min  Median    Mean     Max Median_hours
+                               ILLEGAL PARKING 1900724     -0.07    0.04    0.10  877.15       1.0083
+                           NOISE - RESIDENTIAL 1824108     -0.08    0.03    0.35  877.52       0.7708
+                                HEAT/HOT WATER 1121177     -0.85    1.82    2.22 1414.11      43.6444
+                       NOISE - STREET/SIDEWALK  854808     -0.08    0.02    0.11 1044.58       0.5811
+                              BLOCKED DRIVEWAY  761854     -0.08    0.05    0.13  693.13       1.1967
+           REQUEST LARGE BULKY ITEM COLLECTION  630147      0.00    2.63    3.74   61.35      63.2167
+                          UNSANITARY CONDITION  488630     -0.55   11.34   26.00 1573.61     272.1364
+                              STREET CONDITION  331330     -2.94    1.28    4.57 1827.31      30.6444
+                               NOISE - VEHICLE  331051     -0.07    0.03    0.07  591.66       0.6106
+                            NOISE - COMMERCIAL  295131     -0.08    0.02    0.06  738.61       0.5928
+                                      PLUMBING  288972     -0.91    9.25   25.32 1589.29     222.0758
+                                  WATER SYSTEM  285305   -499.16    0.22    4.45 2074.85       5.1833
+                             ABANDONED VEHICLE  280248      0.00    0.05    0.16  380.44       1.2242
+                                 PAINT/PLASTER  262168     -0.56    8.15   20.60 1349.88     195.6518
+                                         NOISE  245100   -487.71    2.15    4.07 1938.78      51.6667
+                        STREET LIGHT CONDITION  240859   -378.00    0.00   21.64 2047.25       0.0000
+                             DERELICT VEHICLES  223846      0.00    0.95    1.50  273.53      22.7500
+                                   DOOR/WINDOW  193979     -0.55   12.60   28.16 1329.14     302.3897
+                      TRAFFIC SIGNAL CONDITION  189748   -364.93    0.09   12.42 1157.00       2.2167
+                                    WATER LEAK  184372     -0.55   11.88   28.27 1358.89     285.1017
+                 GENERAL CONSTRUCTION/PLUMBING  182924      0.00    4.34   42.80 1969.40     104.2796
+                                        RODENT  178471 -44458.59    0.00    3.52  815.08       0.0000
+                             MISSED COLLECTION  177205      0.00    4.11    6.74  981.19      98.6925
+                   NON-EMERGENCY POLICE MATTER  165912      0.00    0.02    0.06  734.54       0.4697
+                               DIRTY CONDITION  162789      0.00    1.50    5.04  797.77      36.0736
+                                  DAMAGED TREE  154991 -44375.79    9.16   82.04 1878.06     219.7867
+                                    ENCAMPMENT  147040     -0.07    0.04    1.32  926.37       1.0442
+                                         SEWER  143749   -525.90    0.17    7.00 2009.06       4.0333
+                                       GENERAL  133837     -1.27   13.63   32.92 1302.33     327.0319
+                            NOISE - HELICOPTER  130246      0.00   52.74  329.63 1356.85    1265.8424
+                    HOMELESS PERSON ASSISTANCE  126979 -44601.59    0.13   -1.19 1741.76       3.1950
+                                      ELECTRIC  124398     -0.64    8.34   23.81 1243.21     200.2375
+                            SIDEWALK CONDITION  120832      0.00    9.06   14.29 1310.53     217.3296
+                            CONSUMER COMPLAINT  116117      0.01    1.53   14.58 1233.24      36.6603
+                               FLOORING/STAIRS  114111     -0.51   11.31   25.14 1343.71     271.4828
+                               ILLEGAL DUMPING  109029      0.00    3.47    6.77  830.58      83.2717
+                             ILLEGAL FIREWORKS  101395     -0.01    0.02    0.09  737.54       0.3853
+                       MAINTENANCE OR FACILITY   96489      0.00   24.67  103.50 1908.81     592.0722
+                                     APPLIANCE   95909     -0.48   15.19   33.35 1287.26     364.5331
+                                  BUILDING/USE   91151      0.00   68.37  126.93 1917.33    1640.8856
+                                      ELEVATOR   90565      0.00   26.40   35.83 1089.38     633.6211
+                              NEW TREE REQUEST   90249 -44041.74  441.99  601.36 1938.26   10607.7208
+             MISSED COLLECTION (ALL MATERIALS)   82690     -4.99    1.97    2.79  326.00      47.1833
+                       OVERGROWN TREE/BRANCHES   80170 -44458.54   40.80  257.11 1809.12     979.2051
+                              DIRTY CONDITIONS   68191      0.00    2.79    9.62  374.22      66.8833
+                                      GRAFFITI   67992  -5545.43   35.57  168.84 3929.44     853.7217
+           NONCOMPLIANCE WITH PHASED REOPENING   66317      0.00    0.77   10.60  126.81      18.4342
+                          SANITATION CONDITION   62677 -44458.29    1.15    1.80  319.02      27.5833
+                    FOR HIRE VEHICLE COMPLAINT   61929 -44516.54   67.47   55.02 1879.96    1619.3742
+                                 DRUG ACTIVITY   59028      0.00    0.02    0.05  233.47       0.4022
+                                          LEAD   58362      0.00    1.19    4.91  105.98      28.5500
+                                        SAFETY   52336     -0.37    8.37   21.47 1288.04     200.9178
+                            FOOD ESTABLISHMENT   51236      0.01  585.47  660.81 1615.42   14051.2636
+                                   OBSTRUCTION   50600      0.00    1.84    6.80  736.62      44.2053
+                                   AIR QUALITY   48512   -476.73    1.27    2.57  171.29      30.5333
+                 ROOT/SEWER/SIDEWALK CONDITION   42728 -44458.58  159.99  314.68 1777.09    3839.7481
+                                  NOISE - PARK   41903      0.00    0.02    0.16  735.56       0.5244
+                            VENDOR ENFORCEMENT   39935      0.00    0.06    0.09   25.92       1.5078
+                               DEAD/DYING TREE   38856 -44516.51   41.01  157.86 1927.65     984.1419
+                                  ANIMAL-ABUSE   38792     -0.08    0.04    0.17  734.48       1.0433
+                RESIDENTIAL DISPOSAL COMPLAINT   35269      0.00    1.59    4.20  166.89      38.0656
+                                   DEAD ANIMAL   32887      0.00    2.59    4.65  114.65      62.1508
+                 ELECTRONICS WASTE APPOINTMENT   32585      0.00    2.71    5.88  183.87      65.1000
+                                   PANHANDLING   31211     -0.04    0.03    0.07  241.84       0.6711
+                            INDOOR AIR QUALITY   30917      0.00    0.62    1.80 1191.90      14.9833
+                                CURB CONDITION   30818      0.00   14.89   26.38  781.88     357.3697
+                                       TRAFFIC   30383      0.00    0.02    0.06  152.41       0.5653
+                          BROKEN PARKING METER   29954      0.00    1.69    5.53  544.07      40.6081
+                                 LOST PROPERTY   29190      0.00    0.84    1.65   54.66      20.2540
+                     STREET SWEEPING COMPLAINT   26924      0.00    4.95    8.04  156.06     118.8656
+                                OUTDOOR DINING   26196      0.00   12.02   27.99  418.87     288.4649
+                         STREET SIGN - DAMAGED   24636      0.00    6.20   32.22 1044.04     148.8242
+                       VIOLATION OF PARK RULES   23742      0.00    0.03    2.87 1183.87       0.8019
+                                TAXI COMPLAINT   23226 -44516.52   75.88   44.77 1371.10    1821.0653
+                         REAL TIME ENFORCEMENT   22902      0.00    0.00    9.97 1756.49       0.0000
+                              ANIMAL IN A PARK   21725      0.00    0.05    8.76 1285.97       1.2014
+                         STREET SIGN - MISSING   20473      0.00    8.14   40.70  976.08     195.3375
+       SPECIAL PROJECTS INSPECTION TEAM (SPIT)   19246      0.00   27.54   66.34 1892.82     660.9324
+                           ILLEGAL TREE DAMAGE   18332 -44354.78   21.76  111.22 1804.46     522.1533
+                            WATER CONSERVATION   17712      0.00    0.63    1.93  337.71      15.1500
+                        STREET SIGN - DANGLING   17523      0.00    6.07   13.69  628.91     145.6325
+                                      DRINKING   17117      0.00    0.03    0.09  338.60       0.7003
+                             HIGHWAY CONDITION   17014      0.00    2.94   12.88 1068.03      70.5494
+                            MOBILE FOOD VENDOR   17000 -44375.67  503.81  649.49 1836.02   12091.3415
+                 EMERGENCY RESPONSE TEAM (ERT)   16861      0.00    2.24    7.90 1332.51      53.8719
+                                       SMOKING   15693      0.00  762.41  781.34 1615.66   18297.9597
+                     HOMELESS STREET CONDITION   15583      0.00    0.02    0.06  252.03       0.4381
+                                       BOILERS   15211      0.00    2.64    8.02 1024.20      63.4628
+                     BIKE/ROLLER/SKATE CHRONIC   14007      0.00    0.02    0.04    3.11       0.3750
+                                FOOD POISONING   11902      0.00    1.38   11.69 1387.40      33.0235
+                             OTHER ENFORCEMENT   11789      0.00    3.05   10.53  319.00      73.1500
+                               ILLEGAL POSTING   11703      0.01    2.75    4.02  147.96      65.9142
+                         LITTER BASKET REQUEST   11399      0.00    4.73    8.46  159.99     113.5517
+                                   SNOW OR ICE   11330      0.00    2.81    4.11  432.86      67.4740
+                                    ELECTRICAL   10237      0.00    3.56   10.39 1648.61      85.5392
+                UNSANITARY ANIMAL PVT PROPERTY    9977      0.00    0.00    6.30  429.17       0.0000
+        SANITATION WORKER OR VEHICLE COMPLAINT    9773      0.00    4.94    9.03  402.67     118.5408
+                                          SNOW    9415      0.00    4.82    5.71   33.19     115.6500
+                           HAZARDOUS MATERIALS    9067   -548.76    0.07    1.06  670.01       1.6667
+                 COMMERCIAL DISPOSAL COMPLAINT    8957      0.00    1.97    5.60  455.95      47.1983
+                                 WATER QUALITY    7813      0.00    3.83   16.92  612.41      91.9667
+                VACCINE MANDATE NON-COMPLIANCE    7399      0.96    1.02    1.02    1.04      24.5014
+                                      DAY CARE    7325      0.00  874.57  829.31 1622.27   20989.7194
+           COVID-19 NON-ESSENTIAL CONSTRUCTION    7322      0.00    0.00    1.84 1895.31       0.0000
+                      NOISE - HOUSE OF WORSHIP    6892      0.00    0.02    0.04   26.70       0.4408
+                                      ASBESTOS    6715      0.00    0.25    5.02  481.97       5.9500
+                                ABANDONED BIKE    6681      0.00    4.92    9.52  147.02     117.9689
+                            SCHOOL MAINTENANCE    6374      0.00   12.83   89.14 1178.73     307.8579
+                            DUMPSTER COMPLAINT    5855      0.01    4.08    9.39  229.23      97.9533
+                    BUS STOP SHELTER COMPLAINT    5269      0.00    6.70   11.32  497.91     160.8889
+                           URINATING IN PUBLIC    5244      0.00    0.03    0.07   17.69       0.6536
+                                 LOT CONDITION    5016   -856.56  125.10  149.23  907.41    3002.3415
+                   UNSANITARY PIGEON CONDITION    4892      0.00    0.00    4.12  275.94       0.0000
+                       LITTER BASKET COMPLAINT    4835      0.00    3.97    8.73  134.72      95.2389
+                                STANDING WATER    4752      0.00    0.00    0.04   35.19       0.0000
+                    OVERFLOWING LITTER BASKETS    4566      0.00    1.12    1.88   54.79      26.9083
+                              OUTSIDE BUILDING    4560      0.04   13.02   30.85 1080.99     312.5297
+                                       VENDING    4353      0.00    0.02    0.08   20.82       0.4689
+                          NON-RESIDENTIAL HEAT    4216      0.06  594.19  668.15 1614.11   14260.4794
+                       LITTER BASKET / REQUEST    3921     -2.98    1.47    2.78  319.02      35.3500
+                                 UNLEASHED DOG    3780 -44458.48    0.00  -11.76    0.00       0.0000
+                             SMOKING OR VAPING    3757     35.54  127.60  140.44  282.81    3062.4600
+                      MASS GATHERING COMPLAINT    3652      0.00    0.11    0.28  520.58       2.7254
+                              INDUSTRIAL WASTE    3634   -477.68    0.21    7.57 1505.05       4.9667
+                                 INDOOR SEWAGE    3139      0.00    5.11  120.24 1022.92     122.7064
+                                    VACANT LOT    3036 -44431.54    8.14   51.84  548.04     195.3583
+                                         STORM    3005      0.00    0.90    1.21   19.46      21.6500
+                              DERELICT BICYCLE    2913 -44458.33    1.14  -11.25   87.55      27.4500
+           INVESTIGATIONS AND DISCIPLINE (IAD)    2858      0.00    2.29   16.30 1554.14      54.9351
+                             SEWER MAINTENANCE    2771      0.00    0.37    0.88   31.35       8.7775
+                               SWEEPING/MISSED    2731      0.00    2.00    3.99   55.95      47.9667
+         HOME DELIVERED MEAL - MISSED DELIVERY    2593      0.00   14.20   13.86  442.86     340.8172
+                                    MOSQUITOES    2025      0.00    0.06   11.18  120.29       1.4892
+                              BEST/SITE SAFETY    2007      0.00    0.49   16.47 1990.56      11.7981
+                           WOOD PILE REMAINING    1893      0.00   27.78  196.13 1757.02     666.6631
+                       FACE COVERING VIOLATION    1797      0.00    0.02    0.14    1.04       0.5833
+                                          MOLD    1479      0.00    0.67    1.26   49.02      16.1986
+                              BRIDGE CONDITION    1467      0.00    2.00   22.08  505.01      48.0303
+                                 FERRY INQUIRY    1465      0.00    1.64    4.83  175.97      39.2519
+                              DISORDERLY YOUTH    1459      0.00    0.02    0.05    1.73       0.5756
+                    ILLEGAL ANIMAL KEPT AS PET    1454      0.00    0.00    0.00    0.00       0.0000
+                                UPROOTED STUMP    1430 -44375.74  106.93  220.18 1568.01    2566.2603
+                                DRINKING WATER    1406      0.00    6.78  126.02 1099.19     162.7260
+                                     E-SCOOTER    1391      0.01    1.93    6.00  225.00      46.3397
+                               FERRY COMPLAINT    1355      0.00    5.10   10.19  112.67     122.5139
+                          GREEN TAXI COMPLAINT    1311      0.28   32.78  133.71  848.78     786.6611
+           PRIVATE OR CHARTER SCHOOL REOPENING    1138 -44516.37   10.93 -142.91   97.53     262.3036
+                           BIKE RACK CONDITION    1017      0.00   25.53  107.53  851.16     612.6094
+                    BEACH/POOL/SAUNA COMPLAINT     894      0.00    4.92   17.06  425.98     118.0189
+                                     TATTOOING     883     18.28  833.99  833.77 1826.41   20015.7356
+                               SCAFFOLD SAFETY     875      0.00    0.37   15.42 1393.41       8.9483
+                                      PET SHOP     824      0.00    0.00    0.00    0.00       0.0000
+                    BUS STOP SHELTER PLACEMENT     795      0.00    0.93    6.86  503.14      22.4303
+                           SEASONAL COLLECTION     790      0.03    3.20    5.64   45.72      76.6956
+                                       LINKNYC     756      0.02   11.18   21.49  584.74     268.3560
+                                ADOPT-A-BASKET     722      0.00  600.44  628.05 2050.82   14410.5750
+                           AHV INSPECTION UNIT     720      0.00    5.25    6.08   76.78     125.9194
+                                    POISON IVY     677      1.05  108.75  434.80 1804.79    2609.9981
+                         RECYCLING ENFORCEMENT     643      0.00    2.92   10.70  146.75      70.0833
+                          DEP STREET CONDITION     629      0.00    4.02    7.13  301.76      96.5469
+                        HIGHWAY SIGN - DAMAGED     621      0.00    5.90   14.56  294.43     141.5717
+                                   TAXI REPORT     607 -44516.54   15.78 -122.63  202.33     378.6914
+                                         PLANT     585      0.00    0.06   15.61  931.00       1.4667
+                           SWEEPING/INADEQUATE     537      0.00    1.79    3.32   68.00      42.9667
+                        COLLECTION TRUCK NOISE     470     -4.99    1.21    3.91  319.01      29.0667
+                           CRANES AND DERRICKS     456      0.00    0.38    9.73 1123.58       9.0146
+                         POSTING ADVERTISEMENT     438      0.00    0.03    0.08    0.88       0.7331
+                               TAXI COMPLIMENT     412      0.04    4.70   14.15  145.81     112.8440
+                     PUBLIC PAYPHONE COMPLAINT     396      0.01    9.14   33.54  434.01     219.4776
+                             WATER MAINTENANCE     368      0.00    0.15    1.15   21.05       3.6250
+                       FOR HIRE VEHICLE REPORT     345      0.49    8.43   19.59  162.73     202.3786
+                                INCORRECT DATA     313      0.00    3.86    5.81  112.87      92.7575
+                    MUNICIPAL PARKING FACILITY     290      0.01    9.74  119.24  667.96     233.6654
+                        HIGHWAY SIGN - MISSING     275      0.08    7.63   21.38  334.72     183.0828
+                           ILLEGAL ANIMAL SOLD     261      0.00    0.00    0.00    0.00       0.0000
+                    RECYCLING BASKET COMPLAINT     253      0.04    3.74    6.95   56.23      89.7194
+          SPECIAL NATURAL AREA DISTRICT (SNAD)     246      0.00   24.33   49.00  745.26     583.8675
+                                      SQUEEGEE     226      0.00    0.02    0.05    1.77       0.4911
+ PRIVATE SCHOOL VACCINE MANDATE NON-COMPLIANCE     219      0.00    1.02    0.91    1.04      24.4778
+                    UNSANITARY ANIMAL FACILITY     210      0.00    0.00    0.00    0.00       0.0000
+                   ANIMAL FACILITY - NO PERMIT     199      0.00    0.00    0.00    0.00       0.0000
+                           HOMELESS ENCAMPMENT     193      0.00    0.10    0.14    0.85       2.3986
+                INSTITUTION DISPOSAL COMPLAINT     187      0.01    2.88    5.88   54.79      69.0250
+                                 PUBLIC TOILET     175      0.00    0.68    2.10   26.40      16.3606
+                       HIGHWAY SIGN - DANGLING     164      0.02    5.11   13.43  369.78     122.7482
+                       X-RAY MACHINE/EQUIPMENT     153      0.01    3.50    6.54   64.32      84.1122
+                        DEPT OF INVESTIGATIONS     151      0.00    0.37    4.37  137.47       8.9639
+                                BOROUGH OFFICE     150      0.00   49.52   91.48  694.53    1188.4901
+                  BUILDING DRINKING WATER TANK     144      0.02   34.84  149.55  736.21     836.2256
+                                     BIKE RACK     140      0.11   10.93   22.02  152.77     262.2219
+                                     LIFEGUARD     127      0.06    5.02   14.48  274.93     120.3667
+                                  WINDOW GUARD     106      6.60 1124.81 1026.71 1814.40   26995.3647
+                                 COOLING TOWER      96      0.03    4.78   48.05  767.33     114.6022
+                                  SNOW REMOVAL      92      4.06    4.77   27.06 1182.96     114.5861
+                             UNSTABLE BUILDING      69     -0.84    0.40    0.53    5.50       9.5028
+                                WATER DRAINAGE      68     -0.56   13.42   16.47   45.50     322.0496
+                          RADIOACTIVE MATERIAL      66      0.07    5.49    7.21   29.10     131.6972
+                            SPECIAL OPERATIONS      56      0.00    5.56   20.42  510.37     133.4536
+                            RETAILER COMPLAINT      51      0.12    2.68    5.06   27.97      64.2992
+
+
+================================================================================ 
+SORT 3: Alphabetically by Complaint Type
+================================================================================ 
+
+                                complaint_type       N       Min  Median    Mean     Max Median_hours
+                                ABANDONED BIKE    6681      0.00    4.92    9.52  147.02     117.9689
+                             ABANDONED VEHICLE  280248      0.00    0.05    0.16  380.44       1.2242
+                                ADOPT-A-BASKET     722      0.00  600.44  628.05 2050.82   14410.5750
+                           AHV INSPECTION UNIT     720      0.00    5.25    6.08   76.78     125.9194
+                                   AIR QUALITY   48512   -476.73    1.27    2.57  171.29      30.5333
+                   ANIMAL FACILITY - NO PERMIT     199      0.00    0.00    0.00    0.00       0.0000
+                              ANIMAL IN A PARK   21725      0.00    0.05    8.76 1285.97       1.2014
+                                  ANIMAL-ABUSE   38792     -0.08    0.04    0.17  734.48       1.0433
+                                     APPLIANCE   95909     -0.48   15.19   33.35 1287.26     364.5331
+                                      ASBESTOS    6715      0.00    0.25    5.02  481.97       5.9500
+                    BEACH/POOL/SAUNA COMPLAINT     894      0.00    4.92   17.06  425.98     118.0189
+                              BEST/SITE SAFETY    2007      0.00    0.49   16.47 1990.56      11.7981
+                                     BIKE RACK     140      0.11   10.93   22.02  152.77     262.2219
+                           BIKE RACK CONDITION    1017      0.00   25.53  107.53  851.16     612.6094
+                     BIKE/ROLLER/SKATE CHRONIC   14007      0.00    0.02    0.04    3.11       0.3750
+                              BLOCKED DRIVEWAY  761854     -0.08    0.05    0.13  693.13       1.1967
+                                       BOILERS   15211      0.00    2.64    8.02 1024.20      63.4628
+                                BOROUGH OFFICE     150      0.00   49.52   91.48  694.53    1188.4901
+                              BRIDGE CONDITION    1467      0.00    2.00   22.08  505.01      48.0303
+                          BROKEN PARKING METER   29954      0.00    1.69    5.53  544.07      40.6081
+                  BUILDING DRINKING WATER TANK     144      0.02   34.84  149.55  736.21     836.2256
+                                  BUILDING/USE   91151      0.00   68.37  126.93 1917.33    1640.8856
+                    BUS STOP SHELTER COMPLAINT    5269      0.00    6.70   11.32  497.91     160.8889
+                    BUS STOP SHELTER PLACEMENT     795      0.00    0.93    6.86  503.14      22.4303
+                        COLLECTION TRUCK NOISE     470     -4.99    1.21    3.91  319.01      29.0667
+                 COMMERCIAL DISPOSAL COMPLAINT    8957      0.00    1.97    5.60  455.95      47.1983
+                            CONSUMER COMPLAINT  116117      0.01    1.53   14.58 1233.24      36.6603
+                                 COOLING TOWER      96      0.03    4.78   48.05  767.33     114.6022
+           COVID-19 NON-ESSENTIAL CONSTRUCTION    7322      0.00    0.00    1.84 1895.31       0.0000
+                           CRANES AND DERRICKS     456      0.00    0.38    9.73 1123.58       9.0146
+                                CURB CONDITION   30818      0.00   14.89   26.38  781.88     357.3697
+                                  DAMAGED TREE  154991 -44375.79    9.16   82.04 1878.06     219.7867
+                                      DAY CARE    7325      0.00  874.57  829.31 1622.27   20989.7194
+                                   DEAD ANIMAL   32887      0.00    2.59    4.65  114.65      62.1508
+                               DEAD/DYING TREE   38856 -44516.51   41.01  157.86 1927.65     984.1419
+                          DEP STREET CONDITION     629      0.00    4.02    7.13  301.76      96.5469
+                        DEPT OF INVESTIGATIONS     151      0.00    0.37    4.37  137.47       8.9639
+                              DERELICT BICYCLE    2913 -44458.33    1.14  -11.25   87.55      27.4500
+                             DERELICT VEHICLES  223846      0.00    0.95    1.50  273.53      22.7500
+                               DIRTY CONDITION  162789      0.00    1.50    5.04  797.77      36.0736
+                              DIRTY CONDITIONS   68191      0.00    2.79    9.62  374.22      66.8833
+                              DISORDERLY YOUTH    1459      0.00    0.02    0.05    1.73       0.5756
+                                   DOOR/WINDOW  193979     -0.55   12.60   28.16 1329.14     302.3897
+                                      DRINKING   17117      0.00    0.03    0.09  338.60       0.7003
+                                DRINKING WATER    1406      0.00    6.78  126.02 1099.19     162.7260
+                                 DRUG ACTIVITY   59028      0.00    0.02    0.05  233.47       0.4022
+                            DUMPSTER COMPLAINT    5855      0.01    4.08    9.39  229.23      97.9533
+                                     E-SCOOTER    1391      0.01    1.93    6.00  225.00      46.3397
+                                      ELECTRIC  124398     -0.64    8.34   23.81 1243.21     200.2375
+                                    ELECTRICAL   10237      0.00    3.56   10.39 1648.61      85.5392
+                 ELECTRONICS WASTE APPOINTMENT   32585      0.00    2.71    5.88  183.87      65.1000
+                                      ELEVATOR   90565      0.00   26.40   35.83 1089.38     633.6211
+                 EMERGENCY RESPONSE TEAM (ERT)   16861      0.00    2.24    7.90 1332.51      53.8719
+                                    ENCAMPMENT  147040     -0.07    0.04    1.32  926.37       1.0442
+                       FACE COVERING VIOLATION    1797      0.00    0.02    0.14    1.04       0.5833
+                               FERRY COMPLAINT    1355      0.00    5.10   10.19  112.67     122.5139
+                                 FERRY INQUIRY    1465      0.00    1.64    4.83  175.97      39.2519
+                               FLOORING/STAIRS  114111     -0.51   11.31   25.14 1343.71     271.4828
+                            FOOD ESTABLISHMENT   51236      0.01  585.47  660.81 1615.42   14051.2636
+                                FOOD POISONING   11902      0.00    1.38   11.69 1387.40      33.0235
+                    FOR HIRE VEHICLE COMPLAINT   61929 -44516.54   67.47   55.02 1879.96    1619.3742
+                       FOR HIRE VEHICLE REPORT     345      0.49    8.43   19.59  162.73     202.3786
+                                       GENERAL  133837     -1.27   13.63   32.92 1302.33     327.0319
+                 GENERAL CONSTRUCTION/PLUMBING  182924      0.00    4.34   42.80 1969.40     104.2796
+                                      GRAFFITI   67992  -5545.43   35.57  168.84 3929.44     853.7217
+                          GREEN TAXI COMPLAINT    1311      0.28   32.78  133.71  848.78     786.6611
+                           HAZARDOUS MATERIALS    9067   -548.76    0.07    1.06  670.01       1.6667
+                                HEAT/HOT WATER 1121177     -0.85    1.82    2.22 1414.11      43.6444
+                             HIGHWAY CONDITION   17014      0.00    2.94   12.88 1068.03      70.5494
+                        HIGHWAY SIGN - DAMAGED     621      0.00    5.90   14.56  294.43     141.5717
+                       HIGHWAY SIGN - DANGLING     164      0.02    5.11   13.43  369.78     122.7482
+                        HIGHWAY SIGN - MISSING     275      0.08    7.63   21.38  334.72     183.0828
+         HOME DELIVERED MEAL - MISSED DELIVERY    2593      0.00   14.20   13.86  442.86     340.8172
+                           HOMELESS ENCAMPMENT     193      0.00    0.10    0.14    0.85       2.3986
+                    HOMELESS PERSON ASSISTANCE  126979 -44601.59    0.13   -1.19 1741.76       3.1950
+                     HOMELESS STREET CONDITION   15583      0.00    0.02    0.06  252.03       0.4381
+                    ILLEGAL ANIMAL KEPT AS PET    1454      0.00    0.00    0.00    0.00       0.0000
+                           ILLEGAL ANIMAL SOLD     261      0.00    0.00    0.00    0.00       0.0000
+                               ILLEGAL DUMPING  109029      0.00    3.47    6.77  830.58      83.2717
+                             ILLEGAL FIREWORKS  101395     -0.01    0.02    0.09  737.54       0.3853
+                               ILLEGAL PARKING 1900724     -0.07    0.04    0.10  877.15       1.0083
+                               ILLEGAL POSTING   11703      0.01    2.75    4.02  147.96      65.9142
+                           ILLEGAL TREE DAMAGE   18332 -44354.78   21.76  111.22 1804.46     522.1533
+                                INCORRECT DATA     313      0.00    3.86    5.81  112.87      92.7575
+                            INDOOR AIR QUALITY   30917      0.00    0.62    1.80 1191.90      14.9833
+                                 INDOOR SEWAGE    3139      0.00    5.11  120.24 1022.92     122.7064
+                              INDUSTRIAL WASTE    3634   -477.68    0.21    7.57 1505.05       4.9667
+                INSTITUTION DISPOSAL COMPLAINT     187      0.01    2.88    5.88   54.79      69.0250
+           INVESTIGATIONS AND DISCIPLINE (IAD)    2858      0.00    2.29   16.30 1554.14      54.9351
+                                          LEAD   58362      0.00    1.19    4.91  105.98      28.5500
+                                     LIFEGUARD     127      0.06    5.02   14.48  274.93     120.3667
+                                       LINKNYC     756      0.02   11.18   21.49  584.74     268.3560
+                       LITTER BASKET / REQUEST    3921     -2.98    1.47    2.78  319.02      35.3500
+                       LITTER BASKET COMPLAINT    4835      0.00    3.97    8.73  134.72      95.2389
+                         LITTER BASKET REQUEST   11399      0.00    4.73    8.46  159.99     113.5517
+                                 LOST PROPERTY   29190      0.00    0.84    1.65   54.66      20.2540
+                                 LOT CONDITION    5016   -856.56  125.10  149.23  907.41    3002.3415
+                       MAINTENANCE OR FACILITY   96489      0.00   24.67  103.50 1908.81     592.0722
+                      MASS GATHERING COMPLAINT    3652      0.00    0.11    0.28  520.58       2.7254
+                             MISSED COLLECTION  177205      0.00    4.11    6.74  981.19      98.6925
+             MISSED COLLECTION (ALL MATERIALS)   82690     -4.99    1.97    2.79  326.00      47.1833
+                            MOBILE FOOD VENDOR   17000 -44375.67  503.81  649.49 1836.02   12091.3415
+                                          MOLD    1479      0.00    0.67    1.26   49.02      16.1986
+                                    MOSQUITOES    2025      0.00    0.06   11.18  120.29       1.4892
+                    MUNICIPAL PARKING FACILITY     290      0.01    9.74  119.24  667.96     233.6654
+                              NEW TREE REQUEST   90249 -44041.74  441.99  601.36 1938.26   10607.7208
+                                         NOISE  245100   -487.71    2.15    4.07 1938.78      51.6667
+                            NOISE - COMMERCIAL  295131     -0.08    0.02    0.06  738.61       0.5928
+                            NOISE - HELICOPTER  130246      0.00   52.74  329.63 1356.85    1265.8424
+                      NOISE - HOUSE OF WORSHIP    6892      0.00    0.02    0.04   26.70       0.4408
+                                  NOISE - PARK   41903      0.00    0.02    0.16  735.56       0.5244
+                           NOISE - RESIDENTIAL 1824108     -0.08    0.03    0.35  877.52       0.7708
+                       NOISE - STREET/SIDEWALK  854808     -0.08    0.02    0.11 1044.58       0.5811
+                               NOISE - VEHICLE  331051     -0.07    0.03    0.07  591.66       0.6106
+                   NON-EMERGENCY POLICE MATTER  165912      0.00    0.02    0.06  734.54       0.4697
+                          NON-RESIDENTIAL HEAT    4216      0.06  594.19  668.15 1614.11   14260.4794
+           NONCOMPLIANCE WITH PHASED REOPENING   66317      0.00    0.77   10.60  126.81      18.4342
+                                   OBSTRUCTION   50600      0.00    1.84    6.80  736.62      44.2053
+                             OTHER ENFORCEMENT   11789      0.00    3.05   10.53  319.00      73.1500
+                                OUTDOOR DINING   26196      0.00   12.02   27.99  418.87     288.4649
+                              OUTSIDE BUILDING    4560      0.04   13.02   30.85 1080.99     312.5297
+                    OVERFLOWING LITTER BASKETS    4566      0.00    1.12    1.88   54.79      26.9083
+                       OVERGROWN TREE/BRANCHES   80170 -44458.54   40.80  257.11 1809.12     979.2051
+                                 PAINT/PLASTER  262168     -0.56    8.15   20.60 1349.88     195.6518
+                                   PANHANDLING   31211     -0.04    0.03    0.07  241.84       0.6711
+                                      PET SHOP     824      0.00    0.00    0.00    0.00       0.0000
+                                         PLANT     585      0.00    0.06   15.61  931.00       1.4667
+                                      PLUMBING  288972     -0.91    9.25   25.32 1589.29     222.0758
+                                    POISON IVY     677      1.05  108.75  434.80 1804.79    2609.9981
+                         POSTING ADVERTISEMENT     438      0.00    0.03    0.08    0.88       0.7331
+           PRIVATE OR CHARTER SCHOOL REOPENING    1138 -44516.37   10.93 -142.91   97.53     262.3036
+ PRIVATE SCHOOL VACCINE MANDATE NON-COMPLIANCE     219      0.00    1.02    0.91    1.04      24.4778
+                     PUBLIC PAYPHONE COMPLAINT     396      0.01    9.14   33.54  434.01     219.4776
+                                 PUBLIC TOILET     175      0.00    0.68    2.10   26.40      16.3606
+                          RADIOACTIVE MATERIAL      66      0.07    5.49    7.21   29.10     131.6972
+                         REAL TIME ENFORCEMENT   22902      0.00    0.00    9.97 1756.49       0.0000
+                    RECYCLING BASKET COMPLAINT     253      0.04    3.74    6.95   56.23      89.7194
+                         RECYCLING ENFORCEMENT     643      0.00    2.92   10.70  146.75      70.0833
+           REQUEST LARGE BULKY ITEM COLLECTION  630147      0.00    2.63    3.74   61.35      63.2167
+                RESIDENTIAL DISPOSAL COMPLAINT   35269      0.00    1.59    4.20  166.89      38.0656
+                            RETAILER COMPLAINT      51      0.12    2.68    5.06   27.97      64.2992
+                                        RODENT  178471 -44458.59    0.00    3.52  815.08       0.0000
+                 ROOT/SEWER/SIDEWALK CONDITION   42728 -44458.58  159.99  314.68 1777.09    3839.7481
+                                        SAFETY   52336     -0.37    8.37   21.47 1288.04     200.9178
+                          SANITATION CONDITION   62677 -44458.29    1.15    1.80  319.02      27.5833
+        SANITATION WORKER OR VEHICLE COMPLAINT    9773      0.00    4.94    9.03  402.67     118.5408
+                               SCAFFOLD SAFETY     875      0.00    0.37   15.42 1393.41       8.9483
+                            SCHOOL MAINTENANCE    6374      0.00   12.83   89.14 1178.73     307.8579
+                           SEASONAL COLLECTION     790      0.03    3.20    5.64   45.72      76.6956
+                                         SEWER  143749   -525.90    0.17    7.00 2009.06       4.0333
+                             SEWER MAINTENANCE    2771      0.00    0.37    0.88   31.35       8.7775
+                            SIDEWALK CONDITION  120832      0.00    9.06   14.29 1310.53     217.3296
+                                       SMOKING   15693      0.00  762.41  781.34 1615.66   18297.9597
+                             SMOKING OR VAPING    3757     35.54  127.60  140.44  282.81    3062.4600
+                                          SNOW    9415      0.00    4.82    5.71   33.19     115.6500
+                                   SNOW OR ICE   11330      0.00    2.81    4.11  432.86      67.4740
+                                  SNOW REMOVAL      92      4.06    4.77   27.06 1182.96     114.5861
+          SPECIAL NATURAL AREA DISTRICT (SNAD)     246      0.00   24.33   49.00  745.26     583.8675
+                            SPECIAL OPERATIONS      56      0.00    5.56   20.42  510.37     133.4536
+       SPECIAL PROJECTS INSPECTION TEAM (SPIT)   19246      0.00   27.54   66.34 1892.82     660.9324
+                                      SQUEEGEE     226      0.00    0.02    0.05    1.77       0.4911
+                                STANDING WATER    4752      0.00    0.00    0.04   35.19       0.0000
+                                         STORM    3005      0.00    0.90    1.21   19.46      21.6500
+                              STREET CONDITION  331330     -2.94    1.28    4.57 1827.31      30.6444
+                        STREET LIGHT CONDITION  240859   -378.00    0.00   21.64 2047.25       0.0000
+                         STREET SIGN - DAMAGED   24636      0.00    6.20   32.22 1044.04     148.8242
+                        STREET SIGN - DANGLING   17523      0.00    6.07   13.69  628.91     145.6325
+                         STREET SIGN - MISSING   20473      0.00    8.14   40.70  976.08     195.3375
+                     STREET SWEEPING COMPLAINT   26924      0.00    4.95    8.04  156.06     118.8656
+                           SWEEPING/INADEQUATE     537      0.00    1.79    3.32   68.00      42.9667
+                               SWEEPING/MISSED    2731      0.00    2.00    3.99   55.95      47.9667
+                                     TATTOOING     883     18.28  833.99  833.77 1826.41   20015.7356
+                                TAXI COMPLAINT   23226 -44516.52   75.88   44.77 1371.10    1821.0653
+                               TAXI COMPLIMENT     412      0.04    4.70   14.15  145.81     112.8440
+                                   TAXI REPORT     607 -44516.54   15.78 -122.63  202.33     378.6914
+                                       TRAFFIC   30383      0.00    0.02    0.06  152.41       0.5653
+                      TRAFFIC SIGNAL CONDITION  189748   -364.93    0.09   12.42 1157.00       2.2167
+                                 UNLEASHED DOG    3780 -44458.48    0.00  -11.76    0.00       0.0000
+                    UNSANITARY ANIMAL FACILITY     210      0.00    0.00    0.00    0.00       0.0000
+                UNSANITARY ANIMAL PVT PROPERTY    9977      0.00    0.00    6.30  429.17       0.0000
+                          UNSANITARY CONDITION  488630     -0.55   11.34   26.00 1573.61     272.1364
+                   UNSANITARY PIGEON CONDITION    4892      0.00    0.00    4.12  275.94       0.0000
+                             UNSTABLE BUILDING      69     -0.84    0.40    0.53    5.50       9.5028
+                                UPROOTED STUMP    1430 -44375.74  106.93  220.18 1568.01    2566.2603
+                           URINATING IN PUBLIC    5244      0.00    0.03    0.07   17.69       0.6536
+                                    VACANT LOT    3036 -44431.54    8.14   51.84  548.04     195.3583
+                VACCINE MANDATE NON-COMPLIANCE    7399      0.96    1.02    1.02    1.04      24.5014
+                                       VENDING    4353      0.00    0.02    0.08   20.82       0.4689
+                            VENDOR ENFORCEMENT   39935      0.00    0.06    0.09   25.92       1.5078
+                       VIOLATION OF PARK RULES   23742      0.00    0.03    2.87 1183.87       0.8019
+                            WATER CONSERVATION   17712      0.00    0.63    1.93  337.71      15.1500
+                                WATER DRAINAGE      68     -0.56   13.42   16.47   45.50     322.0496
+                                    WATER LEAK  184372     -0.55   11.88   28.27 1358.89     285.1017
+                             WATER MAINTENANCE     368      0.00    0.15    1.15   21.05       3.6250
+                                 WATER QUALITY    7813      0.00    3.83   16.92  612.41      91.9667
+                                  WATER SYSTEM  285305   -499.16    0.22    4.45 2074.85       5.1833
+                                  WINDOW GUARD     106      6.60 1124.81 1026.71 1814.40   26995.3647
+                           WOOD PILE REMAINING    1893      0.00   27.78  196.13 1757.02     666.6631
+                       X-RAY MACHINE/EQUIPMENT     153      0.01    3.50    6.54   64.32      84.1122
+
+
+*****END OF PROGRAM*****
+
+📅 Execution ends at: 2026-01-20 21:44:17 
+
+⏱️ Program run-time: 30 minutes, 21.3279 seconds 
