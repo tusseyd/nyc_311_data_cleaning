@@ -1,8 +1,8 @@
 ✅ Console output redirected to: C:/Users/David/OneDrive/Documents/datacleaningproject/journal_of_data_science/nyc_311_data_cleaning/console_output/JDS_datacleaning_console_output.txt 
 
-Execution begins at: 2026-01-21 00:24:50 
+Execution begins at: 2026-01-22 22:54:28 
 
-Execution begins at: 2026-01-21 00:24:50 
+Execution begins at: 2026-01-22 22:54:28 
 
 ========================================
 SETUP COMPLETE
@@ -65,88 +65,88 @@ Percent missing: 27.86%
 Percent complete: 72.14%
 
 Field usage by agency (counts):
-                          field 3-1-1   DCWP    DEP DFTA    DHS    DOB  DOE  DOHMH     DOT    DPR    DSNY    EDC     HPD    NYPD   OSE  OTI    TLC
- agency_name                        1 119727 834539 2605 211486 470508 6380 397968 1078415 636299 1923489 150305 3067970 6905945 70955 1174 138934
- complaint_type                     1 119727 834539 2605 211486 470508 6380 397968 1078415 636299 1923489 150305 3067970 6905945 70955 1174 138934
- created_date                       1 119727 834539 2605 211486 470508 6380 397968 1078415 636299 1923489 150305 3067970 6905945 70955 1174 138934
- open_data_channel_type             1 119727 834539 2605 211486 470508 6380 397968 1078415 636299 1923489 150305 3067970 6905945 70955 1174 138934
- status                             1 119727 834539 2605 211486 470508 6380 397968 1078415 636299 1923489 150305 3067970 6905945 70955 1174 138934
- unique_key                         1 119727 834539 2605 211486 470508 6380 397968 1078415 636299 1923489 150305 3067970 6905945 70955 1174 138934
- park_facility_name                 1 119727 834539 2605 205261 470508 6380 397968 1078415 636299 1923489 150305 3067970 6901263 70955 1174 138934
- borough                            1 119727 834355 2605 211486 470504 6380 397951 1046937 636299 1916744 150305 3067963 6905945 70955 1174 138934
- community_board                    1 119727 834355 2605 211486 470504 6380 397951 1046937 636299 1916744 150305 3067963 6905945 70955 1174 138934
- park_borough                       1 119727 834355 2605 211486 470504 6380 397951 1046937 636299 1916744 150305 3067963 6905945 70955 1174 138934
- resolution_action_updated_date     0 119723 831791 2605 210448 470455 6374 375274 1078207 619278 1917597 130211 3065021 6878684 69988 1152 134807
- closed_date                        0 116117 827109 2605 162646 470407 6374 370204 1064294 570605 1912910 130246 3058246 6905812 69992 1152 117173
- incident_zip                       1 119126 833185 1495 165465 467791 6229 396664  958059 630183 1887829 150294 3067458 6865290 70949  829 136256
- y_coordinate_state_plane           1 118234 826960    0 209892 467791 6334 395064  894601 627664 1879627 150277 3067492 6862817 70928  824 136199
- x_coordinate_state_plane           1 118204 826957    0 209683 467791 6319 395057  894535 627625 1879507 150276 3067487 6862087 70928  824 136187
- latitude                           1 118197 826957    0 209680 467791 6317 395056  894515 627620 1879490 150276 3067486 6862021 70928  824 136174
- location                           1 118197 826957    0 209680 467791 6317 395056  894515 627620 1879490 150276 3067486 6862021 70928  824 136174
- longitude                          1 118197 826957    0 209680 467791 6317 395056  894515 627620 1879490 150276 3067486 6862021 70928  824 136174
- descriptor                         1 119727 834531    0   2081 470508 6380 394190 1078405 636299 1923486 150305 3067970 6626708 68854 1174 138934
- incident_address                   1 119271 739021    0 165512 470508 6259 396799  626521 630338 1871756 150297 3067928 6865946 70952  829 136284
- street_name                        1 119137 739021    0 165483 470508 6229 396687  626432 630285 1871756 150297 3067928 6865848 70950  829 136284
- resolution_description             0 119723 807306 2605 210085 469669 6374 374010 1078094 618830 1323843 127863 3054308 6878421 69988 1152 131980
- city                               0 111660 833024 1495 160696 467803 6175 387433  889972 595553 1827995 148610 3067543 6474218 70610  703 113247
- bbl                                0 106859 703404    0 136147 461794 6089 379166  429548 573849 1753155 138220 3054045 6212612 68430  674 104227
- location_type                      1  90759   3130 2605 177591    287 5731 397959  438655 636255 1911675 149349 3067970 6761599 70955  842 107949
- address_type                       1  69507 834503  113 205455 470508 5049 393387  918599 466833 1920431 135123 3067935 4646909   662  470 111463
- cross_street_1                     1 118343 738246    0 165268    288 6175 396098  624546 627336 1792709 149978   13562 6856054 70886  828 136154
- cross_street_2                     1 118451 737971    0 165376    288 6228 396383  618162 629560 1790929 150244   13568 6858637 70910  828 136149
- intersection_street_2              1 118451  98638    0 165377    287 6228 396343  855438 629560  756712 150244   13568 6858637 70910  828 136149
- intersection_street_1              1 118343  98637    0 165268    287 6175 396058  855252 627336  756405 149978   13562 6856054 70886  828 136154
- landmark                           0 110852   2935 1495 142890    282 6138 381470  339427 595475  656882 148610   13577 6474048 70603  702 113242
- facility_type                      0      0      0    0      0      0    0      0       0      0  211240      0       0       0     0    0      0
- vehicle_type                       0      0      0    0      0      0    0      0       0      0       0      0       0  177844     0    0   3689
- taxi_pick_up_location              0      0      0    0      0      0    0      0       0      0       0      0       0       0     0    0 136863
- bridge_highway_name                0      0     15    0  45896      0    0      0   19234      0     894      0       0   36920     0    0   1564
- bridge_highway_segment             0      0     15    0  45892      0    0      0   19213      0     892      0       0   36760     0    0   1526
- bridge_highway_direction           0      0     15    0  18986      0    0      0   19234      0     895      0       0   14336     0    0   1606
- due_date                           0      0      0    0      0      0    0      0       0     16   52330      0       0       0     0    0      0
- road_ramp                          0      0     15    0   4614      0    0      0   19213      0     891      0       0    7838     0    0   1546
- taxi_company_borough               0      0      0    0      0      0    0      0       0      0       0      0       0       0     0    0   8564
-    total
- 16016700
- 16016700
- 16016700
- 16016700
- 16016700
- 16016700
- 16005793
- 15978265
- 15978265
- 15978265
- 15911615
- 15785892
- 15757103
- 15714705
- 15713468
- 15713333
- 15713333
- 15713333
- 15519553
- 15318222
- 15317675
- 15274251
- 15156737
- 14128219
- 13823312
- 13246948
- 11696472
- 11693685
- 10257371
- 10251224
-  9058628
-   211240
-   181533
-   136863
-   104523
-   104298
-    55072
-    52346
-    34117
-     8564
+                          field 3-1-1   DCWP    DEP DFTA    DHS    DOB  DOE  DOHMH     DOT    DPR    DSNY    EDC     HPD    NYPD   OSE
+ agency_name                        1 119727 834539 2605 211486 470508 6380 397968 1078415 636299 1923489 150305 3067970 6905945 70955
+ complaint_type                     1 119727 834539 2605 211486 470508 6380 397968 1078415 636299 1923489 150305 3067970 6905945 70955
+ created_date                       1 119727 834539 2605 211486 470508 6380 397968 1078415 636299 1923489 150305 3067970 6905945 70955
+ open_data_channel_type             1 119727 834539 2605 211486 470508 6380 397968 1078415 636299 1923489 150305 3067970 6905945 70955
+ status                             1 119727 834539 2605 211486 470508 6380 397968 1078415 636299 1923489 150305 3067970 6905945 70955
+ unique_key                         1 119727 834539 2605 211486 470508 6380 397968 1078415 636299 1923489 150305 3067970 6905945 70955
+ park_facility_name                 1 119727 834539 2605 205261 470508 6380 397968 1078415 636299 1923489 150305 3067970 6901263 70955
+ borough                            1 119727 834355 2605 211486 470504 6380 397951 1046937 636299 1916744 150305 3067963 6905945 70955
+ community_board                    1 119727 834355 2605 211486 470504 6380 397951 1046937 636299 1916744 150305 3067963 6905945 70955
+ park_borough                       1 119727 834355 2605 211486 470504 6380 397951 1046937 636299 1916744 150305 3067963 6905945 70955
+ resolution_action_updated_date     0 119723 831791 2605 210448 470455 6374 375274 1078207 619278 1917597 130211 3065021 6878684 69988
+ closed_date                        0 116117 827109 2605 162646 470407 6374 370204 1064294 570605 1912910 130246 3058246 6905812 69992
+ incident_zip                       1 119126 833185 1495 165465 467791 6229 396664  958059 630183 1887829 150294 3067458 6865290 70949
+ y_coordinate_state_plane           1 118234 826960    0 209892 467791 6334 395064  894601 627664 1879627 150277 3067492 6862817 70928
+ x_coordinate_state_plane           1 118204 826957    0 209683 467791 6319 395057  894535 627625 1879507 150276 3067487 6862087 70928
+ latitude                           1 118197 826957    0 209680 467791 6317 395056  894515 627620 1879490 150276 3067486 6862021 70928
+ location                           1 118197 826957    0 209680 467791 6317 395056  894515 627620 1879490 150276 3067486 6862021 70928
+ longitude                          1 118197 826957    0 209680 467791 6317 395056  894515 627620 1879490 150276 3067486 6862021 70928
+ descriptor                         1 119727 834531    0   2081 470508 6380 394190 1078405 636299 1923486 150305 3067970 6626708 68854
+ incident_address                   1 119271 739021    0 165512 470508 6259 396799  626521 630338 1871756 150297 3067928 6865946 70952
+ street_name                        1 119137 739021    0 165483 470508 6229 396687  626432 630285 1871756 150297 3067928 6865848 70950
+ resolution_description             0 119723 807306 2605 210085 469669 6374 374010 1078094 618830 1323843 127863 3054308 6878421 69988
+ city                               0 111660 833024 1495 160696 467803 6175 387433  889972 595553 1827995 148610 3067543 6474218 70610
+ bbl                                0 106859 703404    0 136147 461794 6089 379166  429548 573849 1753155 138220 3054045 6212612 68430
+ location_type                      1  90759   3130 2605 177591    287 5731 397959  438655 636255 1911675 149349 3067970 6761599 70955
+ address_type                       1  69507 834503  113 205455 470508 5049 393387  918599 466833 1920431 135123 3067935 4646909   662
+ cross_street_1                     1 118343 738246    0 165268    288 6175 396098  624546 627336 1792709 149978   13562 6856054 70886
+ cross_street_2                     1 118451 737971    0 165376    288 6228 396383  618162 629560 1790929 150244   13568 6858637 70910
+ intersection_street_2              1 118451  98638    0 165377    287 6228 396343  855438 629560  756712 150244   13568 6858637 70910
+ intersection_street_1              1 118343  98637    0 165268    287 6175 396058  855252 627336  756405 149978   13562 6856054 70886
+ landmark                           0 110852   2935 1495 142890    282 6138 381470  339427 595475  656882 148610   13577 6474048 70603
+ facility_type                      0      0      0    0      0      0    0      0       0      0  211240      0       0       0     0
+ vehicle_type                       0      0      0    0      0      0    0      0       0      0       0      0       0  177844     0
+ taxi_pick_up_location              0      0      0    0      0      0    0      0       0      0       0      0       0       0     0
+ bridge_highway_name                0      0     15    0  45896      0    0      0   19234      0     894      0       0   36920     0
+ bridge_highway_segment             0      0     15    0  45892      0    0      0   19213      0     892      0       0   36760     0
+ bridge_highway_direction           0      0     15    0  18986      0    0      0   19234      0     895      0       0   14336     0
+ due_date                           0      0      0    0      0      0    0      0       0     16   52330      0       0       0     0
+ road_ramp                          0      0     15    0   4614      0    0      0   19213      0     891      0       0    7838     0
+ taxi_company_borough               0      0      0    0      0      0    0      0       0      0       0      0       0       0     0
+  OTI    TLC    total
+ 1174 138934 16016700
+ 1174 138934 16016700
+ 1174 138934 16016700
+ 1174 138934 16016700
+ 1174 138934 16016700
+ 1174 138934 16016700
+ 1174 138934 16005793
+ 1174 138934 15978265
+ 1174 138934 15978265
+ 1174 138934 15978265
+ 1152 134807 15911615
+ 1152 117173 15785892
+  829 136256 15757103
+  824 136199 15714705
+  824 136187 15713468
+  824 136174 15713333
+  824 136174 15713333
+  824 136174 15713333
+ 1174 138934 15519553
+  829 136284 15318222
+  829 136284 15317675
+ 1152 131980 15274251
+  703 113247 15156737
+  674 104227 14128219
+  842 107949 13823312
+  470 111463 13246948
+  828 136154 11696472
+  828 136149 11693685
+  828 136149 10257371
+  828 136154 10251224
+  702 113242  9058628
+    0      0   211240
+    0   3689   181533
+    0 136863   136863
+    0   1564   104523
+    0   1526   104298
+    0   1606    55072
+    0      0    52346
+    0   1546    34117
+    0   8564     8564
 
 
 **********CROSS STREET/INTERSECTION STREET ANALYSYS**********
@@ -279,13 +279,13 @@ Total street pair analyses completed: 3
 **********DATA SUMMARY**********
 Multi-year statistics (Actuals + Projected):
   Years covered: 2020–2025
-  Total Records: 19,525,499
-  Yearly Mean:   3,254,250
+  Total Records: 19,533,473
+  Yearly Mean:   3,255,579
   Yearly Median: 3,223,236
-  StdDev:        206,378
-  Max Year: 2025 (3,508,799)
+  StdDev:        208,361
+  Max Year: 2025 (3,516,773)
   Min Year: 2020 (2,942,064)
-  Growth %: 19.3%
+  Growth %: 19.5%
   Busiest Month: 2020-08 (348,463)
   Least Busy Month: 2020-04 (159,115)
   Busiest Day: 2020-08-04 (24,415)
@@ -297,7 +297,7 @@ Year-by-year counts:
   2022: 3,169,844
   2023: 3,225,557
   2024: 3,458,320
-  2025: 3,508,799 (Projected)
+  2025: 3,516,773 (Projected)
 
 
 Pareto summary by agency:
@@ -1041,16 +1041,16 @@ Summary of 'due_duration' (days) for SRs with due_date before created_date:
 
 Sample of SRs with 'due_date' before 'created_date' (negative days):
  unique_key agency        created_date            due_date due_duration
-   43121407    DPR 2020-09-23 05:39:37 2019-06-29 12:55:52      -451.70
    42188606    DPR 2020-10-23 15:36:37 2019-04-24 16:28:16      -547.96
-   42754470    DPR 2020-09-24 13:20:17 2019-05-26 20:46:31      -486.69
-   40962915    DPR 2020-09-25 15:51:54 2018-11-30 17:26:48      -664.89
-   41817143    DPR 2020-09-25 15:45:06 2019-03-12 13:39:06      -563.09
-   41499422    DPR 2020-09-24 13:24:00 2019-02-06 10:00:48      -596.10
-   42726961    DPR 2020-09-25 15:55:11 2019-06-03 15:22:38      -480.02
-   40935119    DPR 2020-09-25 15:51:00 2018-11-28 10:36:24      -667.18
    41926238    DPR 2020-09-25 15:46:41 2019-03-25 11:21:47      -550.18
+   42726961    DPR 2020-09-25 15:55:11 2019-06-03 15:22:38      -480.02
+   42096553    DPR 2020-09-25 16:02:56 2019-04-13 15:11:15      -531.04
+   40935119    DPR 2020-09-25 15:51:00 2018-11-28 10:36:24      -667.18
+   42754470    DPR 2020-09-24 13:20:17 2019-05-26 20:46:31      -486.69
    42095761    DPR 2020-09-25 16:01:34 2019-04-13 15:23:00      -531.03
+   43121407    DPR 2020-09-23 05:39:37 2019-06-29 12:55:52      -451.70
+   41817143    DPR 2020-09-25 15:45:06 2019-03-12 13:39:06      -563.09
+   42059295    DPR 2020-09-25 15:59:20 2019-04-09 10:26:17      -535.23
 
 By-agency counts (top 10):
  agency count pct cum_pct rank
@@ -1155,29 +1155,29 @@ Service Requests with resolution_action_updated_date BEFORE created_date: 374,97
 
 Sample problematic records:
  unique_key agency        created_date resolution_action_updated_date res_duration_days
-   60368944    HPD 2024-02-20 20:13:15            2024-02-20 00:00:00             -0.84
-   59888210    HPD 2023-12-31 12:26:14            2023-12-31 00:00:00             -0.52
-   62562194    DOB 2024-09-25 11:34:14            2024-09-25 00:00:00             -0.48
-   46790236    DOT 2020-07-08 09:41:00            2020-07-07 11:04:00             -0.94
-   46102199    DOT 2020-05-01 08:22:00            2020-04-30 08:22:00             -1.00
-   56110460    HPD 2022-11-28 14:58:32            2022-11-28 00:00:00             -0.62
-   56997369    HPD 2023-03-09 12:38:31            2023-03-09 00:00:00             -0.53
-   63271761    HPD 2024-12-02 13:03:14            2024-12-02 00:00:00             -0.54
-   52976385    HPD 2022-01-05 07:32:47            2022-01-05 00:00:00             -0.31
-   53033115    HPD 2022-01-11 17:43:29            2022-01-11 00:00:00             -0.74
+   56175935   DSNY 2022-12-05 16:10:00            2022-12-05 12:00:00             -0.17
+   59678145    HPD 2023-12-08 01:40:02            2023-12-08 00:00:00             -0.07
+   60537614    HPD 2024-03-09 17:59:31            2024-03-09 00:00:00             -0.75
+   62463763    HPD 2024-09-16 12:27:01            2024-09-16 00:00:00             -0.52
+   61208990    HPD 2024-05-20 09:51:42            2024-05-20 00:00:00             -0.41
+   48468878    DOT 2020-12-21 11:47:00            2020-12-15 11:47:00             -6.00
+   59947482    HPD 2024-01-06 16:54:46            2024-01-06 00:00:00             -0.70
+   59815254    HPD 2023-12-21 10:46:50            2023-12-21 00:00:00             -0.45
+   53731581    DOB 2022-03-24 13:21:10            2022-03-24 00:00:00             -0.56
+   56327401    HPD 2022-12-22 07:45:01            2022-12-22 00:00:00             -0.32
 Filtering plotting data to groups with N >= 50
 
 === Summary statistics (All groups with N > 0) for Distribution of Negative Resolution Updates by Agency ===
-     grp     N     Min      Q1  Median    Q3   Max    Mean     SD
-1:   DEP   205 -471.13   -3.21   -0.28 -0.02  0.00  -68.03 137.28
-2:   DOB 20424   -1.00   -0.54   -0.46 -0.39  0.00   -0.46   0.15
-3: DOHMH    14 -793.20 -441.04 -395.77 -0.57 -0.01 -298.53 251.03
-4:   DOT 42788 -378.00   -1.34   -1.00 -1.00  0.00   -2.45  10.52
-5:   DPR    60  -64.13    0.00    0.00  0.00  0.00   -1.08   8.28
-6:  DSNY  7702 -856.56   -0.83   -0.15 -0.07  0.00   -7.78  45.60
-7:   HPD 53599   -1.03   -0.51   -0.39 -0.28  0.00   -0.39   0.19
-8:  NYPD   179   -2.71   -0.05   -0.02  0.00  0.00   -0.05   0.25
-9:   OSE    11   -0.01    0.00    0.00  0.00  0.00    0.00   0.00
+     grp     N     Min      Q1  Median     Q3   Max    Mean     SD
+1:   DEP   200 -472.71 -159.86   -0.24  -0.02  0.00  -88.03 152.17
+2:   DOB 20515   -1.00   -0.55   -0.46  -0.39  0.00   -0.46   0.15
+3: DOHMH    18 -793.20 -449.08 -404.58 -97.71 -0.01 -327.85 227.00
+4:   DOT 42494 -371.00   -1.34   -1.00  -1.00  0.00   -2.38   9.81
+5:   DPR    61  -64.13    0.00    0.00   0.00  0.00   -1.72   9.59
+6:  DSNY  7795 -767.37   -1.01   -0.15  -0.07  0.00   -8.97  50.55
+7:   HPD 53718   -1.27   -0.50   -0.39  -0.28  0.00   -0.39   0.19
+8:  NYPD   170   -0.13   -0.04   -0.02  -0.01  0.00   -0.03   0.03
+9:   OSE    11    0.00    0.00    0.00   0.00  0.00    0.00   0.00
 
 Pareto summary by agency:
  group      N  pct cum_pct
@@ -1266,16 +1266,16 @@ Extreme max of all row(s) (>1095 days): 45216.61 days (123.80 years)
 
 Sample of late post-closed updates:
  agency         closed_date resolution_action_updated_date postClosedUpdateDuration
+    DEP 2019-08-15 10:39:00            2020-12-29 14:44:00                   502.21
+  DOHMH 2024-05-17 00:00:01            2024-07-23 09:46:00                    67.41
+    TLC 2022-09-01 10:53:54            2022-12-22 08:58:02                   111.96
+   DSNY 2024-10-31 00:00:00            2024-12-14 10:37:27                    44.48
+    TLC 2024-02-20 14:25:53            2024-04-20 07:54:20                    59.69
+  DOHMH 2024-08-01 13:02:15            2024-09-20 11:55:45                    49.95
     DPR 2021-06-15 10:16:55            2021-11-02 12:57:10                   140.11
   DOHMH 2024-09-07 20:20:07            2025-02-27 12:12:00                   172.70
    DSNY 2023-05-24 00:00:00            2023-07-11 05:56:51                    48.25
     TLC 2023-06-26 17:02:21            2023-08-29 11:42:59                    63.78
-   DSNY 2024-07-24 00:00:00            2024-12-14 10:37:43                   143.48
-    DEP 2020-07-21 12:37:00            2020-12-29 16:51:00                   161.22
-   DSNY 2022-03-10 00:00:00            2022-04-18 15:40:51                    39.61
-    DPR 2021-07-14 08:39:24            2021-11-01 17:35:53                   110.37
-  DOHMH 2024-06-07 19:46:29            2024-07-10 10:02:32                    32.59
-   DSNY 2024-03-22 00:00:00            2024-12-14 10:37:27                   267.48
 
 By-agency counts (top 10):
  agency count  pct cum_pct rank
@@ -1291,16 +1291,16 @@ By-agency counts (top 10):
 
 Sample of extremely late post-closed updates:
  agency         closed_date resolution_action_updated_date postClosedUpdateDuration
-    TLC 1899-12-31 19:00:00            2021-01-13 08:47:35                 44207.57
-    TLC 1899-12-31 19:00:00            2021-08-27 08:07:20                 44433.51
-    DOT 2021-12-20 10:18:20            2024-12-30 14:55:30                  1106.19
-    DOT 2021-07-22 13:20:51            2024-12-30 22:38:37                  1257.43
-   DSNY 2004-11-15 00:00:00            2022-12-14 15:45:37                  6603.66
-    TLC 2020-06-18 13:53:29            2023-07-13 14:17:29                  1120.02
-    DEP 2020-10-15 11:00:00            2024-11-22 08:50:00                  1498.95
-    DOT 2021-08-24 13:12:10            2024-12-30 21:29:26                  1224.39
-    TLC 1899-12-31 19:00:00            2021-08-26 08:44:35                 44432.53
-    DPR 1899-12-31 19:00:00            2023-08-22 15:36:41                 45158.82
+    DOT 2021-12-17 09:43:45            2024-12-30 14:56:27                  1109.22
+    TLC 1899-12-31 19:00:00            2021-05-25 07:59:05                 44339.50
+    DHS 1900-01-01 00:00:00            2022-02-11 14:17:41                 44601.60
+    DPR 2020-11-21 06:11:11            2024-10-25 14:21:02                  1434.30
+    TLC 2020-05-19 11:53:24            2023-06-15 11:28:41                  1121.98
+    DOT 2021-10-20 09:22:12            2024-12-30 22:39:54                  1167.60
+    DOT 2020-08-21 07:53:26            2024-12-30 22:09:22                  1592.64
+    TLC 1899-12-31 19:00:00            2021-07-01 09:22:30                 44376.56
+    DOT 2021-11-26 09:18:57            2024-12-30 14:55:07                  1130.23
+    DEP 2020-09-28 04:30:00            2023-10-24 08:10:00                  1121.15
 
 By-agency counts for extremely late updates (top 10):
  agency count  pct cum_pct rank
@@ -2072,31 +2072,31 @@ Filtering plotting data to groups with N >= 5
 
 === SKEWED DURATION OUTLIER ANALYSIS (SECONDS) ===
 Original positive durations (before cutoffs): 15,353,267
-After applying minimum cutoff (2 sec): 5,393,217
-After applying maximum cutoff 172,800 sec: 5,393,217 (100.00% retained)
+After applying minimum cutoff (2 sec): 15,349,807
+After applying maximum cutoff 172,800 sec: 9,961,142 (64.89% retained)
 
 Distribution comparison (seconds):
                    Raw Data    Truncated
-Mean:                     67          67
-Median:                    8           8
-Std Dev:                 198         198
-Mean/Median ratio:      7.99        7.99
+Mean:                2050138       27082
+Median:                37996        5220
+Std Dev:            10490210       42642
+Mean/Median ratio:     53.96        5.19
 
 (A ratio = 1.0 indicates normal distribution. A ratio >1.0 indicates right-skewed)
 
 === OUTLIER DETECTION METHODS (Applied to Truncated Data) ===
          method threshold_seconds outlier_count outlier_pct
-  Truncated_2SD 0.000000000000000             0       0.000
-  Truncated_3SD 0.000000000000000             0       0.000
-         MAD_2x 0.000000000000000             0       0.000
-         MAD_3x 0.000000000000000             0       0.000
-  LogNormal_2SD 0.586583204165122             0       0.000
-  LogNormal_3SD 0.124694077031989             0       0.000
-  Percentile_1% 2.040277777777778         53818       0.998
-  Percentile_5% 2.224305555555556        269626       4.999
- Percentile_10% 2.564953703703704        539315      10.000
-        IQR_1.5 0.000000000000000             0       0.000
-        IQR_3.0 0.000000000000000             0       0.000
+  Truncated_2SD   0.0000000000000             0       0.000
+  Truncated_3SD   0.0000000000000             0       0.000
+         MAD_2x   0.0000000000000             0       0.000
+         MAD_3x   0.0000000000000             0       0.000
+  LogNormal_2SD 173.7849367302170        200604       1.307
+  LogNormal_3SD  27.9450094030929         10231       0.067
+  Percentile_1%  95.0000000000000         98476       0.642
+  Percentile_5% 417.0000000000000        497725       3.243
+ Percentile_10% 800.0000000000000        995604       6.486
+        IQR_1.5   0.0000000000000             0       0.000
+        IQR_3.0   0.0000000000000             0       0.000
 
 Method interpretations:
 • Truncated SD: mean±SD computed on truncated data
@@ -2107,19 +2107,19 @@ Method interpretations:
 
 Reasonable cutoff suggestions (seconds):
          method threshold_seconds outlier_count outlier_pct
-  LogNormal_3SD 0.124694077031989             0       0.000
-  LogNormal_2SD 0.586583204165122             0       0.000
-  Percentile_1% 2.040277777777778         53818       0.998
-  Percentile_5% 2.224305555555556        269626       4.999
- Percentile_10% 2.564953703703704        539315      10.000
+  LogNormal_3SD  27.9450094030929         10231       0.067
+  Percentile_1%  95.0000000000000         98476       0.642
+  LogNormal_2SD 173.7849367302170        200604       1.307
+  Percentile_5% 417.0000000000000        497725       3.243
+ Percentile_10% 800.0000000000000        995604       6.486
 
-Duration histogram summary (2 to 90 days):
-Total observations: 4,715,874
-Mean:   1,243,032 seconds (14.386950 days)
-Median: 592,680 seconds (6.859722 days)
-Std dev: 1,503,861 seconds (17.405794 days)
-Bin width: 1 days (86,400 seconds, 1.000000 days)
-LogNormal_3SD threshold: 0 seconds
+Duration histogram summary (2 to 90 seconds):
+Total observations: 93,408
+Mean:   55 seconds (0.000638 days)
+Median: 57 seconds (0.000660 days)
+Std dev: 21 seconds (0.000247 days)
+Bin width: 1 seconds (1 seconds, 0.000012 days)
+LogNormal_3SD threshold: 28 seconds
 
 === COMPREHENSIVE DURATION CATEGORY ANALYSIS ===
 
@@ -2136,55 +2136,55 @@ Negative duration breakdown:
 
 
 Duration QA summary (closed rows with non-missing created):
-                  metric      value
- denominator_closed_rows 15,785,892
- negative_total              45,296
- negative_small              45,180
- negative_large                   1
- negative_extreme               115
- zero_total                 387,329
- near_zero_leq_days               0
- near_zero_excl_zero              0
- one_sec_total                3,460
- positive_total          15,353,267
- positive_small          15,212,398
- positive_large             139,628
- positive_extreme             1,240
- pct_negative_total           0.29%
- pct_negative_small           0.29%
- pct_negative_large           0.00%
- pct_negative_extreme         0.00%
- pct_zero                     2.45%
- pct_one_sec_total            0.02%
- pct_near_zero_excl_zero      0.00%
- pct_positive_total          97.26%
- pct_positive_small          96.37%
- pct_positive_large           0.88%
- pct_positive_extreme         0.01%
- avg_neg_all                -118.71
- avg_neg_small                -6.87
- avg_neg_large              -856.56
- avg_neg_extreme         -44,050.91
- min_neg_all             -44,601.59
- min_neg_small              -548.76
- min_neg_large              -856.56
- min_neg_extreme         -44,601.59
- max_neg_all                      0
- max_neg_small                    0
- max_neg_large              -856.56
- max_neg_extreme          -5,545.43
- avg_pos_all                  23.72
- avg_pos_small                 13.7
- avg_pos_large             1,098.94
- avg_pos_extreme           1,875.98
- min_pos_all                      0
- min_pos_small                    0
- min_pos_large               730.54
- min_pos_extreme           1,826.41
- max_pos_all               3,929.44
- max_pos_small                730.5
- max_pos_large             1,826.21
- max_pos_extreme           2,074.85
+                  metric                value
+ denominator_closed_rows           15,785,892
+ negative_total                        45,296
+ negative_small                        45,180
+ negative_large                             1
+ negative_extreme                         115
+ zero_total                           387,329
+ near_zero_leq_days      0.000324074074074074
+ near_zero_excl_zero                   14,741
+ one_sec_total                          3,460
+ positive_total                    15,353,267
+ positive_small                    15,212,398
+ positive_large                       139,628
+ positive_extreme                       1,240
+ pct_negative_total                     0.29%
+ pct_negative_small                     0.29%
+ pct_negative_large                     0.00%
+ pct_negative_extreme                   0.00%
+ pct_zero                               2.45%
+ pct_one_sec_total                      0.02%
+ pct_near_zero_excl_zero                0.09%
+ pct_positive_total                    97.26%
+ pct_positive_small                    96.37%
+ pct_positive_large                     0.88%
+ pct_positive_extreme                   0.01%
+ avg_neg_all                          -118.71
+ avg_neg_small                          -6.87
+ avg_neg_large                        -856.56
+ avg_neg_extreme                   -44,050.91
+ min_neg_all                       -44,601.59
+ min_neg_small                        -548.76
+ min_neg_large                        -856.56
+ min_neg_extreme                   -44,601.59
+ max_neg_all                                0
+ max_neg_small                              0
+ max_neg_large                        -856.56
+ max_neg_extreme                    -5,545.43
+ avg_pos_all                            23.72
+ avg_pos_small                           13.7
+ avg_pos_large                       1,098.94
+ avg_pos_extreme                     1,875.98
+ min_pos_all                                0
+ min_pos_small                              0
+ min_pos_large                         730.54
+ min_pos_extreme                     1,826.41
+ max_pos_all                         3,929.44
+ max_pos_small                          730.5
+ max_pos_large                       1,826.21
+ max_pos_extreme                     2,074.85
 
 
 Examples of NEGATIVE durations  (random 10 of 45,296):
@@ -2315,23 +2315,77 @@ Pareto summary by agency:
  DOT    254 0.07    1.00
  HPD      7 0.00    1.00
 
-No NEAR-ZERO durations found.
+
+Examples of NEAR-ZERO (< 29 sec) durations (0 < days ≤ 0.0003) (random 10 of 14,741):
+ unique_key        created_date         closed_date duration_min duration_hours agency
+   47979887 2020-11-05 09:20:48 2020-11-05 09:20:49         0.02           0.00    DPR
+   53772075 2022-03-29 11:28:55 2022-03-29 11:28:56         0.02           0.00    DOT
+   45728572 2020-03-01 15:18:46 2020-03-01 15:18:48         0.03           0.00    EDC
+   46822455 2020-07-11 23:17:39 2020-07-11 23:17:59         0.33           0.01   NYPD
+   46767545 2020-07-05 05:04:02 2020-07-05 05:04:25         0.38           0.01   NYPD
+   57867391 2023-06-11 22:36:48 2023-06-11 22:37:13         0.42           0.01   NYPD
+   61115178 2024-05-10 13:09:24 2024-05-10 13:09:50         0.43           0.01   NYPD
+   51392719 2021-07-31 22:25:56 2021-07-31 22:26:23         0.45           0.01   NYPD
+   56876975 2023-02-23 13:53:13 2023-02-23 13:53:40         0.45           0.01   NYPD
+   47406001 2020-08-29 22:03:08 2020-08-29 22:03:36         0.47           0.01   NYPD
+
+Plotting NEAR-ZERO (< 29 sec) charts (10 agencies with >5 observations)
+
+Filtered out 1 groups with < 5 observations
+
+Pareto summary by agency:
+ group    N  pct cum_pct
+ NYPD  8502 0.58    0.58
+ EDC   2330 0.16    0.73
+ DOHMH 1908 0.13    0.86
+ DSNY   957 0.06    0.93
+ DPR    671 0.05    0.97
+ DOT    270 0.02    0.99
+ HPD     54 0.00    1.00
+ DHS     21 0.00    1.00
+ OSE     14 0.00    1.00
+ TLC      6 0.00    1.00
+ DOB      5 0.00    1.00
+
+>>> Starting boxplot section...
+make_boxplot is TRUE
+Proceeding with boxplot for 11 agencies
+duration_days column exists
+Range of duration_days: -0.000231481481481481 to 0.000324074074074074 
+NA values in duration_days: 0 
+Filtering plotting data to groups with N >= 5
+
+=== Summary statistics (All groups with N > 0) for Near-Zero (< 29 Sec) Duration (days) by agency ===
+      grp    N Min Q1 Median Q3 Max Mean SD
+ 1:   DEP    3   0  0      0  0   0    0  0
+ 2:   DHS   21   0  0      0  0   0    0  0
+ 3:   DOB    5   0  0      0  0   0    0  0
+ 4: DOHMH 1908   0  0      0  0   0    0  0
+ 5:   DOT  270   0  0      0  0   0    0  0
+ 6:   DPR  671   0  0      0  0   0    0  0
+ 7:  DSNY  957   0  0      0  0   0    0  0
+ 8:   EDC 2330   0  0      0  0   0    0  0
+ 9:   HPD   54   0  0      0  0   0    0  0
+10:  NYPD 8502   0  0      0  0   0    0  0
+11:   OSE   14   0  0      0  0   0    0  0
+12:   TLC    6   0  0      0  0   0    0  0
+Filtered out 1 groups with < 5 observations
 
 
-Examples of LARGE POSITIVE durations (> 730 and ≤ 1826 days) (random 10 of 139,628):
+Examples of LARGE POSITIVE (739 < 1825) durations (> 730 and ≤ 1826 days) (random 10 of 139,628):
  unique_key        created_date         closed_date duration_days_display agency
-   47821772 2020-10-08 13:51:52 2024-06-03 15:41:17               1334.08  DOHMH
-   50027485 2021-03-15 20:05:33 2024-10-23 12:49:44               1317.70    EDC
-   50867883 2021-06-13 21:29:58 2024-10-23 13:34:05               1227.67    EDC
-   52323019 2021-10-27 12:17:54 2024-10-23 14:45:10               1092.10    EDC
-   55581743 2022-10-02 17:42:24 2025-09-18 15:03:25               1081.89    DPR
-   51093848 2021-07-04 16:11:18 2024-06-04 03:17:08               1065.46  DOHMH
-   54071671 2022-05-03 11:37:36 2025-01-09 19:56:11                982.39  DOHMH
-   52498565 2021-11-12 07:41:46 2024-06-04 02:49:52                934.76  DOHMH
-   54740685 2022-07-09 11:26:29 2024-10-24 09:44:41                837.93    EDC
-   51176298 2021-07-11 13:56:46 2023-08-22 15:20:38                772.06    DPR
+   47501989 2020-09-08 14:37:02 2025-01-14 13:38:38               1589.00    DPR
+   46367659 2020-06-02 11:39:02 2024-06-03 14:34:18               1462.12  DOHMH
+   46692477 2020-06-30 09:48:33 2024-06-03 14:48:34               1434.21  DOHMH
+   51178520 2021-07-11 19:15:28 2025-04-22 17:55:52               1380.94    DPR
+   49948577 2021-03-06 15:41:34 2024-10-23 12:35:06               1326.83    EDC
+   48330565 2020-12-05 13:49:33 2024-06-03 16:01:53               1276.05  DOHMH
+   50317392 2021-04-19 11:09:43 2024-09-24 10:59:27               1253.99    DPR
+   54270087 2022-05-24 11:18:26 2024-11-12 16:30:28                903.26    DPR
+   53148313 2022-01-23 08:44:53 2024-06-03 19:18:08                862.40  DOHMH
+   53912217 2022-04-14 09:44:21 2024-06-03 20:01:25                781.43  DOHMH
 
-Plotting LARGE POSITIVE charts (12 agencies with >4 observations)
+Plotting LARGE POSITIVE (739 < 1825) charts (12 agencies with >4 observations)
 
 Filtered out 1 groups with < 4 observations
 
@@ -2358,7 +2412,7 @@ Range of duration_days: 730.540613425926 to 1826.20987268519
 NA values in duration_days: 0 
 Filtering plotting data to groups with N >= 5
 
-=== Summary statistics (All groups with N > 0) for Large Positive Duration (days) by agency ===
+=== Summary statistics (All groups with N > 0) for Large Positive (739 < 1825) Duration (days) by agency ===
       grp     N     Min      Q1  Median      Q3     Max    Mean     SD
  1:  DCWP     3 1200.09 1215.14 1230.18 1231.71 1233.24 1221.17  18.32
  2:   DEP   351  731.49  817.21  958.19 1218.93 1814.23 1046.57 282.60
@@ -2376,7 +2430,7 @@ Filtering plotting data to groups with N >= 5
 Filtered out 1 groups with < 5 observations
 
 
-Examples of EXTREME POSITIVE durations (> 1826 days) (random 10 of 1,240):
+Examples of EXTREME POSITIVE (< 1825) durations (> 1826 days) (random 10 of 1,240):
  unique_key        created_date         closed_date duration_days_display agency
    45332279 2020-01-07 16:05:01 2025-04-22 17:02:52               1932.00    DPR
    45374077 2020-01-12 14:24:54 2025-04-22 17:02:59               1927.07    DPR
@@ -2389,7 +2443,7 @@ Examples of EXTREME POSITIVE durations (> 1826 days) (random 10 of 1,240):
    45954469 2020-04-06 15:53:53 2025-04-22 17:10:21               1842.05    DPR
    45978445 2020-04-10 13:08:27 2025-04-22 17:10:38               1838.17    DPR
 
-Plotting EXTREME POSITIVE charts (6 agencies with >3 observations)
+Plotting EXTREME POSITIVE (< 1825) charts (6 agencies with >3 observations)
 
 Filtered out 1 groups with < 3 observations
 
@@ -2410,7 +2464,7 @@ Range of duration_days: 1826.4121875 to 2074.85138888889
 NA values in duration_days: 0 
 Filtering plotting data to groups with N >= 5
 
-=== Summary statistics (All groups with N > 0) for Extreme Positive Duration (days) by agency ===
+=== Summary statistics (All groups with N > 0) for Extreme Positive (< 1825) Duration (days) by agency ===
      grp    N     Min      Q1  Median      Q3     Max    Mean    SD
 1:   DEP    9 1878.85 1923.76 1938.78 1986.15 2074.85 1960.33 58.75
 2:   DOB   17 1847.65 1879.53 1892.82 1917.33 1990.56 1904.37 41.32
@@ -2424,628 +2478,590 @@ Filtered out 1 groups with < 5 observations
 === RESPONSE TIMES BY COMPLAINT CATEGORY ANALYSIS ===
 
 === Complaint Type Response Time Summary ===
-Total complaint types: 199 (N >= 50)
+Total complaint types: 185 (N >= 100)
+
+--- Exclusion Limits Applied ---
+Lower limit: 0.00 days (excluded 446,316 records)
+Upper limit: 3650.00 days (excluded 1 records)
+Total excluded: 446,317 of 15,785,892 records (2.83%)
 
 ================================================================================ 
-SORT 1: By Median Duration (ascending)
+SORT 1: By Median Duration (ascending) - All values in days
 ================================================================================ 
 
-                                complaint_type       N       Min  Median    Mean     Max Median_hours
-                   ANIMAL FACILITY - NO PERMIT     199      0.00    0.00    0.00    0.00       0.0000
-           COVID-19 NON-ESSENTIAL CONSTRUCTION    7322      0.00    0.00    1.84 1895.31       0.0000
-                    ILLEGAL ANIMAL KEPT AS PET    1454      0.00    0.00    0.00    0.00       0.0000
-                           ILLEGAL ANIMAL SOLD     261      0.00    0.00    0.00    0.00       0.0000
-                                      PET SHOP     824      0.00    0.00    0.00    0.00       0.0000
-                         REAL TIME ENFORCEMENT   22902      0.00    0.00    9.97 1756.49       0.0000
-                                        RODENT  178471 -44458.59    0.00    3.52  815.08       0.0000
-                                STANDING WATER    4752      0.00    0.00    0.04   35.19       0.0000
-                        STREET LIGHT CONDITION  240859   -378.00    0.00   21.64 2047.25       0.0000
-                                 UNLEASHED DOG    3780 -44458.48    0.00  -11.76    0.00       0.0000
-                    UNSANITARY ANIMAL FACILITY     210      0.00    0.00    0.00    0.00       0.0000
-                UNSANITARY ANIMAL PVT PROPERTY    9977      0.00    0.00    6.30  429.17       0.0000
-                   UNSANITARY PIGEON CONDITION    4892      0.00    0.00    4.12  275.94       0.0000
-                     BIKE/ROLLER/SKATE CHRONIC   14007      0.00    0.02    0.04    3.11       0.3750
-                              DISORDERLY YOUTH    1459      0.00    0.02    0.05    1.73       0.5756
-                                 DRUG ACTIVITY   59028      0.00    0.02    0.05  233.47       0.4022
-                       FACE COVERING VIOLATION    1797      0.00    0.02    0.14    1.04       0.5833
-                     HOMELESS STREET CONDITION   15583      0.00    0.02    0.06  252.03       0.4381
-                             ILLEGAL FIREWORKS  101395     -0.01    0.02    0.09  737.54       0.3853
-                            NOISE - COMMERCIAL  295131     -0.08    0.02    0.06  738.61       0.5928
-                      NOISE - HOUSE OF WORSHIP    6892      0.00    0.02    0.04   26.70       0.4408
-                                  NOISE - PARK   41903      0.00    0.02    0.16  735.56       0.5244
-                       NOISE - STREET/SIDEWALK  854808     -0.08    0.02    0.11 1044.58       0.5811
-                   NON-EMERGENCY POLICE MATTER  165912      0.00    0.02    0.06  734.54       0.4697
-                                      SQUEEGEE     226      0.00    0.02    0.05    1.77       0.4911
-                                       TRAFFIC   30383      0.00    0.02    0.06  152.41       0.5653
-                                       VENDING    4353      0.00    0.02    0.08   20.82       0.4689
-                                      DRINKING   17117      0.00    0.03    0.09  338.60       0.7003
-                           NOISE - RESIDENTIAL 1824108     -0.08    0.03    0.35  877.52       0.7708
-                               NOISE - VEHICLE  331051     -0.07    0.03    0.07  591.66       0.6106
-                                   PANHANDLING   31211     -0.04    0.03    0.07  241.84       0.6711
-                         POSTING ADVERTISEMENT     438      0.00    0.03    0.08    0.88       0.7331
-                           URINATING IN PUBLIC    5244      0.00    0.03    0.07   17.69       0.6536
-                       VIOLATION OF PARK RULES   23742      0.00    0.03    2.87 1183.87       0.8019
-                                  ANIMAL-ABUSE   38792     -0.08    0.04    0.17  734.48       1.0433
-                                    ENCAMPMENT  147040     -0.07    0.04    1.32  926.37       1.0442
-                               ILLEGAL PARKING 1900724     -0.07    0.04    0.10  877.15       1.0083
-                             ABANDONED VEHICLE  280248      0.00    0.05    0.16  380.44       1.2242
-                              ANIMAL IN A PARK   21725      0.00    0.05    8.76 1285.97       1.2014
-                              BLOCKED DRIVEWAY  761854     -0.08    0.05    0.13  693.13       1.1967
-                                    MOSQUITOES    2025      0.00    0.06   11.18  120.29       1.4892
-                                         PLANT     585      0.00    0.06   15.61  931.00       1.4667
-                            VENDOR ENFORCEMENT   39935      0.00    0.06    0.09   25.92       1.5078
-                           HAZARDOUS MATERIALS    9067   -548.76    0.07    1.06  670.01       1.6667
-                      TRAFFIC SIGNAL CONDITION  189748   -364.93    0.09   12.42 1157.00       2.2167
-                           HOMELESS ENCAMPMENT     193      0.00    0.10    0.14    0.85       2.3986
-                      MASS GATHERING COMPLAINT    3652      0.00    0.11    0.28  520.58       2.7254
-                    HOMELESS PERSON ASSISTANCE  126979 -44601.59    0.13   -1.19 1741.76       3.1950
-                             WATER MAINTENANCE     368      0.00    0.15    1.15   21.05       3.6250
-                                         SEWER  143749   -525.90    0.17    7.00 2009.06       4.0333
-                              INDUSTRIAL WASTE    3634   -477.68    0.21    7.57 1505.05       4.9667
-                                  WATER SYSTEM  285305   -499.16    0.22    4.45 2074.85       5.1833
-                                      ASBESTOS    6715      0.00    0.25    5.02  481.97       5.9500
-                        DEPT OF INVESTIGATIONS     151      0.00    0.37    4.37  137.47       8.9639
-                               SCAFFOLD SAFETY     875      0.00    0.37   15.42 1393.41       8.9483
-                             SEWER MAINTENANCE    2771      0.00    0.37    0.88   31.35       8.7775
-                           CRANES AND DERRICKS     456      0.00    0.38    9.73 1123.58       9.0146
-                             UNSTABLE BUILDING      69     -0.84    0.40    0.53    5.50       9.5028
-                              BEST/SITE SAFETY    2007      0.00    0.49   16.47 1990.56      11.7981
-                            INDOOR AIR QUALITY   30917      0.00    0.62    1.80 1191.90      14.9833
-                            WATER CONSERVATION   17712      0.00    0.63    1.93  337.71      15.1500
-                                          MOLD    1479      0.00    0.67    1.26   49.02      16.1986
-                                 PUBLIC TOILET     175      0.00    0.68    2.10   26.40      16.3606
-           NONCOMPLIANCE WITH PHASED REOPENING   66317      0.00    0.77   10.60  126.81      18.4342
-                                 LOST PROPERTY   29190      0.00    0.84    1.65   54.66      20.2540
-                                         STORM    3005      0.00    0.90    1.21   19.46      21.6500
-                    BUS STOP SHELTER PLACEMENT     795      0.00    0.93    6.86  503.14      22.4303
-                             DERELICT VEHICLES  223846      0.00    0.95    1.50  273.53      22.7500
- PRIVATE SCHOOL VACCINE MANDATE NON-COMPLIANCE     219      0.00    1.02    0.91    1.04      24.4778
-                VACCINE MANDATE NON-COMPLIANCE    7399      0.96    1.02    1.02    1.04      24.5014
-                    OVERFLOWING LITTER BASKETS    4566      0.00    1.12    1.88   54.79      26.9083
-                              DERELICT BICYCLE    2913 -44458.33    1.14  -11.25   87.55      27.4500
-                          SANITATION CONDITION   62677 -44458.29    1.15    1.80  319.02      27.5833
-                                          LEAD   58362      0.00    1.19    4.91  105.98      28.5500
-                        COLLECTION TRUCK NOISE     470     -4.99    1.21    3.91  319.01      29.0667
-                                   AIR QUALITY   48512   -476.73    1.27    2.57  171.29      30.5333
-                              STREET CONDITION  331330     -2.94    1.28    4.57 1827.31      30.6444
-                                FOOD POISONING   11902      0.00    1.38   11.69 1387.40      33.0235
-                       LITTER BASKET / REQUEST    3921     -2.98    1.47    2.78  319.02      35.3500
-                               DIRTY CONDITION  162789      0.00    1.50    5.04  797.77      36.0736
-                            CONSUMER COMPLAINT  116117      0.01    1.53   14.58 1233.24      36.6603
-                RESIDENTIAL DISPOSAL COMPLAINT   35269      0.00    1.59    4.20  166.89      38.0656
-                                 FERRY INQUIRY    1465      0.00    1.64    4.83  175.97      39.2519
-                          BROKEN PARKING METER   29954      0.00    1.69    5.53  544.07      40.6081
-                           SWEEPING/INADEQUATE     537      0.00    1.79    3.32   68.00      42.9667
-                                HEAT/HOT WATER 1121177     -0.85    1.82    2.22 1414.11      43.6444
-                                   OBSTRUCTION   50600      0.00    1.84    6.80  736.62      44.2053
-                                     E-SCOOTER    1391      0.01    1.93    6.00  225.00      46.3397
-                 COMMERCIAL DISPOSAL COMPLAINT    8957      0.00    1.97    5.60  455.95      47.1983
-             MISSED COLLECTION (ALL MATERIALS)   82690     -4.99    1.97    2.79  326.00      47.1833
-                              BRIDGE CONDITION    1467      0.00    2.00   22.08  505.01      48.0303
-                               SWEEPING/MISSED    2731      0.00    2.00    3.99   55.95      47.9667
-                                         NOISE  245100   -487.71    2.15    4.07 1938.78      51.6667
-                 EMERGENCY RESPONSE TEAM (ERT)   16861      0.00    2.24    7.90 1332.51      53.8719
-           INVESTIGATIONS AND DISCIPLINE (IAD)    2858      0.00    2.29   16.30 1554.14      54.9351
-                                   DEAD ANIMAL   32887      0.00    2.59    4.65  114.65      62.1508
-           REQUEST LARGE BULKY ITEM COLLECTION  630147      0.00    2.63    3.74   61.35      63.2167
-                                       BOILERS   15211      0.00    2.64    8.02 1024.20      63.4628
-                            RETAILER COMPLAINT      51      0.12    2.68    5.06   27.97      64.2992
-                 ELECTRONICS WASTE APPOINTMENT   32585      0.00    2.71    5.88  183.87      65.1000
-                               ILLEGAL POSTING   11703      0.01    2.75    4.02  147.96      65.9142
-                              DIRTY CONDITIONS   68191      0.00    2.79    9.62  374.22      66.8833
-                                   SNOW OR ICE   11330      0.00    2.81    4.11  432.86      67.4740
-                INSTITUTION DISPOSAL COMPLAINT     187      0.01    2.88    5.88   54.79      69.0250
-                         RECYCLING ENFORCEMENT     643      0.00    2.92   10.70  146.75      70.0833
-                             HIGHWAY CONDITION   17014      0.00    2.94   12.88 1068.03      70.5494
-                             OTHER ENFORCEMENT   11789      0.00    3.05   10.53  319.00      73.1500
-                           SEASONAL COLLECTION     790      0.03    3.20    5.64   45.72      76.6956
-                               ILLEGAL DUMPING  109029      0.00    3.47    6.77  830.58      83.2717
-                       X-RAY MACHINE/EQUIPMENT     153      0.01    3.50    6.54   64.32      84.1122
-                                    ELECTRICAL   10237      0.00    3.56   10.39 1648.61      85.5392
-                    RECYCLING BASKET COMPLAINT     253      0.04    3.74    6.95   56.23      89.7194
-                                 WATER QUALITY    7813      0.00    3.83   16.92  612.41      91.9667
-                                INCORRECT DATA     313      0.00    3.86    5.81  112.87      92.7575
-                       LITTER BASKET COMPLAINT    4835      0.00    3.97    8.73  134.72      95.2389
-                          DEP STREET CONDITION     629      0.00    4.02    7.13  301.76      96.5469
-                            DUMPSTER COMPLAINT    5855      0.01    4.08    9.39  229.23      97.9533
-                             MISSED COLLECTION  177205      0.00    4.11    6.74  981.19      98.6925
-                 GENERAL CONSTRUCTION/PLUMBING  182924      0.00    4.34   42.80 1969.40     104.2796
-                               TAXI COMPLIMENT     412      0.04    4.70   14.15  145.81     112.8440
-                         LITTER BASKET REQUEST   11399      0.00    4.73    8.46  159.99     113.5517
-                                  SNOW REMOVAL      92      4.06    4.77   27.06 1182.96     114.5861
-                                 COOLING TOWER      96      0.03    4.78   48.05  767.33     114.6022
-                                          SNOW    9415      0.00    4.82    5.71   33.19     115.6500
-                                ABANDONED BIKE    6681      0.00    4.92    9.52  147.02     117.9689
-                    BEACH/POOL/SAUNA COMPLAINT     894      0.00    4.92   17.06  425.98     118.0189
-        SANITATION WORKER OR VEHICLE COMPLAINT    9773      0.00    4.94    9.03  402.67     118.5408
-                     STREET SWEEPING COMPLAINT   26924      0.00    4.95    8.04  156.06     118.8656
-                                     LIFEGUARD     127      0.06    5.02   14.48  274.93     120.3667
-                               FERRY COMPLAINT    1355      0.00    5.10   10.19  112.67     122.5139
-                       HIGHWAY SIGN - DANGLING     164      0.02    5.11   13.43  369.78     122.7482
-                                 INDOOR SEWAGE    3139      0.00    5.11  120.24 1022.92     122.7064
-                           AHV INSPECTION UNIT     720      0.00    5.25    6.08   76.78     125.9194
-                          RADIOACTIVE MATERIAL      66      0.07    5.49    7.21   29.10     131.6972
-                            SPECIAL OPERATIONS      56      0.00    5.56   20.42  510.37     133.4536
-                        HIGHWAY SIGN - DAMAGED     621      0.00    5.90   14.56  294.43     141.5717
-                        STREET SIGN - DANGLING   17523      0.00    6.07   13.69  628.91     145.6325
-                         STREET SIGN - DAMAGED   24636      0.00    6.20   32.22 1044.04     148.8242
-                    BUS STOP SHELTER COMPLAINT    5269      0.00    6.70   11.32  497.91     160.8889
-                                DRINKING WATER    1406      0.00    6.78  126.02 1099.19     162.7260
-                        HIGHWAY SIGN - MISSING     275      0.08    7.63   21.38  334.72     183.0828
-                         STREET SIGN - MISSING   20473      0.00    8.14   40.70  976.08     195.3375
-                                    VACANT LOT    3036 -44431.54    8.14   51.84  548.04     195.3583
-                                 PAINT/PLASTER  262168     -0.56    8.15   20.60 1349.88     195.6518
-                                      ELECTRIC  124398     -0.64    8.34   23.81 1243.21     200.2375
-                                        SAFETY   52336     -0.37    8.37   21.47 1288.04     200.9178
-                       FOR HIRE VEHICLE REPORT     345      0.49    8.43   19.59  162.73     202.3786
-                            SIDEWALK CONDITION  120832      0.00    9.06   14.29 1310.53     217.3296
-                     PUBLIC PAYPHONE COMPLAINT     396      0.01    9.14   33.54  434.01     219.4776
-                                  DAMAGED TREE  154991 -44375.79    9.16   82.04 1878.06     219.7867
-                                      PLUMBING  288972     -0.91    9.25   25.32 1589.29     222.0758
-                    MUNICIPAL PARKING FACILITY     290      0.01    9.74  119.24  667.96     233.6654
-                                     BIKE RACK     140      0.11   10.93   22.02  152.77     262.2219
-           PRIVATE OR CHARTER SCHOOL REOPENING    1138 -44516.37   10.93 -142.91   97.53     262.3036
-                                       LINKNYC     756      0.02   11.18   21.49  584.74     268.3560
-                               FLOORING/STAIRS  114111     -0.51   11.31   25.14 1343.71     271.4828
-                          UNSANITARY CONDITION  488630     -0.55   11.34   26.00 1573.61     272.1364
-                                    WATER LEAK  184372     -0.55   11.88   28.27 1358.89     285.1017
-                                OUTDOOR DINING   26196      0.00   12.02   27.99  418.87     288.4649
-                                   DOOR/WINDOW  193979     -0.55   12.60   28.16 1329.14     302.3897
-                            SCHOOL MAINTENANCE    6374      0.00   12.83   89.14 1178.73     307.8579
-                              OUTSIDE BUILDING    4560      0.04   13.02   30.85 1080.99     312.5297
-                                WATER DRAINAGE      68     -0.56   13.42   16.47   45.50     322.0496
-                                       GENERAL  133837     -1.27   13.63   32.92 1302.33     327.0319
-         HOME DELIVERED MEAL - MISSED DELIVERY    2593      0.00   14.20   13.86  442.86     340.8172
-                                CURB CONDITION   30818      0.00   14.89   26.38  781.88     357.3697
-                                     APPLIANCE   95909     -0.48   15.19   33.35 1287.26     364.5331
-                                   TAXI REPORT     607 -44516.54   15.78 -122.63  202.33     378.6914
-                           ILLEGAL TREE DAMAGE   18332 -44354.78   21.76  111.22 1804.46     522.1533
-          SPECIAL NATURAL AREA DISTRICT (SNAD)     246      0.00   24.33   49.00  745.26     583.8675
-                       MAINTENANCE OR FACILITY   96489      0.00   24.67  103.50 1908.81     592.0722
-                           BIKE RACK CONDITION    1017      0.00   25.53  107.53  851.16     612.6094
-                                      ELEVATOR   90565      0.00   26.40   35.83 1089.38     633.6211
-       SPECIAL PROJECTS INSPECTION TEAM (SPIT)   19246      0.00   27.54   66.34 1892.82     660.9324
-                           WOOD PILE REMAINING    1893      0.00   27.78  196.13 1757.02     666.6631
-                          GREEN TAXI COMPLAINT    1311      0.28   32.78  133.71  848.78     786.6611
-                  BUILDING DRINKING WATER TANK     144      0.02   34.84  149.55  736.21     836.2256
-                                      GRAFFITI   67992  -5545.43   35.57  168.84 3929.44     853.7217
-                       OVERGROWN TREE/BRANCHES   80170 -44458.54   40.80  257.11 1809.12     979.2051
-                               DEAD/DYING TREE   38856 -44516.51   41.01  157.86 1927.65     984.1419
-                                BOROUGH OFFICE     150      0.00   49.52   91.48  694.53    1188.4901
-                            NOISE - HELICOPTER  130246      0.00   52.74  329.63 1356.85    1265.8424
-                    FOR HIRE VEHICLE COMPLAINT   61929 -44516.54   67.47   55.02 1879.96    1619.3742
-                                  BUILDING/USE   91151      0.00   68.37  126.93 1917.33    1640.8856
-                                TAXI COMPLAINT   23226 -44516.52   75.88   44.77 1371.10    1821.0653
-                                UPROOTED STUMP    1430 -44375.74  106.93  220.18 1568.01    2566.2603
-                                    POISON IVY     677      1.05  108.75  434.80 1804.79    2609.9981
-                                 LOT CONDITION    5016   -856.56  125.10  149.23  907.41    3002.3415
-                             SMOKING OR VAPING    3757     35.54  127.60  140.44  282.81    3062.4600
-                 ROOT/SEWER/SIDEWALK CONDITION   42728 -44458.58  159.99  314.68 1777.09    3839.7481
-                              NEW TREE REQUEST   90249 -44041.74  441.99  601.36 1938.26   10607.7208
-                            MOBILE FOOD VENDOR   17000 -44375.67  503.81  649.49 1836.02   12091.3415
-                            FOOD ESTABLISHMENT   51236      0.01  585.47  660.81 1615.42   14051.2636
-                          NON-RESIDENTIAL HEAT    4216      0.06  594.19  668.15 1614.11   14260.4794
-                                ADOPT-A-BASKET     722      0.00  600.44  628.05 2050.82   14410.5750
-                                       SMOKING   15693      0.00  762.41  781.34 1615.66   18297.9597
-                                     TATTOOING     883     18.28  833.99  833.77 1826.41   20015.7356
-                                      DAY CARE    7325      0.00  874.57  829.31 1622.27   20989.7194
-                                  WINDOW GUARD     106      6.60 1124.81 1026.71 1814.40   26995.3647
+                                complaint_type       N Min_days Median_days Mean_days Max_days
+                     BIKE/ROLLER/SKATE CHRONIC   13973     0.00        0.02      0.04     3.11
+                              DISORDERLY YOUTH    1458     0.00        0.02      0.05     1.73
+                                 DRUG ACTIVITY   58767     0.00        0.02      0.05   233.47
+                       FACE COVERING VIOLATION    1782     0.00        0.02      0.14     1.04
+                     HOMELESS STREET CONDITION   15581     0.00        0.02      0.06   252.03
+                             ILLEGAL FIREWORKS  101213     0.00        0.02      0.09   737.54
+                            NOISE - COMMERCIAL  294781     0.00        0.02      0.06   738.61
+                      NOISE - HOUSE OF WORSHIP    6871     0.00        0.02      0.04    26.70
+                                  NOISE - PARK   41822     0.00        0.02      0.16   735.56
+                       NOISE - STREET/SIDEWALK  854008     0.00        0.02      0.11  1044.58
+                   NON-EMERGENCY POLICE MATTER  165742     0.00        0.02      0.06   734.54
+                                      SQUEEGEE     224     0.00        0.02      0.05     1.77
+                                       TRAFFIC   30325     0.00        0.02      0.06   152.41
+                                       VENDING    4353     0.00        0.02      0.08    20.82
+                                      DRINKING   17114     0.00        0.03      0.09   338.60
+                           NOISE - RESIDENTIAL 1819162     0.00        0.03      0.35   877.52
+                               NOISE - VEHICLE  330716     0.00        0.03      0.07   591.66
+                                   PANHANDLING   31196     0.00        0.03      0.07   241.84
+                         POSTING ADVERTISEMENT     438     0.00        0.03      0.08     0.88
+                           URINATING IN PUBLIC    5239     0.00        0.03      0.07    17.69
+                                  ANIMAL-ABUSE   38789     0.00        0.04      0.17   734.48
+                                    ENCAMPMENT  147013     0.00        0.04      1.32   926.37
+                               ILLEGAL PARKING 1900287     0.00        0.04      0.10   877.15
+                       VIOLATION OF PARK RULES   22237     0.00        0.04      3.06  1183.87
+                             ABANDONED VEHICLE  280164     0.00        0.05      0.16   380.44
+                              ANIMAL IN A PARK   21356     0.00        0.05      8.91  1285.97
+                              BLOCKED DRIVEWAY  761769     0.00        0.05      0.13   693.13
+                                    MOSQUITOES    2019     0.00        0.06     11.21   120.29
+                                         PLANT     570     0.00        0.06     16.02   931.00
+                            VENDOR ENFORCEMENT   39933     0.00        0.06      0.09    25.92
+                           HAZARDOUS MATERIALS    9043     0.00        0.07      1.53   670.01
+                      TRAFFIC SIGNAL CONDITION  186709     0.00        0.09     12.62  1157.00
+                           HOMELESS ENCAMPMENT     193     0.00        0.10      0.14     0.85
+                      MASS GATHERING COMPLAINT    3650     0.00        0.11      0.28   520.58
+                    HOMELESS PERSON ASSISTANCE  126952     0.00        0.13      1.62  1741.76
+                             WATER MAINTENANCE     368     0.00        0.15      1.15    21.05
+                                         SEWER  140977     0.00        0.18      7.18  2009.06
+                              INDUSTRIAL WASTE    3522     0.00        0.23      8.87  1505.05
+                                      ASBESTOS    6714     0.00        0.25      5.02   481.97
+                             SEWER MAINTENANCE    2768     0.00        0.37      0.88    31.35
+                                  WATER SYSTEM  235410     0.00        0.41      5.42  2074.85
+           COVID-19 NON-ESSENTIAL CONSTRUCTION    2538     0.00        0.48      5.30  1895.31
+                               SCAFFOLD SAFETY     641     0.02        0.48     21.04  1393.41
+                         REAL TIME ENFORCEMENT   10982     0.00        0.55     20.78  1756.49
+                           CRANES AND DERRICKS     297     0.01        0.56     14.94  1123.58
+                            INDOOR AIR QUALITY   30910     0.00        0.62      1.80  1191.90
+                            WATER CONSERVATION   17680     0.00        0.63      1.93   337.71
+                              BEST/SITE SAFETY    1531     0.01        0.64     21.58  1990.56
+                        DEPT OF INVESTIGATIONS     117     0.01        0.66      5.65   137.47
+                                          MOLD    1479     0.00        0.67      1.26    49.02
+                                 PUBLIC TOILET     175     0.00        0.68      2.10    26.40
+           NONCOMPLIANCE WITH PHASED REOPENING   66305     0.00        0.77     10.61   126.81
+                                 LOST PROPERTY   29184     0.00        0.84      1.65    54.66
+                    BUS STOP SHELTER PLACEMENT     795     0.00        0.93      6.86   503.14
+                                         STORM    2732     0.00        0.95      1.33    19.46
+                             DERELICT VEHICLES  216029     0.00        0.99      1.55   273.53
+ PRIVATE SCHOOL VACCINE MANDATE NON-COMPLIANCE     219     0.00        1.02      0.91     1.04
+                VACCINE MANDATE NON-COMPLIANCE    7399     0.96        1.02      1.02     1.04
+                    OVERFLOWING LITTER BASKETS    4403     0.00        1.15      1.95    54.79
+                                          LEAD   58360     0.00        1.19      4.91   105.98
+                          SANITATION CONDITION   60063     0.00        1.19      2.62   319.02
+                        COLLECTION TRUCK NOISE     466     0.01        1.22      3.96   319.01
+                                   AIR QUALITY   48480     0.00        1.27      2.66   171.29
+                              DERELICT BICYCLE    2746     0.00        1.47      4.26    87.55
+                               DIRTY CONDITION  162720     0.00        1.51      5.05   797.77
+                            CONSUMER COMPLAINT  116117     0.01        1.53     14.58  1233.24
+                       LITTER BASKET / REQUEST    3845     0.00        1.56      2.83   319.02
+                RESIDENTIAL DISPOSAL COMPLAINT   35250     0.00        1.59      4.21   166.89
+                                 FERRY INQUIRY    1465     0.00        1.64      4.83   175.97
+                          BROKEN PARKING METER   29954     0.00        1.69      5.53   544.07
+                              STREET CONDITION  301814     0.00        1.75      5.01  1827.31
+                                HEAT/HOT WATER 1120883     0.00        1.82      2.23  1414.11
+                                   OBSTRUCTION   50594     0.00        1.84      6.80   736.62
+                           SWEEPING/INADEQUATE     527     0.01        1.85      3.38    68.00
+                                     E-SCOOTER    1391     0.01        1.93      6.00   225.00
+                 COMMERCIAL DISPOSAL COMPLAINT    8957     0.00        1.97      5.60   455.95
+                              BRIDGE CONDITION    1467     0.00        2.00     22.08   505.01
+                                FOOD POISONING    9944     0.00        2.00     14.00  1387.40
+             MISSED COLLECTION (ALL MATERIALS)   80920     0.00        2.00      2.86   326.00
+                               SWEEPING/MISSED    2679     0.00        2.02      4.07    55.95
+                                         NOISE  244960     0.00        2.16      4.23  1938.78
+           INVESTIGATIONS AND DISCIPLINE (IAD)    2584     0.00        2.55     18.03  1554.14
+                                   DEAD ANIMAL   32887     0.00        2.59      4.65   114.65
+           REQUEST LARGE BULKY ITEM COLLECTION  630139     0.00        2.63      3.74    61.35
+                 ELECTRONICS WASTE APPOINTMENT   32578     0.00        2.71      5.88   183.87
+                               ILLEGAL POSTING   11703     0.01        2.75      4.02   147.96
+                              DIRTY CONDITIONS   67687     0.00        2.81      9.70   374.22
+                INSTITUTION DISPOSAL COMPLAINT     187     0.01        2.88      5.88    54.79
+                         RECYCLING ENFORCEMENT     641     0.09        2.92     10.73   146.75
+                                        RODENT   60681     0.00        2.92     13.27   815.08
+                             HIGHWAY CONDITION   17014     0.00        2.94     12.88  1068.03
+                             OTHER ENFORCEMENT   11721     0.00        3.06     10.59   319.00
+                                   SNOW OR ICE   10476     0.00        3.10      4.45   432.86
+                           SEASONAL COLLECTION     790     0.03        3.20      5.64    45.72
+                 EMERGENCY RESPONSE TEAM (ERT)   14657     0.00        3.27      9.08  1332.51
+                   UNSANITARY PIGEON CONDITION    1349     0.00        3.39     14.96   275.94
+                               ILLEGAL DUMPING  109028     0.00        3.47      6.77   830.58
+                       X-RAY MACHINE/EQUIPMENT     153     0.01        3.50      6.54    64.32
+                                    ELECTRICAL    9878     0.00        3.69     10.77  1648.61
+                    RECYCLING BASKET COMPLAINT     253     0.04        3.74      6.95    56.23
+                                       BOILERS   11833     0.00        3.83     10.31  1024.20
+                                 WATER QUALITY    7813     0.00        3.83     16.92   612.41
+                                INCORRECT DATA     313     0.00        3.86      5.81   112.87
+                       LITTER BASKET COMPLAINT    4835     0.00        3.97      8.73   134.72
+                          DEP STREET CONDITION     629     0.00        4.02      7.13   301.76
+                            DUMPSTER COMPLAINT    5855     0.01        4.08      9.39   229.23
+                             MISSED COLLECTION  177202     0.00        4.11      6.74   981.19
+                        STREET LIGHT CONDITION  116187     0.00        4.30     46.95  2047.25
+                UNSANITARY ANIMAL PVT PROPERTY    2997     0.00        4.67     20.96   429.17
+                               TAXI COMPLIMENT     412     0.04        4.70     14.15   145.81
+                         LITTER BASKET REQUEST   11399     0.00        4.73      8.46   159.99
+                                ABANDONED BIKE    6681     0.00        4.92      9.52   147.02
+                    BEACH/POOL/SAUNA COMPLAINT     894     0.00        4.92     17.06   425.98
+        SANITATION WORKER OR VEHICLE COMPLAINT    9772     0.01        4.94      9.03   402.67
+                     STREET SWEEPING COMPLAINT   26924     0.00        4.95      8.04   156.06
+                                     LIFEGUARD     127     0.06        5.02     14.48   274.93
+                               FERRY COMPLAINT    1355     0.00        5.10     10.19   112.67
+                                          SNOW    8854     0.00        5.10      6.07    33.19
+                       HIGHWAY SIGN - DANGLING     164     0.02        5.11     13.43   369.78
+                                 INDOOR SEWAGE    3138     0.00        5.12    120.28  1022.92
+                        HIGHWAY SIGN - DAMAGED     621     0.00        5.90     14.56   294.43
+                        STREET SIGN - DANGLING   17523     0.00        6.07     13.69   628.91
+                         STREET SIGN - DAMAGED   24636     0.00        6.20     32.22  1044.04
+                           AHV INSPECTION UNIT     663     0.02        6.34      6.60    76.78
+                    BUS STOP SHELTER COMPLAINT    5269     0.00        6.70     11.32   497.91
+                                DRINKING WATER    1406     0.00        6.78    126.02  1099.19
+                        HIGHWAY SIGN - MISSING     275     0.08        7.63     21.38   334.72
+                         STREET SIGN - MISSING   20473     0.00        8.14     40.70   976.08
+                                 PAINT/PLASTER  262107     0.00        8.15     20.61  1349.88
+                                      ELECTRIC  124383     0.00        8.35     23.82  1243.21
+                                        SAFETY   52331     0.00        8.37     21.47  1288.04
+                       FOR HIRE VEHICLE REPORT     345     0.49        8.43     19.59   162.73
+                 GENERAL CONSTRUCTION/PLUMBING  154609     0.00        8.70     50.63  1969.40
+                                    VACANT LOT    2984     0.00        8.97     67.64   548.04
+                            SIDEWALK CONDITION  120832     0.00        9.06     14.29  1310.53
+                     PUBLIC PAYPHONE COMPLAINT     396     0.01        9.14     33.54   434.01
+                                  DAMAGED TREE  154985     0.00        9.16     83.76  1878.06
+                                      PLUMBING  288402     0.00        9.28     25.37  1589.29
+                    MUNICIPAL PARKING FACILITY     290     0.01        9.74    119.24   667.96
+                                     BIKE RACK     140     0.11       10.93     22.02   152.77
+           PRIVATE OR CHARTER SCHOOL REOPENING    1134     0.01       10.98     13.50    97.53
+                                       LINKNYC     756     0.02       11.18     21.49   584.74
+                               FLOORING/STAIRS  114100     0.01       11.31     25.14  1343.71
+                          UNSANITARY CONDITION  488594     0.00       11.34     26.00  1573.61
+                                    WATER LEAK  184344     0.00       11.88     28.27  1358.89
+                                OUTDOOR DINING   26196     0.00       12.02     27.99   418.87
+                                   DOOR/WINDOW  193958     0.00       12.60     28.16  1329.14
+                            SCHOOL MAINTENANCE    6374     0.00       12.83     89.14  1178.73
+                              OUTSIDE BUILDING    4560     0.04       13.02     30.85  1080.99
+                                       GENERAL  130198     0.00       14.06     33.84  1302.33
+         HOME DELIVERED MEAL - MISSED DELIVERY    2593     0.00       14.20     13.86   442.86
+                                CURB CONDITION   30814     0.00       14.89     26.38   781.88
+                                     APPLIANCE   95901     0.00       15.19     33.36  1287.26
+                                   TAXI REPORT     605     0.13       15.85     23.89   202.33
+                           ILLEGAL TREE DAMAGE   18329     0.00       21.76    113.65  1804.46
+                           BIKE RACK CONDITION    1017     0.00       25.53    107.53   851.16
+                       MAINTENANCE OR FACILITY   94954     0.00       25.86    105.17  1908.81
+          SPECIAL NATURAL AREA DISTRICT (SNAD)     229     0.16       27.57     52.64   745.26
+                           WOOD PILE REMAINING    1893     0.00       27.78    196.13  1757.02
+                                      ELEVATOR   87333     0.00       27.79     37.16  1089.38
+       SPECIAL PROJECTS INSPECTION TEAM (SPIT)   18454     0.00       30.25     69.18  1892.82
+                          GREEN TAXI COMPLAINT    1311     0.28       32.78    133.71   848.78
+                  BUILDING DRINKING WATER TANK     144     0.02       34.84    149.55   736.21
+                                      GRAFFITI   67957     0.00       35.57    168.95  1266.07
+                       OVERGROWN TREE/BRANCHES   80155     0.00       40.82    264.91  1809.12
+                               DEAD/DYING TREE   38852     0.00       41.01    162.45  1927.65
+                                BOROUGH OFFICE     144     0.42       51.64     95.29   694.53
+                            NOISE - HELICOPTER  127865     0.00       56.31    335.77  1356.85
+                    FOR HIRE VEHICLE COMPLAINT   61895     0.00       67.51     79.44  1879.96
+                                  BUILDING/USE   86828     0.00       75.23    133.25  1917.33
+                                TAXI COMPLAINT   23205     0.01       75.94     85.00  1371.10
+                                UPROOTED STUMP    1429     0.00      107.13    251.39  1568.01
+                                    POISON IVY     677     1.05      108.75    434.80  1804.79
+                                 LOT CONDITION    5015     0.00      125.10    149.43   907.41
+                             SMOKING OR VAPING    3757    35.54      127.60    140.44   282.81
+                 ROOT/SEWER/SIDEWALK CONDITION   42727     0.00      159.99    315.73  1777.09
+                              NEW TREE REQUEST   90238     0.00      441.99    605.82  1938.26
+                            MOBILE FOOD VENDOR   16999    10.41      503.99    652.14  1836.02
+                            FOOD ESTABLISHMENT   51236     0.01      585.47    660.81  1615.42
+                          NON-RESIDENTIAL HEAT    4216     0.06      594.19    668.15  1614.11
+                                ADOPT-A-BASKET     715     0.00      608.98    634.20  2050.82
+                                       SMOKING   15693     0.00      762.41    781.34  1615.66
+                                     TATTOOING     883    18.28      833.99    833.77  1826.41
+                                      DAY CARE    7325     0.00      874.57    829.31  1622.27
+                                  WINDOW GUARD     106     6.60     1124.81   1026.71  1814.40
 
 
 ================================================================================ 
-SORT 2: By Count (N, descending)
+SORT 2: By Count (N, descending) - All values in days
 ================================================================================ 
 
-                                complaint_type       N       Min  Median    Mean     Max Median_hours
-                               ILLEGAL PARKING 1900724     -0.07    0.04    0.10  877.15       1.0083
-                           NOISE - RESIDENTIAL 1824108     -0.08    0.03    0.35  877.52       0.7708
-                                HEAT/HOT WATER 1121177     -0.85    1.82    2.22 1414.11      43.6444
-                       NOISE - STREET/SIDEWALK  854808     -0.08    0.02    0.11 1044.58       0.5811
-                              BLOCKED DRIVEWAY  761854     -0.08    0.05    0.13  693.13       1.1967
-           REQUEST LARGE BULKY ITEM COLLECTION  630147      0.00    2.63    3.74   61.35      63.2167
-                          UNSANITARY CONDITION  488630     -0.55   11.34   26.00 1573.61     272.1364
-                              STREET CONDITION  331330     -2.94    1.28    4.57 1827.31      30.6444
-                               NOISE - VEHICLE  331051     -0.07    0.03    0.07  591.66       0.6106
-                            NOISE - COMMERCIAL  295131     -0.08    0.02    0.06  738.61       0.5928
-                                      PLUMBING  288972     -0.91    9.25   25.32 1589.29     222.0758
-                                  WATER SYSTEM  285305   -499.16    0.22    4.45 2074.85       5.1833
-                             ABANDONED VEHICLE  280248      0.00    0.05    0.16  380.44       1.2242
-                                 PAINT/PLASTER  262168     -0.56    8.15   20.60 1349.88     195.6518
-                                         NOISE  245100   -487.71    2.15    4.07 1938.78      51.6667
-                        STREET LIGHT CONDITION  240859   -378.00    0.00   21.64 2047.25       0.0000
-                             DERELICT VEHICLES  223846      0.00    0.95    1.50  273.53      22.7500
-                                   DOOR/WINDOW  193979     -0.55   12.60   28.16 1329.14     302.3897
-                      TRAFFIC SIGNAL CONDITION  189748   -364.93    0.09   12.42 1157.00       2.2167
-                                    WATER LEAK  184372     -0.55   11.88   28.27 1358.89     285.1017
-                 GENERAL CONSTRUCTION/PLUMBING  182924      0.00    4.34   42.80 1969.40     104.2796
-                                        RODENT  178471 -44458.59    0.00    3.52  815.08       0.0000
-                             MISSED COLLECTION  177205      0.00    4.11    6.74  981.19      98.6925
-                   NON-EMERGENCY POLICE MATTER  165912      0.00    0.02    0.06  734.54       0.4697
-                               DIRTY CONDITION  162789      0.00    1.50    5.04  797.77      36.0736
-                                  DAMAGED TREE  154991 -44375.79    9.16   82.04 1878.06     219.7867
-                                    ENCAMPMENT  147040     -0.07    0.04    1.32  926.37       1.0442
-                                         SEWER  143749   -525.90    0.17    7.00 2009.06       4.0333
-                                       GENERAL  133837     -1.27   13.63   32.92 1302.33     327.0319
-                            NOISE - HELICOPTER  130246      0.00   52.74  329.63 1356.85    1265.8424
-                    HOMELESS PERSON ASSISTANCE  126979 -44601.59    0.13   -1.19 1741.76       3.1950
-                                      ELECTRIC  124398     -0.64    8.34   23.81 1243.21     200.2375
-                            SIDEWALK CONDITION  120832      0.00    9.06   14.29 1310.53     217.3296
-                            CONSUMER COMPLAINT  116117      0.01    1.53   14.58 1233.24      36.6603
-                               FLOORING/STAIRS  114111     -0.51   11.31   25.14 1343.71     271.4828
-                               ILLEGAL DUMPING  109029      0.00    3.47    6.77  830.58      83.2717
-                             ILLEGAL FIREWORKS  101395     -0.01    0.02    0.09  737.54       0.3853
-                       MAINTENANCE OR FACILITY   96489      0.00   24.67  103.50 1908.81     592.0722
-                                     APPLIANCE   95909     -0.48   15.19   33.35 1287.26     364.5331
-                                  BUILDING/USE   91151      0.00   68.37  126.93 1917.33    1640.8856
-                                      ELEVATOR   90565      0.00   26.40   35.83 1089.38     633.6211
-                              NEW TREE REQUEST   90249 -44041.74  441.99  601.36 1938.26   10607.7208
-             MISSED COLLECTION (ALL MATERIALS)   82690     -4.99    1.97    2.79  326.00      47.1833
-                       OVERGROWN TREE/BRANCHES   80170 -44458.54   40.80  257.11 1809.12     979.2051
-                              DIRTY CONDITIONS   68191      0.00    2.79    9.62  374.22      66.8833
-                                      GRAFFITI   67992  -5545.43   35.57  168.84 3929.44     853.7217
-           NONCOMPLIANCE WITH PHASED REOPENING   66317      0.00    0.77   10.60  126.81      18.4342
-                          SANITATION CONDITION   62677 -44458.29    1.15    1.80  319.02      27.5833
-                    FOR HIRE VEHICLE COMPLAINT   61929 -44516.54   67.47   55.02 1879.96    1619.3742
-                                 DRUG ACTIVITY   59028      0.00    0.02    0.05  233.47       0.4022
-                                          LEAD   58362      0.00    1.19    4.91  105.98      28.5500
-                                        SAFETY   52336     -0.37    8.37   21.47 1288.04     200.9178
-                            FOOD ESTABLISHMENT   51236      0.01  585.47  660.81 1615.42   14051.2636
-                                   OBSTRUCTION   50600      0.00    1.84    6.80  736.62      44.2053
-                                   AIR QUALITY   48512   -476.73    1.27    2.57  171.29      30.5333
-                 ROOT/SEWER/SIDEWALK CONDITION   42728 -44458.58  159.99  314.68 1777.09    3839.7481
-                                  NOISE - PARK   41903      0.00    0.02    0.16  735.56       0.5244
-                            VENDOR ENFORCEMENT   39935      0.00    0.06    0.09   25.92       1.5078
-                               DEAD/DYING TREE   38856 -44516.51   41.01  157.86 1927.65     984.1419
-                                  ANIMAL-ABUSE   38792     -0.08    0.04    0.17  734.48       1.0433
-                RESIDENTIAL DISPOSAL COMPLAINT   35269      0.00    1.59    4.20  166.89      38.0656
-                                   DEAD ANIMAL   32887      0.00    2.59    4.65  114.65      62.1508
-                 ELECTRONICS WASTE APPOINTMENT   32585      0.00    2.71    5.88  183.87      65.1000
-                                   PANHANDLING   31211     -0.04    0.03    0.07  241.84       0.6711
-                            INDOOR AIR QUALITY   30917      0.00    0.62    1.80 1191.90      14.9833
-                                CURB CONDITION   30818      0.00   14.89   26.38  781.88     357.3697
-                                       TRAFFIC   30383      0.00    0.02    0.06  152.41       0.5653
-                          BROKEN PARKING METER   29954      0.00    1.69    5.53  544.07      40.6081
-                                 LOST PROPERTY   29190      0.00    0.84    1.65   54.66      20.2540
-                     STREET SWEEPING COMPLAINT   26924      0.00    4.95    8.04  156.06     118.8656
-                                OUTDOOR DINING   26196      0.00   12.02   27.99  418.87     288.4649
-                         STREET SIGN - DAMAGED   24636      0.00    6.20   32.22 1044.04     148.8242
-                       VIOLATION OF PARK RULES   23742      0.00    0.03    2.87 1183.87       0.8019
-                                TAXI COMPLAINT   23226 -44516.52   75.88   44.77 1371.10    1821.0653
-                         REAL TIME ENFORCEMENT   22902      0.00    0.00    9.97 1756.49       0.0000
-                              ANIMAL IN A PARK   21725      0.00    0.05    8.76 1285.97       1.2014
-                         STREET SIGN - MISSING   20473      0.00    8.14   40.70  976.08     195.3375
-       SPECIAL PROJECTS INSPECTION TEAM (SPIT)   19246      0.00   27.54   66.34 1892.82     660.9324
-                           ILLEGAL TREE DAMAGE   18332 -44354.78   21.76  111.22 1804.46     522.1533
-                            WATER CONSERVATION   17712      0.00    0.63    1.93  337.71      15.1500
-                        STREET SIGN - DANGLING   17523      0.00    6.07   13.69  628.91     145.6325
-                                      DRINKING   17117      0.00    0.03    0.09  338.60       0.7003
-                             HIGHWAY CONDITION   17014      0.00    2.94   12.88 1068.03      70.5494
-                            MOBILE FOOD VENDOR   17000 -44375.67  503.81  649.49 1836.02   12091.3415
-                 EMERGENCY RESPONSE TEAM (ERT)   16861      0.00    2.24    7.90 1332.51      53.8719
-                                       SMOKING   15693      0.00  762.41  781.34 1615.66   18297.9597
-                     HOMELESS STREET CONDITION   15583      0.00    0.02    0.06  252.03       0.4381
-                                       BOILERS   15211      0.00    2.64    8.02 1024.20      63.4628
-                     BIKE/ROLLER/SKATE CHRONIC   14007      0.00    0.02    0.04    3.11       0.3750
-                                FOOD POISONING   11902      0.00    1.38   11.69 1387.40      33.0235
-                             OTHER ENFORCEMENT   11789      0.00    3.05   10.53  319.00      73.1500
-                               ILLEGAL POSTING   11703      0.01    2.75    4.02  147.96      65.9142
-                         LITTER BASKET REQUEST   11399      0.00    4.73    8.46  159.99     113.5517
-                                   SNOW OR ICE   11330      0.00    2.81    4.11  432.86      67.4740
-                                    ELECTRICAL   10237      0.00    3.56   10.39 1648.61      85.5392
-                UNSANITARY ANIMAL PVT PROPERTY    9977      0.00    0.00    6.30  429.17       0.0000
-        SANITATION WORKER OR VEHICLE COMPLAINT    9773      0.00    4.94    9.03  402.67     118.5408
-                                          SNOW    9415      0.00    4.82    5.71   33.19     115.6500
-                           HAZARDOUS MATERIALS    9067   -548.76    0.07    1.06  670.01       1.6667
-                 COMMERCIAL DISPOSAL COMPLAINT    8957      0.00    1.97    5.60  455.95      47.1983
-                                 WATER QUALITY    7813      0.00    3.83   16.92  612.41      91.9667
-                VACCINE MANDATE NON-COMPLIANCE    7399      0.96    1.02    1.02    1.04      24.5014
-                                      DAY CARE    7325      0.00  874.57  829.31 1622.27   20989.7194
-           COVID-19 NON-ESSENTIAL CONSTRUCTION    7322      0.00    0.00    1.84 1895.31       0.0000
-                      NOISE - HOUSE OF WORSHIP    6892      0.00    0.02    0.04   26.70       0.4408
-                                      ASBESTOS    6715      0.00    0.25    5.02  481.97       5.9500
-                                ABANDONED BIKE    6681      0.00    4.92    9.52  147.02     117.9689
-                            SCHOOL MAINTENANCE    6374      0.00   12.83   89.14 1178.73     307.8579
-                            DUMPSTER COMPLAINT    5855      0.01    4.08    9.39  229.23      97.9533
-                    BUS STOP SHELTER COMPLAINT    5269      0.00    6.70   11.32  497.91     160.8889
-                           URINATING IN PUBLIC    5244      0.00    0.03    0.07   17.69       0.6536
-                                 LOT CONDITION    5016   -856.56  125.10  149.23  907.41    3002.3415
-                   UNSANITARY PIGEON CONDITION    4892      0.00    0.00    4.12  275.94       0.0000
-                       LITTER BASKET COMPLAINT    4835      0.00    3.97    8.73  134.72      95.2389
-                                STANDING WATER    4752      0.00    0.00    0.04   35.19       0.0000
-                    OVERFLOWING LITTER BASKETS    4566      0.00    1.12    1.88   54.79      26.9083
-                              OUTSIDE BUILDING    4560      0.04   13.02   30.85 1080.99     312.5297
-                                       VENDING    4353      0.00    0.02    0.08   20.82       0.4689
-                          NON-RESIDENTIAL HEAT    4216      0.06  594.19  668.15 1614.11   14260.4794
-                       LITTER BASKET / REQUEST    3921     -2.98    1.47    2.78  319.02      35.3500
-                                 UNLEASHED DOG    3780 -44458.48    0.00  -11.76    0.00       0.0000
-                             SMOKING OR VAPING    3757     35.54  127.60  140.44  282.81    3062.4600
-                      MASS GATHERING COMPLAINT    3652      0.00    0.11    0.28  520.58       2.7254
-                              INDUSTRIAL WASTE    3634   -477.68    0.21    7.57 1505.05       4.9667
-                                 INDOOR SEWAGE    3139      0.00    5.11  120.24 1022.92     122.7064
-                                    VACANT LOT    3036 -44431.54    8.14   51.84  548.04     195.3583
-                                         STORM    3005      0.00    0.90    1.21   19.46      21.6500
-                              DERELICT BICYCLE    2913 -44458.33    1.14  -11.25   87.55      27.4500
-           INVESTIGATIONS AND DISCIPLINE (IAD)    2858      0.00    2.29   16.30 1554.14      54.9351
-                             SEWER MAINTENANCE    2771      0.00    0.37    0.88   31.35       8.7775
-                               SWEEPING/MISSED    2731      0.00    2.00    3.99   55.95      47.9667
-         HOME DELIVERED MEAL - MISSED DELIVERY    2593      0.00   14.20   13.86  442.86     340.8172
-                                    MOSQUITOES    2025      0.00    0.06   11.18  120.29       1.4892
-                              BEST/SITE SAFETY    2007      0.00    0.49   16.47 1990.56      11.7981
-                           WOOD PILE REMAINING    1893      0.00   27.78  196.13 1757.02     666.6631
-                       FACE COVERING VIOLATION    1797      0.00    0.02    0.14    1.04       0.5833
-                                          MOLD    1479      0.00    0.67    1.26   49.02      16.1986
-                              BRIDGE CONDITION    1467      0.00    2.00   22.08  505.01      48.0303
-                                 FERRY INQUIRY    1465      0.00    1.64    4.83  175.97      39.2519
-                              DISORDERLY YOUTH    1459      0.00    0.02    0.05    1.73       0.5756
-                    ILLEGAL ANIMAL KEPT AS PET    1454      0.00    0.00    0.00    0.00       0.0000
-                                UPROOTED STUMP    1430 -44375.74  106.93  220.18 1568.01    2566.2603
-                                DRINKING WATER    1406      0.00    6.78  126.02 1099.19     162.7260
-                                     E-SCOOTER    1391      0.01    1.93    6.00  225.00      46.3397
-                               FERRY COMPLAINT    1355      0.00    5.10   10.19  112.67     122.5139
-                          GREEN TAXI COMPLAINT    1311      0.28   32.78  133.71  848.78     786.6611
-           PRIVATE OR CHARTER SCHOOL REOPENING    1138 -44516.37   10.93 -142.91   97.53     262.3036
-                           BIKE RACK CONDITION    1017      0.00   25.53  107.53  851.16     612.6094
-                    BEACH/POOL/SAUNA COMPLAINT     894      0.00    4.92   17.06  425.98     118.0189
-                                     TATTOOING     883     18.28  833.99  833.77 1826.41   20015.7356
-                               SCAFFOLD SAFETY     875      0.00    0.37   15.42 1393.41       8.9483
-                                      PET SHOP     824      0.00    0.00    0.00    0.00       0.0000
-                    BUS STOP SHELTER PLACEMENT     795      0.00    0.93    6.86  503.14      22.4303
-                           SEASONAL COLLECTION     790      0.03    3.20    5.64   45.72      76.6956
-                                       LINKNYC     756      0.02   11.18   21.49  584.74     268.3560
-                                ADOPT-A-BASKET     722      0.00  600.44  628.05 2050.82   14410.5750
-                           AHV INSPECTION UNIT     720      0.00    5.25    6.08   76.78     125.9194
-                                    POISON IVY     677      1.05  108.75  434.80 1804.79    2609.9981
-                         RECYCLING ENFORCEMENT     643      0.00    2.92   10.70  146.75      70.0833
-                          DEP STREET CONDITION     629      0.00    4.02    7.13  301.76      96.5469
-                        HIGHWAY SIGN - DAMAGED     621      0.00    5.90   14.56  294.43     141.5717
-                                   TAXI REPORT     607 -44516.54   15.78 -122.63  202.33     378.6914
-                                         PLANT     585      0.00    0.06   15.61  931.00       1.4667
-                           SWEEPING/INADEQUATE     537      0.00    1.79    3.32   68.00      42.9667
-                        COLLECTION TRUCK NOISE     470     -4.99    1.21    3.91  319.01      29.0667
-                           CRANES AND DERRICKS     456      0.00    0.38    9.73 1123.58       9.0146
-                         POSTING ADVERTISEMENT     438      0.00    0.03    0.08    0.88       0.7331
-                               TAXI COMPLIMENT     412      0.04    4.70   14.15  145.81     112.8440
-                     PUBLIC PAYPHONE COMPLAINT     396      0.01    9.14   33.54  434.01     219.4776
-                             WATER MAINTENANCE     368      0.00    0.15    1.15   21.05       3.6250
-                       FOR HIRE VEHICLE REPORT     345      0.49    8.43   19.59  162.73     202.3786
-                                INCORRECT DATA     313      0.00    3.86    5.81  112.87      92.7575
-                    MUNICIPAL PARKING FACILITY     290      0.01    9.74  119.24  667.96     233.6654
-                        HIGHWAY SIGN - MISSING     275      0.08    7.63   21.38  334.72     183.0828
-                           ILLEGAL ANIMAL SOLD     261      0.00    0.00    0.00    0.00       0.0000
-                    RECYCLING BASKET COMPLAINT     253      0.04    3.74    6.95   56.23      89.7194
-          SPECIAL NATURAL AREA DISTRICT (SNAD)     246      0.00   24.33   49.00  745.26     583.8675
-                                      SQUEEGEE     226      0.00    0.02    0.05    1.77       0.4911
- PRIVATE SCHOOL VACCINE MANDATE NON-COMPLIANCE     219      0.00    1.02    0.91    1.04      24.4778
-                    UNSANITARY ANIMAL FACILITY     210      0.00    0.00    0.00    0.00       0.0000
-                   ANIMAL FACILITY - NO PERMIT     199      0.00    0.00    0.00    0.00       0.0000
-                           HOMELESS ENCAMPMENT     193      0.00    0.10    0.14    0.85       2.3986
-                INSTITUTION DISPOSAL COMPLAINT     187      0.01    2.88    5.88   54.79      69.0250
-                                 PUBLIC TOILET     175      0.00    0.68    2.10   26.40      16.3606
-                       HIGHWAY SIGN - DANGLING     164      0.02    5.11   13.43  369.78     122.7482
-                       X-RAY MACHINE/EQUIPMENT     153      0.01    3.50    6.54   64.32      84.1122
-                        DEPT OF INVESTIGATIONS     151      0.00    0.37    4.37  137.47       8.9639
-                                BOROUGH OFFICE     150      0.00   49.52   91.48  694.53    1188.4901
-                  BUILDING DRINKING WATER TANK     144      0.02   34.84  149.55  736.21     836.2256
-                                     BIKE RACK     140      0.11   10.93   22.02  152.77     262.2219
-                                     LIFEGUARD     127      0.06    5.02   14.48  274.93     120.3667
-                                  WINDOW GUARD     106      6.60 1124.81 1026.71 1814.40   26995.3647
-                                 COOLING TOWER      96      0.03    4.78   48.05  767.33     114.6022
-                                  SNOW REMOVAL      92      4.06    4.77   27.06 1182.96     114.5861
-                             UNSTABLE BUILDING      69     -0.84    0.40    0.53    5.50       9.5028
-                                WATER DRAINAGE      68     -0.56   13.42   16.47   45.50     322.0496
-                          RADIOACTIVE MATERIAL      66      0.07    5.49    7.21   29.10     131.6972
-                            SPECIAL OPERATIONS      56      0.00    5.56   20.42  510.37     133.4536
-                            RETAILER COMPLAINT      51      0.12    2.68    5.06   27.97      64.2992
+                                complaint_type       N Min_days Median_days Mean_days Max_days
+                               ILLEGAL PARKING 1900287     0.00        0.04      0.10   877.15
+                           NOISE - RESIDENTIAL 1819162     0.00        0.03      0.35   877.52
+                                HEAT/HOT WATER 1120883     0.00        1.82      2.23  1414.11
+                       NOISE - STREET/SIDEWALK  854008     0.00        0.02      0.11  1044.58
+                              BLOCKED DRIVEWAY  761769     0.00        0.05      0.13   693.13
+           REQUEST LARGE BULKY ITEM COLLECTION  630139     0.00        2.63      3.74    61.35
+                          UNSANITARY CONDITION  488594     0.00       11.34     26.00  1573.61
+                               NOISE - VEHICLE  330716     0.00        0.03      0.07   591.66
+                              STREET CONDITION  301814     0.00        1.75      5.01  1827.31
+                            NOISE - COMMERCIAL  294781     0.00        0.02      0.06   738.61
+                                      PLUMBING  288402     0.00        9.28     25.37  1589.29
+                             ABANDONED VEHICLE  280164     0.00        0.05      0.16   380.44
+                                 PAINT/PLASTER  262107     0.00        8.15     20.61  1349.88
+                                         NOISE  244960     0.00        2.16      4.23  1938.78
+                                  WATER SYSTEM  235410     0.00        0.41      5.42  2074.85
+                             DERELICT VEHICLES  216029     0.00        0.99      1.55   273.53
+                                   DOOR/WINDOW  193958     0.00       12.60     28.16  1329.14
+                      TRAFFIC SIGNAL CONDITION  186709     0.00        0.09     12.62  1157.00
+                                    WATER LEAK  184344     0.00       11.88     28.27  1358.89
+                             MISSED COLLECTION  177202     0.00        4.11      6.74   981.19
+                   NON-EMERGENCY POLICE MATTER  165742     0.00        0.02      0.06   734.54
+                               DIRTY CONDITION  162720     0.00        1.51      5.05   797.77
+                                  DAMAGED TREE  154985     0.00        9.16     83.76  1878.06
+                 GENERAL CONSTRUCTION/PLUMBING  154609     0.00        8.70     50.63  1969.40
+                                    ENCAMPMENT  147013     0.00        0.04      1.32   926.37
+                                         SEWER  140977     0.00        0.18      7.18  2009.06
+                                       GENERAL  130198     0.00       14.06     33.84  1302.33
+                            NOISE - HELICOPTER  127865     0.00       56.31    335.77  1356.85
+                    HOMELESS PERSON ASSISTANCE  126952     0.00        0.13      1.62  1741.76
+                                      ELECTRIC  124383     0.00        8.35     23.82  1243.21
+                            SIDEWALK CONDITION  120832     0.00        9.06     14.29  1310.53
+                        STREET LIGHT CONDITION  116187     0.00        4.30     46.95  2047.25
+                            CONSUMER COMPLAINT  116117     0.01        1.53     14.58  1233.24
+                               FLOORING/STAIRS  114100     0.01       11.31     25.14  1343.71
+                               ILLEGAL DUMPING  109028     0.00        3.47      6.77   830.58
+                             ILLEGAL FIREWORKS  101213     0.00        0.02      0.09   737.54
+                                     APPLIANCE   95901     0.00       15.19     33.36  1287.26
+                       MAINTENANCE OR FACILITY   94954     0.00       25.86    105.17  1908.81
+                              NEW TREE REQUEST   90238     0.00      441.99    605.82  1938.26
+                                      ELEVATOR   87333     0.00       27.79     37.16  1089.38
+                                  BUILDING/USE   86828     0.00       75.23    133.25  1917.33
+             MISSED COLLECTION (ALL MATERIALS)   80920     0.00        2.00      2.86   326.00
+                       OVERGROWN TREE/BRANCHES   80155     0.00       40.82    264.91  1809.12
+                                      GRAFFITI   67957     0.00       35.57    168.95  1266.07
+                              DIRTY CONDITIONS   67687     0.00        2.81      9.70   374.22
+           NONCOMPLIANCE WITH PHASED REOPENING   66305     0.00        0.77     10.61   126.81
+                    FOR HIRE VEHICLE COMPLAINT   61895     0.00       67.51     79.44  1879.96
+                                        RODENT   60681     0.00        2.92     13.27   815.08
+                          SANITATION CONDITION   60063     0.00        1.19      2.62   319.02
+                                 DRUG ACTIVITY   58767     0.00        0.02      0.05   233.47
+                                          LEAD   58360     0.00        1.19      4.91   105.98
+                                        SAFETY   52331     0.00        8.37     21.47  1288.04
+                            FOOD ESTABLISHMENT   51236     0.01      585.47    660.81  1615.42
+                                   OBSTRUCTION   50594     0.00        1.84      6.80   736.62
+                                   AIR QUALITY   48480     0.00        1.27      2.66   171.29
+                 ROOT/SEWER/SIDEWALK CONDITION   42727     0.00      159.99    315.73  1777.09
+                                  NOISE - PARK   41822     0.00        0.02      0.16   735.56
+                            VENDOR ENFORCEMENT   39933     0.00        0.06      0.09    25.92
+                               DEAD/DYING TREE   38852     0.00       41.01    162.45  1927.65
+                                  ANIMAL-ABUSE   38789     0.00        0.04      0.17   734.48
+                RESIDENTIAL DISPOSAL COMPLAINT   35250     0.00        1.59      4.21   166.89
+                                   DEAD ANIMAL   32887     0.00        2.59      4.65   114.65
+                 ELECTRONICS WASTE APPOINTMENT   32578     0.00        2.71      5.88   183.87
+                                   PANHANDLING   31196     0.00        0.03      0.07   241.84
+                            INDOOR AIR QUALITY   30910     0.00        0.62      1.80  1191.90
+                                CURB CONDITION   30814     0.00       14.89     26.38   781.88
+                                       TRAFFIC   30325     0.00        0.02      0.06   152.41
+                          BROKEN PARKING METER   29954     0.00        1.69      5.53   544.07
+                                 LOST PROPERTY   29184     0.00        0.84      1.65    54.66
+                     STREET SWEEPING COMPLAINT   26924     0.00        4.95      8.04   156.06
+                                OUTDOOR DINING   26196     0.00       12.02     27.99   418.87
+                         STREET SIGN - DAMAGED   24636     0.00        6.20     32.22  1044.04
+                                TAXI COMPLAINT   23205     0.01       75.94     85.00  1371.10
+                       VIOLATION OF PARK RULES   22237     0.00        0.04      3.06  1183.87
+                              ANIMAL IN A PARK   21356     0.00        0.05      8.91  1285.97
+                         STREET SIGN - MISSING   20473     0.00        8.14     40.70   976.08
+       SPECIAL PROJECTS INSPECTION TEAM (SPIT)   18454     0.00       30.25     69.18  1892.82
+                           ILLEGAL TREE DAMAGE   18329     0.00       21.76    113.65  1804.46
+                            WATER CONSERVATION   17680     0.00        0.63      1.93   337.71
+                        STREET SIGN - DANGLING   17523     0.00        6.07     13.69   628.91
+                                      DRINKING   17114     0.00        0.03      0.09   338.60
+                             HIGHWAY CONDITION   17014     0.00        2.94     12.88  1068.03
+                            MOBILE FOOD VENDOR   16999    10.41      503.99    652.14  1836.02
+                                       SMOKING   15693     0.00      762.41    781.34  1615.66
+                     HOMELESS STREET CONDITION   15581     0.00        0.02      0.06   252.03
+                 EMERGENCY RESPONSE TEAM (ERT)   14657     0.00        3.27      9.08  1332.51
+                     BIKE/ROLLER/SKATE CHRONIC   13973     0.00        0.02      0.04     3.11
+                                       BOILERS   11833     0.00        3.83     10.31  1024.20
+                             OTHER ENFORCEMENT   11721     0.00        3.06     10.59   319.00
+                               ILLEGAL POSTING   11703     0.01        2.75      4.02   147.96
+                         LITTER BASKET REQUEST   11399     0.00        4.73      8.46   159.99
+                         REAL TIME ENFORCEMENT   10982     0.00        0.55     20.78  1756.49
+                                   SNOW OR ICE   10476     0.00        3.10      4.45   432.86
+                                FOOD POISONING    9944     0.00        2.00     14.00  1387.40
+                                    ELECTRICAL    9878     0.00        3.69     10.77  1648.61
+        SANITATION WORKER OR VEHICLE COMPLAINT    9772     0.01        4.94      9.03   402.67
+                           HAZARDOUS MATERIALS    9043     0.00        0.07      1.53   670.01
+                 COMMERCIAL DISPOSAL COMPLAINT    8957     0.00        1.97      5.60   455.95
+                                          SNOW    8854     0.00        5.10      6.07    33.19
+                                 WATER QUALITY    7813     0.00        3.83     16.92   612.41
+                VACCINE MANDATE NON-COMPLIANCE    7399     0.96        1.02      1.02     1.04
+                                      DAY CARE    7325     0.00      874.57    829.31  1622.27
+                      NOISE - HOUSE OF WORSHIP    6871     0.00        0.02      0.04    26.70
+                                      ASBESTOS    6714     0.00        0.25      5.02   481.97
+                                ABANDONED BIKE    6681     0.00        4.92      9.52   147.02
+                            SCHOOL MAINTENANCE    6374     0.00       12.83     89.14  1178.73
+                            DUMPSTER COMPLAINT    5855     0.01        4.08      9.39   229.23
+                    BUS STOP SHELTER COMPLAINT    5269     0.00        6.70     11.32   497.91
+                           URINATING IN PUBLIC    5239     0.00        0.03      0.07    17.69
+                                 LOT CONDITION    5015     0.00      125.10    149.43   907.41
+                       LITTER BASKET COMPLAINT    4835     0.00        3.97      8.73   134.72
+                              OUTSIDE BUILDING    4560     0.04       13.02     30.85  1080.99
+                    OVERFLOWING LITTER BASKETS    4403     0.00        1.15      1.95    54.79
+                                       VENDING    4353     0.00        0.02      0.08    20.82
+                          NON-RESIDENTIAL HEAT    4216     0.06      594.19    668.15  1614.11
+                       LITTER BASKET / REQUEST    3845     0.00        1.56      2.83   319.02
+                             SMOKING OR VAPING    3757    35.54      127.60    140.44   282.81
+                      MASS GATHERING COMPLAINT    3650     0.00        0.11      0.28   520.58
+                              INDUSTRIAL WASTE    3522     0.00        0.23      8.87  1505.05
+                                 INDOOR SEWAGE    3138     0.00        5.12    120.28  1022.92
+                UNSANITARY ANIMAL PVT PROPERTY    2997     0.00        4.67     20.96   429.17
+                                    VACANT LOT    2984     0.00        8.97     67.64   548.04
+                             SEWER MAINTENANCE    2768     0.00        0.37      0.88    31.35
+                              DERELICT BICYCLE    2746     0.00        1.47      4.26    87.55
+                                         STORM    2732     0.00        0.95      1.33    19.46
+                               SWEEPING/MISSED    2679     0.00        2.02      4.07    55.95
+         HOME DELIVERED MEAL - MISSED DELIVERY    2593     0.00       14.20     13.86   442.86
+           INVESTIGATIONS AND DISCIPLINE (IAD)    2584     0.00        2.55     18.03  1554.14
+           COVID-19 NON-ESSENTIAL CONSTRUCTION    2538     0.00        0.48      5.30  1895.31
+                                    MOSQUITOES    2019     0.00        0.06     11.21   120.29
+                           WOOD PILE REMAINING    1893     0.00       27.78    196.13  1757.02
+                       FACE COVERING VIOLATION    1782     0.00        0.02      0.14     1.04
+                              BEST/SITE SAFETY    1531     0.01        0.64     21.58  1990.56
+                                          MOLD    1479     0.00        0.67      1.26    49.02
+                              BRIDGE CONDITION    1467     0.00        2.00     22.08   505.01
+                                 FERRY INQUIRY    1465     0.00        1.64      4.83   175.97
+                              DISORDERLY YOUTH    1458     0.00        0.02      0.05     1.73
+                                UPROOTED STUMP    1429     0.00      107.13    251.39  1568.01
+                                DRINKING WATER    1406     0.00        6.78    126.02  1099.19
+                                     E-SCOOTER    1391     0.01        1.93      6.00   225.00
+                               FERRY COMPLAINT    1355     0.00        5.10     10.19   112.67
+                   UNSANITARY PIGEON CONDITION    1349     0.00        3.39     14.96   275.94
+                          GREEN TAXI COMPLAINT    1311     0.28       32.78    133.71   848.78
+           PRIVATE OR CHARTER SCHOOL REOPENING    1134     0.01       10.98     13.50    97.53
+                           BIKE RACK CONDITION    1017     0.00       25.53    107.53   851.16
+                    BEACH/POOL/SAUNA COMPLAINT     894     0.00        4.92     17.06   425.98
+                                     TATTOOING     883    18.28      833.99    833.77  1826.41
+                    BUS STOP SHELTER PLACEMENT     795     0.00        0.93      6.86   503.14
+                           SEASONAL COLLECTION     790     0.03        3.20      5.64    45.72
+                                       LINKNYC     756     0.02       11.18     21.49   584.74
+                                ADOPT-A-BASKET     715     0.00      608.98    634.20  2050.82
+                                    POISON IVY     677     1.05      108.75    434.80  1804.79
+                           AHV INSPECTION UNIT     663     0.02        6.34      6.60    76.78
+                         RECYCLING ENFORCEMENT     641     0.09        2.92     10.73   146.75
+                               SCAFFOLD SAFETY     641     0.02        0.48     21.04  1393.41
+                          DEP STREET CONDITION     629     0.00        4.02      7.13   301.76
+                        HIGHWAY SIGN - DAMAGED     621     0.00        5.90     14.56   294.43
+                                   TAXI REPORT     605     0.13       15.85     23.89   202.33
+                                         PLANT     570     0.00        0.06     16.02   931.00
+                           SWEEPING/INADEQUATE     527     0.01        1.85      3.38    68.00
+                        COLLECTION TRUCK NOISE     466     0.01        1.22      3.96   319.01
+                         POSTING ADVERTISEMENT     438     0.00        0.03      0.08     0.88
+                               TAXI COMPLIMENT     412     0.04        4.70     14.15   145.81
+                     PUBLIC PAYPHONE COMPLAINT     396     0.01        9.14     33.54   434.01
+                             WATER MAINTENANCE     368     0.00        0.15      1.15    21.05
+                       FOR HIRE VEHICLE REPORT     345     0.49        8.43     19.59   162.73
+                                INCORRECT DATA     313     0.00        3.86      5.81   112.87
+                           CRANES AND DERRICKS     297     0.01        0.56     14.94  1123.58
+                    MUNICIPAL PARKING FACILITY     290     0.01        9.74    119.24   667.96
+                        HIGHWAY SIGN - MISSING     275     0.08        7.63     21.38   334.72
+                    RECYCLING BASKET COMPLAINT     253     0.04        3.74      6.95    56.23
+          SPECIAL NATURAL AREA DISTRICT (SNAD)     229     0.16       27.57     52.64   745.26
+                                      SQUEEGEE     224     0.00        0.02      0.05     1.77
+ PRIVATE SCHOOL VACCINE MANDATE NON-COMPLIANCE     219     0.00        1.02      0.91     1.04
+                           HOMELESS ENCAMPMENT     193     0.00        0.10      0.14     0.85
+                INSTITUTION DISPOSAL COMPLAINT     187     0.01        2.88      5.88    54.79
+                                 PUBLIC TOILET     175     0.00        0.68      2.10    26.40
+                       HIGHWAY SIGN - DANGLING     164     0.02        5.11     13.43   369.78
+                       X-RAY MACHINE/EQUIPMENT     153     0.01        3.50      6.54    64.32
+                                BOROUGH OFFICE     144     0.42       51.64     95.29   694.53
+                  BUILDING DRINKING WATER TANK     144     0.02       34.84    149.55   736.21
+                                     BIKE RACK     140     0.11       10.93     22.02   152.77
+                                     LIFEGUARD     127     0.06        5.02     14.48   274.93
+                        DEPT OF INVESTIGATIONS     117     0.01        0.66      5.65   137.47
+                                  WINDOW GUARD     106     6.60     1124.81   1026.71  1814.40
 
 
 ================================================================================ 
-SORT 3: Alphabetically by Complaint Type
+SORT 3: Alphabetically by Complaint Type - All values in days
 ================================================================================ 
 
-                                complaint_type       N       Min  Median    Mean     Max Median_hours
-                                ABANDONED BIKE    6681      0.00    4.92    9.52  147.02     117.9689
-                             ABANDONED VEHICLE  280248      0.00    0.05    0.16  380.44       1.2242
-                                ADOPT-A-BASKET     722      0.00  600.44  628.05 2050.82   14410.5750
-                           AHV INSPECTION UNIT     720      0.00    5.25    6.08   76.78     125.9194
-                                   AIR QUALITY   48512   -476.73    1.27    2.57  171.29      30.5333
-                   ANIMAL FACILITY - NO PERMIT     199      0.00    0.00    0.00    0.00       0.0000
-                              ANIMAL IN A PARK   21725      0.00    0.05    8.76 1285.97       1.2014
-                                  ANIMAL-ABUSE   38792     -0.08    0.04    0.17  734.48       1.0433
-                                     APPLIANCE   95909     -0.48   15.19   33.35 1287.26     364.5331
-                                      ASBESTOS    6715      0.00    0.25    5.02  481.97       5.9500
-                    BEACH/POOL/SAUNA COMPLAINT     894      0.00    4.92   17.06  425.98     118.0189
-                              BEST/SITE SAFETY    2007      0.00    0.49   16.47 1990.56      11.7981
-                                     BIKE RACK     140      0.11   10.93   22.02  152.77     262.2219
-                           BIKE RACK CONDITION    1017      0.00   25.53  107.53  851.16     612.6094
-                     BIKE/ROLLER/SKATE CHRONIC   14007      0.00    0.02    0.04    3.11       0.3750
-                              BLOCKED DRIVEWAY  761854     -0.08    0.05    0.13  693.13       1.1967
-                                       BOILERS   15211      0.00    2.64    8.02 1024.20      63.4628
-                                BOROUGH OFFICE     150      0.00   49.52   91.48  694.53    1188.4901
-                              BRIDGE CONDITION    1467      0.00    2.00   22.08  505.01      48.0303
-                          BROKEN PARKING METER   29954      0.00    1.69    5.53  544.07      40.6081
-                  BUILDING DRINKING WATER TANK     144      0.02   34.84  149.55  736.21     836.2256
-                                  BUILDING/USE   91151      0.00   68.37  126.93 1917.33    1640.8856
-                    BUS STOP SHELTER COMPLAINT    5269      0.00    6.70   11.32  497.91     160.8889
-                    BUS STOP SHELTER PLACEMENT     795      0.00    0.93    6.86  503.14      22.4303
-                        COLLECTION TRUCK NOISE     470     -4.99    1.21    3.91  319.01      29.0667
-                 COMMERCIAL DISPOSAL COMPLAINT    8957      0.00    1.97    5.60  455.95      47.1983
-                            CONSUMER COMPLAINT  116117      0.01    1.53   14.58 1233.24      36.6603
-                                 COOLING TOWER      96      0.03    4.78   48.05  767.33     114.6022
-           COVID-19 NON-ESSENTIAL CONSTRUCTION    7322      0.00    0.00    1.84 1895.31       0.0000
-                           CRANES AND DERRICKS     456      0.00    0.38    9.73 1123.58       9.0146
-                                CURB CONDITION   30818      0.00   14.89   26.38  781.88     357.3697
-                                  DAMAGED TREE  154991 -44375.79    9.16   82.04 1878.06     219.7867
-                                      DAY CARE    7325      0.00  874.57  829.31 1622.27   20989.7194
-                                   DEAD ANIMAL   32887      0.00    2.59    4.65  114.65      62.1508
-                               DEAD/DYING TREE   38856 -44516.51   41.01  157.86 1927.65     984.1419
-                          DEP STREET CONDITION     629      0.00    4.02    7.13  301.76      96.5469
-                        DEPT OF INVESTIGATIONS     151      0.00    0.37    4.37  137.47       8.9639
-                              DERELICT BICYCLE    2913 -44458.33    1.14  -11.25   87.55      27.4500
-                             DERELICT VEHICLES  223846      0.00    0.95    1.50  273.53      22.7500
-                               DIRTY CONDITION  162789      0.00    1.50    5.04  797.77      36.0736
-                              DIRTY CONDITIONS   68191      0.00    2.79    9.62  374.22      66.8833
-                              DISORDERLY YOUTH    1459      0.00    0.02    0.05    1.73       0.5756
-                                   DOOR/WINDOW  193979     -0.55   12.60   28.16 1329.14     302.3897
-                                      DRINKING   17117      0.00    0.03    0.09  338.60       0.7003
-                                DRINKING WATER    1406      0.00    6.78  126.02 1099.19     162.7260
-                                 DRUG ACTIVITY   59028      0.00    0.02    0.05  233.47       0.4022
-                            DUMPSTER COMPLAINT    5855      0.01    4.08    9.39  229.23      97.9533
-                                     E-SCOOTER    1391      0.01    1.93    6.00  225.00      46.3397
-                                      ELECTRIC  124398     -0.64    8.34   23.81 1243.21     200.2375
-                                    ELECTRICAL   10237      0.00    3.56   10.39 1648.61      85.5392
-                 ELECTRONICS WASTE APPOINTMENT   32585      0.00    2.71    5.88  183.87      65.1000
-                                      ELEVATOR   90565      0.00   26.40   35.83 1089.38     633.6211
-                 EMERGENCY RESPONSE TEAM (ERT)   16861      0.00    2.24    7.90 1332.51      53.8719
-                                    ENCAMPMENT  147040     -0.07    0.04    1.32  926.37       1.0442
-                       FACE COVERING VIOLATION    1797      0.00    0.02    0.14    1.04       0.5833
-                               FERRY COMPLAINT    1355      0.00    5.10   10.19  112.67     122.5139
-                                 FERRY INQUIRY    1465      0.00    1.64    4.83  175.97      39.2519
-                               FLOORING/STAIRS  114111     -0.51   11.31   25.14 1343.71     271.4828
-                            FOOD ESTABLISHMENT   51236      0.01  585.47  660.81 1615.42   14051.2636
-                                FOOD POISONING   11902      0.00    1.38   11.69 1387.40      33.0235
-                    FOR HIRE VEHICLE COMPLAINT   61929 -44516.54   67.47   55.02 1879.96    1619.3742
-                       FOR HIRE VEHICLE REPORT     345      0.49    8.43   19.59  162.73     202.3786
-                                       GENERAL  133837     -1.27   13.63   32.92 1302.33     327.0319
-                 GENERAL CONSTRUCTION/PLUMBING  182924      0.00    4.34   42.80 1969.40     104.2796
-                                      GRAFFITI   67992  -5545.43   35.57  168.84 3929.44     853.7217
-                          GREEN TAXI COMPLAINT    1311      0.28   32.78  133.71  848.78     786.6611
-                           HAZARDOUS MATERIALS    9067   -548.76    0.07    1.06  670.01       1.6667
-                                HEAT/HOT WATER 1121177     -0.85    1.82    2.22 1414.11      43.6444
-                             HIGHWAY CONDITION   17014      0.00    2.94   12.88 1068.03      70.5494
-                        HIGHWAY SIGN - DAMAGED     621      0.00    5.90   14.56  294.43     141.5717
-                       HIGHWAY SIGN - DANGLING     164      0.02    5.11   13.43  369.78     122.7482
-                        HIGHWAY SIGN - MISSING     275      0.08    7.63   21.38  334.72     183.0828
-         HOME DELIVERED MEAL - MISSED DELIVERY    2593      0.00   14.20   13.86  442.86     340.8172
-                           HOMELESS ENCAMPMENT     193      0.00    0.10    0.14    0.85       2.3986
-                    HOMELESS PERSON ASSISTANCE  126979 -44601.59    0.13   -1.19 1741.76       3.1950
-                     HOMELESS STREET CONDITION   15583      0.00    0.02    0.06  252.03       0.4381
-                    ILLEGAL ANIMAL KEPT AS PET    1454      0.00    0.00    0.00    0.00       0.0000
-                           ILLEGAL ANIMAL SOLD     261      0.00    0.00    0.00    0.00       0.0000
-                               ILLEGAL DUMPING  109029      0.00    3.47    6.77  830.58      83.2717
-                             ILLEGAL FIREWORKS  101395     -0.01    0.02    0.09  737.54       0.3853
-                               ILLEGAL PARKING 1900724     -0.07    0.04    0.10  877.15       1.0083
-                               ILLEGAL POSTING   11703      0.01    2.75    4.02  147.96      65.9142
-                           ILLEGAL TREE DAMAGE   18332 -44354.78   21.76  111.22 1804.46     522.1533
-                                INCORRECT DATA     313      0.00    3.86    5.81  112.87      92.7575
-                            INDOOR AIR QUALITY   30917      0.00    0.62    1.80 1191.90      14.9833
-                                 INDOOR SEWAGE    3139      0.00    5.11  120.24 1022.92     122.7064
-                              INDUSTRIAL WASTE    3634   -477.68    0.21    7.57 1505.05       4.9667
-                INSTITUTION DISPOSAL COMPLAINT     187      0.01    2.88    5.88   54.79      69.0250
-           INVESTIGATIONS AND DISCIPLINE (IAD)    2858      0.00    2.29   16.30 1554.14      54.9351
-                                          LEAD   58362      0.00    1.19    4.91  105.98      28.5500
-                                     LIFEGUARD     127      0.06    5.02   14.48  274.93     120.3667
-                                       LINKNYC     756      0.02   11.18   21.49  584.74     268.3560
-                       LITTER BASKET / REQUEST    3921     -2.98    1.47    2.78  319.02      35.3500
-                       LITTER BASKET COMPLAINT    4835      0.00    3.97    8.73  134.72      95.2389
-                         LITTER BASKET REQUEST   11399      0.00    4.73    8.46  159.99     113.5517
-                                 LOST PROPERTY   29190      0.00    0.84    1.65   54.66      20.2540
-                                 LOT CONDITION    5016   -856.56  125.10  149.23  907.41    3002.3415
-                       MAINTENANCE OR FACILITY   96489      0.00   24.67  103.50 1908.81     592.0722
-                      MASS GATHERING COMPLAINT    3652      0.00    0.11    0.28  520.58       2.7254
-                             MISSED COLLECTION  177205      0.00    4.11    6.74  981.19      98.6925
-             MISSED COLLECTION (ALL MATERIALS)   82690     -4.99    1.97    2.79  326.00      47.1833
-                            MOBILE FOOD VENDOR   17000 -44375.67  503.81  649.49 1836.02   12091.3415
-                                          MOLD    1479      0.00    0.67    1.26   49.02      16.1986
-                                    MOSQUITOES    2025      0.00    0.06   11.18  120.29       1.4892
-                    MUNICIPAL PARKING FACILITY     290      0.01    9.74  119.24  667.96     233.6654
-                              NEW TREE REQUEST   90249 -44041.74  441.99  601.36 1938.26   10607.7208
-                                         NOISE  245100   -487.71    2.15    4.07 1938.78      51.6667
-                            NOISE - COMMERCIAL  295131     -0.08    0.02    0.06  738.61       0.5928
-                            NOISE - HELICOPTER  130246      0.00   52.74  329.63 1356.85    1265.8424
-                      NOISE - HOUSE OF WORSHIP    6892      0.00    0.02    0.04   26.70       0.4408
-                                  NOISE - PARK   41903      0.00    0.02    0.16  735.56       0.5244
-                           NOISE - RESIDENTIAL 1824108     -0.08    0.03    0.35  877.52       0.7708
-                       NOISE - STREET/SIDEWALK  854808     -0.08    0.02    0.11 1044.58       0.5811
-                               NOISE - VEHICLE  331051     -0.07    0.03    0.07  591.66       0.6106
-                   NON-EMERGENCY POLICE MATTER  165912      0.00    0.02    0.06  734.54       0.4697
-                          NON-RESIDENTIAL HEAT    4216      0.06  594.19  668.15 1614.11   14260.4794
-           NONCOMPLIANCE WITH PHASED REOPENING   66317      0.00    0.77   10.60  126.81      18.4342
-                                   OBSTRUCTION   50600      0.00    1.84    6.80  736.62      44.2053
-                             OTHER ENFORCEMENT   11789      0.00    3.05   10.53  319.00      73.1500
-                                OUTDOOR DINING   26196      0.00   12.02   27.99  418.87     288.4649
-                              OUTSIDE BUILDING    4560      0.04   13.02   30.85 1080.99     312.5297
-                    OVERFLOWING LITTER BASKETS    4566      0.00    1.12    1.88   54.79      26.9083
-                       OVERGROWN TREE/BRANCHES   80170 -44458.54   40.80  257.11 1809.12     979.2051
-                                 PAINT/PLASTER  262168     -0.56    8.15   20.60 1349.88     195.6518
-                                   PANHANDLING   31211     -0.04    0.03    0.07  241.84       0.6711
-                                      PET SHOP     824      0.00    0.00    0.00    0.00       0.0000
-                                         PLANT     585      0.00    0.06   15.61  931.00       1.4667
-                                      PLUMBING  288972     -0.91    9.25   25.32 1589.29     222.0758
-                                    POISON IVY     677      1.05  108.75  434.80 1804.79    2609.9981
-                         POSTING ADVERTISEMENT     438      0.00    0.03    0.08    0.88       0.7331
-           PRIVATE OR CHARTER SCHOOL REOPENING    1138 -44516.37   10.93 -142.91   97.53     262.3036
- PRIVATE SCHOOL VACCINE MANDATE NON-COMPLIANCE     219      0.00    1.02    0.91    1.04      24.4778
-                     PUBLIC PAYPHONE COMPLAINT     396      0.01    9.14   33.54  434.01     219.4776
-                                 PUBLIC TOILET     175      0.00    0.68    2.10   26.40      16.3606
-                          RADIOACTIVE MATERIAL      66      0.07    5.49    7.21   29.10     131.6972
-                         REAL TIME ENFORCEMENT   22902      0.00    0.00    9.97 1756.49       0.0000
-                    RECYCLING BASKET COMPLAINT     253      0.04    3.74    6.95   56.23      89.7194
-                         RECYCLING ENFORCEMENT     643      0.00    2.92   10.70  146.75      70.0833
-           REQUEST LARGE BULKY ITEM COLLECTION  630147      0.00    2.63    3.74   61.35      63.2167
-                RESIDENTIAL DISPOSAL COMPLAINT   35269      0.00    1.59    4.20  166.89      38.0656
-                            RETAILER COMPLAINT      51      0.12    2.68    5.06   27.97      64.2992
-                                        RODENT  178471 -44458.59    0.00    3.52  815.08       0.0000
-                 ROOT/SEWER/SIDEWALK CONDITION   42728 -44458.58  159.99  314.68 1777.09    3839.7481
-                                        SAFETY   52336     -0.37    8.37   21.47 1288.04     200.9178
-                          SANITATION CONDITION   62677 -44458.29    1.15    1.80  319.02      27.5833
-        SANITATION WORKER OR VEHICLE COMPLAINT    9773      0.00    4.94    9.03  402.67     118.5408
-                               SCAFFOLD SAFETY     875      0.00    0.37   15.42 1393.41       8.9483
-                            SCHOOL MAINTENANCE    6374      0.00   12.83   89.14 1178.73     307.8579
-                           SEASONAL COLLECTION     790      0.03    3.20    5.64   45.72      76.6956
-                                         SEWER  143749   -525.90    0.17    7.00 2009.06       4.0333
-                             SEWER MAINTENANCE    2771      0.00    0.37    0.88   31.35       8.7775
-                            SIDEWALK CONDITION  120832      0.00    9.06   14.29 1310.53     217.3296
-                                       SMOKING   15693      0.00  762.41  781.34 1615.66   18297.9597
-                             SMOKING OR VAPING    3757     35.54  127.60  140.44  282.81    3062.4600
-                                          SNOW    9415      0.00    4.82    5.71   33.19     115.6500
-                                   SNOW OR ICE   11330      0.00    2.81    4.11  432.86      67.4740
-                                  SNOW REMOVAL      92      4.06    4.77   27.06 1182.96     114.5861
-          SPECIAL NATURAL AREA DISTRICT (SNAD)     246      0.00   24.33   49.00  745.26     583.8675
-                            SPECIAL OPERATIONS      56      0.00    5.56   20.42  510.37     133.4536
-       SPECIAL PROJECTS INSPECTION TEAM (SPIT)   19246      0.00   27.54   66.34 1892.82     660.9324
-                                      SQUEEGEE     226      0.00    0.02    0.05    1.77       0.4911
-                                STANDING WATER    4752      0.00    0.00    0.04   35.19       0.0000
-                                         STORM    3005      0.00    0.90    1.21   19.46      21.6500
-                              STREET CONDITION  331330     -2.94    1.28    4.57 1827.31      30.6444
-                        STREET LIGHT CONDITION  240859   -378.00    0.00   21.64 2047.25       0.0000
-                         STREET SIGN - DAMAGED   24636      0.00    6.20   32.22 1044.04     148.8242
-                        STREET SIGN - DANGLING   17523      0.00    6.07   13.69  628.91     145.6325
-                         STREET SIGN - MISSING   20473      0.00    8.14   40.70  976.08     195.3375
-                     STREET SWEEPING COMPLAINT   26924      0.00    4.95    8.04  156.06     118.8656
-                           SWEEPING/INADEQUATE     537      0.00    1.79    3.32   68.00      42.9667
-                               SWEEPING/MISSED    2731      0.00    2.00    3.99   55.95      47.9667
-                                     TATTOOING     883     18.28  833.99  833.77 1826.41   20015.7356
-                                TAXI COMPLAINT   23226 -44516.52   75.88   44.77 1371.10    1821.0653
-                               TAXI COMPLIMENT     412      0.04    4.70   14.15  145.81     112.8440
-                                   TAXI REPORT     607 -44516.54   15.78 -122.63  202.33     378.6914
-                                       TRAFFIC   30383      0.00    0.02    0.06  152.41       0.5653
-                      TRAFFIC SIGNAL CONDITION  189748   -364.93    0.09   12.42 1157.00       2.2167
-                                 UNLEASHED DOG    3780 -44458.48    0.00  -11.76    0.00       0.0000
-                    UNSANITARY ANIMAL FACILITY     210      0.00    0.00    0.00    0.00       0.0000
-                UNSANITARY ANIMAL PVT PROPERTY    9977      0.00    0.00    6.30  429.17       0.0000
-                          UNSANITARY CONDITION  488630     -0.55   11.34   26.00 1573.61     272.1364
-                   UNSANITARY PIGEON CONDITION    4892      0.00    0.00    4.12  275.94       0.0000
-                             UNSTABLE BUILDING      69     -0.84    0.40    0.53    5.50       9.5028
-                                UPROOTED STUMP    1430 -44375.74  106.93  220.18 1568.01    2566.2603
-                           URINATING IN PUBLIC    5244      0.00    0.03    0.07   17.69       0.6536
-                                    VACANT LOT    3036 -44431.54    8.14   51.84  548.04     195.3583
-                VACCINE MANDATE NON-COMPLIANCE    7399      0.96    1.02    1.02    1.04      24.5014
-                                       VENDING    4353      0.00    0.02    0.08   20.82       0.4689
-                            VENDOR ENFORCEMENT   39935      0.00    0.06    0.09   25.92       1.5078
-                       VIOLATION OF PARK RULES   23742      0.00    0.03    2.87 1183.87       0.8019
-                            WATER CONSERVATION   17712      0.00    0.63    1.93  337.71      15.1500
-                                WATER DRAINAGE      68     -0.56   13.42   16.47   45.50     322.0496
-                                    WATER LEAK  184372     -0.55   11.88   28.27 1358.89     285.1017
-                             WATER MAINTENANCE     368      0.00    0.15    1.15   21.05       3.6250
-                                 WATER QUALITY    7813      0.00    3.83   16.92  612.41      91.9667
-                                  WATER SYSTEM  285305   -499.16    0.22    4.45 2074.85       5.1833
-                                  WINDOW GUARD     106      6.60 1124.81 1026.71 1814.40   26995.3647
-                           WOOD PILE REMAINING    1893      0.00   27.78  196.13 1757.02     666.6631
-                       X-RAY MACHINE/EQUIPMENT     153      0.01    3.50    6.54   64.32      84.1122
-
+                                complaint_type       N Min_days Median_days Mean_days Max_days
+                                ABANDONED BIKE    6681     0.00        4.92      9.52   147.02
+                             ABANDONED VEHICLE  280164     0.00        0.05      0.16   380.44
+                                ADOPT-A-BASKET     715     0.00      608.98    634.20  2050.82
+                           AHV INSPECTION UNIT     663     0.02        6.34      6.60    76.78
+                                   AIR QUALITY   48480     0.00        1.27      2.66   171.29
+                              ANIMAL IN A PARK   21356     0.00        0.05      8.91  1285.97
+                                  ANIMAL-ABUSE   38789     0.00        0.04      0.17   734.48
+                                     APPLIANCE   95901     0.00       15.19     33.36  1287.26
+                                      ASBESTOS    6714     0.00        0.25      5.02   481.97
+                    BEACH/POOL/SAUNA COMPLAINT     894     0.00        4.92     17.06   425.98
+                              BEST/SITE SAFETY    1531     0.01        0.64     21.58  1990.56
+                                     BIKE RACK     140     0.11       10.93     22.02   152.77
+                           BIKE RACK CONDITION    1017     0.00       25.53    107.53   851.16
+                     BIKE/ROLLER/SKATE CHRONIC   13973     0.00        0.02      0.04     3.11
+                              BLOCKED DRIVEWAY  761769     0.00        0.05      0.13   693.13
+                                       BOILERS   11833     0.00        3.83     10.31  1024.20
+                                BOROUGH OFFICE     144     0.42       51.64     95.29   694.53
+                              BRIDGE CONDITION    1467     0.00        2.00     22.08   505.01
+                          BROKEN PARKING METER   29954     0.00        1.69      5.53   544.07
+                  BUILDING DRINKING WATER TANK     144     0.02       34.84    149.55   736.21
+                                  BUILDING/USE   86828     0.00       75.23    133.25  1917.33
+                    BUS STOP SHELTER COMPLAINT    5269     0.00        6.70     11.32   497.91
+                    BUS STOP SHELTER PLACEMENT     795     0.00        0.93      6.86   503.14
+                        COLLECTION TRUCK NOISE     466     0.01        1.22      3.96   319.01
+                 COMMERCIAL DISPOSAL COMPLAINT    8957     0.00        1.97      5.60   455.95
+                            CONSUMER COMPLAINT  116117     0.01        1.53     14.58  1233.24
+           COVID-19 NON-ESSENTIAL CONSTRUCTION    2538     0.00        0.48      5.30  1895.31
+                           CRANES AND DERRICKS     297     0.01        0.56     14.94  1123.58
+                                CURB CONDITION   30814     0.00       14.89     26.38   781.88
+                                  DAMAGED TREE  154985     0.00        9.16     83.76  1878.06
+                                      DAY CARE    7325     0.00      874.57    829.31  1622.27
+                                   DEAD ANIMAL   32887     0.00        2.59      4.65   114.65
+                               DEAD/DYING TREE   38852     0.00       41.01    162.45  1927.65
+                          DEP STREET CONDITION     629     0.00        4.02      7.13   301.76
+                        DEPT OF INVESTIGATIONS     117     0.01        0.66      5.65   137.47
+                              DERELICT BICYCLE    2746     0.00        1.47      4.26    87.55
+                             DERELICT VEHICLES  216029     0.00        0.99      1.55   273.53
+                               DIRTY CONDITION  162720     0.00        1.51      5.05   797.77
+                              DIRTY CONDITIONS   67687     0.00        2.81      9.70   374.22
+                              DISORDERLY YOUTH    1458     0.00        0.02      0.05     1.73
+                                   DOOR/WINDOW  193958     0.00       12.60     28.16  1329.14
+                                      DRINKING   17114     0.00        0.03      0.09   338.60
+                                DRINKING WATER    1406     0.00        6.78    126.02  1099.19
+                                 DRUG ACTIVITY   58767     0.00        0.02      0.05   233.47
+                            DUMPSTER COMPLAINT    5855     0.01        4.08      9.39   229.23
+                                     E-SCOOTER    1391     0.01        1.93      6.00   225.00
+                                      ELECTRIC  124383     0.00        8.35     23.82  1243.21
+                                    ELECTRICAL    9878     0.00        3.69     10.77  1648.61
+                 ELECTRONICS WASTE APPOINTMENT   32578     0.00        2.71      5.88   183.87
+                                      ELEVATOR   87333     0.00       27.79     37.16  1089.38
+                 EMERGENCY RESPONSE TEAM (ERT)   14657     0.00        3.27      9.08  1332.51
+                                    ENCAMPMENT  147013     0.00        0.04      1.32   926.37
+                       FACE COVERING VIOLATION    1782     0.00        0.02      0.14     1.04
+                               FERRY COMPLAINT    1355     0.00        5.10     10.19   112.67
+                                 FERRY INQUIRY    1465     0.00        1.64      4.83   175.97
+                               FLOORING/STAIRS  114100     0.01       11.31     25.14  1343.71
+                            FOOD ESTABLISHMENT   51236     0.01      585.47    660.81  1615.42
+                                FOOD POISONING    9944     0.00        2.00     14.00  1387.40
+                    FOR HIRE VEHICLE COMPLAINT   61895     0.00       67.51     79.44  1879.96
+                       FOR HIRE VEHICLE REPORT     345     0.49        8.43     19.59   162.73
+                                       GENERAL  130198     0.00       14.06     33.84  1302.33
+                 GENERAL CONSTRUCTION/PLUMBING  154609     0.00        8.70     50.63  1969.40
+                                      GRAFFITI   67957     0.00       35.57    168.95  1266.07
+                          GREEN TAXI COMPLAINT    1311     0.28       32.78    133.71   848.78
+                           HAZARDOUS MATERIALS    9043     0.00        0.07      1.53   670.01
+                                HEAT/HOT WATER 1120883     0.00        1.82      2.23  1414.11
+                             HIGHWAY CONDITION   17014     0.00        2.94     12.88  1068.03
+                        HIGHWAY SIGN - DAMAGED     621     0.00        5.90     14.56   294.43
+                       HIGHWAY SIGN - DANGLING     164     0.02        5.11     13.43   369.78
+                        HIGHWAY SIGN - MISSING     275     0.08        7.63     21.38   334.72
+         HOME DELIVERED MEAL - MISSED DELIVERY    2593     0.00       14.20     13.86   442.86
+                           HOMELESS ENCAMPMENT     193     0.00        0.10      0.14     0.85
+                    HOMELESS PERSON ASSISTANCE  126952     0.00        0.13      1.62  1741.76
+                     HOMELESS STREET CONDITION   15581     0.00        0.02      0.06   252.03
+                               ILLEGAL DUMPING  109028     0.00        3.47      6.77   830.58
+                             ILLEGAL FIREWORKS  101213     0.00        0.02      0.09   737.54
+                               ILLEGAL PARKING 1900287     0.00        0.04      0.10   877.15
+                               ILLEGAL POSTING   11703     0.01        2.75      4.02   147.96
+                           ILLEGAL TREE DAMAGE   18329     0.00       21.76    113.65  1804.46
+                                INCORRECT DATA     313     0.00        3.86      5.81   112.87
+                            INDOOR AIR QUALITY   30910     0.00        0.62      1.80  1191.90
+                                 INDOOR SEWAGE    3138     0.00        5.12    120.28  1022.92
+                              INDUSTRIAL WASTE    3522     0.00        0.23      8.87  1505.05
+                INSTITUTION DISPOSAL COMPLAINT     187     0.01        2.88      5.88    54.79
+           INVESTIGATIONS AND DISCIPLINE (IAD)    2584     0.00        2.55     18.03  1554.14
+                                          LEAD   58360     0.00        1.19      4.91   105.98
+                                     LIFEGUARD     127     0.06        5.02     14.48   274.93
+                                       LINKNYC     756     0.02       11.18     21.49   584.74
+                       LITTER BASKET / REQUEST    3845     0.00        1.56      2.83   319.02
+                       LITTER BASKET COMPLAINT    4835     0.00        3.97      8.73   134.72
+                         LITTER BASKET REQUEST   11399     0.00        4.73      8.46   159.99
+                                 LOST PROPERTY   29184     0.00        0.84      1.65    54.66
+                                 LOT CONDITION    5015     0.00      125.10    149.43   907.41
+                       MAINTENANCE OR FACILITY   94954     0.00       25.86    105.17  1908.81
+                      MASS GATHERING COMPLAINT    3650     0.00        0.11      0.28   520.58
+                             MISSED COLLECTION  177202     0.00        4.11      6.74   981.19
+             MISSED COLLECTION (ALL MATERIALS)   80920     0.00        2.00      2.86   326.00
+                            MOBILE FOOD VENDOR   16999    10.41      503.99    652.14  1836.02
+                                          MOLD    1479     0.00        0.67      1.26    49.02
+                                    MOSQUITOES    2019     0.00        0.06     11.21   120.29
+                    MUNICIPAL PARKING FACILITY     290     0.01        9.74    119.24   667.96
+                              NEW TREE REQUEST   90238     0.00      441.99    605.82  1938.26
+                                         NOISE  244960     0.00        2.16      4.23  1938.78
+                            NOISE - COMMERCIAL  294781     0.00        0.02      0.06   738.61
+                            NOISE - HELICOPTER  127865     0.00       56.31    335.77  1356.85
+                      NOISE - HOUSE OF WORSHIP    6871     0.00        0.02      0.04    26.70
+                                  NOISE - PARK   41822     0.00        0.02      0.16   735.56
+                           NOISE - RESIDENTIAL 1819162     0.00        0.03      0.35   877.52
+                       NOISE - STREET/SIDEWALK  854008     0.00        0.02      0.11  1044.58
+                               NOISE - VEHICLE  330716     0.00        0.03      0.07   591.66
+                   NON-EMERGENCY POLICE MATTER  165742     0.00        0.02      0.06   734.54
+                          NON-RESIDENTIAL HEAT    4216     0.06      594.19    668.15  1614.11
+           NONCOMPLIANCE WITH PHASED REOPENING   66305     0.00        0.77     10.61   126.81
+                                   OBSTRUCTION   50594     0.00        1.84      6.80   736.62
+                             OTHER ENFORCEMENT   11721     0.00        3.06     10.59   319.00
+                                OUTDOOR DINING   26196     0.00       12.02     27.99   418.87
+                              OUTSIDE BUILDING    4560     0.04       13.02     30.85  1080.99
+                    OVERFLOWING LITTER BASKETS    4403     0.00        1.15      1.95    54.79
+                       OVERGROWN TREE/BRANCHES   80155     0.00       40.82    264.91  1809.12
+                                 PAINT/PLASTER  262107     0.00        8.15     20.61  1349.88
+                                   PANHANDLING   31196     0.00        0.03      0.07   241.84
+                                         PLANT     570     0.00        0.06     16.02   931.00
+                                      PLUMBING  288402     0.00        9.28     25.37  1589.29
+                                    POISON IVY     677     1.05      108.75    434.80  1804.79
+                         POSTING ADVERTISEMENT     438     0.00        0.03      0.08     0.88
+           PRIVATE OR CHARTER SCHOOL REOPENING    1134     0.01       10.98     13.50    97.53
+ PRIVATE SCHOOL VACCINE MANDATE NON-COMPLIANCE     219     0.00        1.02      0.91     1.04
+                     PUBLIC PAYPHONE COMPLAINT     396     0.01        9.14     33.54   434.01
+                                 PUBLIC TOILET     175     0.00        0.68      2.10    26.40
+                         REAL TIME ENFORCEMENT   10982     0.00        0.55     20.78  1756.49
+                    RECYCLING BASKET COMPLAINT     253     0.04        3.74      6.95    56.23
+                         RECYCLING ENFORCEMENT     641     0.09        2.92     10.73   146.75
+           REQUEST LARGE BULKY ITEM COLLECTION  630139     0.00        2.63      3.74    61.35
+                RESIDENTIAL DISPOSAL COMPLAINT   35250     0.00        1.59      4.21   166.89
+                                        RODENT   60681     0.00        2.92     13.27   815.08
+                 ROOT/SEWER/SIDEWALK CONDITION   42727     0.00      159.99    315.73  1777.09
+                                        SAFETY   52331     0.00        8.37     21.47  1288.04
+                          SANITATION CONDITION   60063     0.00        1.19      2.62   319.02
+        SANITATION WORKER OR VEHICLE COMPLAINT    9772     0.01        4.94      9.03   402.67
+                               SCAFFOLD SAFETY     641     0.02        0.48     21.04  1393.41
+                            SCHOOL MAINTENANCE    6374     0.00       12.83     89.14  1178.73
+                           SEASONAL COLLECTION     790     0.03        3.20      5.64    45.72
+                                         SEWER  140977     0.00        0.18      7.18  2009.06
+                             SEWER MAINTENANCE    2768     0.00        0.37      0.88    31.35
+                            SIDEWALK CONDITION  120832     0.00        9.06     14.29  1310.53
+                                       SMOKING   15693     0.00      762.41    781.34  1615.66
+                             SMOKING OR VAPING    3757    35.54      127.60    140.44   282.81
+                                          SNOW    8854     0.00        5.10      6.07    33.19
+                                   SNOW OR ICE   10476     0.00        3.10      4.45   432.86
+          SPECIAL NATURAL AREA DISTRICT (SNAD)     229     0.16       27.57     52.64   745.26
+       SPECIAL PROJECTS INSPECTION TEAM (SPIT)   18454     0.00       30.25     69.18  1892.82
+                                      SQUEEGEE     224     0.00        0.02      0.05     1.77
+                                         STORM    2732     0.00        0.95      1.33    19.46
+                              STREET CONDITION  301814     0.00        1.75      5.01  1827.31
+                        STREET LIGHT CONDITION  116187     0.00        4.30     46.95  2047.25
+                         STREET SIGN - DAMAGED   24636     0.00        6.20     32.22  1044.04
+                        STREET SIGN - DANGLING   17523     0.00        6.07     13.69   628.91
+                         STREET SIGN - MISSING   20473     0.00        8.14     40.70   976.08
+                     STREET SWEEPING COMPLAINT   26924     0.00        4.95      8.04   156.06
+                           SWEEPING/INADEQUATE     527     0.01        1.85      3.38    68.00
+                               SWEEPING/MISSED    2679     0.00        2.02      4.07    55.95
+                                     TATTOOING     883    18.28      833.99    833.77  1826.41
+                                TAXI COMPLAINT   23205     0.01       75.94     85.00  1371.10
+                               TAXI COMPLIMENT     412     0.04        4.70     14.15   145.81
+                                   TAXI REPORT     605     0.13       15.85     23.89   202.33
+                                       TRAFFIC   30325     0.00        0.02      0.06   152.41
+                      TRAFFIC SIGNAL CONDITION  186709     0.00        0.09     12.62  1157.00
+                UNSANITARY ANIMAL PVT PROPERTY    2997     0.00        4.67     20.96   429.17
+                          UNSANITARY CONDITION  488594     0.00       11.34     26.00  1573.61
+                   UNSANITARY PIGEON CONDITION    1349     0.00        3.39     14.96   275.94
+                                UPROOTED STUMP    1429     0.00      107.13    251.39  1568.01
+                           URINATING IN PUBLIC    5239     0.00        0.03      0.07    17.69
+                                    VACANT LOT    2984     0.00        8.97     67.64   548.04
+                VACCINE MANDATE NON-COMPLIANCE    7399     0.96        1.02      1.02     1.04
+                                       VENDING    4353     0.00        0.02      0.08    20.82
+                            VENDOR ENFORCEMENT   39933     0.00        0.06      0.09    25.92
+                       VIOLATION OF PARK RULES   22237     0.00        0.04      3.06  1183.87
+                            WATER CONSERVATION   17680     0.00        0.63      1.93   337.71
+                                    WATER LEAK  184344     0.00       11.88     28.27  1358.89
+                             WATER MAINTENANCE     368     0.00        0.15      1.15    21.05
+                                 WATER QUALITY    7813     0.00        3.83     16.92   612.41
+                                  WATER SYSTEM  235410     0.00        0.41      5.42  2074.85
+                                  WINDOW GUARD     106     6.60     1124.81   1026.71  1814.40
+                           WOOD PILE REMAINING    1893     0.00       27.78    196.13  1757.02
+                       X-RAY MACHINE/EQUIPMENT     153     0.01        3.50      6.54    64.32
 
 *****END OF PROGRAM*****
 
-📅 Execution ends at: 2026-01-21 00:47:16 
+📅 Execution ends at: 2026-01-22 23:19:07 
 
-⏱️ Program run-time: 22 minutes, 25.8847 seconds 
+⏱️ Program run-time: 24 minutes, 39.238 seconds 

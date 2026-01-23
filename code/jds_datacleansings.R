@@ -6,13 +6,13 @@ main_data_file <-
  
 # Boolean flag. TRUE to redirect console output to text file
 # FALSE to display console outpx`t on the screen
-enable_sink <- FALSE      
+enable_sink <- TRUE      
 
 #The "as of" date in "YYYY-MM-DD" format
-projection_date <- "2025-11-26"   
+projection_date <- "2025-11-30"   
 
 #Number of SRs for the year through the projection_date  
-projection_SR_count <- 3172339
+projection_SR_count <- 3218088 
 
 # Okabe-Ito palette for colorblind safe 
 palette(c("#E69F00", "#56B4E9", "#009E73", "#F0E442", 
@@ -1294,7 +1294,8 @@ cat("\n\n**********CHECKING FOR DATE FIELD ISSUES **********\n")
 
 cat("\n=== CALCULATING SR DURATIONS FOR LATER USE ===\n")
 
-d311 <- calculate_durations(d311, "created_date", "closed_date", tz = "America/New_York", in_place = FALSE)
+d311 <- calculate_durations(d311, "created_date", "closed_date", 
+                            tz = "America/New_York", in_place = FALSE)
 
 # ==============================================================================
 # SECTION 1: CREATED DATE ANALYSIS
@@ -1623,7 +1624,6 @@ for (anomaly in anomaly_list_resolution) {
   }
 }
 
-
 # Handle missing_resolution_action_updated_dates separately
 if (nrow(missing_resolution_action_updated_dates) > 0) {
   cat("\n=== Missing Resolution Action Updated Dates Summary ===\n")
@@ -1877,11 +1877,11 @@ mean_dur <- mean(positive_data$duration_days, na.rm = TRUE)
 median_dur <- median(positive_data$duration_days, na.rm = TRUE)
 
 # Create the plot
-ggplot(positive_data, aes(x = duration_days)) +
-  geom_histogram(bins = 150, fill = "#0072B2", color = "white") +
-  geom_vline(xintercept = mean_dur, color = "#D55E00", 
-             linetype = "dashed", linewidth = 1.5) +
-  geom_vline(xintercept = median_dur, color = "#E69F00", 
+positive_all_agencies <- ggplot(positive_data, aes(x = duration_days)) +
+  geom_histogram(bins = 200, fill = "#0072B2", color = "white") +
+  geom_vline(xintercept = mean_dur, color = "grey20", 
+             linetype = "dashed", linewidth = 1.4) +
+  geom_vline(xintercept = median_dur, color = "#D55E00", 
              linetype = "dotted", linewidth = 1.5) +
   scale_x_log10(
     labels = comma,
@@ -1890,15 +1890,15 @@ ggplot(positive_data, aes(x = duration_days)) +
   labs(
     x = "Days (log scale)",
     y = "Count",
-    title = "Distribution of Positive Service Request Durations - All Agencies",
+    title = "Distribution of Positive SR Durations - All City Agencies",
     subtitle = paste0("n = ", format(n_total, big.mark = ","))
   ) +
   annotate("text", x = mean_dur * 3, y = Inf, 
            label = paste("Mean =", round(mean_dur, 2), "days"),
-           vjust = 2, hjust = 0.23, color = "#D55E00", size = 4.5) +
+           vjust = 2, hjust = 0.23, color = "grey20", size = 4.5) +
   annotate("text", x = median_dur * 3, y = Inf, 
            label = paste("Median =", round(median_dur, 2), "days"),
-           vjust = 3.5, hjust = 0.23, color = "#E69F00", size = 4.5) +
+           vjust = 3.5, hjust = 0.23, color = "#D55E00", size = 4.5) +
   david_theme() +
   theme(
     plot.title = element_text(hjust = 0.5),
@@ -1906,10 +1906,13 @@ ggplot(positive_data, aes(x = duration_days)) +
     panel.grid.minor = element_blank()
   )
 
+print(positive_all_agencies)
+
 Sys.sleep(3)
 
 # Save to chart directory
-ggsave(file.path(chart_dir, "positve_duration_distribution_log.pdf"), 
+ggsave(file.path(chart_dir, "positive_all_agencies.pdf"), 
+       plot = positive_all_agencies,
        width = 13, height = 8.5, dpi = 300)
 
 # Create the summary and transpose it
@@ -1944,8 +1947,9 @@ print(dip.test(log10(positive_data$duration_days)))
 density_est <- density(log10(positive_data$duration_days), n = 2048)
 plot(density_est)
 
-ggplot(positive_data, aes(x = duration_days)) +
-  geom_density(fill = "#0072B2", alpha = 0.8, color = "#0072B2") +
+# Density plot
+p1 <- ggplot(positive_data, aes(x = duration_days)) +
+  geom_density(fill = "#0072B2", alpha = 0.7, color = "#0072B2") +
   scale_x_log10(
     breaks = c(0.001, 0.01, 0.1, 1, 10, 100, 1000),
     labels = c("0.001", "0.01", "0.1", "1", "10", "100", "1,000")
@@ -1957,7 +1961,57 @@ ggplot(positive_data, aes(x = duration_days)) +
   ) +
   david_theme()
 
+print(p1)
+ggsave(
+  filename = file.path(chart_dir, "All-Agency density_positive_durations.pdf"),
+  plot = p1,
+  width = 10,
+  height = 6,
+  dpi = 300
+)
+
 Sys.sleep(3)
+
+# Calculate mean and median
+mean_duration <- mean(positive_data$duration_days)
+median_duration <- median(positive_data$duration_days)
+
+# Histogram showing counts with mean and median lines
+p2 <- ggplot(positive_data, aes(x = duration_days)) +
+  geom_histogram(fill = "#0072B2", color = "white", bins = 200) +
+  geom_vline(aes(xintercept = median_duration), 
+             color = "#D55E00", linewidth = 1, linetype = "solid") +
+  geom_vline(aes(xintercept = mean_duration), 
+             color = "grey20", linewidth = 1, linetype = "dashed") +
+  annotate("text", x = median_duration, y = Inf, 
+           label = sprintf("Median: %.2f days", median_duration),
+           hjust = -0.1, vjust = 1.5, color = "#D55E00", size = 3.5) +
+  annotate("text", x = mean_duration, y = Inf, 
+           label = sprintf("Mean: %.2f days", mean_duration),
+           hjust = -0.1, vjust = 3, color = "grey20", size = 3.5) +
+  scale_x_log10(
+    breaks = c(0.001, 0.01, 0.1, 1, 10, 100, 1000),
+    labels = c("0.001", "0.01", "0.1", "1", "10", "100", "1,000")
+  ) +
+  scale_y_continuous(labels = scales::comma) +
+  labs(
+    title = "Distribution of Positive Durations - All Agencies",
+    x = "Days (log scale)",
+    y = "Count"
+  ) +
+  david_theme()
+
+print(p2)
+
+Sys.sleep(3)
+
+ggsave(
+  filename = file.path(chart_dir, "All-Agencies histogram_positive_durations.pdf"),
+  plot = p2,
+  width = 10,
+  height = 6,
+  dpi = 300
+)
 
 # Find the valley between bimodal peaks
 log_dens <- density(log10(positive_data$duration_days), n = 2048)
@@ -2000,14 +2054,14 @@ nypd_mean <- mean(nypd_data$duration_days)
 nypd_median <- median(nypd_data$duration_days)
 
 # NYPD histogram with mean and median lines
-p1 <- ggplot(nypd_data, aes(x = duration_days)) +
+p3 <- ggplot(nypd_data, aes(x = duration_days)) +
   geom_histogram(bins = 150, fill = "#0072B2", alpha = 0.85, color = "white", 
                  linewidth = 0.05) +
-  geom_vline(xintercept = nypd_mean, color = "#999999", linewidth = 1.5, 
+  geom_vline(xintercept = nypd_mean, color = "grey20", linewidth = 1.5, 
              linetype = "dashed") +
   annotate("text", x = nypd_mean, y = Inf, 
            label = sprintf("Mean = %.2f days", nypd_mean),
-           vjust = 3, hjust = -0.1, color = "#999999", size = 4, 
+           vjust = 3, hjust = -0.1, color = "grey20", size = 4, 
            fontface = "bold") +
   geom_vline(xintercept = nypd_median, color = "#D55E00", linewidth = 1.5, 
              linetype = "dotted") +
@@ -2038,7 +2092,7 @@ other_mean <- mean(other_data$duration_days)
 other_median <- median(other_data$duration_days)
 
 # Other agencies histogram with mean and median lines
-p2 <- ggplot(other_data, aes(x = duration_days)) +
+p4 <- ggplot(other_data, aes(x = duration_days)) +
   geom_histogram(bins = 150, fill = "#009E73", alpha = 0.85, color = "white", 
                  linewidth = 0.05) +
   geom_vline(xintercept = other_mean, color = "#999999", linewidth = 1.5, 
@@ -2067,13 +2121,15 @@ p2 <- ggplot(other_data, aes(x = duration_days)) +
     y = "Count"
   ) +
   david_theme()
+
 print(p2)
+
 Sys.sleep(3)
 
 # Save individual plots
-ggsave(file.path(chart_dir, "nypd_only_positive_durations.pdf"), p1, 
+ggsave(file.path(chart_dir, "nypd_only_positive_durations.pdf"), p3, 
        width = 13, height = 8.5, units = "in")
-ggsave(file.path(chart_dir, "others_only_positive_durations.pdf"), p2, 
+ggsave(file.path(chart_dir, "others_only_positive_durations.pdf"), p4, 
        width = 13, height = 8.5, units = "in")
 
 # Combine data with agency group label
@@ -2083,7 +2139,7 @@ combined_data <- rbind(
 )
 
 p_combined <- ggplot(combined_data, aes(x = duration_days, fill = group)) +
-  geom_histogram(bins = 150, alpha = 0.7, position = "identity", 
+  geom_histogram(bins = 150, alpha = 0.6, position = "identity", 
                  color = "white", linewidth = 0.1) +
   scale_fill_manual(values = c("NYPD" = "#0072B2", "Other Agencies" = "#009E73")) +
   scale_x_log10(
@@ -2238,7 +2294,7 @@ create_violin_chart(
 cat("\n=== ANALYZING SHORT DURATIONS & SETTING THRESHOLDS ===\n")
 
 # Add duration_sec column
-d311[, duration_sec := duration_days * 86400]
+#d311[, duration_sec := duration_days * 86400]
 
 # Run comprehensive skewed duration analysis
 skewed_result <- analyze_skewed_durations(
@@ -2256,10 +2312,6 @@ threshold <- skewed_result$thresholds$log_3sd_lower
 threshold_numeric <- round(as.numeric(threshold), 0)
 
 # Create detailed histogram with threshold visualization
-
-
-
-# Create detailed histogram with threshold visualization
 plot_duration_histogram(
   DT = d311,
   duration_col = "duration_sec",
@@ -2268,7 +2320,7 @@ plot_duration_histogram(
   x_axis_angle = 45,        # Rotate labels for readability
   max_value = 90,           # Focus on first 90 seconds
   min_value = 2L,
-  threshold_numeric = threshold_numeric,
+  threshold_numeric = threshold_numeric +1,
   chart_dir = chart_dir
 )
 
@@ -2294,10 +2346,13 @@ duraton_analysis <- analyze_duration_QA(d311,
 # ==============================================================================
 
 cat("\n=== RESPONSE TIMES BY COMPLAINT CATEGORY ANALYSIS ===\n")
+# Exclude durations <= 28 seconds (in days) and > 365* N days (typically 10 yrs)
 complaint_stats <- summarize_complaint_response(
-  d311, 
-  print_top = 300,
-  min_records = 50)
+                      d311, 
+                      min_records = 100,
+                      lower_exclusion_limit = 0.00032407,
+                      upper_exclusion_limit = 365*10
+  )
   
 # ==============================================================================
 # END OF DURATION ANALYSIS

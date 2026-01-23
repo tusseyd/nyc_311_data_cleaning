@@ -399,7 +399,7 @@ analyze_duration_QA <- function(
   
   analyze_duration_category(
     DT             = near_zero_ex,
-    label          = "NEAR-ZERO",
+    label          = "NEAR-ZERO (< 29 sec)",
     condition_text = sprintf("(0 < days ≤ %.4f)", near_zero_days),
     chart_dir      = chart_dir,
     show_examples  = show_examples,
@@ -412,7 +412,7 @@ analyze_duration_QA <- function(
   # Large & Extreme Positive
   analyze_duration_category(
     DT             = positive_large,
-    label          = "LARGE POSITIVE",
+    label          = "LARGE POSITIVE (739 < 1825)",
     condition_text = sprintf("(> %.0f and ≤ %.0f days)", upper_pos_days, extreme_pos_days),
     chart_dir      = chart_dir,
     threshold_days = extreme_pos_days,
@@ -428,7 +428,7 @@ analyze_duration_QA <- function(
   
   analyze_duration_category(
     DT             = positive_extreme,
-    label          = "EXTREME POSITIVE",
+    label          = "EXTREME POSITIVE (< 1825)",
     condition_text = sprintf("(> %.0f days)", extreme_pos_days),
     chart_dir      = chart_dir,
     threshold_days = extreme_pos_days,
