@@ -74,52 +74,11 @@ timing <- setup_project(
   verbose = TRUE
 )
 
-
 ################################################################################
-########## Source the function files ##########
-# Source all .R files in the "functions" sub-directory
-# More robust sourcing with verification
 
-# Define the path to the directory containing your function scripts
-# functions_dir <- file.path(base_dir, "code", "functions")
-# 
-# source_functions_safely <- function(functions_dir) {
-#   function_files <- list.files(functions_dir, pattern = "\\.R$", full.names = TRUE)
-#   
-#   sourced_count <- 0
-#   failed_count <- 0
-#   
-#   for (file in function_files) {
-#     tryCatch({
-#       # Get function count before sourcing
-#       functions_before <- sum(sapply(ls(.GlobalEnv), function(x) is.function(get(x))))
-#       
-#       # Source the file
-#       source(file, local = FALSE)
-#       
-#       # Verify sourcing worked
-#       functions_after <- sum(sapply(ls(.GlobalEnv), function(x) is.function(get(x))))
-#       
-#       message("Successfully sourced: ", basename(file), 
-#               " (added ", functions_after - functions_before, " functions)")
-#       sourced_count <- sourced_count + 1
-#       
-#     }, error = function(e) {
-#       message("ERROR sourcing: ", basename(file), " - ", e$message)
-#       failed_count <- failed_count + 1
-#     })
-#   }
-#   
-#   message("\nSourcing complete: ", sourced_count, " files sourced, ", failed_count, " failed")
-# }
-
-# Usage
-#source_functions_safely(functions_dir)
-
-################################################################################
 # ========= Main Execution =========
 
-#####################
+################################################################################
 
 valid_date_columns <- c(
   "Created Date",
@@ -141,7 +100,6 @@ raw_data <- fread(
   showProgress  = TRUE,
   colClasses    = "character"
 )
-
 
 # Make copy for troubleshooting purposes.
 #copy_raw_data <- raw_data
@@ -444,41 +402,6 @@ zipcode_data[, zip := trimws(zip)]
 saveRDS(zipcode_data[, .(zip)], usps_rds_file)
 
 ################################################################################
-# # Store the program end time and calculate the duration
-# programStop <- as.POSIXct(Sys.time())
-# formatted_end_time <- format(programStop, "%Y-%m-%d %H:%M:%S")
-# 
-# # Calculate the duration of the program (in seconds)
-# duration_seconds <- as.numeric(difftime(programStop, programStart,
-#                                         units = "secs"
-# ))
-# 
-# # Convert the duration to a formatted string (hours, minutes, and seconds)
-# hours <- floor(duration_seconds / 3600)
-# minutes <- floor((duration_seconds %% 3600) / 60)
-# seconds <- round(duration_seconds %% 60, 4) # Round to 4 decimal places
-# 
-# # Create the formatted duration string
-# duration_string <- paste0(
-#   if (hours > 0) paste0(hours, " hours, ") else "",
-#   if (minutes > 0) paste0(minutes, " minutes, ") else "",
-#   seconds, " seconds"
-# )
-# 
-# # Print the final program information to the console
-# cat("\n\n*****END OF PROGRAM*****\n")
-# cat("\n📅 Execution ends at:", formatted_end_time, "\n")
-# cat("\n⏱️ Program run-time:", duration_string, "\n")
-# 
-# # Close sink() if set
-# if (enable_sink){ 
-#   sink() 
-#   cat("\n\n*****END OF PROGRAM*****\n")
-#   cat("\n📅 Execution ends at:", formatted_end_time, "\n")
-#   cat("\n⏱️ Program run-time:", duration_string, "\n")
-# }
-
-
 
 # Close program
 close_program(
@@ -486,7 +409,6 @@ close_program(
   enable_sink = enable_sink,
   verbose = TRUE
 )
-
 
 ################################################################################
 ################################################################################

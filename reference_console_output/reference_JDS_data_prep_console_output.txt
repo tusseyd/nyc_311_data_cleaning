@@ -1,8 +1,8 @@
 ✅ Console output redirected to: C:/Users/David/OneDrive/Documents/datacleaningproject/journal_of_data_science/nyc_311_data_cleaning/console_output/JDS_data_prep_console_output.txt 
 
-Execution begins at: 2026-01-19 18:30:42 
+Execution begins at: 2026-01-23 00:01:00 
 
-Execution begins at: 2026-01-19 18:30:42 
+Execution begins at: 2026-01-23 00:01:00 
 
 ========================================
 SETUP COMPLETE
@@ -324,6 +324,6 @@ Processing USPS Zipcode data...
 
 *****END OF PROGRAM*****
 
-📅 Execution ends at: 2026-01-19 18:55:22 
+📅 Execution ends at: 2026-01-23 00:26:28 
 
-⏱️ Program run-time: 24 minutes, 40.3742 seconds 
+⏱️ Program run-time: 25 minutes, 28.4549 seconds 
