@@ -145,22 +145,22 @@ analyze_dst_springforward <- function(
     }
   }
   
-  # ---- Save affected rows to CSV with timezone verification ----
-  if (nrow(affected) > 0) {
-    cat("\n=== Saving DST Spring-forward Affected Records ===\n")
-    # cat("Timezone verification:\n")
-    # cat("  created_date timezone:", attr(affected$created_date, "tzone"), "\n")
-    # cat("  closed_date  timezone:", attr(affected$closed_date,  "tzone"), "\n")
-    
-    # Format as local time strings to avoid UTC drift on write
-    affected[, created_date := format(created_date, "%Y-%m-%d %H:%M:%S", tz = "America/New_York")]
-    affected[, closed_date  := format(closed_date,  "%Y-%m-%d %H:%M:%S", tz = "America/New_York")]
-    
-    outfile <- file.path(chart_dir, "dst_start_affected_records.csv")
-    fwrite(affected, outfile)
-    # cat("\nSaved", scales::comma(nrow(affected)),
-    #     "DST spring-forward affected records to:", outfile, "\n")
-  }
+  # # ---- Save affected rows to CSV with timezone verification ----
+  # if (nrow(affected) > 0) {
+  #   cat("\n=== Saving DST Spring-forward Affected Records ===\n")
+  #   # cat("Timezone verification:\n")
+  #   # cat("  created_date timezone:", attr(affected$created_date, "tzone"), "\n")
+  #   # cat("  closed_date  timezone:", attr(affected$closed_date,  "tzone"), "\n")
+  #   
+  #   # Format as local time strings to avoid UTC drift on write
+  #   affected[, created_date := format(created_date, "%Y-%m-%d %H:%M:%S", tz = "America/New_York")]
+  #   affected[, closed_date  := format(closed_date,  "%Y-%m-%d %H:%M:%S", tz = "America/New_York")]
+  #   
+  #   outfile <- file.path(chart_dir, "dst_start_affected_records.csv")
+  #   fwrite(affected, outfile)
+  #   # cat("\nSaved", scales::comma(nrow(affected)),
+  #   #     "DST spring-forward affected records to:", outfile, "\n")
+  # }
   
   invisible(spring_summary)
 }

@@ -65,6 +65,8 @@ summarize_backlog <- function(DT,
     show_labels = TRUE,
     add_trendline = TRUE,
     show_trend_stats = TRUE,
+    chart_dir = chart_dir,
+    filename = "annual_backlog_bar_chart",
     console_print_title = "Annual Backlog Distribution"
   )
   

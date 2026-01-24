@@ -85,7 +85,7 @@ analyze_datetime_patterns <- function(
       chart_width = 13,
       chart_height = 8.5,
       chart_dir = chart_dir,
-      filename  = sprintf("%s_hour_distribution_working_order.pdf", 
+      filename  = sprintf("%s_hour_distribution_working_order", 
                           tolower(label))
     )
   }
@@ -131,7 +131,7 @@ analyze_datetime_patterns <- function(
         chart_width  = 10,
         chart_height = 6,
         chart_dir = chart_dir,
-        filename  = sprintf("%s_exact_midnight_cy_distribution.pdf", tolower(label))
+        filename  = sprintf("%s_exact_midnight_cy_distribution", tolower(label))
       )
     }
     
@@ -194,7 +194,7 @@ analyze_datetime_patterns <- function(
         chart_width  = 10,
         chart_height = 6,
         chart_dir = chart_dir,
-        filename  = sprintf("%s_exact_noon_cy_distribution.pdf", tolower(label))
+        filename  = sprintf("%s_exact_noon_cy_distribution", tolower(label))
       )
     }
     
@@ -278,7 +278,7 @@ analyze_datetime_patterns <- function(
         chart_width = 13,
         chart_height = 8.5,
         chart_dir = chart_dir,
-        filename  = sprintf("%s_top_of_hour_distribution.pdf", tolower(label))
+        filename  = sprintf("%s_top_of_hour_distribution", tolower(label))
       )
     }
   }

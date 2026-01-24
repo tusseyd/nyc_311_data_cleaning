@@ -6,169 +6,73 @@ main_data_file <-
  
 # Boolean flag. TRUE to redirect console output to text file
 # FALSE to display console outpx`t on the screen
-enable_sink <- TRUE       
- 
+enable_sink <- TRUE      
+
 #The "as of" date in "YYYY-MM-DD" format
-projection_date <- "2025-11-26"   
+projection_date <- "2025-11-30"   
 
 #Number of SRs for the year through the projection_date  
-projection_SR_count <- 3172339
+projection_SR_count <- 3218088 
 
 # Okabe-Ito palette for colorblind safe 
 palette(c("#E69F00", "#56B4E9", "#009E73", "#F0E442", 
           "#0072B2", "#D55E00", "#CC79A7", "#999999"))
 ################################################################################
-################################################################################
+
 # ------------------------------------------------------ -------
-# 📦 INSTALL AND LOAD REQUIRED PACKAGES
+# 📦 CREATE REQUIRED DIRECTORY STRUCTURE
 # -------------------------------------------------------------
-load_required_packages <- function(verbose = TRUE) {
-  # Ordered to avoid common masking issues
-  required_packages  <- c(
-    "data.table",      # Load first - commonly masked functions
-    "arrow",
-    "fasttime",
-    "lubridate",
-    "here",
-    "zoo",
-    "ggplot2",         # Core plotting (scales is a dependency, auto-loaded)
-    "ggpmisc",
-    "ggpattern",
-    "ggrastr",
-    "qcc",
-    "qicharts2",
-    "grid",
-    "gridExtra",
-    "sf",              # Spatial - can mask some dplyr functions
-    "stringr",         # Load before dplyr/tidyverse
-    "stringdist",
-    "dplyr",           # Load before tidyverse
-    "tidyverse",       # Load late - masks many functions
-    "scales",          # Load AFTER tidyverse to mask purrr::discard and readr::col_factor
-    "bslib",
-    "shiny",
-    "DT",              # Load after dplyr to avoid confusion
-    "gt",
-    "styler",
-    "rlang",
-    "renv",
-    "remotes"
-  )
-  
-  for (pkg in required_packages) {
-    if (!requireNamespace(pkg, quietly = TRUE)) {
-      if (verbose) message(sprintf("📦 Installing missing package: %s", pkg))
-      tryCatch(
-        install.packages(pkg),
-        error = function(e) message(sprintf("❌ Failed to install %s: %s", 
-                                            pkg, e$message))
-      )
-    }
-    
-    # Try loading the package
-    tryCatch({
-      suppressPackageStartupMessages(library(pkg, character.only = TRUE))
-      if (verbose) message(sprintf("✅ Loaded: %s", pkg))
-    }, error = function(e) {
-      message(sprintf("❌ Failed to load %s: %s", pkg, e$message))
-    })
-  }
-}
+################################################################################
+# Main Analysis Script
+################################################################################
 
-# Default verbose output
-load_required_packages()
+# STEP 1: Create directory structure (inline)
+# Set base directory to current working directory
+base_dir <- getwd()
+cat("Base directory:", base_dir, "\n")
 
-# STANDALONE MODE: Use your manual absolute path
-  base_dir <- file.path(
-    "C:",
-    "Users",
-    "David",
-    "OneDrive",
-    "Documents", 
-    "datacleaningproject", 
-    "journal_of_data_science",
-    "nyc_311_data_cleaning"
-  )
-  cat("Running in STANDALONE mode\n")
-  cat("Base directory:", base_dir, "\n")
-#}
-
-# Define all paths relative to base_dir (works in both modes)
+# Define all paths relative to base_dir
 analytics_dir <- file.path(base_dir, "analytics")
 chart_dir     <- file.path(base_dir, "charts")
 code_dir      <- file.path(base_dir, "code")
 console_dir   <- file.path(base_dir, "console_output")
 data_dir      <- file.path(base_dir, "data")
 functions_dir <- file.path(base_dir, "code", "functions")
-raw_data_dir  <- file.path(base_dir,"data", "raw_data")
+raw_data_dir  <- file.path(base_dir, "data", "raw_data")
+# write_dir     <- file.path(base_dir, "misc")
 
-# Create directories if they don't exist
-dirs_to_create <- c(data_dir, chart_dir, console_dir)
+dirs_to_create <- c(analytics_dir, chart_dir, code_dir, console_dir, 
+                    data_dir, functions_dir, raw_data_dir)
+
 for (dir in dirs_to_create) {
   if (!dir.exists(dir)) {
     dir.create(dir, recursive = TRUE)
-    cat("Created directory:", dir, "\n")
+    cat("✅ Created directory:", dir, "\n")
+  } else {
+    cat("📁 Directory exists:", dir, "\n")
   }
 }
 
 cat("\nDirectory paths set:\n")
-cat("  Analytics:", analytics_dir)
+cat("  Analytics:", analytics_dir, "\n")
 cat("  Charts:", chart_dir, "\n")
 cat("  Code:", code_dir, "\n")
 cat("  Console output:", console_dir, "\n")
 cat("  Data:", data_dir, "\n")
 cat("  Functions:", functions_dir, "\n")
-cat("  Raw data:", raw_data_dir)
+cat("  Raw data:", raw_data_dir, "\n")
+# cat("  Write:", write_dir, "\n")
 
-# Get all .R files in the "functions" sub-directory
+# STEP 2: Source and run setup function
+source(file.path(functions_dir, "setup_project.R"))
 
-function_files <- list.files(functions_dir, pattern = "\\.R$", 
-                             full.names = TRUE)
-
-# More robust sourcing with verification
-source_functions_safely <- function(functions_dir) {
-  function_files <- list.files(functions_dir, pattern = "\\.R$", 
-                               full.names = TRUE)
-  
-  sourced_count <- 0
-  failed_count <- 0
-  
-  for (file in function_files) {
-    tryCatch({
-      # Get function count before sourcing
-      functions_before <- sum(sapply(ls(.GlobalEnv), 
-                                     function(x) is.function(get(x))))
-      
-      # Source the file
-      source(file, local = FALSE)
-      
-      # Verify sourcing worked
-      functions_after <- sum(sapply(ls(.GlobalEnv), 
-                                    function(x) is.function(get(x))))
-      
-      message("Successfully sourced: ", basename(file), 
-              " (added ", functions_after - functions_before, " functions)")
-      sourced_count <- sourced_count + 1
-      
-    }, error = function(e) {
-      message("ERROR sourcing: ", basename(file), " - ", e$message)
-      failed_count <- failed_count + 1
-    })
-  }
-  
-  message("\nSourcing complete: ", sourced_count, " files sourced, ", 
-          failed_count, " failed")
-}
-
-# Usage
-source_functions_safely(functions_dir)
+timing <- setup_project(
+  enable_sink = enable_sink,
+  console_filename = "JDS_datacleaning_console_output.txt",
+  verbose = TRUE
+)
 
 ################################################################################
-options(scipen = 999) # Set scipen option to a large value.
-options(digits = 15) # Set the number of decimal places to 15, the max observed.
-options(datatable.print.class = FALSE)
-options(max.print = 100000)
-
 # Extract the date after "AS_OF_"
 extracted_date <- sub(".*AS_OF_([0-9-]+).*", "\\1", main_data_file)
 as_of_date <- as.POSIXct(
@@ -188,24 +92,6 @@ max_closed_date <- as.POSIXct(extracted_date, format = "%m-%d-%Y",
 # Add time to end of day
 max_closed_date <- max_closed_date + (23*3600 + 59*60 + 59)
 #print(paste("Final datetime:", max_closed_date))
-
-################################################################################
-programStart <- as.POSIXct(Sys.time())
-formattedStartTime <- format(programStart, "%Y-%m-%d %H:%M:%S")
-cat("\n***** Program initialization *****")
-
-message("\nExecution begins at:", formattedStartTime)
-
-# Define the console output directory and file name.
-console_output_file <- file.path(console_dir, "JDS_datacleaning_console_output.txt")
-
-if (isTRUE(enable_sink)) {
-  sink(console_output_file)
-}
-
-if (sink.number(type = "output") > 0L) {
-  cat("\nExecution begins at:", formattedStartTime)
-}
 
 ################################################################################
 # Load the USPS zipcode file
@@ -429,11 +315,8 @@ columns_to_keep <- c(
   "created_date", 
   "closed_date",
   "agency", 
-  #  "agency_name", 
-    "complaint_type",
-  #  "location_type", 
+  "complaint_type",
   "incident_zip",
-  #  "incident_address", 
   "street_name", 
   "cross_street_1",
   "cross_street_2", 
@@ -441,17 +324,14 @@ columns_to_keep <- c(
   "intersection_street_2",
   "address_type", 
   "landmark",
-  #  "facility_type", 
   "status", 
   "due_date",
   "resolution_action_updated_date", 
   "community_board",
-  #  "bbl", 
   "borough", 
   "x_coordinate_state_plane",
   "y_coordinate_state_plane", 
   "open_data_channel_type", 
-  #  "park_facility_name",
   "park_borough", 
   "vehicle_type", 
   "taxi_company_borough",
@@ -460,8 +340,9 @@ columns_to_keep <- c(
   "location"
 )
 
-# Remove unnecessary columns to free up memory
+# Remove unnecessary columns to free up memory. Garbage collection.
 d311[, setdiff(names(d311), columns_to_keep) := NULL]
+gc()
 
 # Make a copy for troubleshooting purposes to avoid re-reading in data
 #copy_d311 <- d311
@@ -502,8 +383,6 @@ for (i in seq_along(street_pairs)) {
   # Store results with descriptive name
   pair_name <- sprintf("%s_vs_%s", pair$street1, pair$street2)
   all_comparison_results[[pair_name]] <- comparison_result
-  
-  #  cat(sprintf("Completed analysis for %s vs %s\n", pair$street1, pair$street2))
 }
 
 # Summary across all pairs
@@ -537,6 +416,7 @@ d311[, c(
   "intersection_street_2",
   "landmark",
   "street_name") := NULL]  # Remove immediately
+gc()
 
 ################################################################################
 
@@ -625,13 +505,104 @@ message("\nOrganizing complaint_types.")
 
 cat("\n\n********** COMPLAINT TYPES **********")
 
+total_rows <- nrow(d311)
+
+# One pass: frequency + agency labeling per complaint_type
+complaint_summary_dt <- d311[
+  , .(
+    count = .N,
+    unique_agency_count = uniqueN(agency, na.rm = TRUE),
+    agency = {
+      u <- unique(agency)
+      u <- u[!is.na(u)]
+      if (length(u) == 1L) u else if (length(u) == 0L) NA_character_ else "MULTIPLE"
+    }
+  ),
+  by = complaint_type
+][
+  order(-count)
+][
+  # compute percents from counts to avoid cumulative rounding drift
+  , `:=`(
+    percent = round(100 * count / total_rows, 2),
+    cumulative_percent = round(100 * cumsum(count) / total_rows, 2)
+  )
+][]
+
+cat("\nThere are", nrow(complaint_summary_dt), "different complaint_type(s).\n")
+
+# ---- Console reports ----
+top_n <- 20L
+cat("\nTop ", top_n, " complaint_type(s) and responsible agency:\n", sep = "")
+top_dt <- complaint_summary_dt[1:min(.N, top_n), .(complaint_type, count, percent, cumulative_percent, agency)]
+top_df <- data.frame(
+  complaint_type = format(top_dt$complaint_type, justify = "left"),
+  count = format(top_dt$count, justify = "right"),
+  percent = format(top_dt$percent, justify = "right"),
+  cumulative_percent = format(top_dt$cumulative_percent, justify = "right"),
+  agency = format(top_dt$agency, justify = "left")
+)
+print(top_df, row.names = FALSE)
+
+cat("\nBottom ", top_n, " complaint_type(s) and responsible agency:\n", sep = "")
+bottom_dt <- tail(complaint_summary_dt[, .(complaint_type, count, agency)], top_n)
+bottom_df <- data.frame(
+  complaint_type = format(bottom_dt$complaint_type, justify = "left"),
+  count = format(bottom_dt$count, justify = "right"),
+  agency = format(bottom_dt$agency, justify = "left")
+)
+print(bottom_df, row.names = FALSE)
+
+cat("\nComplaints with multiple responsible agencies:\n")
+multiple_agency_dt <- complaint_summary_dt[agency == "MULTIPLE", .(complaint_type, count, percent)]
+multiple_df <- data.frame(
+  complaint_type = format(head(multiple_agency_dt, top_n)$complaint_type, justify = "left"),
+  count = format(head(multiple_agency_dt, top_n)$count, justify = "right"),
+  percent = format(head(multiple_agency_dt, top_n)$percent, justify = "right")
+)
+print(multiple_df, row.names = FALSE)
+
+# ---- Noise complaints (prefix "NOISE") ----
+noise_dt <- complaint_summary_dt[startsWith(complaint_type, "NOISE")]
+
+cat("\nThere are", nrow(noise_dt), "categories of noise complaints:\n")
+
+noise_display_dt <- noise_dt[, .(complaint_type, count, percent)]
+
+noise_df <- data.frame(
+  complaint_type = format(noise_display_dt$complaint_type, justify = "left"),
+  count = format(noise_display_dt$count, justify = "right"),
+  percent = format(noise_display_dt$percent, justify = "right")
+)
+
+print(head(noise_df, top_n), row.names = FALSE)
+
+noise_total <- noise_dt[, sum(count)]
+noise_pct   <- round(100 * noise_total / total_rows, 1)
+cat(
+  "\nNoise complaints of all ", nrow(noise_dt), "types number ",
+  format(noise_total, big.mark = ","),
+  ", constituting ", noise_pct, "% of all SRs.\n", sep = ""
+)
+
+# chart
+plot_pareto_combo(
+  DT              = d311,
+  x_col           = complaint_type,
+  title           = "Pareto Analysis of Complaint Types",
+  filename        = "SR_by_complaint_type_pareto_combo_chart.pdf",
+  chart_dir       = chart_dir,
+  show_labels     = FALSE,
+  top_n            = 20,
+  show_threshold_80 = FALSE,   # whether to draw the 80% reference line
+  annotation_size = 3
+)
+
 #########################################################################
 # Determine status of SRs
 cat("\n\nSRs by Status (including NA if present)\n")
 
 # Build a labeled status on the fly:
-# - NA  -> "NA"
-# - ""  -> "(blank)"  (optional; remove that branch if you don't want it)
 status_summary_dt <- d311[
   , .(count = .N),
   by = .(status = fcase(
@@ -764,11 +735,6 @@ lat_precision <- analyze_decimal_precision(
   chart_dir      = chart_dir,       
   generate_plots = TRUE   
   )
-# if (!is.null(lat_precision)) {
-#   print(lat_precision, row.names = FALSE)
-#   cat(sprintf("\nTotal valid latitude values: %s\n", 
-#               format(sum(lat_precision$N), big.mark = ",")))
-# }
 
 ##################
 # Analyze longitude
@@ -780,11 +746,6 @@ lon_precision <- analyze_decimal_precision(
   chart_dir      = chart_dir,       
   generate_plots = TRUE   
 )
-# if (!is.null(lon_precision)) {
-#   print(lon_precision, row.names = FALSE)
-#   cat(sprintf("\nTotal valid longitude values: %s\n", 
-#               format(sum(lon_precision$N), big.mark = ",")))
-# }
 
 ##################
 # Combined summary statistics
@@ -1316,6 +1277,7 @@ print(summary_df, row.names = FALSE)
 d311[, c(
   "address_type", 
   "open_data_channel_type",
+  "incident_zip",
   "vehicle_type") := NULL]  # Remove immediately
 
 ################################################################################
@@ -1332,13 +1294,14 @@ cat("\n\n**********CHECKING FOR DATE FIELD ISSUES **********\n")
 
 cat("\n=== CALCULATING SR DURATIONS FOR LATER USE ===\n")
 
-d311 <- calculate_durations(d311, "created_date", "closed_date", tz = "America/New_York", in_place = FALSE)
+d311 <- calculate_durations(d311, "created_date", "closed_date", 
+                            tz = "America/New_York", in_place = FALSE)
 
 # ==============================================================================
 # SECTION 1: CREATED DATE ANALYSIS
 # ==============================================================================
 
-cat("\n=== CREATED DATE ANALYSIS ===\n")
+cat("\n=== SUMMARY DATE ANALYSIS ===\n")
 
 # Assuming date_cols is a character vector of column names
 date_cols <- c(
@@ -1376,11 +1339,18 @@ for (col in date_cols) {
     show_labels = TRUE,
     x_label = "",
     y_label = "",
-    console_print_title = paste("Year Distribution for", col)
+    console_print_title = paste("Year Distribution for", col),
+    chart_dir = chart_dir,
+    filename = paste0("Yearly_Distribution - ", col)
+    
   )
   
   cat("\n")
 }
+
+
+cat("\n=== CREATED DATE ANALYSIS ===\n")
+
 
 # total rows in d311
 total_rows <- num_rows_d311
@@ -1553,7 +1523,7 @@ cat("\n=== DUE DATE ANALYSIS ===\n")
     }
   }
 
-    # Handle missing_due_dates separately
+  # Handle missing_due_dates separately
   if (nrow(missing_due_dates) > 0) {
     cat("\n=== Missing Due Dates Summary ===\n")
     cat(sprintf("Total records with missing due_date: %s\n", 
@@ -1653,7 +1623,6 @@ for (anomaly in anomaly_list_resolution) {
     cat(sprintf("\nSkipping %s - no records\n", anomaly$label))
   }
 }
-
 
 # Handle missing_resolution_action_updated_dates separately
 if (nrow(missing_resolution_action_updated_dates) > 0) {
@@ -1832,8 +1801,6 @@ dst_start_summary <- analyze_dst_springforward(
 
 ################################################################################
 
-#zero_screenout <- audit_zero_time_screenout(d311)
-
 # Call with the 2019 file path
 result <- summarize_backlog(
   DT = d311,
@@ -1884,7 +1851,6 @@ for (col_name in date_cols) {
   all_patterns_results[[result_name]] <- results
 }
 
-
 ################################################################################
 
 cat("\n\n********** DURATION ISSUES **********\n")
@@ -1902,7 +1868,305 @@ message("\nChecking for duration anomalies.")
 cat("\n=== ANALYZING POSITIVE DURATIONS ===\n")
 
 # Filter to positive duration records only
-positive_data <- d311[duration_days > 0 & !is.na(duration_days)]
+positive_data <- d311[duration_days > 0 & !is.na(duration_days), 
+                      .(created_date, closed_date, duration_days, 
+                        complaint_type, agency)]
+# Calculate statistics
+n_total <- nrow(positive_data)
+mean_dur <- mean(positive_data$duration_days, na.rm = TRUE)
+median_dur <- median(positive_data$duration_days, na.rm = TRUE)
+
+# Create the plot
+positive_all_agencies <- ggplot(positive_data, aes(x = duration_days)) +
+  geom_histogram(bins = 200, fill = "#0072B2", color = "white") +
+  geom_vline(xintercept = mean_dur, color = "grey20", 
+             linetype = "dashed", linewidth = 1.4) +
+  geom_vline(xintercept = median_dur, color = "#D55E00", 
+             linetype = "dotted", linewidth = 1.5) +
+  scale_x_log10(
+    labels = comma,
+    breaks = c(0.001, 0.01, 0.1, 1, 10, 100, 1000)
+  ) +
+  labs(
+    x = "Days (log scale)",
+    y = "Count",
+    title = "Distribution of Positive SR Durations - All City Agencies",
+    subtitle = paste0("n = ", format(n_total, big.mark = ","))
+  ) +
+  annotate("text", x = mean_dur * 3, y = Inf, 
+           label = paste("Mean =", round(mean_dur, 2), "days"),
+           vjust = 2, hjust = 0.23, color = "grey20", size = 4.5) +
+  annotate("text", x = median_dur * 3, y = Inf, 
+           label = paste("Median =", round(median_dur, 2), "days"),
+           vjust = 3.5, hjust = 0.23, color = "#D55E00", size = 4.5) +
+  david_theme() +
+  theme(
+    plot.title = element_text(hjust = 0.5),
+    plot.subtitle = element_text(hjust = 0),  # Left-align subtitle
+    panel.grid.minor = element_blank()
+  )
+
+print(positive_all_agencies)
+
+Sys.sleep(3)
+
+# Save to chart directory
+ggsave(file.path(chart_dir, "positive_all_agencies.pdf"), 
+       plot = positive_all_agencies,
+       width = 13, height = 8.5, dpi = 300)
+
+# Create the summary and transpose it
+summary_stats <- positive_data[, .(
+  n = .N,
+  median_days = median(duration_days),
+  mean_days = mean(duration_days),
+  sd_days = sd(duration_days),
+  skewness = skewness(duration_days),
+  p95 = quantile(duration_days, 0.95),
+  p99 = quantile(duration_days, 0.99),
+  max_days = max(duration_days)
+)]
+
+cat("\n=== Summary Statistics ===\n")
+print(data.table(
+  Statistic = c("N", "Median (days)", "Mean (days)", "Std Dev (days)", 
+                "Skewness", "95th percentile", "99th percentile", "Maximum (days)"),
+  Value = sprintf("%.4f", as.numeric(summary_stats[1,]))
+))
+
+cat("\n=== Bowley Skewness ===\n")
+print(positive_data[, {
+  q <- quantile(duration_days, c(0.25, 0.5, 0.75), na.rm = TRUE)
+  .(bowley_skew = round((q[3] + q[1] - 2*q[2]) / (q[3] - q[1]), 4))
+}])
+
+cat("\n=== Hartigan's Dip Test for Multimodality ===\n")
+print(dip.test(log10(positive_data$duration_days)))
+
+# 2. Find the valley/separation point
+density_est <- density(log10(positive_data$duration_days), n = 2048)
+plot(density_est)
+
+# Density plot
+p1 <- ggplot(positive_data, aes(x = duration_days)) +
+  geom_density(fill = "#0072B2", alpha = 0.7, color = "#0072B2") +
+  scale_x_log10(
+    breaks = c(0.001, 0.01, 0.1, 1, 10, 100, 1000),
+    labels = c("0.001", "0.01", "0.1", "1", "10", "100", "1,000")
+  ) +
+  labs(
+    title = "Density Distribution of Positive Durations",
+    x = "Days (log scale)",
+    y = "Density"
+  ) +
+  david_theme()
+
+print(p1)
+ggsave(
+  filename = file.path(chart_dir, "All-Agency density_positive_durations.pdf"),
+  plot = p1,
+  width = 10,
+  height = 6,
+  dpi = 300
+)
+
+Sys.sleep(3)
+
+# Calculate mean and median
+mean_duration <- mean(positive_data$duration_days)
+median_duration <- median(positive_data$duration_days)
+
+# Histogram showing counts with mean and median lines
+p2 <- ggplot(positive_data, aes(x = duration_days)) +
+  geom_histogram(fill = "#0072B2", color = "white", bins = 200) +
+  geom_vline(aes(xintercept = median_duration), 
+             color = "#D55E00", linewidth = 1, linetype = "solid") +
+  geom_vline(aes(xintercept = mean_duration), 
+             color = "grey20", linewidth = 1, linetype = "dashed") +
+  annotate("text", x = median_duration, y = Inf, 
+           label = sprintf("Median: %.2f days", median_duration),
+           hjust = -0.1, vjust = 1.5, color = "#D55E00", size = 3.5) +
+  annotate("text", x = mean_duration, y = Inf, 
+           label = sprintf("Mean: %.2f days", mean_duration),
+           hjust = -0.1, vjust = 3, color = "grey20", size = 3.5) +
+  scale_x_log10(
+    breaks = c(0.001, 0.01, 0.1, 1, 10, 100, 1000),
+    labels = c("0.001", "0.01", "0.1", "1", "10", "100", "1,000")
+  ) +
+  scale_y_continuous(labels = scales::comma) +
+  labs(
+    title = "Distribution of Positive Durations - All Agencies",
+    x = "Days (log scale)",
+    y = "Count"
+  ) +
+  david_theme()
+
+print(p2)
+
+Sys.sleep(3)
+
+ggsave(
+  filename = file.path(chart_dir, "All-Agencies histogram_positive_durations.pdf"),
+  plot = p2,
+  width = 10,
+  height = 6,
+  dpi = 300
+)
+
+# Find the valley between bimodal peaks
+log_dens <- density(log10(positive_data$duration_days), n = 2048)
+
+# Search for valley between 0.1 and 10 days (log10(-1) to log10(1))
+valley_region <- log_dens$x > -1 & log_dens$x < 1
+valley_idx <- which.min(log_dens$y[valley_region])
+valley_cutoff <- 10^log_dens$x[valley_region][valley_idx]
+
+cat(sprintf("\n=== Valley Analysis ===\n"))
+cat(sprintf("Valley minimum at: %.3f days\n", valley_cutoff))
+
+# Split data at valley threshold
+positive_data[, mode_group := ifelse(duration_days < valley_cutoff, "Fast", "Standard")]
+
+# Characterize each mode
+cat("\n=== Mode Characterization ===\n")
+print(positive_data[, .(
+  n = .N,
+  pct = 100 * .N / nrow(positive_data),
+  median_days = median(duration_days),
+  mean_days = mean(duration_days),
+  p95 = quantile(duration_days, 0.95)
+), by = mode_group])
+
+# Analyze by agency - which agencies drive each mode?
+cat("\n=== Agency Distribution by Mode ===\n")
+print(positive_data[, .N, by = .(agency, mode_group)][
+  , pct := 100 * N / sum(N), by = agency
+][order(agency, mode_group)])
+
+# Create NYPD subset
+nypd_data <- positive_data[agency == "NYPD"]
+other_data <- positive_data[agency != "NYPD"]
+
+# Calculate NYPD mean
+nypd_mean <- mean(nypd_data$duration_days)
+
+# Calculate NYPD median
+nypd_median <- median(nypd_data$duration_days)
+
+# NYPD histogram with mean and median lines
+p3 <- ggplot(nypd_data, aes(x = duration_days)) +
+  geom_histogram(bins = 150, fill = "#0072B2", alpha = 0.85, color = "white", 
+                 linewidth = 0.05) +
+  geom_vline(xintercept = nypd_mean, color = "grey20", linewidth = 1.5, 
+             linetype = "dashed") +
+  annotate("text", x = nypd_mean, y = Inf, 
+           label = sprintf("Mean = %.2f days", nypd_mean),
+           vjust = 3, hjust = -0.1, color = "grey20", size = 4, 
+           fontface = "bold") +
+  geom_vline(xintercept = nypd_median, color = "#D55E00", linewidth = 1.5, 
+             linetype = "dotted") +
+  annotate("text", x = nypd_median, y = Inf, 
+           label = sprintf("Median = %.2f days", nypd_median),
+           vjust = 3.0, hjust = 1.15, color = "#D55E00", size = 4, 
+           fontface = "bold") +
+  scale_x_log10(
+    breaks = c(0.001, 0.01, 0.1, 1, 10, 100, 1000),
+    labels = c("0.001", "0.01", "0.1", "1", "10", "100", "1,000")
+  ) +
+  labs(
+    title = "NYPD-only Service Requests with Positive Durations",
+    subtitle = sprintf("n = %s, Median = %.2f days, Mean = %.2f days", 
+                       format(nrow(nypd_data), big.mark = ","),
+                       nypd_median,
+                       nypd_mean),
+    x = "Days (log scale)",
+    y = "Count"
+  ) +
+  david_theme()
+
+print(p1)
+Sys.sleep(3)
+
+# Calculate other agencies mean and median
+other_mean <- mean(other_data$duration_days)
+other_median <- median(other_data$duration_days)
+
+# Other agencies histogram with mean and median lines
+p4 <- ggplot(other_data, aes(x = duration_days)) +
+  geom_histogram(bins = 150, fill = "#009E73", alpha = 0.85, color = "white", 
+                 linewidth = 0.05) +
+  geom_vline(xintercept = other_mean, color = "#999999", linewidth = 1.5, 
+             linetype = "dashed") +
+  annotate("text", x = other_mean, y = Inf, 
+           label = sprintf("Mean = %.2f days", other_mean),
+           vjust = 3, hjust = -0.1, color = "#999999", size = 4, 
+           fontface = "bold") +
+  geom_vline(xintercept = other_median, color = "#D55E00", linewidth = 1.5, 
+             linetype = "dotted") +
+  annotate("text", x = other_median, y = Inf, 
+           label = sprintf("Median = %.2f days", other_median),
+           vjust = 3.0, hjust = 1.15, color = "#D55E00", size = 4, 
+           fontface = "bold") +
+  scale_x_log10(
+    breaks = c(0.001, 0.01, 0.1, 1, 10, 100, 1000),
+    labels = c("0.001", "0.01", "0.1", "1", "10", "100", "1,000")
+  ) +
+  labs(
+    title = "Non-NYPD Service Requests with Positive Durations",
+    subtitle = sprintf("n = %s, Median = %.2f days, Mean = %.2f days", 
+                       format(nrow(other_data), big.mark = ","),
+                       other_median,
+                       other_mean),
+    x = "Days (log scale)",
+    y = "Count"
+  ) +
+  david_theme()
+
+print(p2)
+
+Sys.sleep(3)
+
+# Save individual plots
+ggsave(file.path(chart_dir, "nypd_only_positive_durations.pdf"), p3, 
+       width = 13, height = 8.5, units = "in")
+ggsave(file.path(chart_dir, "others_only_positive_durations.pdf"), p4, 
+       width = 13, height = 8.5, units = "in")
+
+# Combine data with agency group label
+combined_data <- rbind(
+  nypd_data[, .(duration_days, group = "NYPD")],
+  other_data[, .(duration_days, group = "Other Agencies")]
+)
+
+p_combined <- ggplot(combined_data, aes(x = duration_days, fill = group)) +
+  geom_histogram(bins = 150, alpha = 0.6, position = "identity", 
+                 color = "white", linewidth = 0.1) +
+  scale_fill_manual(values = c("NYPD" = "#0072B2", "Other Agencies" = "#009E73")) +
+  scale_x_log10(
+    breaks = c(0.001, 0.01, 0.1, 1, 10, 100, 1000),
+    labels = c("0.001", "0.01", "0.1", "1", "10", "100", "1,000")
+  ) +
+  labs(
+    title = "Bimodal Duration Distribution: NYPD vs Other Agencies",
+    subtitle = sprintf("NYPD n = %s, Other n = %s",
+                       format(nrow(nypd_data), big.mark = ","),
+                       format(nrow(other_data), big.mark = ",")),
+    x = "Days (log scale)",
+    y = "Count",
+    fill = "Agency Group"
+  ) +
+  david_theme() +
+  theme(
+    legend.position = "inside",
+    legend.position.inside = c(0.15, 0.85),  # Upper left (x, y from 0-1)
+    legend.background = element_rect(fill = "white", color = "#999999")
+  )
+
+print(p_combined)
+Sys.sleep(3)
+
+ggsave(file.path(chart_dir, "nypd_vs_others_combined.pdf"), p_combined, 
+       width = 13, height = 8.5, units = "in")
 
 # Set histogram display limits for readability
 upper_limit <- 30*3    # Maximum days to display (90 days)
@@ -1914,7 +2178,8 @@ limited_positive_data <- positive_data[
 ]
 
 # Generate summary statistics
-summary(positive_data$duration_day)
+cat("\n=== Summary of duration_days ===\n")
+print(summary(positive_data$duration_days))
 
 # Count records within plotting bounds
 n_plotted <- nrow(limited_positive_data)
@@ -1922,7 +2187,8 @@ n_plotted <- nrow(limited_positive_data)
 plot_histogram(
   DT         = positive_data,
   value_col  = "duration_days",
-  title      = sprintf("Positive Duration Distribution (<= %s days)", upper_limit),
+  title      = sprintf("Positive Duration Distribution (<= %s days)", 
+                       upper_limit),
   x_label    = "Duration (days)",
   add_labels = TRUE,
   chart_dir  = chart_dir,
@@ -1933,7 +2199,7 @@ plot_histogram(
   add_stats  = TRUE,
   width      = 13,
   height     = 8.5,
-  xlim       = c(0, upper_limit)   # <-- NEW ARGUMENT
+  xlim       = c(0, upper_limit)
 )
 
 # ==============================================================================
@@ -1990,6 +2256,27 @@ plot_histogram(
   height     = 8.5
 )
 
+plot_result <- plot_boxplot(
+  DT        = limited_negative_data,
+  value_col = duration_days,
+  by_col    = agency,
+  chart_dir = chart_dir,
+  filename  = "negative_duration_SR_boxplot.pdf",
+  title     = " Negative Duration (days) by agency",
+  top_n     = 30,
+  y_axis_tick_size = 10,
+  order_by  = "count",
+  flip      = TRUE,
+  x_scale_type = "pseudo_log",
+  x_limits = c(lower_limit, upper_limit),
+  min_count = 5,  # FIXED: was min_agency_obs (which defaults to 1)
+  jitter_size = 1.3,
+  jitter_alpha = 0.55,
+  outlier_size = 1.4,
+  count_label_hjust = label_hjust,
+  show_count_labels = show_count_labels
+)
+
 create_violin_chart(
   dataset = limited_negative_data,
   x_axis_field = "duration_days",
@@ -2005,6 +2292,9 @@ create_violin_chart(
 # Determines statistical threshold for flagging anomalously short durations
 
 cat("\n=== ANALYZING SHORT DURATIONS & SETTING THRESHOLDS ===\n")
+
+# Add duration_sec column
+#d311[, duration_sec := duration_days * 86400]
 
 # Run comprehensive skewed duration analysis
 skewed_result <- analyze_skewed_durations(
@@ -2030,7 +2320,7 @@ plot_duration_histogram(
   x_axis_angle = 45,        # Rotate labels for readability
   max_value = 90,           # Focus on first 90 seconds
   min_value = 2L,
-  threshold_numeric = threshold_numeric,
+  threshold_numeric = threshold_numeric +1,
   chart_dir = chart_dir
 )
 
@@ -2051,49 +2341,31 @@ cat("\n=== COMPREHENSIVE DURATION CATEGORY ANALYSIS ===\n")
 duraton_analysis <- analyze_duration_QA(d311, 
                                         chart_dir = chart_dir)
 
+# ==============================================================================
+# SECTION 5: RESPONSE TIMES BY COMPLAINT TYPE
+# ==============================================================================
+
 cat("\n=== RESPONSE TIMES BY COMPLAINT CATEGORY ANALYSIS ===\n")
+# Exclude durations <= 28 seconds (in days) and > 365* N days (typically 10 yrs)
 complaint_stats <- summarize_complaint_response(
-  d311, 
-  print_top = 300,
-  min_records = 50)
+                      d311, 
+                      min_records = 100,
+                      lower_exclusion_limit = 0.00032407,
+                      upper_exclusion_limit = 365*10
+  )
   
 # ==============================================================================
 # END OF DURATION ANALYSIS
 # ==============================================================================
 
-#########################################################################
-# Conclude program
-# Store the program end time and calculate the duration
-programStop <- as.POSIXct(Sys.time())
-formatted_end_time <- format(programStop, "%Y-%m-%d %H:%M:%S")
+################################################################################
 
-# Calculate the duration of the program (in seconds)
-duration_seconds <- as.numeric(difftime(programStop, programStart,  
-                                        units = "secs"))
-
-# Convert the duration to a formatted string (hrs, mins, and secs)
-hours <- floor(duration_seconds / 3600)
-minutes <- floor((duration_seconds %% 3600) / 60)
-seconds <- round(duration_seconds %% 60, 4)  # Round to 4 decimal places
-
-# Create the formatted duration string
-duration_string <- paste0(
-  if (hours > 0) paste0(hours, " hours, ") else "", 
-  if (minutes > 0) paste0(minutes, " minutes, ") else "",
-  seconds, " seconds"
+# Close program
+close_program(
+  program_start = timing$program_start,
+  enable_sink = enable_sink,
+  verbose = TRUE
 )
 
-# Print the final program information to the console
-cat("\n\n*****END OF PROGRAM*****\n")
-cat("\n📅 Execution ends at:", formatted_end_time, "\n")
-cat("\n⏱️ Program run-time:", duration_string, "\n")
-
-if (isTRUE(enable_sink)) {
-  sink()  # restore normal console output
-}
-
-#########################################################################
-# Call the end_program function with the formatted end time and duration string
-end_program(formatted_end_time, duration_string)
-
-#########################################################################
+################################################################################
+################################################################################
