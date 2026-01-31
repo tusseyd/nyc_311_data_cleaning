@@ -6,7 +6,7 @@ main_data_file <-
  
 # Boolean flag. TRUE to redirect console output to text file
 # FALSE to display console outpx`t on the screen
-enable_sink <- TRUE      
+enable_sink <- FALSE       
 
 #The "as of" date in "YYYY-MM-DD" format
 projection_date <- "2025-11-30"   
@@ -17,6 +17,7 @@ projection_SR_count <- 3218088
 # Okabe-Ito palette for colorblind safe 
 palette(c("#E69F00", "#56B4E9", "#009E73", "#F0E442", 
           "#0072B2", "#D55E00", "#CC79A7", "#999999"))
+
 ################################################################################
 
 # ------------------------------------------------------ -------
@@ -28,6 +29,22 @@ palette(c("#E69F00", "#56B4E9", "#009E73", "#F0E442",
 
 # STEP 1: Create directory structure (inline)
 # Set base directory to current working directory
+
+# Build the path
+wd_path <- file.path(
+  "C:",
+  "Users",
+  "David",
+  "OneDrive",
+  "Documents",
+  "datacleaningproject",
+  "journal_of_data_science",
+  "nyc_311_data_cleaning"
+)
+
+# Set the working directory
+setwd(wd_path)
+
 base_dir <- getwd()
 cat("Base directory:", base_dir, "\n")
 
@@ -69,6 +86,7 @@ source(file.path(functions_dir, "setup_project.R"))
 timing <- setup_project(
   enable_sink = enable_sink,
   console_filename = "JDS_datacleaning_console_output.txt",
+  functions_dir = functions_dir,
   verbose = TRUE
 )
 
@@ -134,8 +152,6 @@ message("\nCreating unique_key index.")
 n_na_keys   <- sum(is.na(d311$unique_key))
 n_unique    <- uniqueN(d311$unique_key)
 all_unique  <- (n_unique == num_rows_d311) && (n_na_keys == 0L)
-
-#cat("\nAre all 'unique_key' values truly unique (no NA)? ", all_unique, "\n", sep = "")
 
 if (all_unique) {
   # Fast lookups without reordering
@@ -300,7 +316,8 @@ names(display_df) <- c("field", agency_cols, "total")
 
 print(display_df, row.names = FALSE)
 # Save to CSV fast
-summary_table_file_path <- file.path(analytics_dir, "field_usage_summary_table.csv")
+summary_table_file_path <- file.path(analytics_dir, 
+                                     "field_usage_summary_table.csv")
 fwrite(field_usage_summary_dt, summary_table_file_path)
 
 #cat("\nCSV written to:\n", summary_table_file_path, "\n")
@@ -481,7 +498,7 @@ plot_pareto_combo(
   title            = "Pareto Analysis by Agency",
   filename         = "SR_by_agency_pareto_combo_chart.pdf",
   chart_dir        = chart_dir,
-  width_in         = 13,
+  width_in         = 18,
   height_in        = 8.5,
   show_labels      = FALSE,
   show_threshold_80 = TRUE,   # whether to draw the 80% reference line
@@ -534,7 +551,8 @@ cat("\nThere are", nrow(complaint_summary_dt), "different complaint_type(s).\n")
 # ---- Console reports ----
 top_n <- 20L
 cat("\nTop ", top_n, " complaint_type(s) and responsible agency:\n", sep = "")
-top_dt <- complaint_summary_dt[1:min(.N, top_n), .(complaint_type, count, percent, cumulative_percent, agency)]
+top_dt <- complaint_summary_dt[1:min(.N, top_n), .(complaint_type, count, 
+                                           percent, cumulative_percent, agency)]
 top_df <- data.frame(
   complaint_type = format(top_dt$complaint_type, justify = "left"),
   count = format(top_dt$count, justify = "right"),
@@ -545,7 +563,8 @@ top_df <- data.frame(
 print(top_df, row.names = FALSE)
 
 cat("\nBottom ", top_n, " complaint_type(s) and responsible agency:\n", sep = "")
-bottom_dt <- tail(complaint_summary_dt[, .(complaint_type, count, agency)], top_n)
+bottom_dt <- tail(complaint_summary_dt[, .(complaint_type, count, agency)], 
+                  top_n)
 bottom_df <- data.frame(
   complaint_type = format(bottom_dt$complaint_type, justify = "left"),
   count = format(bottom_dt$count, justify = "right"),
@@ -554,9 +573,11 @@ bottom_df <- data.frame(
 print(bottom_df, row.names = FALSE)
 
 cat("\nComplaints with multiple responsible agencies:\n")
-multiple_agency_dt <- complaint_summary_dt[agency == "MULTIPLE", .(complaint_type, count, percent)]
+multiple_agency_dt <- complaint_summary_dt[agency == "MULTIPLE", 
+                                           .(complaint_type, count, percent)]
 multiple_df <- data.frame(
-  complaint_type = format(head(multiple_agency_dt, top_n)$complaint_type, justify = "left"),
+  complaint_type = format(head(multiple_agency_dt, top_n)$complaint_type, 
+                          justify = "left"),
   count = format(head(multiple_agency_dt, top_n)$count, justify = "right"),
   percent = format(head(multiple_agency_dt, top_n)$percent, justify = "right")
 )
@@ -598,7 +619,7 @@ plot_pareto_combo(
   annotation_size = 3
 )
 
-#########################################################################
+################################################################################
 # Determine status of SRs
 cat("\n\nSRs by Status (including NA if present)\n")
 
@@ -638,7 +659,8 @@ cat("\n\n**********VALIDATING DATA TYPES**********\n")
 # Find non-compliant ZIP5 values (format-only; no mutation)
 message("\nValdiating data types.")
 
-find_noncompliant_zip5 <- function(DT, zip_col = "incident_zip", sample_n = 10L, include_na = FALSE) {
+find_noncompliant_zip5 <- function(DT, zip_col = "incident_zip", sample_n = 10L, 
+                                   include_na = FALSE) {
   stopifnot(is.data.table(DT))
   stopifnot("unique_key" %in% names(DT), zip_col %in% names(DT))
   
@@ -661,9 +683,9 @@ find_noncompliant_zip5 <- function(DT, zip_col = "incident_zip", sample_n = 10L,
     default = NA_character_
   )
   
-  noncompliant <- DT[bad_idx, .(unique_key, agency, incident_zip = get(zip_col))][
-    , `:=`(reason = reason[bad_idx], zip_length = zip_len[bad_idx])
-  ]
+  noncompliant <- DT[bad_idx, .(unique_key, agency, 
+                    incident_zip = get(zip_col))][, `:=`(reason = reason[bad_idx], 
+                    zip_length = zip_len[bad_idx])]
   setindex(noncompliant, unique_key)         # no reorder
   
   # Summaries
@@ -681,7 +703,8 @@ find_noncompliant_zip5 <- function(DT, zip_col = "incident_zip", sample_n = 10L,
     cat("\nBy agency (top 10):\n"); print(by_agency[1:min(10L, .N)])
   }
   
-  invisible(list(rows = noncompliant, by_reason = by_reason, by_agency = by_agency))
+  invisible(list(rows = noncompliant, by_reason = by_reason, 
+                 by_agency = by_agency))
 }
 
 # Call (NAs are NOT counted as invalid):
@@ -690,9 +713,10 @@ res <- find_noncompliant_zip5(d311, zip_col = "incident_zip", sample_n = 10L)
 ################################################################################
 # determine if various fields are numeric values
 
-# Type-only: TRUE if every non-NA token is numeric text (or the vector is numeric already)
+# Type-only: TRUE if every non-NA token is numeric text 
 # Options let you decide how strict to be without touching range.
-are_all_numbers <- function(x, allow_na = TRUE, allow_nonfinite = FALSE, allow_sci = TRUE) {
+are_all_numbers <- function(x, allow_na = TRUE, allow_nonfinite = FALSE, 
+                            allow_sci = TRUE) {
   if (is.numeric(x)) {
     nf_ok <- allow_nonfinite || all(is.finite(x[!is.na(x)]))
     na_ok <- allow_na || all(!is.na(x))
@@ -700,14 +724,15 @@ are_all_numbers <- function(x, allow_na = TRUE, allow_nonfinite = FALSE, allow_s
   }
   s <- trimws(as.character(x))
   pattern <- if (allow_sci)
-    "^[+-]?(?:\\d+\\.?\\d*|\\d*\\.\\d+)(?:[eE][+-]?\\d+)?$"  # allow scientific notation
+    "^[+-]?(?:\\d+\\.?\\d*|\\d*\\.\\d+)(?:[eE][+-]?\\d+)?$" # scientific notation
   else
     "^[+-]?(?:\\d+\\.?\\d*|\\d*\\.\\d+)$"
   ok <- nzchar(s) & grepl(pattern, s)
   if (allow_na) all(ok | is.na(s)) else all(ok & !is.na(s))
 }
 
-cols_to_check <- c("x_coordinate_state_plane", "y_coordinate_state_plane", "latitude", "longitude")
+cols_to_check <- c("x_coordinate_state_plane", "y_coordinate_state_plane", 
+                   "latitude", "longitude")
 checks <- sapply(cols_to_check, function(col) are_all_numbers(d311[[col]]))
 
 cat("\n\nType-only numeric checks:\n")
@@ -751,13 +776,15 @@ lon_precision <- analyze_decimal_precision(
 # Combined summary statistics
 cat("\n--- Summary Statistics ---\n")
 if (!is.null(lat_precision)) {
-  cat(sprintf("Latitude:\n Min precision: %d,  Max precision: %d,  Median: %.2f\n", 
+  cat(sprintf("Latitude:\n Min precision: %d,  Max precision: %d,  
+              Median: %.2f\n", 
               min(lat_precision$summary_precision$decimal_places),
               max(lat_precision$summary_precision$decimal_places),
-              median(lat_precision$summary_precision$decimal_places)))  # Changed mean to median
+              median(lat_precision$summary_precision$decimal_places)))  
 }
 if (!is.null(lon_precision)) {
-  cat(sprintf("Longitude:\n Min precision: %d,  Max precision: %d,  Median: %.2f\n", 
+  cat(sprintf("Longitude:\n Min precision: %d,  Max precision: %d,  
+              Median: %.2f\n", 
               min(lon_precision$summary_precision$decimal_places),
               max(lon_precision$summary_precision$decimal_places),
               median(lon_precision$summary_precision$decimal_places)))
@@ -770,7 +797,7 @@ if (!is.null(lat_precision) && !is.null(lon_precision)) {
   
   # Get all unique decimal place values
   all_decimals <- sort(unique(c(lat_precision$summary_precision$decimal_places, 
-                                lon_precision$summary_precision$decimal_places)))
+                              lon_precision$summary_precision$decimal_places)))
   
   comparison <- data.table(decimal_places = all_decimals)
   
@@ -811,7 +838,8 @@ if (!is.null(lat_precision) && !is.null(lon_precision)) {
   )
   
   # Combine with total row
-  comparison_with_total <- rbindlist(list(comparison, total_row), use.names = TRUE)
+  comparison_with_total <- rbindlist(list(comparison, total_row), 
+                                     use.names = TRUE)
   
   # Convert decimal_places to character BEFORE assigning "TOTAL"
   comparison_with_total[, decimal_places := as.character(decimal_places)]
@@ -857,9 +885,9 @@ if (nrow(valid_data) == 0) {
   } else {
     # Round to 5 decimal places, then allow small variance (±0.00001)
     complete_rows[, lat_match := abs(round(as.numeric(latitude), 6) - 
-                                       round(as.numeric(location_lat), 6)) <= 0.000001]
+                               round(as.numeric(location_lat), 6)) <= 0.000001]
     complete_rows[, lon_match := abs(round(as.numeric(longitude), 6) - 
-                                       round(as.numeric(location_lon), 6)) <= 0.000001]
+                               round(as.numeric(location_lon), 6)) <= 0.000001]
     complete_rows[, both_match := lat_match & lon_match]
     
     lat_matches  <- sum(complete_rows$lat_match, na.rm = TRUE)
@@ -1007,7 +1035,8 @@ flag_out_of_bounds_latlon <- function(
   n_lon   <- nrow(bad_lon)
   n_both  <- nrow(bad_both)
   
-  cat("\nOut-of-bounds check (raw coords, ±", tolerance_m, " m buffer):\n", sep = "")
+  cat("\nOut-of-bounds check (raw coords, ±", tolerance_m, " m buffer):\n", 
+      sep = "")
   cat("Latitude out-of-bounds:  ", format(n_lat, big.mark=","), " (",
       round(100 * n_lat / n_total, 4), "%)\n", sep = "")
   if (n_lat) print(bad_lat[1:min(.N, sample_n)], nrows = min(n_lat, sample_n))
@@ -1243,8 +1272,8 @@ address_type_results          <- all_validation_results[["address_type"]]
 statusResults                 <- all_validation_results[["status"]]
 boroughResults                <- all_validation_results[["borough"]]
 park_boroughResults           <- all_validation_results[["park_borough"]]
-taxi_company_boroughResults   <- all_validation_results[["taxi_company_borough"]]
-open_data_channelResults      <- all_validation_results[["open_data_channel_type"]]
+taxi_company_boroughResults <- all_validation_results[["taxi_company_borough"]]
+open_data_channelResults    <- all_validation_results[["open_data_channel_type"]]
 vehicle_typeResults           <- all_validation_results[["vehicle_type"]]
 community_boardResults        <- all_validation_results[["community_board"]]   
 incident_zipResults           <- all_validation_results[["incident_zip"]]
@@ -1370,8 +1399,10 @@ fmt_count_pct <- function(n, total) {
   future_created_dates        <- d311[created_date > as_of_date]
   past_created_dates          <- d311[created_date < genesis_date]
   missing_created_dates       <- d311[is.na(created_date)]
-  midnight_only_created_dates <- d311[format(created_date, "%H:%M:%S") == "00:00:00"]
-  noon_only_created_dates     <- d311[format(created_date, "%H:%M:%S") == "12:00:00"]
+  midnight_only_created_dates <- d311[format(created_date, 
+                                             "%H:%M:%S") == "00:00:00"]
+  noon_only_created_dates     <- d311[format(created_date, 
+                                             "%H:%M:%S") == "12:00:00"]
 
   # Summary
   cat("Created_date anomaly check (tz = America/New_York):\n")
@@ -1468,12 +1499,18 @@ cat("\n=== DUE DATE ANALYSIS ===\n")
   
   # Summary
   cat("Due_date anomaly check (tz = America/New_York):\n")
-  cat("  Future dates:   ", fmt_count_pct(nrow(future_due_dates), total_rows), "\n")
-  cat("  Past dates:     ", fmt_count_pct(nrow(past_due_dates), total_rows), "\n")
-  cat("  Missing dates:  ", fmt_count_pct(nrow(missing_due_dates), total_rows), "\n")
-  cat("  Midnight-only:  ", fmt_count_pct(nrow(midnight_only_due_dates), total_rows), "\n")
-  cat("  Noon-only:      ", fmt_count_pct(nrow(noon_only_due_dates), total_rows), "\n")
-  cat("  Due < Created   ", fmt_count_pct(nrow(due_before_created), total_rows), "\n")
+  cat("  Future dates:   ", fmt_count_pct(nrow(future_due_dates), 
+                                          total_rows), "\n")
+  cat("  Past dates:     ", fmt_count_pct(nrow(past_due_dates), 
+                                          total_rows), "\n")
+  cat("  Missing dates:  ", fmt_count_pct(nrow(missing_due_dates), 
+                                          total_rows), "\n")
+  cat("  Midnight-only:  ", fmt_count_pct(nrow(midnight_only_due_dates), 
+                                          total_rows), "\n")
+  cat("  Noon-only:      ", fmt_count_pct(nrow(noon_only_due_dates), 
+                                          total_rows), "\n")
+  cat("  Due < Created   ", fmt_count_pct(nrow(due_before_created), 
+                                          total_rows), "\n")
   
   # Define anomaly datasets and their labels for due_date
   anomaly_list_due <- list(
@@ -1553,11 +1590,16 @@ cat("\n=== DUE DATE ANALYSIS ===\n")
 cat("\n=== RESOLUTION UPDATE DATE ANALYSIS ===\n")
 
 # Anomaly checks
-future_resolution_action_updated_dates        <- d311[resolution_action_updated_date > as_of_date]
-past_resolution_action_updated_dates          <- d311[resolution_action_updated_date < genesis_date]
-missing_resolution_action_updated_dates       <- d311[is.na(resolution_action_updated_date)]
-midnight_only_resolution_action_updated_dates <- d311[format(resolution_action_updated_date, "%H:%M:%S") == "00:00:00"]
-noon_only_resolution_action_updated_dates     <- d311[format(resolution_action_updated_date, "%H:%M:%S") == "12:00:00"]  
+future_resolution_action_updated_dates        <- 
+  d311[resolution_action_updated_date > as_of_date]
+past_resolution_action_updated_dates          <- 
+  d311[resolution_action_updated_date < genesis_date]
+missing_resolution_action_updated_dates       <- 
+  d311[is.na(resolution_action_updated_date)]
+midnight_only_resolution_action_updated_dates <- 
+  d311[format(resolution_action_updated_date, "%H:%M:%S") == "00:00:00"]
+noon_only_resolution_action_updated_dates     <- 
+  d311[format(resolution_action_updated_date, "%H:%M:%S") == "12:00:00"]  
 
 # Exclude NAs from both columns in the comparison
 updates_before_created <- d311[
@@ -1568,12 +1610,23 @@ updates_before_created <- d311[
 
 # Summary
 cat("Resolution_action_updated_date anomaly check (tz = America/New_York):\n")
-cat("  Future dates:   ", fmt_count_pct(nrow(future_resolution_action_updated_dates), total_rows), "\n")
-cat("  Past dates:     ", fmt_count_pct(nrow(past_resolution_action_updated_dates), total_rows), "\n")
-cat("  Missing dates:  ", fmt_count_pct(nrow(missing_resolution_action_updated_dates), total_rows), "\n")
-cat("  Midnight-only:  ", fmt_count_pct(nrow(midnight_only_resolution_action_updated_dates), total_rows), "\n")
-cat("  Noon-only:      ", fmt_count_pct(nrow(noon_only_resolution_action_updated_dates), total_rows), "\n")
-cat("  Updates < Created:", fmt_count_pct(nrow(updates_before_created), total_rows), "\n")
+cat("  Future dates:   ", 
+    fmt_count_pct(nrow(future_resolution_action_updated_dates), 
+                  total_rows), "\n")
+cat("  Past dates:     ", 
+    fmt_count_pct(nrow(past_resolution_action_updated_dates), 
+                  total_rows), "\n")
+cat("  Missing dates:  ", 
+    fmt_count_pct(nrow(missing_resolution_action_updated_dates), 
+                  total_rows), "\n")
+cat("  Midnight-only:  ", 
+    fmt_count_pct(nrow(midnight_only_resolution_action_updated_dates), 
+                  total_rows), "\n")
+cat("  Noon-only:      ", 
+    fmt_count_pct(nrow(noon_only_resolution_action_updated_dates), 
+                  total_rows), "\n")
+cat("  Updates < Created:", 
+    fmt_count_pct(nrow(updates_before_created), total_rows), "\n")
 
 # Define anomaly datasets and their labels for resolution_action_updated_date
 
@@ -1628,9 +1681,10 @@ for (anomaly in anomaly_list_resolution) {
 if (nrow(missing_resolution_action_updated_dates) > 0) {
   cat("\n=== Missing Resolution Action Updated Dates Summary ===\n")
   cat(sprintf("Total records with missing resolution_action_updated_date: %s\n", 
-              format(nrow(missing_resolution_action_updated_dates), big.mark = ",")))
+        format(nrow(missing_resolution_action_updated_dates), big.mark = ",")))
   
-  missing_summary <- missing_resolution_action_updated_dates[, .N, by = agency][order(-N)]
+  missing_summary <- missing_resolution_action_updated_dates[, .N, 
+                                                         by = agency][order(-N)]
   cat("\nTop agencies with missing resolution action updated dates:\n")
   print(head(missing_summary, 10))
 } else {
@@ -1680,8 +1734,10 @@ cat("\n===  CLOSED DATE ANALYSIS ===\n")
 future_closed_dates           <- d311[closed_date > as_of_date]
 past_closed_dates             <- d311[closed_date < genesis_date]
 missing_closed_dates          <- d311[is.na(closed_date)]
-midnight_only_closed_dates    <- d311[format(closed_date, "%H:%M:%S") == "00:00:00"]
-noon_only_closed_dates        <- d311[format(closed_date, "%H:%M:%S") == "12:00:00"]
+midnight_only_closed_dates    <- 
+  d311[format(closed_date, "%H:%M:%S") == "00:00:00"]
+noon_only_closed_dates        <- 
+  d311[format(closed_date, "%H:%M:%S") == "12:00:00"]
 closed_before_created         <- d311[closed_date < created_date]
 
 # Summary
@@ -1823,7 +1879,7 @@ date_cols <- c(
   "closed_date"
 )
 
-# 2. Define the agency column name as a string (to be injected into the function call)
+# 2. Define agency column name as a string (to be injected into function call)
 agency_col_string <- "agency"
 
 # 3. Initialize a list to store the results from each run
@@ -1879,7 +1935,7 @@ median_dur <- median(positive_data$duration_days, na.rm = TRUE)
 # Create the plot
 positive_all_agencies <- ggplot(positive_data, aes(x = duration_days)) +
   geom_histogram(bins = 200, fill = "#0072B2", color = "white") +
-  geom_vline(xintercept = mean_dur, color = "grey20", 
+  geom_vline(xintercept = mean_dur, color = "grey25", 
              linetype = "dashed", linewidth = 1.4) +
   geom_vline(xintercept = median_dur, color = "#D55E00", 
              linetype = "dotted", linewidth = 1.5) +
@@ -1895,7 +1951,7 @@ positive_all_agencies <- ggplot(positive_data, aes(x = duration_days)) +
   ) +
   annotate("text", x = mean_dur * 3, y = Inf, 
            label = paste("Mean =", round(mean_dur, 2), "days"),
-           vjust = 2, hjust = 0.23, color = "grey20", size = 4.5) +
+           vjust = 2, hjust = 0.23, color = "grey25", size = 4.5) +
   annotate("text", x = median_dur * 3, y = Inf, 
            label = paste("Median =", round(median_dur, 2), "days"),
            vjust = 3.5, hjust = 0.23, color = "#D55E00", size = 4.5) +
@@ -1913,7 +1969,7 @@ Sys.sleep(3)
 # Save to chart directory
 ggsave(file.path(chart_dir, "positive_all_agencies.pdf"), 
        plot = positive_all_agencies,
-       width = 13, height = 8.5, dpi = 300)
+       width = 18, height = 8.5, dpi = 300)
 
 # Create the summary and transpose it
 summary_stats <- positive_data[, .(
@@ -1972,47 +2028,6 @@ ggsave(
 
 Sys.sleep(3)
 
-# Calculate mean and median
-mean_duration <- mean(positive_data$duration_days)
-median_duration <- median(positive_data$duration_days)
-
-# Histogram showing counts with mean and median lines
-p2 <- ggplot(positive_data, aes(x = duration_days)) +
-  geom_histogram(fill = "#0072B2", color = "white", bins = 200) +
-  geom_vline(aes(xintercept = median_duration), 
-             color = "#D55E00", linewidth = 1, linetype = "solid") +
-  geom_vline(aes(xintercept = mean_duration), 
-             color = "grey20", linewidth = 1, linetype = "dashed") +
-  annotate("text", x = median_duration, y = Inf, 
-           label = sprintf("Median: %.2f days", median_duration),
-           hjust = -0.1, vjust = 1.5, color = "#D55E00", size = 3.5) +
-  annotate("text", x = mean_duration, y = Inf, 
-           label = sprintf("Mean: %.2f days", mean_duration),
-           hjust = -0.1, vjust = 3, color = "grey20", size = 3.5) +
-  scale_x_log10(
-    breaks = c(0.001, 0.01, 0.1, 1, 10, 100, 1000),
-    labels = c("0.001", "0.01", "0.1", "1", "10", "100", "1,000")
-  ) +
-  scale_y_continuous(labels = scales::comma) +
-  labs(
-    title = "Distribution of Positive Durations - All Agencies",
-    x = "Days (log scale)",
-    y = "Count"
-  ) +
-  david_theme()
-
-print(p2)
-
-Sys.sleep(3)
-
-ggsave(
-  filename = file.path(chart_dir, "All-Agencies histogram_positive_durations.pdf"),
-  plot = p2,
-  width = 10,
-  height = 6,
-  dpi = 300
-)
-
 # Find the valley between bimodal peaks
 log_dens <- density(log10(positive_data$duration_days), n = 2048)
 
@@ -2025,7 +2040,8 @@ cat(sprintf("\n=== Valley Analysis ===\n"))
 cat(sprintf("Valley minimum at: %.3f days\n", valley_cutoff))
 
 # Split data at valley threshold
-positive_data[, mode_group := ifelse(duration_days < valley_cutoff, "Fast", "Standard")]
+positive_data[, mode_group := ifelse(duration_days < valley_cutoff, 
+                                     "Fast", "Standard")]
 
 # Characterize each mode
 cat("\n=== Mode Characterization ===\n")
@@ -2057,11 +2073,11 @@ nypd_median <- median(nypd_data$duration_days)
 p3 <- ggplot(nypd_data, aes(x = duration_days)) +
   geom_histogram(bins = 150, fill = "#0072B2", alpha = 0.85, color = "white", 
                  linewidth = 0.05) +
-  geom_vline(xintercept = nypd_mean, color = "grey20", linewidth = 1.5, 
+  geom_vline(xintercept = nypd_mean, color = "grey25", linewidth = 1.5, 
              linetype = "dashed") +
   annotate("text", x = nypd_mean, y = Inf, 
            label = sprintf("Mean = %.2f days", nypd_mean),
-           vjust = 3, hjust = -0.1, color = "grey20", size = 4, 
+           vjust = 3, hjust = -0.1, color = "grey25", size = 4, 
            fontface = "bold") +
   geom_vline(xintercept = nypd_median, color = "#D55E00", linewidth = 1.5, 
              linetype = "dotted") +
@@ -2084,7 +2100,7 @@ p3 <- ggplot(nypd_data, aes(x = duration_days)) +
   ) +
   david_theme()
 
-print(p1)
+print(p3)
 Sys.sleep(3)
 
 # Calculate other agencies mean and median
@@ -2095,11 +2111,11 @@ other_median <- median(other_data$duration_days)
 p4 <- ggplot(other_data, aes(x = duration_days)) +
   geom_histogram(bins = 150, fill = "#009E73", alpha = 0.85, color = "white", 
                  linewidth = 0.05) +
-  geom_vline(xintercept = other_mean, color = "#999999", linewidth = 1.5, 
+  geom_vline(xintercept = other_mean, color = "grey25", linewidth = 1.5, 
              linetype = "dashed") +
   annotate("text", x = other_mean, y = Inf, 
            label = sprintf("Mean = %.2f days", other_mean),
-           vjust = 3, hjust = -0.1, color = "#999999", size = 4, 
+           vjust = 3, hjust = -0.1, color = "grey25", size = 4, 
            fontface = "bold") +
   geom_vline(xintercept = other_median, color = "#D55E00", linewidth = 1.5, 
              linetype = "dotted") +
@@ -2122,15 +2138,15 @@ p4 <- ggplot(other_data, aes(x = duration_days)) +
   ) +
   david_theme()
 
-print(p2)
+print(p4)
 
 Sys.sleep(3)
 
 # Save individual plots
 ggsave(file.path(chart_dir, "nypd_only_positive_durations.pdf"), p3, 
-       width = 13, height = 8.5, units = "in")
+       width = 18, height = 8.5, units = "in")
 ggsave(file.path(chart_dir, "others_only_positive_durations.pdf"), p4, 
-       width = 13, height = 8.5, units = "in")
+       width = 18, height = 8.5, units = "in")
 
 # Combine data with agency group label
 combined_data <- rbind(
@@ -2141,7 +2157,8 @@ combined_data <- rbind(
 p_combined <- ggplot(combined_data, aes(x = duration_days, fill = group)) +
   geom_histogram(bins = 150, alpha = 0.6, position = "identity", 
                  color = "white", linewidth = 0.1) +
-  scale_fill_manual(values = c("NYPD" = "#0072B2", "Other Agencies" = "#009E73")) +
+  scale_fill_manual(values = c("NYPD" = "#0072B2", 
+                               "Other Agencies" = "#009E73")) +
   scale_x_log10(
     breaks = c(0.001, 0.01, 0.1, 1, 10, 100, 1000),
     labels = c("0.001", "0.01", "0.1", "1", "10", "100", "1,000")
@@ -2159,14 +2176,14 @@ p_combined <- ggplot(combined_data, aes(x = duration_days, fill = group)) +
   theme(
     legend.position = "inside",
     legend.position.inside = c(0.15, 0.85),  # Upper left (x, y from 0-1)
-    legend.background = element_rect(fill = "white", color = "#999999")
+    legend.background = element_rect(fill = "white", color = "grey25")
   )
 
 print(p_combined)
 Sys.sleep(3)
 
 ggsave(file.path(chart_dir, "nypd_vs_others_combined.pdf"), p_combined, 
-       width = 13, height = 8.5, units = "in")
+       width = 18, height = 8.5, units = "in")
 
 # Set histogram display limits for readability
 upper_limit <- 30*3    # Maximum days to display (90 days)
@@ -2197,7 +2214,7 @@ plot_histogram(
   alpha      = 0.8,
   outlier_percentile = 1.0,
   add_stats  = TRUE,
-  width      = 13,
+  width      = 18,
   height     = 8.5,
   xlim       = c(0, upper_limit)
 )
@@ -2252,7 +2269,7 @@ plot_histogram(
   
   # Stats & output
   add_stats  = TRUE,
-  width      = 13,
+  width      = 18,
   height     = 8.5
 )
 
@@ -2293,9 +2310,6 @@ create_violin_chart(
 
 cat("\n=== ANALYZING SHORT DURATIONS & SETTING THRESHOLDS ===\n")
 
-# Add duration_sec column
-#d311[, duration_sec := duration_days * 86400]
-
 # Run comprehensive skewed duration analysis
 skewed_result <- analyze_skewed_durations(
   DT = d311,
@@ -2327,6 +2341,456 @@ plot_duration_histogram(
 # Display threshold value
 cat("LogNormal_3SD threshold:", threshold_numeric, "seconds\n")
 
+
+
+
+################################################################################
+# TIMESTAMP DISTRIBUTION ANALYSIS
+################################################################################
+#
+# Purpose: Analyze second-level and minute-level timestamp distributions
+#          to identify patterns, rounding, and data quality issues
+#
+################################################################################
+
+# ============================================================================
+# PART 1: CREATED_DATE ANALYSIS
+# ============================================================================
+
+cat("\n", rep("=", 80), "\n", sep = "")
+cat("ANALYZING CREATED_DATE TIMESTAMP DISTRIBUTIONS\n")
+cat(rep("=", 80), "\n\n", sep = "")
+
+# ----------------------------------------------------------------------------
+# 1A. Second and Minute Distribution Analysis (with Chi-Square Tests)
+# ----------------------------------------------------------------------------
+
+results_created_dist <- analyze_second_minute_distribution(d311, 
+                                                   date_col = "created_date")
+
+# ----------------------------------------------------------------------------
+# 1B. Cycle Pattern Analysis (3-minute cycle)
+# ----------------------------------------------------------------------------
+# Show sample rows too
+results <- analyze_cycle_pattern(d311,
+                                 date_col = "created_date",
+                                 cycle_type = "3min", 
+                                 show_sample_rows = TRUE,
+                                 n_sample = 20)
+
+
+# results_created_cycle <- analyze_cycle_pattern(d311, 
+#                                                date_col = "created_date", 
+#                                                cycle_type = "3min")
+
+# ----------------------------------------------------------------------------
+# 1C. Visualizations: Second Distribution
+# ----------------------------------------------------------------------------
+
+# Prepare data
+second_data_created <- results_created_dist$second_summary[!is.na(second_value)]
+second_data_created[, second_label := sprintf("%02d", second_value)]
+
+# Create and display chart
+p_second_created <- plot_barchart(
+  DT = second_data_created,
+  x_col = "second_label",
+  y_col = "count",
+  
+  title = "Distribution of Service Requests by Second Value",
+  subtitle = "created_date timestamp precision analysis",
+  x_label = "Second Value (00-59)",
+  y_label = "Number of Service Requests",
+  
+  fill_color = "#009E73",
+  
+  # Statistical reference lines
+  add_mean = TRUE,
+  add_3sd = TRUE,
+  
+  # Data labels
+  show_labels = TRUE,
+  label_col = "count",
+  label_angle = 90,
+  label_vjust = 0.5,
+  label_hjust = -0.1,
+  label_size = 2.5,
+  
+  # Axis formatting
+  x_label_every = 5,
+  x_axis_angle = 0,
+  
+  # Console output
+  console_print_title = "CREATED_DATE: SECOND VALUE DISTRIBUTION",
+  show_summary = TRUE,
+  
+  # Save options
+  chart_dir = "./charts",
+  filename = "created_date_second_distribution.pdf",
+  chart_width = 18,
+  chart_height = 8.5
+)
+
+# print(p_second_created)
+# Sys.sleep(3)
+
+# ----------------------------------------------------------------------------
+# 1D. Visualizations: Minute Distribution
+# ----------------------------------------------------------------------------
+
+# Prepare data
+minute_data_created <- results_created_dist$minute_summary[!is.na(minute_value)]
+minute_data_created[, minute_label := sprintf("%02d", minute_value)]
+
+# Create and display chart
+p_minute_created <- plot_barchart(
+  DT = minute_data_created,
+  x_col = "minute_label",
+  y_col = "count",
+  
+  title = "Distribution of Service Requests by Minute Value (01-59)",
+  subtitle = "created_date minute distribution (excluding minute :00)",
+  x_label = "Minute Value (01-59)",
+  y_label = "Number of Service Requests",
+  
+  fill_color = "#0072B2",
+  
+  # Statistical reference lines
+  add_mean = TRUE,
+  add_3sd = TRUE,
+  
+  # Data labels (disabled for readability with 59 bars)
+  show_labels = FALSE,
+  
+  # Axis formatting
+  x_label_every = 5,
+  x_axis_angle = 0,
+  
+  # Console output
+  console_print_title = "CREATED_DATE: MINUTE VALUE DISTRIBUTION (01-59)",
+  show_summary = TRUE,
+  
+  # Save options
+  chart_dir = "./charts",
+  filename = "created_date_minute_distribution.pdf",
+  chart_width = 18,
+  chart_height = 8.5
+)
+
+# print(p_minute_created)
+# Sys.sleep(3)
+
+# ============================================================================
+# PART 2: CLOSED_DATE ANALYSIS
+# ============================================================================
+
+cat("\n", rep("=", 80), "\n", sep = "")
+cat("ANALYZING CLOSED_DATE TIMESTAMP DISTRIBUTIONS\n")
+cat(rep("=", 80), "\n\n", sep = "")
+
+# ----------------------------------------------------------------------------
+# 2A. Second and Minute Distribution Analysis (with Chi-Square Tests)
+# ----------------------------------------------------------------------------
+
+results_closed_dist <- analyze_second_minute_distribution(d311, 
+                                                      date_col = "closed_date")
+
+# ----------------------------------------------------------------------------
+# 2B. Cycle Pattern Analysis (5-minute intervals)
+# ----------------------------------------------------------------------------
+
+
+
+results <- analyze_cycle_pattern(d311,
+                                 date_col = "closed_date",
+                                 cycle_type = "5min", 
+                                 show_sample_rows = TRUE,
+                                 n_sample = 20)
+
+# results_closed_cycle <- analyze_cycle_pattern(d311, 
+#                                               date_col = "closed_date", 
+#                                               cycle_type = "5min")
+
+# Alternative: Analyze 15-minute intervals instead
+# results_closed_cycle <- analyze_cycle_pattern(d311, 
+#                                               date_col = "closed_date", 
+#                                               cycle_type = "15min")
+
+# ----------------------------------------------------------------------------
+# 2C. Visualizations: Second Distribution
+# ----------------------------------------------------------------------------
+
+# Prepare data
+second_data_closed <- results_closed_dist$second_summary[!is.na(second_value)]
+second_data_closed[, second_label := sprintf("%02d", second_value)]
+
+# Create and display chart
+p_second_closed <- plot_barchart(
+  DT = second_data_closed,
+  x_col = "second_label",
+  y_col = "count",
+  
+  title = "Distribution of Service Requests by Second Value",
+  subtitle = "closed_date timestamp precision analysis",
+  x_label = "Second Value (00-59)",
+  y_label = "Number of Service Requests",
+  
+  fill_color = "#009E73",
+  
+  # Statistical reference lines
+  add_mean = TRUE,
+  add_3sd = TRUE,
+  
+  # Data labels
+  show_labels = TRUE,
+  label_col = "count",
+  label_angle = 90,
+  label_vjust = 0.5,
+  label_hjust = -0.1,
+  label_size = 2.5,
+  
+  # Axis formatting
+  x_label_every = 5,
+  x_axis_angle = 0,
+  
+  # Console output
+  console_print_title = "CLOSED_DATE: SECOND VALUE DISTRIBUTION",
+  show_summary = TRUE,
+  
+  # Save options
+  chart_dir = "./charts",
+  filename = "closed_date_second_distribution.pdf",
+  chart_width = 18,
+  chart_height = 8.5
+)
+
+# print(p_second_closed)
+# Sys.sleep(3)
+
+# ------------------------------------------------------------------------------
+# 2D. Visualizations: Minute Distribution
+# ------------------------------------------------------------------------------
+
+# Prepare data
+minute_data_closed <- results_closed_dist$minute_summary[!is.na(minute_value)]
+minute_data_closed[, minute_label := sprintf("%02d", minute_value)]
+
+# Create and display chart
+p_minute_closed <- plot_barchart(
+  DT = minute_data_closed,
+  x_col = "minute_label",
+  y_col = "count",
+  
+  title = "Distribution of Service Requests by Minute Value (01-59)",
+  subtitle = "closed_date minute distribution (excluding minute :00)",
+  x_label = "Minute Value (01-59)",
+  y_label = "Number of Service Requests",
+  
+  fill_color = "#0072B2",
+  
+  # Statistical reference lines
+  add_mean = TRUE,
+  add_3sd = TRUE,
+  
+  # Data labels (disabled for readability with 59 bars)
+  show_labels = FALSE,
+  
+  # Axis formatting
+  x_label_every = 5,
+  x_axis_angle = 0,
+  
+  # Console output
+  console_print_title = "CLOSED_DATE: MINUTE VALUE DISTRIBUTION (01-59)",
+  show_summary = TRUE,
+  
+  # Save options
+  chart_dir = "./charts",
+  filename = "closed_date_minute_distribution.pdf",
+  chart_width = 18,
+  chart_height = 8.5
+)
+
+# print(p_minute_closed)
+# Sys.sleep(3)
+
+# ============================================================================
+# PART 3: COMBINED MINUTE:SECOND ANALYSIS (FIRST N SECONDS OF EACH HOUR)
+# ============================================================================
+
+cat("\n", rep("=", 80), "\n", sep = "")
+cat("ANALYZING COMBINED MINUTE:SECOND DISTRIBUTIONS\n")
+cat(rep("=", 80), "\n\n", sep = "")
+
+# ----------------------------------------------------------------------------
+# 3A. Set Analysis Parameters
+# ----------------------------------------------------------------------------
+
+# PARAMETER: Set the maximum number of seconds to analyze from start of each hour
+second_limit <- 605  # Default: 330 seconds = 5 minutes 30 seconds
+# Common values: 180 (3 min), 300 (5 min), 600 (10 min), 
+#                900 (15 min), 3599 (full hour)
+
+# Calculate end time label for display
+end_time_label <- sprintf("%02d:%02d", second_limit %/% 60, second_limit %% 60)
+
+cat("Analyzing first ", second_limit, " seconds (00:00 to ", end_time_label, 
+    ") of each hour\n", sep = "")
+cat("Date field: created_date\n\n")
+
+# ----------------------------------------------------------------------------
+# 3B. Extract and Aggregate Data
+# ----------------------------------------------------------------------------
+
+# Extract hour, minute, and second components
+timestamp_analysis <- d311[, .(
+  hour = hour(created_date),
+  minute = minute(created_date),
+  second = second(created_date)
+)]
+
+# Calculate total seconds from start of hour (0-3599)
+timestamp_analysis[, total_seconds := (minute * 60) + second]
+
+# Count occurrences of each second value (0 to second_limit)
+second_counts <- timestamp_analysis[total_seconds <= second_limit, .N, 
+                                    by = total_seconds][order(total_seconds)]
+
+# Calculate percentage and cumulative percentage
+total_records <- sum(second_counts$N)
+second_counts[, `:=`(
+  pct = round(N / total_records * 100, 3),
+  cum_pct = round(cumsum(N) / total_records * 100, 2)
+)]
+
+# Add time label (MM:SS format)
+second_counts[, time_label := sprintf("%02d:%02d", 
+                                      total_seconds %/% 60, 
+                                      total_seconds %% 60)]
+
+# Format count with commas
+second_counts[, count_fmt := format(N, big.mark = ",")]
+
+# ----------------------------------------------------------------------------
+# 3C. Display Summary Table
+# ----------------------------------------------------------------------------
+
+cat("\n", rep("=", 70), "\n", sep = "")
+cat("TIMESTAMP DISTRIBUTION: First ", second_limit, " seconds (00:00 to ", 
+    end_time_label, ")\n", sep = "")
+cat(rep("=", 70), "\n", sep = "")
+cat("Total records in this window: ", format(total_records, 
+                                             big.mark = ","), "\n\n", sep = "")
+
+print(second_counts[, .(time_label, count = count_fmt, pct, cum_pct)], 
+      nrows = second_limit + 1)
+
+cat("\n", rep("=", 70), "\n", sep = "")
+
+# ------------------------------------------------------------------------------
+# 3D. Create Visualization
+# ------------------------------------------------------------------------------
+
+cat("\nCreating combined minute:second distribution chart...\n")
+
+# Determine appropriate break interval based on second_limit
+break_interval <- if (second_limit <= 120) {
+  15  # Every 15 seconds for short windows (≤2 minutes)
+} else if (second_limit <= 600) {
+  30  # Every 30 seconds for medium windows (≤10 minutes)
+} else {
+  60  # Every minute for long windows (>10 minutes)
+}
+
+p_combined <- ggplot(second_counts, aes(x = total_seconds, y = N)) +
+  geom_bar(stat = "identity", fill = "#0072B2", width = 1) +
+  scale_x_continuous(
+    breaks = seq(0, second_limit, by = break_interval),
+    labels = sprintf("%02d:%02d", 
+                     seq(0, second_limit, by = break_interval) %/% 60, 
+                     seq(0, second_limit, by = break_interval) %% 60)
+  ) +
+  scale_y_continuous(labels = scales::comma) +
+  labs(
+    title = paste0("Service Request Distribution: First ", second_limit,
+                   " Seconds"),
+    subtitle = paste0("created_date timestamp distribution (00:00 to ", 
+                      end_time_label, ") - combined minute:second view"),
+    x = "Time from Hour Start (MM:SS)",
+    y = "Number of Service Requests"
+  ) +
+  theme_minimal(base_size = 12) +
+  theme(
+    axis.text.x = element_text(angle = 45, hjust = 1),
+    panel.grid.minor.x = element_blank()
+  )
+
+print(p_combined)
+Sys.sleep(3)
+
+# Save the chart with dynamic filename
+chart_filename <- paste0("./charts/created_date_first_", second_limit, 
+                         "_seconds.pdf")
+ggsave(chart_filename, 
+       plot = p_combined, 
+       width = 18, 
+       height = 8.5)
+
+cat("Chart saved to: ", chart_filename, "\n", sep = "")
+
+# ------------------------------------------------------------------------------
+# 3E. Summary Statistics
+# ------------------------------------------------------------------------------
+
+cat("\n", rep("-", 70), "\n", sep = "")
+cat("KEY OBSERVATIONS:\n")
+cat(rep("-", 70), "\n", sep = "")
+
+# Find peaks (top 5 seconds by count)
+top_seconds <- second_counts[order(-N)][1:5]
+cat("\nTop 5 seconds with highest counts:\n")
+for (i in 1:nrow(top_seconds)) {
+  cat(sprintf("  %d. %s - %s records (%.2f%%)\n",
+              i,
+              top_seconds$time_label[i],
+              top_seconds$count_fmt[i],
+              top_seconds$pct[i]))
+}
+
+# Check for on-the-minute spikes (seconds ending in :00)
+on_minute_counts <- second_counts[total_seconds %% 60 == 0]
+if (nrow(on_minute_counts) > 0) {
+  cat("\nOn-the-minute timestamps (:00 seconds):\n")
+  for (i in 1:nrow(on_minute_counts)) {
+    cat(sprintf("  %s - %s records (%.2f%%)\n",
+                on_minute_counts$time_label[i],
+                on_minute_counts$count_fmt[i],
+                on_minute_counts$pct[i]))
+  }
+}
+
+cat("\n", rep("=", 70), "\n", sep = "")
+cat("END OF COMBINED MINUTE:SECOND ANALYSIS\n")
+cat(rep("=", 70), "\n\n", sep = "")
+  
+# ============================================================================
+# ANALYSIS COMPLETE
+# ============================================================================
+
+cat("\n", rep("=", 80), "\n", sep = "")
+cat("TIMESTAMP DISTRIBUTION ANALYSIS COMPLETE\n")
+cat(rep("=", 80), "\n", sep = "")
+cat("\nKey Findings:\n")
+cat("  - created_date: Check for 3-minute cycle pattern (DEP agency)\n")
+cat("  - closed_date: Check for 5-minute and 15-minute rounding patterns\n")
+cat("  - Combined minute:second: Check first ", second_limit, 
+    " seconds for detailed patterns\n", sep = "")
+cat("\nAll charts saved to ./charts/ directory\n\n")
+
+################################################################################
+# END OF TIMESTAMP DISTRIBUTION ANALYSIS
+################################################################################
+
+
 # ==============================================================================
 # SECTION 4: COMPREHENSIVE DURATION CATEGORY ANALYSIS
 # ==============================================================================
@@ -2338,8 +2802,14 @@ cat("LogNormal_3SD threshold:", threshold_numeric, "seconds\n")
 # - Positive (small, large, extreme)
 
 cat("\n=== COMPREHENSIVE DURATION CATEGORY ANALYSIS ===\n")
-duraton_analysis <- analyze_duration_QA(d311, 
-                                        chart_dir = chart_dir)
+duraton_analysis <- analyze_duration_QA(
+                                  d311,
+                                  lower_neg_days   = -2 * 365,
+                                  extreme_neg_days = -5 * 365,
+                                  upper_pos_days   = 2 * 365,
+                                  extreme_pos_days = 5 * 365,
+                                  max_outlier_days = 10 * 365,
+                                  chart_dir = chart_dir)
 
 # ==============================================================================
 # SECTION 5: RESPONSE TIMES BY COMPLAINT TYPE

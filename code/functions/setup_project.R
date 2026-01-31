@@ -6,9 +6,20 @@
 setup_project <- function(
     enable_sink = FALSE,
     console_filename = "console_output.txt",
+    functions_dir = NULL,
     verbose = TRUE
 ) {
   
+    # Prevent recursive calls
+    if (exists(".setup_project_running", envir = .GlobalEnv) && 
+        isTRUE(get(".setup_project_running", envir = .GlobalEnv))) {
+      stop("ERROR: setup_project() is already running. Check for recursive calls.")
+    }
+    
+    # Set flag
+    assign(".setup_project_running", TRUE, envir = .GlobalEnv)
+    on.exit(assign(".setup_project_running", FALSE, envir = .GlobalEnv))
+    
   # ----------------------------------------------------------
   # STEP 1: Start timing and capture start time
   # ----------------------------------------------------------
@@ -52,7 +63,8 @@ setup_project <- function(
     "renv",
     "remotes",
     "moments",
-    "diptest"
+    "diptest",
+    "scales"
   )
   
   for (pkg in required_packages) {
@@ -105,8 +117,24 @@ setup_project <- function(
   function_files <- list.files(functions_dir, pattern = "\\.R$", 
                                full.names = TRUE)
   
-  # Exclude setup_project.R from being sourced (avoid recursion)
-  function_files <- function_files[!grepl("setup_project\\.R$", function_files)]
+  if (verbose) cat("DEBUG: Files found:\n", paste(basename(function_files), 
+                                                  collapse = "\n"), "\n\n")
+  
+  # FIXED: More robust exclusion of setup_project.R to prevent recursion
+  function_files <- function_files[!grepl("setup_project\\.R$", 
+                                          basename(function_files), 
+                                          ignore.case = TRUE)]
+  
+  # Additional safety: exclude the current script file being executed
+  current_script <- sys.frame(1)$ofile
+  if (!is.null(current_script)) {
+    function_files <- function_files[function_files != current_script]
+  }
+  
+  if (verbose) {
+    cat("Files to source:\n")
+    cat(paste0("  - ", basename(function_files), collapse = "\n"), "\n\n")
+  }
   
   sourced_count <- 0
   failed_count <- 0
@@ -134,11 +162,6 @@ setup_project <- function(
       message("ERROR sourcing: ", basename(file), " - ", e$message)
       failed_count <- failed_count + 1
     })
-  }
-  
-  if (verbose) {
-    message("\nSourcing complete: ", sourced_count, " files sourced, ", 
-            failed_count, " failed")
   }
   
   # ----------------------------------------------------------
