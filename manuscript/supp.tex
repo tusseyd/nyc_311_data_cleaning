@@ -1,3 +1,17 @@
+%=================================================================
+% Supplementary Materials
+% Principles for Open Data Curation:
+% A Case Study with the New York City 311 Service Request Data
+%
+% Author: David Tussey
+% Submission: Journal of Data Science
+% Version: 1.0 (Initial Submission)
+% Date: <insert submission date>
+%
+% This document provides reproducibility details, extended analyses,
+% and supporting figures for the main manuscript.
+%=================================================================
+
 \documentclass[linenumber]{jdsart}
 \pdfminorversion=7
 
@@ -98,6 +112,7 @@
 %---------------------------------------------------------------
 \section{Overview}
 
+
 This document provides supplementary materials accompanying the article
 \emph{Principles for Open Data Curation: A Case Study with the New York City 
 311 Service Request Data}. It includes additional figures, tables, extended 
@@ -182,7 +197,9 @@ Buildings (DOB) and the Department of Sanitation (DSNY).
 \label{fig:pareto-nonclosed-with-date}
 \end{figure}
 
+
 \FloatBarrier  % Keep SR Status figures in their section
+
 
 \subsection{Temporal Pattern Analysis}
 
@@ -220,6 +237,7 @@ information reveals a point-of-action for further investigation.
 
 
 \subsection{Service Request (SR) Positive Duration Analysis}
+
 
 One anomaly discussed in the referenced document is the presence of unusually long time spans 
 between an SR being opened and when it is closed, referred to as the duration or response time. 
@@ -413,6 +431,7 @@ a broader range of durations, with an exceptional number of very large,
 almost extreme, durations exceeding 1,000 days (note that the x-axis is a 
 logarithmic scale). 
 
+
 \begin{figure}[!htbp]
 \centering
 \includegraphics[width=0.9\textwidth]{others_only_positive_durations.pdf}
@@ -430,6 +449,7 @@ NYC 311 non-emergency service, representing 43\% of all SRs.
 Thus, it is not unexpected that one agency has an outsized 
 impact on the overall metric.
 
+
 \begin{figure}[tbp]
 \centering
 \includegraphics[width=0.9\textwidth]{nypd_vs_others_combined.pdf}
@@ -437,7 +457,9 @@ impact on the overall metric.
 \label{fig:histogram_combined}
 \end{figure}
 
+
 \FloatBarrier  % Keep Positive Duration figures in their section
+
 
 \subsection{Service Request Negative Duration Analysis}
 
@@ -459,12 +481,14 @@ captures both the count and the extent of the negative duration anomaly.
 \label{fig:boxplot-negative-durations}
 \end{figure}
 
+
 Violin charts of these same distributions are also produced and 
 available in the \texttt{charts} directory upon completion of the 
 data cleansing program. Figure~\ref{fig:violin-boxplot-negative}
 displays a violin chart that accompanies the negative duration 
 box plot, revealing the density of negative durations by magnitude. 
 Every box plot has an accompanying violin chart.
+
 
 \begin{figure}[tbp]
 \centering
@@ -473,7 +497,9 @@ Every box plot has an accompanying violin chart.
 \label{fig:violin-boxplot-negative}
 \end{figure}
 
+
 \FloatBarrier  % Keep Negative Duration figures in their section
+
 
 \subsection{Zero and Near-Zero/Suspicious Duration Analysis}
 
@@ -503,21 +529,6 @@ mark. This is not unexpected, as overall, SR durations show a spike
 at every \emph{on-the-minute} mark. 
 Figure~\ref{fig:created-dates-by-seconds} displays this anomaly by the
 second, as shown for the first five minutes. 
-
-%\begin{figure}[tbp]
-%\centering
-%\includegraphics[width=0.9\textwidth]{duration_histogram_cumulative.pdf}
-%\caption{Cumulative Distribution of  Small SR Durations (2--90 seconds).}
-%\label{fig:duration-histogram-cumulative}
-%\end{figure}
-
-
-\begin{figure}[tbp]
-\centering
-\includegraphics[width=0.9\textwidth]{duration_histogram.pdf}
-\caption{Cumulative Distribution of  Small SR Durations (2--90 seconds).}
-\label{fig:duration-histogram}
-\end{figure}
 
 
 \begin{figure}[tbp]
@@ -569,7 +580,6 @@ shows this dramatic growth with backlogged SRs representing
 
 \begin{figure}[tbp]
 \centering
-
 \includegraphics[width=0.9\textwidth]{annual_backlog_bar_chart.pdf}
 \caption{Backlog of SRs — Open at the Beginning of the Year}
 \label{fig:annual_backlog}
@@ -577,7 +587,15 @@ shows this dramatic growth with backlogged SRs representing
 
 
 %---------------------------------------------------------------
+%=================================================================
 \section{Reproducibility and Code Access}
+%=================================================================
+
+
+All analyses presented in both the main manuscript and these supplementary
+materials are fully reproducible using the publicly archived datasets and
+source code referenced below. The datasets are preserved via DOI-assigned
+Figshare archives to ensure persistent access and version stability.
 
 
 \subsection*{System Requirements}
@@ -604,6 +622,8 @@ modify file paths in \texttt{base\_dir}
 \item USPS Zip Codes (4.5 MB): \url{https://figshare.com/s/8aea027d06f4903f2227}
 \item Reference console output for validation is available in GitHub repository.
 \end{itemize}
+The DOIs listed above correspond to the archived dataset versions used in this submission.
+Future dataset updates, if any, will be versioned separately to preserve reproducibility.
 
 
 \subsection*{Required R Packages}
@@ -652,21 +672,22 @@ New York City 311 Service Request Data} document, there are two separate R
 programs which should be executed in order:
 
 
-\vspace{0.1cm}
 \begin{enumerate}[leftmargin=4em]
 \item \texttt{data\_prep\_for\_jds\_datacleansing.R} --- Prepares the raw data for analysis
-\vspace{0.1cm}
+
 \item \texttt{jds\_datacleansing.R} --- Performs data cleansing and quality assessments
 \end{enumerate}
-\vspace{0.1cm}
+
 Each of these programs produces a console output file in simple text format, specifically:
-\vspace{0.1cm}
+
+
 \begin{itemize}
 \item \texttt{JDS\_data\_prep\_console\_output.txt}
-\vspace{0.1cm}
+
 \item \texttt{JDS\_datacleaning\_console\_output.txt}
 \end{itemize}
-\vspace{0.1cm}
+
+
 These two files, along with the associated charts, provide additional insight 
 into the anomalies observed during data cleansing. Upon running 
 the \texttt{jds\_datacleansing.R} program, there will be 87 charts in PDF format in 
@@ -686,30 +707,42 @@ interpretive embellishments.
 
 \subsection*{Steps for Reproducing the Analysis}
 Source files are available at:
-\vspace{0.1cm}
+
+
 \begin{itemize}
-  \item \textsc{R} source code (GitHub): \url{https://github.com/tusseyd/nyc_311_data_cleaning}
-  \item USPS Zip Code Dataset (Figshare, DOI: 
-  \url{https://doi.org/10.6084/m9.figshare.31053361})
-  \item NYC 311 Dataset (2020--2024), archived on Figshare: DOI: 
-  \url{https://doi.org/10.6084/m9.figshare.28454858}
-  \vspace{0.15cm} 
-  \item Data preparation console output: \\ \small\url{https://github.com/tusseyd/nyc_311_data_cleaning/blob/main/reference_console_output/reference_JDS_data_prep_console_output.txt}
-\vspace{0.15cm}
-  \item Data cleaning console output: \\ \small\url{https://github.com/tusseyd/nyc_311_data_cleaning/blob/main/reference_console_output/reference_JDS_datacleaning_console_output.txt}
+
+\item R Source Code (GitHub repository):\\
+\url{https://github.com/tusseyd/nyc_311_data_cleaning}
+
+\item USPS Zip Code Dataset (Figshare archive):\\
+DOI: \url{https://doi.org/10.6084/m9.figshare.31053361}
+
+\item NYC 311 Dataset (2020--2024), Figshare archive:\\
+DOI: \url{https://doi.org/10.6084/m9.figshare.28454858}
+
+\item Data Preparation Console Output (GitHub reference file):\\
+\url{https://github.com/tusseyd/nyc_311_data_cleaning/blob/main/reference_console_output/reference_JDS_data_prep_console_output.txt}
+
+\item Data Cleaning Console Output (GitHub reference file):\\
+\url{https://github.com/tusseyd/nyc_311_data_cleaning/blob/main/reference_console_output/reference_JDS_datacleaning_console_output.txt}
+
 \end{itemize}
-\vspace{0.1cm}
+
+
 Step 1: Download the two data files
-\vspace{0.1cm}
+
+
 \begin{enumerate}
 \item Download the NYC 311 and USPS Zip Code datasets from Figshare. (links above)
 \item Do not rename these files as the scripts expect original filenames:
-\vspace{0.1cm}
+
+
 \begin{itemize}
 \item \texttt{5-year\_311SR\_01-01-2020\_thru\_12-31-2024\_AS\_OF\_10-10-2025.zip}
 \item \texttt{zip\_code\_database.csv}
 \end{itemize}
-\vspace{0.1cm}
+
+
 \item Unzip the zip file ($\sim$9 GB uncompressed) to create a .CSV file. 
 This .CSV file should be placed into the raw\_data directory. 
 (See directory structure below.)
@@ -717,27 +750,31 @@ This .CSV file should be placed into the raw\_data directory.
 raw\_data directory. Both of these .CSV files will be modified by the data 
 prep program to the .RDS format for ease in processing.
 \end{enumerate}
-\vspace{0.1cm}
+
+
 Step 2: Set Up Project Structure
+
+
 \begin{enumerate}
 \item Clone or download the entire GitHub repository: \\
 \url{https://github.com/tusseyd/nyc_311_data_cleaning}
 \item Important: Ensure you download all files from the GitHub repo including:
-\vspace{0.1cm}
+
+
 \begin{itemize}
 \item \texttt{code/data\_prep\_for\_jds\_datacleansing.R}
-\vspace{0.1cm}
 \item \texttt{code/jds\_datacleansing.R}
-\vspace{0.1cm}
 \item All files in \texttt{code/functions/} directory (required dependencies)
 \end{itemize}
-\vspace{0.1cm}
+
+
 \item Running the data preparation program \texttt{data\_prep\_for\_jds\_datacleansing.R} 
 will automatically create the following directory structure. The individual files shown 
 below will be created by running the data cleansing program. Below is the 
 directory structure and the files they will contain after running the data 
 cleansing program \texttt{code/jds\_datacleansing.R}. 
-\vspace{0.2cm}
+
+
 \dirtree{%
 .1 / (User's R Working Directory).
 .2 nyc\_311\_data\_cleaning/ (Project Root).
@@ -763,40 +800,53 @@ cleansing program \texttt{code/jds\_datacleansing.R}.
 .4 reference\_JDS\_data\_prep\_console\_output.txt.
 .4 reference\_JDS\_datacleaning\_console\_output.txt.
 }
-\vspace{0.1cm}
+
+
 Step 3:  Open RStudio and open \texttt{code/data\_prep\_for\_jds\_datacleansing.R}
 Modify the \texttt{base\_dir} variable (line 31) to match your local path:
+
+
 \begin{verbatim}
 base_dir <- file.path("your", "path", "here", "nyc_311_data_cleaning")
 \end{verbatim}
 \textit{Note: Non-Windows users should use forward slashes or 
 platform-appropriate path separators}
 
-\vspace{0.1cm}
+
 Step 4: Place the downloaded data files in the following directories:
-\vspace{0.1cm}
+
+
 \begin{itemize}
 \item \texttt{5-year\_311SR\_01-01-2020\_thru\_12-31-2024\_AS\_OF\_10-10-2025.csv} $\rightarrow$ \texttt{data/raw\_data/}
 \item \texttt{zip\_code\_database.csv} $\rightarrow$ \texttt{data/raw\_data/}
 \end{itemize}
 \end{enumerate}
-\vspace{0.1cm}
+
+
 Step 5: Run the Data Preparation R program
+
+
 \begin{enumerate}
 \item Execute \texttt{data\_prep\_for\_jds\_datacleansing.R} in RStudio
 \item The script will create the directory structure (if missing) and install required R packages.
 \item Expected runtime: Approximately 90 minutes (16 GB RAM) or $\sim$30 
 minutes (32 GB RAM). Note: Initial data loading is memory-intensive.
 \item Upon completion, verify these files exist:
-\vspace{0.1cm}
+
+
 \begin{itemize}
 \item \texttt{data/5-year\_311SR\_01-01-2020\_thru\_12-31-2024\_AS\_OF\_10-10-2025.rds}
 \item \texttt{data/USPS\_zipcodes.rds}
 \item \texttt{console\_output/JDS\_data\_prep\_console\_output.txt}
 \end{itemize}
+
+
 \end{enumerate}
-\vspace{0.1cm}
+
+
 Step 6: Run the Data Cleansing Analysis R program
+
+
 \begin{enumerate}
 \item Execute \texttt{code/jds\_datacleansing.R} in RStudio
 \item Expected runtime: Approximately 60 minutes on a system with 16 GB 
@@ -804,7 +854,7 @@ RAM; $\sim$31 minutes on a system with 32 GB.
 \item Monitor progress in RStudio's plot pane as charts are generated.
 \item The script will produce:
 
-\vspace{0.1cm}
+
 \begin{itemize}
 \item 87 PDF charts in \texttt{charts/}
 \item \texttt{field\_usage\_summary\_table.csv} in \texttt{data/analytical\_files/}
@@ -814,6 +864,8 @@ RAM; $\sim$31 minutes on a system with 32 GB.
 
 
 \subsection*{Validation}
+
+
 Compare your directory structure along with the associated files shown
 in the above tree structure. Compare the charts to those in the main 
 manuscript and in this supplementary document. Compare your console 
@@ -822,14 +874,16 @@ repository to verify successful reproduction. The console outputs
 contain many tables of information which should match your 
 run. Validation console output files are located at:
 
-\vspace{0.15cm}
+
 \begin{itemize}
 \item Data preparation console output: \\ \small\url{https://github.com/tusseyd/nyc_311_data_cleaning/blob/main/reference_console_output/reference_JDS_data_prep_console_output.txt}
-\vspace{0.15cm}
-  \item Data cleaning console output: \\ \small\url{https://github.com/tusseyd/nyc_311_data_cleaning/blob/main/reference_console_output/reference_JDS_datacleaning_console_output.txt}
+ \item Data cleaning console output: \\ \small\url{https://github.com/tusseyd/nyc_311_data_cleaning/blob/main/reference_console_output/reference_JDS_datacleaning_console_output.txt}
 \end{itemize}
 
+
 \subsection*{Notes}
+
+
 \begin{itemize}
 \item Total processing time (data preparation and cleansing): Approximately 2.5 hours 
 on a system with 16 GB RAM; $\sim$2X faster on systems with 32 GB.
