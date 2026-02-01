@@ -413,7 +413,7 @@ range of durations, with an exceptional number of very large, almost extreme,
 durations in the \textgreater{}1000 days (note that the x-axis is a 
 logarithmic scale). 
 
-\begin{figure}[tbp]
+\begin{figure}[!htbp]
 \centering
 \includegraphics[width=0.9\textwidth]{others_only_positive_durations.pdf}
 \caption{All non-NYPD Agencies Distribution of SRs with Positive Durations (log scale).}
@@ -459,14 +459,12 @@ captures both the count and the extent of the negative duration anomaly.
 \label{fig:boxplot-negative-durations}
 \end{figure}
 
-
 Violin charts of these same distributions are also produced and 
 available in the \texttt{charts} directory upon completion of the 
 data cleansing program. Figure ~\ref{fig:violin-boxplot-negative}
 displays a violin chart that accompanies the negative duration 
 box plot, revealing the density of negative durations by magnitude. 
 Every box plot has an accompanying violin chart.
-
 
 \begin{figure}[tbp]
 \centering
@@ -496,29 +494,36 @@ suspicious durations. The referenced document also contains rationale
 for the use of this outlier methodology.
 
 
-Figure~\ref{fig:duration-histogram-cumulative} 
-and Figure~\ref{fig:duration-histogram-count} visualize the 
-this suspicious boundary. These two charts show the overall 
-distribution of near-zero duration SRs from 2---90 seconds; one 
-showing cumulative and the other showing durations counts. The cumulative 
-distribution shows the suspicious threshold of 28 seconds 
-representing approximately 12\% of SRs with durations inside that 2---90 
-time span.
+Figure~\ref{fig:duration-histogram} visualizes the 
+this suspicious boundary. It shows the overall 
+distribution of near-zero duration SRs from 2---90 seconds 
+showing durations counts. Of note is the spike at the one-minute 
+mark. This is not unexpected, as overall, SR durations show a spike 
+at every \emph{on-the-minute} mark. 
+Figure~\ref{fig:created-dates-by-seconds} displays this anomaly by the
+second, as shown for the first five minutes. 
 
-
-\begin{figure}[tbp]
-\centering
-\includegraphics[width=0.9\textwidth]{duration_histogram_cumulative.pdf}
-\caption{Cumulative Distribution of  Small SR Durations (2--90 seconds).}
-\label{fig:duration-histogram-cumulative}
-\end{figure}
+%\begin{figure}[tbp]
+%\centering
+%\includegraphics[width=0.9\textwidth]{duration_histogram_cumulative.pdf}
+%\caption{Cumulative Distribution of  Small SR Durations (2--90 seconds).}
+%\label{fig:duration-histogram-cumulative}
+%\end{figure}
 
 
 \begin{figure}[tbp]
 \centering
 \includegraphics[width=0.9\textwidth]{duration_histogram.pdf}
-\caption{Distribution of  Small SR Durations (2--90 seconds) by Count.}
-\label{fig:duration-histogram-count}
+\caption{Cumulative Distribution of  Small SR Durations (2--90 seconds).}
+\label{fig:duration-histogram}
+\end{figure}
+
+
+\begin{figure}[tbp]
+\centering
+\includegraphics[width=0.9\textwidth]{created_date_first_601_seconds.pdf}
+\caption{Create Dates by Seconds Reveals Spikes on Every Minute (mm:00).}
+\label{fig:created-dates-by-seconds}
 \end{figure}
 
 

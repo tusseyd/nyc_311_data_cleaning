@@ -11,6 +11,8 @@ plot_barchart <- function(
     
     # Appearance
     fill_color = "#009E73",
+    fill_col = NULL,              # NEW: Column name for conditional coloring
+    fill_colors = NULL,           # NEW: Named vector of colors for fill_col levels
     bar_width = 0.8,
     
     # Data summary and printing
@@ -42,7 +44,7 @@ plot_barchart <- function(
     label_size = 3,
     label_color = "black",
     label_vjust = -0.5,
-    label_hjust = 0.5,
+    label_hjust = -0.5,
     
     # Trendline
     add_trendline = FALSE,
@@ -59,6 +61,7 @@ plot_barchart <- function(
     
     # Axis customization
     x_label_every = 1,
+    x_breaks = NULL,        # NEW: Manual specification of which labels to show
     x_axis_angle = 0,
     x_axis_size = 10,
     y_axis_labels = scales::comma,
@@ -177,22 +180,41 @@ plot_barchart <- function(
     )
   } else {
     unique_values <- unique(DT[[x_col]])
-    if (x_label_every > 1) {
+    
+    # Use manual breaks if provided, otherwise calculate automatically
+    if (!is.null(x_breaks)) {
+      x_breaks_to_use <- x_breaks
+    } else if (x_label_every > 1) {
       break_indices <- seq(1, length(unique_values), by = x_label_every)
-      x_breaks <- unique_values[break_indices]
+      x_breaks_to_use <- unique_values[break_indices]
     } else {
-      x_breaks <- unique_values
+      x_breaks_to_use <- unique_values
     }
+    
     scale_x_discrete(
       expand = c(0.01, 0),
-      breaks = x_breaks
+      breaks = x_breaks_to_use
     )
   }
   
-  # Create base plot
-  p <- ggplot(DT, aes(x = .data[[x_col]], y = .data[[y_col]])) +
-    geom_col(fill = fill_color, width = bar_width, color = NA) +
-    x_scale +
+  # Create base plot with conditional fill
+  if (!is.null(fill_col) && fill_col %in% names(DT)) {
+    # Conditional fill based on a column
+    p <- ggplot(DT, aes(x = .data[[x_col]], y = .data[[y_col]], fill = .data[[fill_col]])) +
+      geom_col(width = bar_width, color = NA)
+    
+    # Apply custom colors if provided
+    if (!is.null(fill_colors)) {
+      p <- p + scale_fill_manual(values = fill_colors)
+    }
+  } else {
+    # Single color fill
+    p <- ggplot(DT, aes(x = .data[[x_col]], y = .data[[y_col]])) +
+      geom_col(fill = fill_color, width = bar_width, color = NA)
+  }
+    
+    
+   p <- p + x_scale +
     scale_y_continuous(labels = y_axis_labels) +
     labs(
       title = title,
@@ -207,7 +229,8 @@ plot_barchart <- function(
   } else {
     p <- p + theme_minimal() +
       theme(
-        axis.text.x = element_text(angle = x_axis_angle, hjust = ifelse(x_axis_angle > 0, 1, 0.5)),
+        axis.text.x = element_text(angle = x_axis_angle, 
+                                   hjust = ifelse(x_axis_angle > 0, 1, 0.5)),
         text = element_text(size = text_size)
       )
   }
@@ -230,7 +253,7 @@ plot_barchart <- function(
       
       p <- p + annotate("text", x = x_pos, y = mean_val,
                         label = paste0("Mean: ", format(round(mean_val), big.mark = ",")),
-                        hjust = -0.1, vjust = -0.5, color = mean_color, size = 3.5)
+                        hjust = -0.1, vjust = -1.6, color = mean_color, size = 3.5)
     }
     
     if (add_median) {

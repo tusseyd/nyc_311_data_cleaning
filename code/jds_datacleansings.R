@@ -6,7 +6,7 @@ main_data_file <-
  
 # Boolean flag. TRUE to redirect console output to text file
 # FALSE to display console outpx`t on the screen
-enable_sink <- FALSE       
+enable_sink <- TRUE       
 
 #The "as of" date in "YYYY-MM-DD" format
 projection_date <- "2025-11-30"   
@@ -1963,7 +1963,6 @@ positive_all_agencies <- ggplot(positive_data, aes(x = duration_days)) +
   )
 
 print(positive_all_agencies)
-
 Sys.sleep(3)
 
 # Save to chart directory
@@ -2002,31 +2001,6 @@ print(dip.test(log10(positive_data$duration_days)))
 # 2. Find the valley/separation point
 density_est <- density(log10(positive_data$duration_days), n = 2048)
 plot(density_est)
-
-# Density plot
-p1 <- ggplot(positive_data, aes(x = duration_days)) +
-  geom_density(fill = "#0072B2", alpha = 0.7, color = "#0072B2") +
-  scale_x_log10(
-    breaks = c(0.001, 0.01, 0.1, 1, 10, 100, 1000),
-    labels = c("0.001", "0.01", "0.1", "1", "10", "100", "1,000")
-  ) +
-  labs(
-    title = "Density Distribution of Positive Durations",
-    x = "Days (log scale)",
-    y = "Density"
-  ) +
-  david_theme()
-
-print(p1)
-ggsave(
-  filename = file.path(chart_dir, "All-Agency density_positive_durations.pdf"),
-  plot = p1,
-  width = 10,
-  height = 6,
-  dpi = 300
-)
-
-Sys.sleep(3)
 
 # Find the valley between bimodal peaks
 log_dens <- density(log10(positive_data$duration_days), n = 2048)
@@ -2139,7 +2113,6 @@ p4 <- ggplot(other_data, aes(x = duration_days)) +
   david_theme()
 
 print(p4)
-
 Sys.sleep(3)
 
 # Save individual plots
@@ -2148,37 +2121,82 @@ ggsave(file.path(chart_dir, "nypd_only_positive_durations.pdf"), p3,
 ggsave(file.path(chart_dir, "others_only_positive_durations.pdf"), p4, 
        width = 18, height = 8.5, units = "in")
 
-# Combine data with agency group label
+# 1. Combine data with agency group label
 combined_data <- rbind(
   nypd_data[, .(duration_days, group = "NYPD")],
   other_data[, .(duration_days, group = "Other Agencies")]
 )
 
-p_combined <- ggplot(combined_data, aes(x = duration_days, fill = group)) +
-  geom_histogram(bins = 150, alpha = 0.6, position = "identity", 
-                 color = "white", linewidth = 0.1) +
-  scale_fill_manual(values = c("NYPD" = "#0072B2", 
-                               "Other Agencies" = "#009E73")) +
-  scale_x_log10(
-    breaks = c(0.001, 0.01, 0.1, 1, 10, 100, 1000),
-    labels = c("0.001", "0.01", "0.1", "1", "10", "100", "1,000")
-  ) +
-  labs(
-    title = "Bimodal Duration Distribution: NYPD vs Other Agencies",
-    subtitle = sprintf("NYPD n = %s, Other n = %s",
-                       format(nrow(nypd_data), big.mark = ","),
-                       format(nrow(other_data), big.mark = ",")),
-    x = "Days (log scale)",
-    y = "Count",
-    fill = "Agency Group"
-  ) +
-  david_theme() +
-  theme(
-    legend.position = "inside",
-    legend.position.inside = c(0.15, 0.85),  # Upper left (x, y from 0-1)
-    legend.background = element_rect(fill = "white", color = "grey25")
-  )
+# 2. Create a summary table for the medians
+# This makes it easier to manage colors and labels in a single layer
+median_labels <- data.frame(
+  group = c("NYPD", "Other Agencies"),
+  median_val = c(nypd_median, other_median),
+  label = c(sprintf("Median: %.2f", nypd_median), 
+            sprintf("Median: %.2f", other_median)),
+  # These v_adj values replicate your original offsets to place labels on 
+  # opposite sides of the lines
+  v_adj = c(1.5, -0.5) 
+)
 
+# 3. Build the plot
+p_combined <- ggplot(combined_data, aes(x = duration_days, fill = group)) + 
+  # Main Histogram Layer
+  geom_histogram(bins = 150, 
+                 alpha = 0.6, 
+                 position = "identity", 
+                 color = "white", 
+                 linewidth = 0.1) + 
+  
+  # Set fill colors for the bars
+  scale_fill_manual(values = c("NYPD" = "#0072B2", "Other Agencies" = "#009E73")) + 
+  
+  # Median dashed lines (consolidated into one layer using the summary data)
+  geom_vline(data = median_labels, 
+             aes(xintercept = median_val, color = group),
+             linetype = "dashed", 
+             linewidth = 1.2,
+             show.legend = FALSE) + 
+  
+  # Median labels
+  # Using geom_text allows us to map color and vjust to the data frame
+  geom_text(data = median_labels,
+            aes(x = median_val, y = Inf, label = label, color = group, vjust = v_adj),
+            angle = 90, 
+            hjust = 1.1,      # Pushes text slightly down from the very top edge
+            size = 3.8, 
+            fontface = "bold",
+            show.legend = FALSE) + 
+  
+  # Ensure the line and text colors match your specified brand colors
+  scale_color_manual(values = c("NYPD" = "#0072B2", "Other Agencies" = "#009E73")) +
+  
+  # Logarithmic X-axis scale
+  scale_x_log10( 
+    breaks = c(0.001, 0.01, 0.1, 1, 10, 100, 1000), 
+    labels = c("0.001", "0.01", "0.1", "1", "10", "100", "1,000") ) + 
+  
+  # Titles and Axis Labels
+  labs( title = "Bimodal Duration Distribution: NYPD vs Other Agencies", 
+        subtitle = sprintf("NYPD n = %s, Other n = %s", 
+                           format(nrow(nypd_data), big.mark = ","), 
+                           format(nrow(other_data), big.mark = ",")), 
+        x = "Days (log scale)", 
+        y = "Count", 
+        fill = "Agency Group" ) + 
+  
+  # Theme and Legend positioning
+  david_theme() + 
+  theme( 
+    legend.position = "inside", 
+    legend.position.inside = c(0.15, 0.85), 
+    legend.background = element_rect(fill = "white", color = "grey25")
+  ) +
+  
+  # CRITICAL: This ensures labels at y = Inf are not clipped by the plot margins
+  coord_cartesian(clip = "off")
+
+# Render the plot
 print(p_combined)
 Sys.sleep(3)
 
@@ -2342,276 +2360,167 @@ plot_duration_histogram(
 cat("LogNormal_3SD threshold:", threshold_numeric, "seconds\n")
 
 
-
-
 ################################################################################
 # TIMESTAMP DISTRIBUTION ANALYSIS
 ################################################################################
 #
-# Purpose: Analyze second-level and minute-level timestamp distributions
+# Purpose: Analyze minute-level timestamp distributions
 #          to identify patterns, rounding, and data quality issues
 #
 ################################################################################
 
 # ============================================================================
-# PART 1: CREATED_DATE ANALYSIS
+# CREATED_DATE Analysis
 # ============================================================================
 
-cat("\n", rep("=", 80), "\n", sep = "")
-cat("ANALYZING CREATED_DATE TIMESTAMP DISTRIBUTIONS\n")
-cat(rep("=", 80), "\n\n", sep = "")
-
-# ----------------------------------------------------------------------------
-# 1A. Second and Minute Distribution Analysis (with Chi-Square Tests)
-# ----------------------------------------------------------------------------
-
+# Run foundational minute distribution analysis
 results_created_dist <- analyze_second_minute_distribution(d311, 
-                                                   date_col = "created_date")
+                                                     date_col = "created_date")
 
-# ----------------------------------------------------------------------------
-# 1B. Cycle Pattern Analysis (3-minute cycle)
-# ----------------------------------------------------------------------------
-# Show sample rows too
-results <- analyze_cycle_pattern(d311,
-                                 date_col = "created_date",
-                                 cycle_type = "3min", 
-                                 show_sample_rows = TRUE,
-                                 n_sample = 20)
-
-
-# results_created_cycle <- analyze_cycle_pattern(d311, 
-#                                                date_col = "created_date", 
-#                                                cycle_type = "3min")
-
-# ----------------------------------------------------------------------------
-# 1C. Visualizations: Second Distribution
-# ----------------------------------------------------------------------------
-
-# Prepare data
-second_data_created <- results_created_dist$second_summary[!is.na(second_value)]
-second_data_created[, second_label := sprintf("%02d", second_value)]
-
-# Create and display chart
-p_second_created <- plot_barchart(
-  DT = second_data_created,
-  x_col = "second_label",
-  y_col = "count",
-  
-  title = "Distribution of Service Requests by Second Value",
-  subtitle = "created_date timestamp precision analysis",
-  x_label = "Second Value (00-59)",
-  y_label = "Number of Service Requests",
-  
-  fill_color = "#009E73",
-  
-  # Statistical reference lines
-  add_mean = TRUE,
-  add_3sd = TRUE,
-  
-  # Data labels
-  show_labels = TRUE,
-  label_col = "count",
-  label_angle = 90,
-  label_vjust = 0.5,
-  label_hjust = -0.1,
-  label_size = 2.5,
-  
-  # Axis formatting
-  x_label_every = 5,
-  x_axis_angle = 0,
-  
-  # Console output
-  console_print_title = "CREATED_DATE: SECOND VALUE DISTRIBUTION",
-  show_summary = TRUE,
-  
-  # Save options
-  chart_dir = "./charts",
-  filename = "created_date_second_distribution.pdf",
-  chart_width = 18,
-  chart_height = 8.5
-)
-
-# print(p_second_created)
-# Sys.sleep(3)
-
-# ----------------------------------------------------------------------------
-# 1D. Visualizations: Minute Distribution
-# ----------------------------------------------------------------------------
-
-# Prepare data
+# Prepare MINUTE data with 3-minute cycle pattern
 minute_data_created <- results_created_dist$minute_summary[!is.na(minute_value)]
 minute_data_created[, minute_label := sprintf("%02d", minute_value)]
 
-# Create and display chart
+# Define 3-minute cycle elevated minutes
+elevated_minutes_3min <- c(2, 5, 8, 11, 14, 17, 20, 23, 26, 29, 32, 35, 38, 
+                           41, 44, 47, 50, 53, 56, 59)
+
+# Add elevated pattern
+minute_data_created[, is_elevated := minute_value %in% elevated_minutes_3min]
+minute_data_created[, pattern_label := factor(is_elevated, 
+                                              levels = c(FALSE, TRUE),
+                                              labels = c("Normal Minutes", "Elevated Minutes"))]
+
+# Create factor with all levels and set breaks to show elevated minutes
+minute_data_created[, minute_label_factor := factor(minute_label, 
+                                                    levels = sprintf("%02d", 0:59))]
+
+# Create chart with colored patterns
 p_minute_created <- plot_barchart(
   DT = minute_data_created,
-  x_col = "minute_label",
+  x_col = "minute_label_factor",
   y_col = "count",
   
-  title = "Distribution of Service Requests by Minute Value (01-59)",
-  subtitle = "created_date minute distribution (excluding minute :00)",
-  x_label = "Minute Value (01-59)",
+  title = "Distribution of Service Requests by Minute Value",
+  subtitle = "created_date minute distribution - shows 3-minute cycle pattern",
+  x_label = "Minute Value (00-59)",
   y_label = "Number of Service Requests",
   
-  fill_color = "#0072B2",
+  # Colored pattern fill
+  fill_col = "pattern_label",
+  fill_colors = c(
+    "Normal Minutes" = "#0072B2",
+    "Elevated Minutes" = "#D55E00"
+  ),
   
   # Statistical reference lines
   add_mean = TRUE,
-  add_3sd = TRUE,
-  
-  # Data labels (disabled for readability with 59 bars)
-  show_labels = FALSE,
-  
-  # Axis formatting
-  x_label_every = 5,
-  x_axis_angle = 0,
-  
-  # Console output
-  console_print_title = "CREATED_DATE: MINUTE VALUE DISTRIBUTION (01-59)",
-  show_summary = TRUE,
-  
-  # Save options
-  chart_dir = "./charts",
-  filename = "created_date_minute_distribution.pdf",
-  chart_width = 18,
-  chart_height = 8.5
-)
-
-# print(p_minute_created)
-# Sys.sleep(3)
-
-# ============================================================================
-# PART 2: CLOSED_DATE ANALYSIS
-# ============================================================================
-
-cat("\n", rep("=", 80), "\n", sep = "")
-cat("ANALYZING CLOSED_DATE TIMESTAMP DISTRIBUTIONS\n")
-cat(rep("=", 80), "\n\n", sep = "")
-
-# ----------------------------------------------------------------------------
-# 2A. Second and Minute Distribution Analysis (with Chi-Square Tests)
-# ----------------------------------------------------------------------------
-
-results_closed_dist <- analyze_second_minute_distribution(d311, 
-                                                      date_col = "closed_date")
-
-# ----------------------------------------------------------------------------
-# 2B. Cycle Pattern Analysis (5-minute intervals)
-# ----------------------------------------------------------------------------
-
-
-
-results <- analyze_cycle_pattern(d311,
-                                 date_col = "closed_date",
-                                 cycle_type = "5min", 
-                                 show_sample_rows = TRUE,
-                                 n_sample = 20)
-
-# results_closed_cycle <- analyze_cycle_pattern(d311, 
-#                                               date_col = "closed_date", 
-#                                               cycle_type = "5min")
-
-# Alternative: Analyze 15-minute intervals instead
-# results_closed_cycle <- analyze_cycle_pattern(d311, 
-#                                               date_col = "closed_date", 
-#                                               cycle_type = "15min")
-
-# ----------------------------------------------------------------------------
-# 2C. Visualizations: Second Distribution
-# ----------------------------------------------------------------------------
-
-# Prepare data
-second_data_closed <- results_closed_dist$second_summary[!is.na(second_value)]
-second_data_closed[, second_label := sprintf("%02d", second_value)]
-
-# Create and display chart
-p_second_closed <- plot_barchart(
-  DT = second_data_closed,
-  x_col = "second_label",
-  y_col = "count",
-  
-  title = "Distribution of Service Requests by Second Value",
-  subtitle = "closed_date timestamp precision analysis",
-  x_label = "Second Value (00-59)",
-  y_label = "Number of Service Requests",
-  
-  fill_color = "#009E73",
-  
-  # Statistical reference lines
-  add_mean = TRUE,
+  mean_color = "black",
   add_3sd = TRUE,
   
   # Data labels
-  show_labels = TRUE,
-  label_col = "count",
-  label_angle = 90,
-  label_vjust = 0.5,
-  label_hjust = -0.1,
-  label_size = 2.5,
+  show_labels = FALSE,
   
-  # Axis formatting
-  x_label_every = 5,
+  # Axis formatting - every 3rd minute starting from index that aligns with pattern
+  x_breaks = sprintf("%02d", elevated_minutes_3min),  # 02, 05, 08, 11, 14...
   x_axis_angle = 0,
   
   # Console output
-  console_print_title = "CLOSED_DATE: SECOND VALUE DISTRIBUTION",
+  console_print_title = "CREATED_DATE: MINUTE VALUE DISTRIBUTION",
   show_summary = TRUE,
   
   # Save options
   chart_dir = "./charts",
-  filename = "closed_date_second_distribution.pdf",
+  filename = "created_date_minute_distribution",
   chart_width = 18,
   chart_height = 8.5
 )
 
-# print(p_second_closed)
-# Sys.sleep(3)
+# Run cycle pattern analysis (for agency-level investigation)
+results_created_3min <- analyze_cycle_pattern(
+  data = d311,
+  minute_results = results_created_dist,
+  date_col = "created_date",
+  cycle_type = "3min",
+  output_prefix = "createddate",
+  create_chart = TRUE
+)
 
-# ------------------------------------------------------------------------------
-# 2D. Visualizations: Minute Distribution
-# ------------------------------------------------------------------------------
+# ============================================================================
+# CLOSED_DATE Analysis
+# ============================================================================
 
-# Prepare data
+# Run foundational minute distribution analysis
+results_closed_dist <- analyze_second_minute_distribution(d311, 
+                                                          date_col = "closed_date")
+
+# Prepare MINUTE data with 5-minute cycle pattern
 minute_data_closed <- results_closed_dist$minute_summary[!is.na(minute_value)]
 minute_data_closed[, minute_label := sprintf("%02d", minute_value)]
 
-# Create and display chart
+# Define 5-minute cycle elevated minutes
+elevated_minutes_5min <- c(5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55)
+
+# Add elevated pattern
+minute_data_closed[, is_elevated := minute_value %in% elevated_minutes_5min]
+minute_data_closed[, pattern_label := factor(is_elevated, 
+                                             levels = c(FALSE, TRUE),
+                                             labels = c("Normal Minutes", "Elevated Minutes"))]
+
+# Create factor with all levels
+minute_data_closed[, minute_label_factor := factor(minute_label, 
+                                                   levels = sprintf("%02d", 0:59))]
+
+# Create chart with colored patterns
 p_minute_closed <- plot_barchart(
   DT = minute_data_closed,
-  x_col = "minute_label",
+  x_col = "minute_label_factor",
   y_col = "count",
   
-  title = "Distribution of Service Requests by Minute Value (01-59)",
-  subtitle = "closed_date minute distribution (excluding minute :00)",
-  x_label = "Minute Value (01-59)",
+  title = "Distribution of Service Requests by Minute Value",
+  subtitle = "closed_date minute distribution - shows 5-minute interval pattern",
+  x_label = "Minute Value (00-59)",
   y_label = "Number of Service Requests",
   
-  fill_color = "#0072B2",
+  # Colored pattern fill
+  fill_col = "pattern_label",
+  fill_colors = c(
+    "Normal Minutes" = "#0072B2",
+    "Elevated Minutes" = "#D55E00"
+  ),
   
   # Statistical reference lines
   add_mean = TRUE,
+  mean_color =  "black",
   add_3sd = TRUE,
   
-  # Data labels (disabled for readability with 59 bars)
+  # Data labels
   show_labels = FALSE,
   
-  # Axis formatting
-  x_label_every = 5,
+  # Axis formatting - every 5th minute
+  x_breaks = sprintf("%02d", elevated_minutes_5min),  # 05, 10, 15, 20...
   x_axis_angle = 0,
   
   # Console output
-  console_print_title = "CLOSED_DATE: MINUTE VALUE DISTRIBUTION (01-59)",
+  console_print_title = "CLOSED_DATE: MINUTE VALUE DISTRIBUTION",
   show_summary = TRUE,
   
   # Save options
   chart_dir = "./charts",
-  filename = "closed_date_minute_distribution.pdf",
+  filename = "closed_date_minute_distribution",
   chart_width = 18,
   chart_height = 8.5
 )
 
-# print(p_minute_closed)
-# Sys.sleep(3)
+# Run 5-minute cycle pattern analysis
+results_closed_5min <- analyze_cycle_pattern(
+  data = d311,
+  minute_results = results_closed_dist,
+  date_col = "closed_date",
+  cycle_type = "5min",
+  output_prefix = "closeddate",
+  create_chart = TRUE
+)
 
 # ============================================================================
 # PART 3: COMBINED MINUTE:SECOND ANALYSIS (FIRST N SECONDS OF EACH HOUR)
@@ -2626,7 +2535,7 @@ cat(rep("=", 80), "\n\n", sep = "")
 # ----------------------------------------------------------------------------
 
 # PARAMETER: Set the maximum number of seconds to analyze from start of each hour
-second_limit <- 605  # Default: 330 seconds = 5 minutes 30 seconds
+second_limit <- 601  # Default: 330 seconds = 5 minutes 30 seconds
 # Common values: 180 (3 min), 300 (5 min), 600 (10 min), 
 #                900 (15 min), 3599 (full hour)
 
@@ -2681,8 +2590,15 @@ cat(rep("=", 70), "\n", sep = "")
 cat("Total records in this window: ", format(total_records, 
                                              big.mark = ","), "\n\n", sep = "")
 
-print(second_counts[, .(time_label, count = count_fmt, pct, cum_pct)], 
-      nrows = second_limit + 1)
+console_rows <- 181
+
+# Temporarily increase print rows
+options(datatable.print.nrows = console_rows)
+
+print(second_counts[1:console_rows, .(time_label, count = count_fmt, pct, cum_pct)])
+
+# Reset to default (100)
+options(datatable.print.nrows = 100)
 
 cat("\n", rep("=", 70), "\n", sep = "")
 
@@ -2735,7 +2651,7 @@ ggsave(chart_filename,
        width = 18, 
        height = 8.5)
 
-cat("Chart saved to: ", chart_filename, "\n", sep = "")
+message("Chart saved to: ", chart_filename, "\n", sep = "")
 
 # ------------------------------------------------------------------------------
 # 3E. Summary Statistics
@@ -2792,7 +2708,7 @@ cat("\nAll charts saved to ./charts/ directory\n\n")
 
 
 # ==============================================================================
-# SECTION 4: COMPREHENSIVE DURATION CATEGORY ANALYSIS
+# SECTION 4: COM PREHENSIVE DURATION CATEGORY ANALYSIS
 # ==============================================================================
 # Systematic analysis of all duration categories:
 # - Negative (small, large, extreme)
