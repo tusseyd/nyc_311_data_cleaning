@@ -284,7 +284,7 @@ further indicating the presence of outliers to the right.
 \begin{figure}[tbp]
 \centering
 \includegraphics[width=0.9\textwidth]{All-Agencies histogram_positive_durations.pdf}
-\caption{Overall Distribution of SRs with Positive Durations (log scale).}
+\caption{Overall Distribution of SRs with Positive Durations (Log Scale).}
 \label{fig:histogram_city_wide}
 \end{figure}
 
@@ -402,38 +402,38 @@ durations which have an outsized effect on the mean statistic.
 \begin{figure}[tbp]
 \centering
 \includegraphics[width=0.9\textwidth]{nypd_only_positive_durations.pdf}
-\caption{NYPD-Only Distribution of SRs with Positive Durations (log scale).}
+\caption{NYPD-Only Distribution of SRs with Positive Durations (Log Scale).}
 \label{fig:histogram_NYPD}
 \end{figure}
 
 
-In contrast to the NYPD-only durations is the aggregation of all other NYC 
-Agencies, as shown in Figure~\ref{fig:histogram_other}, reveals a broader 
-range of durations, with an exceptional number of very large, almost extreme,
-durations in the \textgreater{}1000 days (note that the x-axis is a 
+In contrast to the NYPD-only durations, the aggregation of all 
+other NYC agencies, shown in Figure~\ref{fig:histogram_other}, reveals 
+a broader range of durations, with an exceptional number of very large, 
+almost extreme, durations exceeding 1,000 days (note that the x-axis is a 
 logarithmic scale). 
 
 \begin{figure}[!htbp]
 \centering
 \includegraphics[width=0.9\textwidth]{others_only_positive_durations.pdf}
-\caption{All non-NYPD Agencies Distribution of SRs with Positive Durations (log scale).}
+\caption{All Non-NYPD Agencies: Distribution of SRs with Positive Durations (Log Scale).}
 \label{fig:histogram_other}
 \end{figure}
 
 
-A clearer picture emerges as the two distributions (NYPD vs. all other Agencies) are 
-superimposed on the same chart. Figure`\ref{fig:histogram_combined} clearly shows
+A clearer picture emerges as the two distributions (NYPD vs. all other agencies) are 
+superimposed on the same chart. Figure~\ref{fig:histogram_combined} clearly shows
 the bimodal distribution, reflecting the distinctly different operational 
 protocols for the two categories --- rapid-response and standard. 
 Keep in mind that the NYPD is the single largest user of the 
 NYC 311 non-emergency service, representing 43\% of all SRs. 
-Thus, it is perhaps not unusual to see that one agency 
-have an outsized impact on the overall metric.
+Thus, it is not unexpected that one agency has an outsized 
+impact on the overall metric.
 
 \begin{figure}[tbp]
 \centering
 \includegraphics[width=0.9\textwidth]{nypd_vs_others_combined.pdf}
-\caption{Combined Duration Profiles: NYPD and All Other Agencies (log scale).}
+\caption{Combined Duration Profiles: NYPD and All Other Agencies (Log scale).}
 \label{fig:histogram_combined}
 \end{figure}
 
@@ -445,23 +445,23 @@ have an outsized impact on the overall metric.
 A similar situation is illustrated in Figure~\ref{fig:boxplot-negative-durations} 
 showing negative durations --- where the \texttt{closed\_date} occurs before 
 the \texttt{created\_date} resulting in a nonsensical negative duration. 
-In Figure~\ref{fig:boxplot-negative-durations} , the box plot 
-shows DOT to be the largest offender. However, the mean 
-negative duration is far greater for the Department of Environmental 
-Protection (DEP) as shown on a logarithmic x-axis. This box plot visualization 
+In Figure~\ref{fig:boxplot-negative-durations}, the box plot 
+shows DOT to be the largest offender. However, the mean negative 
+duration is far greater for the Department of Environmental Protection (DEP), 
+as shown on the logarithmic x-axis. This box plot visualization 
 captures both the count and the extent of the negative duration anomaly.
 
 
 \begin{figure}[tbp]
 \centering
 \includegraphics[width=0.9\textwidth]{boxplot_negative_days_by_agency.pdf}
-\caption{Distribution of N	egative durations (closed $<$ created date) by agency)}
+\caption{Distribution of Negative Durations (closed $<$ created date) by Agency}
 \label{fig:boxplot-negative-durations}
 \end{figure}
 
 Violin charts of these same distributions are also produced and 
 available in the \texttt{charts} directory upon completion of the 
-data cleansing program. Figure ~\ref{fig:violin-boxplot-negative}
+data cleansing program. Figure~\ref{fig:violin-boxplot-negative}
 displays a violin chart that accompanies the negative duration 
 box plot, revealing the density of negative durations by magnitude. 
 Every box plot has an accompanying violin chart.
@@ -489,15 +489,16 @@ with quite small durations, e.g., just a few seconds, which are highly
 suspicious. These are classified as near-zero durations or suspicious
 durations. As noted in the referenced document, a quantitative analysis 
 revealed a boundary of 28 seconds as an outlier based on the 
-(LogNormal\_$3\sigma$) method. Using this value reveals 14$,$741 
-suspicious durations. The referenced document also contains rationale
-for the use of this outlier methodology.
+(LogNormal\_$3\sigma$) computed on the log-transformed 
+duration values and then back-transformed to the original scale. 
+Using this value reveals 14{,}741 suspicious durations. The referenced 
+document also contains rationale for the use of this outlier methodology.
 
 
-Figure~\ref{fig:duration-histogram} visualizes the 
-this suspicious boundary. It shows the overall 
-distribution of near-zero duration SRs from 2---90 seconds 
-showing durations counts. Of note is the spike at the one-minute 
+Figure~\ref{fig:duration-histogram} visualizes this suspicious 
+boundary. It shows the overall 
+distribution of near-zero duration SRs from 2--90 seconds. Of 
+note is the spike at the one-minute 
 mark. This is not unexpected, as overall, SR durations show a spike 
 at every \emph{on-the-minute} mark. 
 Figure~\ref{fig:created-dates-by-seconds} displays this anomaly by the
@@ -522,13 +523,13 @@ second, as shown for the first five minutes.
 \begin{figure}[tbp]
 \centering
 \includegraphics[width=0.9\textwidth]{created_date_first_601_seconds.pdf}
-\caption{Create Dates by Seconds Reveals Spikes on Every Minute (mm:00).}
+\caption{Distribution of Created Dates by Seconds Reveals Spikes at Every Minute (mm:00).}
 \label{fig:created-dates-by-seconds}
 \end{figure}
 
 
 %---------------------------------------------------------------
-\subsection{Dataset Field usage by Agency}
+\subsection{Dataset Field Usage by Agency}
 
 
 A complete field-usage-by-agency matrix is provided as a CSV file, rather 
@@ -542,8 +543,8 @@ contains the total count across all agencies.
 
 Field usage varies substantially by agency, reflecting differences in
 operational responsibilities, reporting practices, and data-collection
-requirements. Core administrative fields (i. e., \texttt{unique\_key},
-\texttt{created\_date}, \texttt{status}. \texttt{agency}, and 
+requirements. Core administrative fields (i.e., \texttt{unique\_key},
+\texttt{created\_date}, \texttt{status}, \texttt{agency}, and 
 \texttt{complaint\_type}) are fully populated across all 
 agencies, whereas location-specific, infrastructure-related, 
 and program-specific fields are populated only by agencies for 
@@ -555,13 +556,13 @@ at: \url{https://figshare.com/s/9f878b50687c9e4c540a}
 \section{SR Backlog}
 
 
-An interesting discovery during this analysis was the volume of 
+A notable finding of this analysis was the volume of 
 \emph{backlogged} SRs. An SR is classified as backlogged
 if it is open at the end of the calendar year, and thus must be
-rolled over and (hopefully) closed during the following year. While 
+rolled over and subsequently closed during the following year. While 
 the total number of SRs grew by 17.5\% from 2020--2024, the 
 backlog growth greatly exceeded that rate, increasing by over 
-200\% in raw count. Figure~\ref{fig:annual_backlog} 
+200\% in absolute terms. Figure~\ref{fig:annual_backlog} 
 shows this dramatic growth with backlogged SRs representing 
 1.7\% of all SRs entering 2024, as compared to 0.7\% entering 2020.
 
@@ -570,7 +571,7 @@ shows this dramatic growth with backlogged SRs representing
 \centering
 
 \includegraphics[width=0.9\textwidth]{annual_backlog_bar_chart.pdf}
-\caption{Backlog of SR --- Open at the Beginning of the Year}
+\caption{Backlog of SRs — Open at the Beginning of the Year}
 \label{fig:annual_backlog}
 \end{figure}
 
@@ -587,7 +588,7 @@ shows this dramatic growth with backlogged SRs representing
 \item RStudio version 2026.01.0 build 392 or higher (recommended): \\
 \url{https://posit.co/download/rstudio-desktop/}
 \item Minimum RAM: 16 GB (tested and verified; 32 GB provides faster execution)
-\item Disk space: $\sim$15 GB ($\sim$9 GB uncompressed data) + intermediate files + outputs)
+\item Disk space: $\sim$15 GB ($\sim$9 GB uncompressed data) + intermediate files + outputs
 \item Operating System: Tested on Windows 10/11; macOS/Linux users will need to 
 modify file paths in \texttt{base\_dir}
 \end{itemize}
@@ -598,7 +599,7 @@ modify file paths in \texttt{base\_dir}
 
 \begin{itemize}
 \item Source code: \url{https://github.com/tusseyd/nyc_311_data_cleaning}
-\item NYC 311 dataset (($\sim$1.6 GB zipped, ($\sim$9 GB uncompressed): \\
+\item NYC 311 dataset ($\sim$1.6 GB zipped; $\sim$9 GB uncompressed):\\
 \url{https://figshare.com/s/e8d479c391edb7224bfa}
 \item USPS Zip Codes (4.5 MB): \url{https://figshare.com/s/8aea027d06f4903f2227}
 \item Reference console output for validation is available in GitHub repository.
@@ -647,7 +648,7 @@ programs require the following R packages:
 
 
 As noted in the \emph{Principles for Open Data Curation: A Case Study with the
-New York City 311 Service Request Data} document there are two separate R 
+New York City 311 Service Request Data} document, there are two separate R 
 programs which should be executed in order:
 
 
@@ -668,7 +669,7 @@ Each of these programs produces a console output file in simple text format, spe
 \vspace{0.1cm}
 These two files, along with the associated charts, provide additional insight 
 into the anomalies observed during data cleansing. Upon running 
-the \texttt{jds\_datacleansing.R} program, there will be 92 charts in .PDF format in 
+the \texttt{jds\_datacleansing.R} program, there will be 87 charts in PDF format in 
 the \texttt{charts} directory and a \texttt{field\_usage\_summary\_table.csv}
 file in the \texttt{analytics} directory. 
 
@@ -676,10 +677,11 @@ file in the \texttt{analytics} directory.
 For validation purposes, a reference copy of the two console output files is
 available on GitHub. These reference files can also be used to view the full console
 output of the two programs, without needing to run the .R programs. Unfortunately,
-the full set of 92 charts can only be duplicated by running the 
+the full set of 87 charts can only be duplicated by running the 
 \texttt{jds\_datacleansing.R} program, as it is not possible to include all charts in either 
-the main document nor in this supplementary document. 
-
+the main document nor in this supplementary document. The additional figures are 
+diagnostic artifacts of the QA pipeline, and are reproducible outputs, not 
+interpretive embellishments.
 
 
 \subsection*{Steps for Reproducing the Analysis}
@@ -687,15 +689,17 @@ Source files are available at:
 \vspace{0.1cm}
 \begin{itemize}
   \item \textsc{R} source code (GitHub): \url{https://github.com/tusseyd/nyc_311_data_cleaning}
-  \item USPS Zip Code dataset (Figshare): \url{https://figshare.com/s/8aea027d06f4903f2227}
-  \item NYC 311 dataset (Figshare): \url{https://figshare.com/s/e8d479c391edb7224bfa}
+  \item USPS Zip Code Dataset (Figshare, DOI: 
+  \url{https://doi.org/10.6084/m9.figshare.31053361})
+  \item NYC 311 Dataset (2020--2024), archived on Figshare: DOI: 
+  \url{https://doi.org/10.6084/m9.figshare.28454858}
   \vspace{0.15cm} 
   \item Data preparation console output: \\ \small\url{https://github.com/tusseyd/nyc_311_data_cleaning/blob/main/reference_console_output/reference_JDS_data_prep_console_output.txt}
 \vspace{0.15cm}
   \item Data cleaning console output: \\ \small\url{https://github.com/tusseyd/nyc_311_data_cleaning/blob/main/reference_console_output/reference_JDS_datacleaning_console_output.txt}
 \end{itemize}
 \vspace{0.1cm}
-Step 1: Download the two data Files
+Step 1: Download the two data files
 \vspace{0.1cm}
 \begin{enumerate}
 \item Download the NYC 311 and USPS Zip Code datasets from Figshare. (links above)
@@ -713,21 +717,21 @@ This .CSV file should be placed into the raw\_data directory.
 raw\_data directory. Both of these .CSV files will be modified by the data 
 prep program to the .RDS format for ease in processing.
 \end{enumerate}
-\vspace{0.1 cm}
+\vspace{0.1cm}
 Step 2: Set Up Project Structure
 \begin{enumerate}
 \item Clone or download the entire GitHub repository: \\
 \url{https://github.com/tusseyd/nyc_311_data_cleaning}
 \item Important: Ensure you download all files from the GitHub repo including:
-\vspace{0.1 cm}
+\vspace{0.1cm}
 \begin{itemize}
 \item \texttt{code/data\_prep\_for\_jds\_datacleansing.R}
-\vspace{0.1 cm}
+\vspace{0.1cm}
 \item \texttt{code/jds\_datacleansing.R}
-\vspace{0.1 cm}
+\vspace{0.1cm}
 \item All files in \texttt{code/functions/} directory (required dependencies)
 \end{itemize}
-\vspace{0.1 cm}
+\vspace{0.1cm}
 \item Running the data preparation program \texttt{data\_prep\_for\_jds\_datacleansing.R} 
 will automatically create the following directory structure. The individual files shown 
 below will be created by running the data cleansing program. Below is the 
@@ -740,7 +744,7 @@ cleansing program \texttt{code/jds\_datacleansing.R}.
 .3 analytics/.
 .4 field\_usage\_summary\_table.csv.
 .3 charts/.
-.4 [92 PDF files].
+.4 [87 PDF files].
 .3 code/.
 .4 data\_prep\_for\_jds\_datacleansing.R.
 .4 jds\_datacleansing.R.
@@ -802,7 +806,7 @@ RAM; $\sim$31 minutes on a system with 32 GB.
 
 \vspace{0.1cm}
 \begin{itemize}
-\item 92 PDF charts in \texttt{charts/}
+\item 87 PDF charts in \texttt{charts/}
 \item \texttt{field\_usage\_summary\_table.csv} in \texttt{data/analytical\_files/}
 \item \texttt{console\_output/JDS\_datacleaning\_console\_output.txt}
 \end{itemize}
@@ -811,11 +815,12 @@ RAM; $\sim$31 minutes on a system with 32 GB.
 
 \subsection*{Validation}
 Compare your directory structure along with the associated files shown
-in the above tree structure. Compare the charts to those in the original document
-and in this Supplemental document. Compare your console output files against the 
-reference outputs provided in the GitHub repository to verify successful 
-reproduction. The console outputs contain many tables of information 
-which should match your run. Validation console output files are located at:
+in the above tree structure. Compare the charts to those in the main 
+manuscript and in this supplementary document. Compare your console 
+output files against the reference outputs provided in the GitHub 
+repository to verify successful reproduction. The console outputs 
+contain many tables of information which should match your 
+run. Validation console output files are located at:
 
 \vspace{0.15cm}
 \begin{itemize}
