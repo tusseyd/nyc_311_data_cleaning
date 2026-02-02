@@ -86,19 +86,21 @@ societies and governments by promoting transparency,
 innovation, and public engagement. The City of New York (NYC) has been at
 the forefront of this movement since the enactment of the Open 
 Data Law in 2012, which led to the creation of the NYC Open Data
-portal. The portal currently hosts 3000 datasets,
-serving as a crucial resource for research across domains such as 
-health, urban development, and transportation. However, the
-effective use of open data relies heavily on data quality and
-usability, challenges that remain insufficiently addressed in the
-literature. This paper examines these challenges via a
-case study of the NYC 311 Service Request dataset, identifying key
-issues in data validity, consistency, and curation efficiency. We
-propose a set of data curation principles, tailored for
-government-released open data, to address these challenges.
+portal. The portal currently hosts over 2,700 datasets,
+serving as an essential resource for research across domains such as 
+health, urban development, and transportation. However, the effective 
+use of open data depends critically on data quality and usability, 
+both of which remain insufficiently addressed in the literature. 
+This paper examines these issues through a case study of the NYC 311
+Service Request dataset, identifying key concerns related to data
+validity, consistency, and curation efficiency.
+We propose a set of data curation
+principles tailored for government-released open data to address them.
+
 Our findings highlight the importance of harmonized field definitions,
-streamlined storage, and automated quality checks, offering practical
+streamlined storage, and automated quality checks, and offer practical
 guidelines for improving the reliability and utility of open datasets.
+
 \end{abstract}
 
 \begin{keywords} % no repeating those in title
@@ -128,18 +130,19 @@ Data.gov portal in 2009 \citep{dataGov}, a pioneering
 platform in making government data widely accessible. Shortly afterwards,
 the European Union followed suit, unveiling its Open Data portal 
 \citep{dataEU} in 2012, further cementing the movement's 
-global reach. Furthermore, the World Bank's Open
-Data initiative, initiated in 2010, stands out as a comprehensive
-repository for global development data, available at
-World Bank Open Data \citep{dataWorldBank}. 
+global reach. Another example is the World Bank's Open 
+Data initiative, launched in 2010, which provides a comprehensive 
+repository of global development data \citep{dataWorldBank}.
+
+ 
 These initiatives represent significant strides in democratizing data, 
 removing barriers that once kept valuable information 
 regarding government performance in silos. Their collective impact 
 extends beyond mere data sharing to fostering a culture of openness 
 that benefits individuals, communities, governments, and economies worldwide 
 \citep{barns2016mine, wang2016adoption}.
-Despite these global efforts, the effective use of open data hinges on
-addressing critical data curation challenges, such as ensuring
+Despite these global efforts, the effective use of open data depends
+critically on effective data curation, particularly with respect to
 quality, consistency, and usability.
 
 
@@ -157,22 +160,23 @@ college enrollment statistics, jail inmate charges, and the location
 of citywide free Internet access points. These datasets have been
 applied in civil life in various ways, such as mapping car crashes
 involving pedestrians and visualizing high school and college
-enrollment trends. Furthermore, they have enabled significant research
-across multiple domains, including health \citep{cantor2018facets, 
-shankar2021data}, urban development \citep{neves2020impacts}, and
-transportation \citep{gerte2019understanding}, aiding in the
-understanding and addressing of complex urban challenges.
+enrollment trends. These initiatives have enabled significant research across multiple
+domains, including health \citep{cantor2018facets, shankar2021data},
+urban development \citep{neves2020impacts}, and transportation
+\citep{gerte2019understanding}, and have advanced efforts to address
+complex urban issues.
+
 For example, NYC's 311 data has been used to optimize resource
 allocation in urban planning and improve emergency response times,
 showcasing its practical relevance in real-time decision-making.
 
 
-However, open data pose substantial curation challenges.
-Data curation, the process of organizing, maintaining, and ensuring
-the quality of datasets, plays a crucial role in maximizing the
-utility of open data. Proper curation ensures that datasets remain
-consistent, accurate, and useful for diverse applications. For example, 
-well-curated data are essential for machine learning systems, which 
+However, open data present substantial curation demands.
+Data curation—the process of organizing, maintaining, and ensuring
+dataset quality—is essential to maximizing their utility.
+Effective management ensures that datasets remain consistent,
+accurate, and useful across diverse applications.
+For example, well-curated data are essential for machine learning systems, which 
 require high-quality data to produce reliable insights 
 \citep{polyzotis2019data, jain2020overview}. A critical component of 
 data curation is data cleaning, which involves identifying and rectifying 
@@ -188,21 +192,21 @@ where machine learning is applied to sensitive tasks, such as public
 health or policy \citep{rahm2000data}. 
 
 
-Research into data curation has explored these challenges in-depth. 
-Among the earliest discussions, \citet{witt2009constructing} focused 
-on developing data curation profiles tailored to specific contexts, 
-setting a precedent for targeted data management strategies. 
-Addressing broader challenges in data sharing and management, 
-\citet{borgman2012conundrum} highlighted the complexities of 
-research data distribution, emphasizing the need for robust 
-strategies. This is complemented by \citet{hart2016ten}, who outlined 
+Research on data curation has examined these issues extensively.
+Among the earliest contributions, \citet{witt2009constructing}
+proposed data curation profiles tailored to specific contexts,
+establishing a foundation for targeted data management strategies.
+In examining broader issues in data sharing and management,
+\citet{borgman2012conundrum} highlighted the complexities of
+research data distribution and emphasized the need for robust strategies.
+This is complemented by \citet{hart2016ten}, who outlined 
 essential principles for effective data management, particularly 
-emphasizing meticulous curation practices. The utility of curated 
-open data is vividly illustrated in public health and global challenges, 
-where \citet{cantor2018facets} demonstrated the utility of curated 
-data in evaluating community health determinants, and 
-\citet{shankar2021data} observed its critical role during the 
-COVID-19 pandemic in managing collective responses.
+emphasizing meticulous curation practices. The value of curated 
+open data is evident in public health and global contexts. For 
+example, \citet{cantor2018facets} demonstrated its application in evaluating
+community health determinants, while \citet{shankar2021data} highlighted
+its critical role during the COVID-19 pandemic in managing collective responses.
+
 Despite these advances, there remains a notable gap in providing
 actionable frameworks for managing large-scale municipal datasets.
 
@@ -210,30 +214,33 @@ actionable frameworks for managing large-scale municipal datasets.
 By addressing this gap, this study transitions from theory to
 practical insights, aiming to establish principles that enhance both
 the reliability and utility of open government data.
-The contributions of this paper are twofold. First, we delve into
-the specifics of data curation challenges using the NYC 311 Service
-Request (SR) data as a case study. This dataset serves as a prime 
+This paper makes two primary contributions. First, it examines 
+key aspects of data curation through a case study
+of the NYC 311 Service Request (SR) dataset.
+ This dataset serves as a prime 
 example for examining key issues in data curation, including data 
 validity, consistency, and curation efficiency. We illustrate these 
 points with examples drawn from our 
-processing of the 311 SR data. Second, we propose a set of data curation 
-principles tailored for government-released open data. These 
-principles are designed to address the unique challenges 
-and requirements observed in the curation of such datasets.
+processing of the 311 SR data. Second, we propose a set of data 
+curation principles tailored for government-released open 
+data. These principles address the unique requirements and 
+constraints observed in the management of such datasets.
 
 
 The paper is organized as follows. Section~\ref{sec:data} provides 
 an overview of the NYC 311 SR system and presents 
 a summary of SR counts over a five-year period (2020---2024). 
-Section~\ref{sec:issues} delves into specific data cleansing 
-challenges affecting data quality including structural issues, 
-adherence to the data dictionary, and the presence of missing entries. 
+Section~\ref{sec:issues} examines specific data cleansing issues
+affecting data quality, including structural inconsistencies,
+adherence to the data dictionary, and missing entries.
+
+
 
 This section also investigates data field compliance with reference or acceptable values, 
 highlights logical inconsistencies, and examines some concerning patterns 
 in the data. We explore the balance between precision and accuracy 
 and identify duplicate or redundant fields, along with observations 
-on the Data Dictionary \citep{datadictionaryNYC}.
+on the 311 Service Request Data Dictionary.
 
 Section~\ref{sec:recommendations} offers 
 practical recommendations for mitigating or resolving these issues, 
@@ -267,7 +274,7 @@ Figure~\ref{fig:annualSRs} illustrates the nearly 18\% growth since 2020.
 \begin{figure}[tbp]
   \centering
   \includegraphics[width=\textwidth]{annual_trend_with_projection_bar_chart.pdf}
-  \caption{Annual SR Volume with 2025 Projection}
+  \caption{Annual SR Volume (with 2025 Projection)}
   \label{fig:annualSRs}
 \end{figure}
 
@@ -302,7 +309,7 @@ and improving responsiveness across city agencies.
 It also supports a wide range of studies in resource allocation and
 emergency response strategies \citep{zha2014profiling, raj2021swift},
 social equity in service provision \citep{white2018promises,
-  kontokosta2021bias}, and urban challenges such as noise pollution
+kontokosta2021bias}, and urban issues such as noise pollution
 \citep{dove2022sounds} and street flooding
 \citep{agonafir2022understanding}.
 
@@ -466,14 +473,16 @@ values such as statuses, state names, or zip codes. Structural
 errors can also play a significant role in data quality, particularly when 
 naming conventions or data entries are inconsistent. Common issues 
 include fields that do not appear in the Data Dictionary and  
-inconsistent usage of data fields. Furthermore, redundant 
-(or irrelevant) fields can clutter datasets, reducing efficiency, 
-creating confusion, and introducing errors. Logical inconsistencies 
+inconsistent usage of data fields. Redundant or irrelevant fields can 
+clutter datasets, reducing efficiency, creating confusion, and 
+increasing the risk of errors. Logical inconsistencies 
 are another consideration, such as related fields that violate expected 
 relationships, for example a \texttt{due\_date} that 
-precedes \texttt{created\_date}.
-Lastly, the balance between accuracy and precision is crucial, as both 
-must be managed to ensure meaningful data.
+precedes \texttt{created\_date}. Lastly, maintaining an 
+appropriate balance between accuracy and precision 
+is essential, as both must be carefully managed to preserve 
+the interpretability and reliability of the data.
+
 
 
 We identify the presence of issues in the NYC 311 SR open dataset;
@@ -542,11 +551,10 @@ subset of 212 records contains only integer longitude values
 with no decimals. Moreover, positional precision at thirteen decimal places
 implies a spatial resolution at the molecular scale—certainly implausible.
 This is a classic case of excessive precision rather than meaningful accuracy. 
-This span of precision could suggest inconsistent data capture. It is
-highly likely that these coordinate fields are the result of a geocoding of the
-SR \texttt{incident\_address}, especially since 90\% of the values share
-that same level of precision. It would be useful to evaluate the functionality
-of the geocoding software. 
+This span of precision could suggest inconsistent data capture. These coordinate 
+fields are most plausibly the result of geocoding the SR \texttt{incident\_address}, 
+particularly given that 90\% of the values share the same level of precision.
+ It would be useful to evaluate the functionality of the geocoding software. 
 
 For reference, the official New York City Borough Boundary--Water Included
  (\textsc{NYBBWI}) dataset, published by the Department of City Planning (DCP),
@@ -577,9 +585,10 @@ all missing values were standardized to \texttt{NA}. Notably,
 \label{par:dstsystemic}
  The 311 SR dataset captures local NYC times 
  (e.g., \texttt{America/New\_York}). 
-Accordingly, twice each year there are changes to 
-the local time as a result of observing 
-DST. This can introduce some unexpected results. For example, 
+Accordingly, local time changes twice each year due to the observance
+of Daylight Saving Time (DST): clocks move forward one hour in the
+spring and backward one hour in the fall. This can introduce 
+some unexpected results. For example, 
 on both March 13, 2022, and March 12, 2023, there are no times 
 between 1:59AM and 2:59AM. The 2:00AM hour on those dates 
 is simply missing owing to the clocks moving forward; at 2:00AM 
@@ -595,7 +604,7 @@ between 02:00:00 and 02:59:59
 advances directly from 01:59:59 to 03:00:00 on those dates. These anomalies
 were corrected by shifting the affected timestamps forward one hour 
 to valid times (e.g., \texttt{2024-03-10 03:00:46},
-\texttt{2020-03-08 03:10:00}). Nineteen such corrections were made.
+\texttt{2020-03-08 03:10:00}).
 
 The fall DST adjustment introduces a more serious systemic issue by producing
 SRs with \emph{negative} durations, where the \texttt{closed\_date} precedes
@@ -746,8 +755,8 @@ geographic boundaries of New York City. For some attributes,
 the Data Dictionary specifies domains. For others, the documented 
 domain was incomplete or inaccurate, and valid values had 
 to be inferred from operational usage, supplemental
-documentation, or external datasets. Additonally, the NYC Open Data 
-portal supplements the Data Dictionary by by indicating 
+documentation, or external datasets. Additionally, the NYC Open Data 
+portal supplements the Data Dictionary by indicating 
 field types such as text, numeric, date, and geospatial.
 We discovered several anomalies where 
 observed legal values did not align with published specifications.
@@ -797,7 +806,7 @@ available list of community boards. Nonetheless, this analysis identified
 \subsection{Date Field Issues}
 \label{subsec:datefieldissues}
 In addition to the DST-related structural anomalies discussed in
-Section~\ref{par:dst}, the dataset exhibits further temporal 
+Section~\ref{sec:structural}, the dataset exhibits further temporal 
 issues. The NYC~311 dataset includes four such fields:
 \texttt{created\_date}, \texttt{due\_date}, \texttt{resolution\_action\_updated\_date}, and
 \texttt{closed\_date}. We found these date fields often
@@ -808,9 +817,10 @@ complicating both analysis and interpretation.
 \label{sec:createddate}
 All \texttt{created\_date} values were checked to ensure that none were set in
 the future or before the inception of the 311 system (circa~2003); all records
-were compliant. However, a notable clustering of timestamps occurs at exactly
-midnight (14,409 instances) and exactly noon (31,872 instances), an anomaly
-examined further in Section~\ref{par:midnightnoonissues}.
+were compliant.However, a notable clustering of timestamps occurs at exactly
+midnight (14,409 instances) and exactly noon (31,872 instances), an anomaly 
+examined in greater detail later in this section.
+
 
 \paragraph{Due Date Anomalies:}
 \label{par:duedate}
@@ -828,7 +838,7 @@ Most records were compliant with respect to temporal bounds; none were set
 before 2003 or in the future. However, there is a clustering of 
 timestamps at exactly midnight 
 (1,083,862; \SI[round-precision = 2]{6.77}{\percent}) 
-of  \texttt{closed\_date}(s)) and exactly noon
+of  \texttt{closed\_date}(s) and exactly noon
 (294,817; \SI[round-precision = 2]{1.84}{\percent}) representing
  a significant artifact, discussed further in 
  Section~\ref{par:midnightnoonissues}. Additionally, 45,296 entries
@@ -846,7 +856,7 @@ however, 374,974 entries
 Nearly \SI[round-precision=0]{80}{\percent} of these
 premature dates occur within a day (often within seconds) 
 of the \texttt{created\_date}, 
-suggesting automated prepopulation during early processing.
+suggesting automated prepopulation during early procecssing.
 A more consequential anomaly concerns post-closure updates.
 
 While it is certainly possible---and even routine---to 
@@ -1001,8 +1011,8 @@ A larger issue arises when \texttt{closed\_date} and
 to the second. This creates a nonsensical \emph{zero duration}. 
 There are 387,329 (2.5\%) such zero duration 
 SRs. In addition, 3460 SRs are closed within one second of their
-creation. While not logically impossible, these near-instantaneous 
-SR resolutions are highly improbable. Moreover, 
+creation. While not logically impossible, these near-instantaneous
+SR resolutions are statistically improbable. Moreover, 
 \SI[round-precision = 0]{81}{\percent} of such cases 
 originate from just three agencies: 
 Department of Health and Mental Hygiene (DOHMH), DOT, and 
@@ -1011,9 +1021,9 @@ DOB.
 \paragraph{Suspicious Durations:}
 \label{par:suspiciousdurations}
 Service request (\textsc{SR}) durations are right-skewed, with some cases
-extending for months or years. An analysis was undertaken to
-determine appropriate lower-bound thresholds for identifying highly
-implausible or suspiciously small duration values. Durations were truncated to
+extending for months or years. An analysis was conducted to determine 
+appropriate lower-bound thresholds for identifying implausibly 
+small duration values. Durations were truncated to
 $>$2~seconds (excluding zero- and one-second artifacts) and to
 $\leq$172{,}800~seconds (48~hours). Five complementary outlier screening
 methods were evaluated: standard deviation (SD), median absolute deviation
@@ -1066,7 +1076,7 @@ potential need for consolidation:
 
   \item \texttt{borough} \& \texttt{taxi\_company\_borough}:  Despite 
   similar names, these fields exhibit only a 0.29\% match 
-   indicating that these fields likely serve different purposes. 
+   indicating that these fields appear to serve different purposes. 
   The \texttt{taxi\_company\_borough} field is exclusive to the TLC.
 
   \item \texttt{agency} \& \texttt{agency\_name}:  
@@ -1110,8 +1120,9 @@ we believe could be removed from the dataset with minimal data loss.
   \item \texttt{agency\_name}: redundant with \texttt{agency}.
   \item \texttt{park\_borough}: identical to \texttt{borough}.
   \item \texttt{location}: a concatenation of \texttt{latitude} and \texttt{longitude} coordinates.
-  \item \texttt{cross\_street\_1/2} and \texttt{intersection\_street\_1/2}:
- 83\% match; retaining a single pair.
+  \item \texttt{cross\_street\_1/2} and \texttt{intersection\_street\_1/2}: 
+  83\% match; therefore, retaining a single pair is sufficient.
+
 \end{itemize}
 
 Additionally, certain fields may not be useful for broad analysis
@@ -1141,25 +1152,24 @@ targeted analyses, could improve data accessibility and
 efficiency without compromising the dataset’s broader utility.
 
 \paragraph{Field Encoding:} Further size reduction is possible 
-by encoding selected categorical variables 
-Using \texttt{complaint\_type} as an example,
+by encoding selected categorical variables. Using 
+\texttt{complaint\_type} as an example,
 instead of repeatedly storing the full text of each possible value,
 one could use a numeric representation.  For example, rather than
 storing verbose strings such as the \texttt{complaint\_type} 
 “\texttt{REQUEST LARGE BULKY ITEM COLLECTION}” 632,148 times, 
-numeric or symbolic codes could be used instead. Encoding 
-not only reduces file size, but would likely improve 
-processing efficiency by using numeric values instead of 
-text strings. Moreover, standardized categorical inputs 
-often prevents misspellings  and invalid entries, ensuring 
+numeric or symbolic codes could be used instead. Encoding not only 
+reduces file size but also improves processing efficiency by 
+using numeric values instead of text strings. Moreover, standardized 
+categorical inputs often prevents misspellings and invalid entries, ensuring 
 cleaner, more reliable data. This approach is particularly 
 useful in large datasets, where frequently repeated text-based 
 categorical variables significantly increase storage requirements.
 
 Although publishing a flat CSV file supports lightweight 
 analysis, it becomes inefficient for analytics 
-involving millions of records. One promising alternative to reducing data storage  
-would be employment of the cross-platform Apache Arrow package. 
+involving millions of records. One promising alternative for reducing 
+storage requirements is the cross-platform Apache Arrow framework. 
 Apache Arrow (arrow.apache.org) is an innovative, cross-language 
 development platform designed for in-memory data. 
 It defines a standard for representing columnar data, 
@@ -1194,7 +1204,7 @@ having values of \textit{assigned, canceled,
 closed}, and \textit{pending}. However, we observed additional values 
 such as \textit{in progress, started}, \textit{canceled}, 
 and \textit{unspecified}. Similarly, the \texttt{address\_type} field 
-show acceptable values of \textit{address, blockface, intersection, latlong}, 
+shows acceptable values of \textit{address, blockface, intersection, latlong}, 
 and \textit{placename}. However, we found additional values such 
 as \textit{bbl} and \textit{unrecognized}. Other fields, such 
 as \texttt{facility\_type}, \texttt{vehicle\_type}, \texttt{taxi\_pick\_up\_location},
@@ -1208,27 +1218,24 @@ in their specified domain values.
 \section{Recommendations for Government Open Data Curation}
 \label{sec:recommendations}
 
-Building upon  insights from our case study of the 
-NYC 311 SR data, we propose a set of data 
-curation principles tailored for government open datasets. 
-These principles are designed to address the unique challenges 
- observed in the curation of such datasets, 
-ensuring they remain reliable, consistent, and useful for 
-public services, research, and other applications.
-To facilitate implementation, the principles are prioritized based on
-their impact and feasibility, offering a clear roadmap for improving
-data curation practices.
+Building on insights from our case study of the NYC 311 SR dataset,
+we propose a set of data curation principles tailored for government
+open data. These principles address the unique requirements observed
+in the management of such data, helping ensure reliability,
+consistency, and continued utility for public services, research,
+and related applications. To facilitate implementation, the 
+principles are prioritized based on their impact and feasibility, 
+offering a clear roadmap for improving data curation practices.
 
 \subsection{Principles}
 \label{subsec:principles}
 
 \paragraph{Principle 1: Establishing Cross-Organizational Consistency:}
-A key challenge in government-released datasets is the 
-harmonization of data fields across various agencies, and 
-maintaining that consistency over time. Inconsistent field
-definitions, data formats, or value domains can lead to erroneous
-analyses and hinder cross-agency collaboration.
-To address this, agencies should adopt 
+A central issue in government-released datasets is the harmonization
+of data fields across agencies and the maintenance of that consistency
+over time. Inconsistent field definitions, data formats, or value
+domains can lead to erroneous analyses and hinder 
+cross-agency collaboration. To address this, agencies should adopt 
 standardized naming conventions, value domains, usages, and 
 formats across all datasets. Regular audits and data harmonization 
 processes should be implemented to ensure consistency 
@@ -1259,13 +1266,13 @@ ensuring that data entries are accurate and valid. Some examples include
     \item Select fields should be subjected to automated checks 
     that prevent logical errors, such as a closing date occurring before the creation date. 
     
-    \item A number of fields have clearly defined domains of legal
-    values. These fields should be validated against a reference 
-    dataset upon entry. 
+    \item A number of fields have explicitly defined domains of permissible
+    values. These fields should be validated against a reference dataset upon entry.
+
  \end{itemize}
 
 \paragraph{Principle 3: Optimizing Storage Efficiency:}
-Efficient storage and data representation are crucial for handling 
+Efficient storage and data representation are essential for handling 
 large government datasets. Our research found several duplicate and
 near-duplicate fields in the 311 SR dataset. Removing these
 redundancies could reduce the dataset size by 18.5\%, improving
@@ -1274,9 +1281,8 @@ redundant fields and encoding categorical variables can
 significantly reduce file sizes and improve the efficiency 
 of data analysis. Similarly, categorical variables could be 
 encoded in a standardized format to optimize storage and 
-streamline analyses. Reducing file size not only saves 
-storage space, but also enhances the performance of queries, 
-downloads, and analysis processes.
+streamline analyses. Reducing file size saves storage space 
+and enhances the performance of queries, downloads, and analytical workflows.
 
 
 \paragraph{Principle 4: Maintain and Update Data Dictionaries:}
@@ -1284,22 +1290,21 @@ Clear, accurate, and up-to-date documentation
 is essential for the effective use 
 of government datasets. Our study found several
 instances where the Data Dictionary did not accurately reflect the 
-actual data. Allowable values should be clearly 
-referenced in the Data Dictionary, and regular reviews and updates should 
-occur especially when there are changes in data structure, usage, or 
-context.
+actual data. Allowable values should be explicitly documented in the Data Dictionary,
+and regular reviews and updates should occur, especially when there
+are changes in data structure, usage, or context.
+
 
 \paragraph{Principle 5: Automate Ongoing Quality Assurance Processes:}
 Automated data validation and quality assurance processes can 
 significantly improve the reliability of government 
-datasets. Unusual trends can be identified and irregularities highlighted. 
-In the NYC 311 case, issues such as large spikes in SR 
-creation and closure at exactly midnight and noon likely 
-stem from an automated script that distorts the 
-accurate capture of SR durations. Real-time validation systems could
-help prevent such errors, ensuring data integrity at the point of 
-entry ensuring the data remains clean and reliable 
-as it is continuously updated.
+datasets. Unusual trends can be identified and irregularities highlighted.
+In the NYC 311 case, large spikes in SR creation and closure at
+exactly midnight and noon appear to result from an automated script
+that distorts the accurate recording of SR durations. Real-time validation systems could
+help prevent such errors, ensuring data integrity at the point of entry and
+maintaining data quality as it is continuously updated.
+
 
 \paragraph{Principle 6: Ensuring Data Transparency:}
 Transparency is a core tenet of open data, and governments must ensure 
@@ -1309,7 +1314,7 @@ metadata, which enables users to understand the
 dataset’s structure, limitations, and intended use
 cases. Additionally, governments should communicate transparently
 about data quality issues, such as notifying the public when errors in SR 
-fields (e.g., erroneous \texttt{closed\_date(s)} are discovered, including
+fields (e.g., erroneous \texttt{closed\_date(s)}) are discovered, including
 an explanation about how such issues will be resolved.
 
 \subsection{Actionable Steps}
@@ -1351,7 +1356,7 @@ could capture and display quality metrics of the data sets as presented
 on appropriate dashboards. These dashboards could provide 
 a real-time snapshot of data quality, making deviations 
 immediately visible and actionable. Deviations in quality metrics 
-would be highlighted, prompting appropriate corrective actions
+would be highlighted, prompting appropriate corrective actions.
 
 \paragraph{Expert Engagement:}
 \label{para:experts}
@@ -1372,7 +1377,7 @@ and the public—is essential for identifying issues
 and refining data practices. Establishing such feedback loops 
 for public engagement ensures that recommendations 
 for improving data curation and validation 
-are not only heard and discussed, but implemented. 
+are not only heard and discussed, but also implemented. 
 
 
 \paragraph{Public Engagement Through Community Initiatives:}
@@ -1381,11 +1386,10 @@ Events such as NYC Open Data Week provide a valuable platform for
 collaboration, learning, and innovation. Our involvement in this 
 project stemmed from such an event, where we were 
 inspired by the potential of open data to enhance
- public services. Government's support of such 
- initiatives, not only promotes data literacy, but 
- encourages community-driven improvements to
-datasets, strengthens public engagement and
-demonstrate the societal value of open data. 
+ public services. Governments’ support of such initiatives not only 
+ promotes data literacy but also encourages community-driven 
+ improvements to datasets, strengthens public engagement, and 
+ demonstrates the societal value of open data.
 
 
 %-------------------------------------------------------------------------------
@@ -1399,12 +1403,17 @@ ensuring the reliability and utility of open datasets, as demonstrated
 through the examination of the NYC 311 SR data. As these datasets are
 applied across diverse fields such as public services and academic
 research, inconsistencies, missing values, and formatting errors can
-significantly undermine the insights derived from them. Trustworthy
-machine learning systems, which rely heavily on high-quality data, are
-especially vulnerable to such issues. Errors in the underlying data,
-such as biases or inconsistencies, can compromise both the accuracy
-and fairness of predictive models, impacting real-world decisions in
-urban planning and policy \citep{rahm2000data, geiger2020garbage}.
+significantly undermine the insights derived from them. 
+
+These data quality concerns become especially consequential when open
+datasets serve as inputs to automated analytical systems.
+
+Trustworthy machine learning systems, which rely heavily on high-quality data,
+are particularly vulnerable to such deficiencies. Errors in the underlying data,
+including biases or inconsistencies, can compromise both the accuracy
+and fairness of predictive models, thereby affecting real-world
+decisions in urban planning and policy \citep{rahm2000data, geiger2020garbage}.
+
 
 While the findings here are specific to NYC 311 data, the principles 
 proposed have broader applicability. Datasets in healthcare, 
@@ -1416,11 +1425,11 @@ particularly resolving discrepancies in field
 names, formats, usage, and definitions. Consistency in data is also 
 essential for trustworthy machine learning, where 
 inconsistencies across sources can
-lead to distorted outcomes. This challenge is even more pronounced in
-datasets spanning long time periods, as changes in agency structures
-or reporting standards and data usage can introduce 
-subtle biases and data distortions. Long-term data 
-consistency is crucial for longitudinal studies and 
+lead to distorted outcomes. This issue is even more pronounced in 
+datasets spanning long time periods, as changes in agency 
+structures, reporting standards, or data usage can introduce 
+subtle biases and distortions. Long-term data 
+consistency is essential for longitudinal studies and 
 predictive modeling, as even minor 
 data shifts can lead to significant deviations in model outcomes, 
 as noted by \citet{rahm2000data} and \citet{borgman2012conundrum}.
@@ -1449,8 +1458,11 @@ in machine learning models remains accurate, clean, and reliable
 \section*{Supplementary Material}
 See Supplementary Materials for extended results and all supporting visualizations.\\
 \textsc{R} source code is available at: \url{https://github.com/tusseyd/nyc_311_data_cleaning}.\\ 
-USPS Zip Codes are available at: \url{https://www.unitedstateszipcodes.org/zip-code-database/}.\\
-NYC 311 SR dataset is available at: \url{https://figshare.com/s/e8d479c391edb7224bfa}.
+USPS Zip Code dataset is archived on Figshare:
+DOI: \url{https://doi.org/10.6084/m9.figshare.31053361}. 
+NYC 311 SR dataset is archived on Figshare:
+DOI: \url{https://doi.org/10.6084/m9.figshare.28454858}.
+
 
 \bibliographystyle{jds}
 \bibliography{refs}

@@ -6,7 +6,7 @@ main_data_file <-
  
 # Boolean flag. TRUE to redirect console output to text file
 # FALSE to display console outpx`t on the screen
-enable_sink <- TRUE       
+enable_sink <- FALSE       
 
 #The "as of" date in "YYYY-MM-DD" format
 projection_date <- "2025-11-30"   
@@ -359,7 +359,7 @@ columns_to_keep <- c(
 
 # Remove unnecessary columns to free up memory. Garbage collection.
 d311[, setdiff(names(d311), columns_to_keep) := NULL]
-gc()
+gc(verbose = TRUE)
 
 # Make a copy for troubleshooting purposes to avoid re-reading in data
 #copy_d311 <- d311
@@ -433,7 +433,7 @@ d311[, c(
   "intersection_street_2",
   "landmark",
   "street_name") := NULL]  # Remove immediately
-gc()
+gc(verbose = TRUE)
 
 ################################################################################
 
@@ -478,8 +478,8 @@ yearly_bar_chart <- plot_annual_counts_with_projection(
   filename = "annual_trend_with_projection_bar_chart.pdf",
   title = "NYC 311 Service Requests by Year",
   subtitle = "w/2025 projection",
-  include_projection_in_growth = TRUE,
-  include_projection_in_stats  = TRUE,
+  include_projection_in_growth = FALSE,
+  include_projection_in_stats  = FALSE,
   show_projection_bar = TRUE    
   )
 
@@ -2032,6 +2032,65 @@ cat("\n=== Agency Distribution by Mode ===\n")
 print(positive_data[, .N, by = .(agency, mode_group)][
   , pct := 100 * N / sum(N), by = agency
 ][order(agency, mode_group)])
+
+# Create formatted console table
+cat("\n=== Mode Distribution Summary by Agency ===\n\n")
+
+# Calculate counts by agency and mode_group
+mode_summary <- positive_data[, .N, by = .(agency, mode_group)]
+
+# Pivot to wide format
+mode_wide <- dcast(mode_summary, agency ~ mode_group, value.var = "N", fill = 0)
+
+# Calculate totals and percentages
+mode_wide[, Total_N := Fast + Standard]
+mode_wide[, pct_Fast := 100 * Fast / Total_N]
+mode_wide[, pct_Standard := 100 * Standard / Total_N]
+
+# Sort by total count descending
+setorder(mode_wide, -Total_N)
+
+# Calculate overall totals
+total_fast_n <- sum(mode_wide$Fast)
+total_standard_n <- sum(mode_wide$Standard)
+total_all_n <- total_fast_n + total_standard_n
+total_fast_pct <- 100 * total_fast_n / total_all_n
+total_standard_pct <- 100 * total_standard_n / total_all_n
+
+# Print header
+cat(sprintf("%-20s", "Agency"))
+cat(sprintf("%15s %8s", "Fast", ""))
+cat(sprintf("%15s %8s", "Standard", ""))
+cat(sprintf("%12s\n", "Total N"))
+
+cat(sprintf("%-20s", ""))
+cat(sprintf("%12s %8s", "N", "%"))
+cat(sprintf("%12s %8s", "N", "%"))
+cat("\n")
+cat(strrep("-", 85), "\n")
+
+# Print each agency
+for (i in 1:nrow(mode_wide)) {
+  cat(sprintf("%-20s", mode_wide$agency[i]))
+  cat(sprintf("%12s %7.1f%%", 
+              format(mode_wide$Fast[i], big.mark = ","), 
+              mode_wide$pct_Fast[i]))
+  cat(sprintf("%12s %7.1f%%", 
+              format(mode_wide$Standard[i], big.mark = ","), 
+              mode_wide$pct_Standard[i]))
+  cat(sprintf("%12s\n", format(mode_wide$Total_N[i], big.mark = ",")))
+}
+
+# Print separator and totals
+cat(strrep("-", 85), "\n")
+cat(sprintf("%-20s%12s %7.1f%%%12s %7.1f%%%12s\n",
+            "All Agencies",
+            format(total_fast_n, big.mark = ","), 
+            total_fast_pct,
+            format(total_standard_n, big.mark = ","), 
+            total_standard_pct,
+            format(total_all_n, big.mark = ",")))
+cat("\n")
 
 # Create NYPD subset
 nypd_data <- positive_data[agency == "NYPD"]
