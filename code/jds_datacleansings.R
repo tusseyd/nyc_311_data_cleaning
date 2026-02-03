@@ -6,13 +6,13 @@ main_data_file <-
  
 # Boolean flag. TRUE to redirect console output to text file
 # FALSE to display console outpx`t on the screen
-enable_sink <- FALSE       
+enable_sink <- TRUE        
 
 #The "as of" date in "YYYY-MM-DD" format
 projection_date <- "2025-11-30"   
 
 #Number of SRs for the year through the projection_date  
-projection_SR_count <- 3218088 
+projection_SR_count <- 3218088  
 
 # Okabe-Ito palette for colorblind safe 
 palette(c("#E69F00", "#56B4E9", "#009E73", "#F0E442", 

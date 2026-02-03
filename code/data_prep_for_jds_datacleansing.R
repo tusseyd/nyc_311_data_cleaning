@@ -71,6 +71,7 @@ source(file.path(functions_dir, "setup_project.R"))
 timing <- setup_project(
   enable_sink = enable_sink,
   console_filename = "JDS_data_prep_console_output.txt",
+  functions_dir = functions_dir,
   verbose = TRUE
 )
 

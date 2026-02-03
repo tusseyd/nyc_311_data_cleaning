@@ -57,7 +57,7 @@ plot_date_field_analysis <- function(
   } else {
     paste0(title_case, " SRs by Agency")
   }
-  
+
   # Create Pareto chart
   cat(sprintf("Creating Pareto chart: %s\n", pareto_file))
   

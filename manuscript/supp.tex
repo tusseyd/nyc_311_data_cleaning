@@ -294,7 +294,7 @@ of these durations on a logarithmic scale, revealing a bimodal distribution. Har
 dip test confirms this bimodality is statistically significant 
 ($D = 0.027$, $p < 2.2 \times 10^{-16}$), a p-value that 
 decisively rejects the null hypothesis of unimodality. Indeed visual
-inspection of Figure~\ref{fig:bimodal_hist} confirms that; indeed there is 
+inspection of Figure~\ref{fig:bimodal-distribution} confirms that; indeed there is 
 a distinct bimodal distribution, which would seem to require 
 further analysis. Also of note is the separation of the median from the
 mean, indicating a skewed distribution to the right (Bowley skewness = 0.8079).
@@ -304,9 +304,9 @@ further indicating the presence of outliers to the right.
 
 \begin{figure}[tbp]
 \centering
-\includegraphics[width=0.9\textwidth]{All-Agencies histogram_positive_durations.pdf}
-\caption{Overall Distribution of SRs with Positive Durations (Log Scale).}
-\label{fig:histogram_city_wide}
+\includegraphics[width=0.9\textwidth]{nypd_vs_others_combined.pdf}
+\caption{All-other Agencies and NYPD Positive Durations Distributions (Log Scale).}
+\label{fig:bimodal-distribution}
 \end{figure}
 
 
@@ -432,14 +432,6 @@ its operational pattern exerts a disproportionate influence on the
 aggregate duration metric.
 
 
-\begin{figure}[tbp]
-\centering
-\includegraphics[width=0.9\textwidth]{nypd_vs_others_combined.pdf}
-\caption{Combined Duration Profiles: NYPD and All Other Agencies (Log scale).}
-\label{fig:histogram_combined}
-\end{figure}
-
-
 \FloatBarrier  % Keep Positive Duration figures in their section
 
 
@@ -505,7 +497,7 @@ anomalous durations. The main manuscript provides a detailed
 rationale for the use of this outlier methodology.
 
 
-Figure~\ref{fig:duration-histogram} visualizes the boundary used 
+Figure~\ref{fig:duration_histogram} visualizes the boundary used 
 to identify anomalous durations. It shows the overall 
 distribution of near-zero duration SRs from 2--90 seconds. Of 
 note is the spike at the one-minute 
@@ -513,6 +505,14 @@ mark. This is not unexpected, as overall, SR durations show a spike
 at every \emph{on-the-minute} mark. 
 Figure~\ref{fig:created-dates-by-seconds} displays this anomaly by the
 second, as shown for the first five minutes. 
+
+\begin{figure}[tbp]
+\centering
+\includegraphics[width=0.9\textwidth]{duration_histogram.pdf}
+\caption{Distribution of Small Durations (2--90 Seconds).}
+\label{fig:duration_histogram}
+\end{figure}
+
 
 
 \begin{figure}[tbp]

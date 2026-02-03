@@ -17,8 +17,8 @@ consolidate_agencies <- function(
     # "DEPARTMENT OF CONSUMER AND WORKER PROTECTION" = "DCWP",
     # "NYC311-PRD" = "OTI",
     "DOITT" = "OTI",
-    "311"   = "OTI"
-#    "3-1-1" = "OTI"
+    "311"   = "OTI",
+    "3-1-1" = "OTI"
   )
   
   # Consolidate agency values

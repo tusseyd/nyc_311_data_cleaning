@@ -8,10 +8,11 @@ report_status_closed_date_exceptions <- function(
     n_show         = 10L,
     make_charts    = FALSE,
     chart_dir      = NULL,
-    x_col_name     = "agency",   # grouping variable to plot by
+    x_col_name     = "agency",
     top_n          = 30L,
     flip           = FALSE,
-    min_count      = 1L
+    min_count      = 1L,
+    title          = NULL  # NEW: pass "" to suppress titles, or custom string
 ) {
   stopifnot(data.table::is.data.table(DT))
   stopifnot(status_col %in% names(DT), closed_col %in% names(DT))
@@ -98,7 +99,12 @@ report_status_closed_date_exceptions <- function(
         base <- list(DT = DT_sub, chart_dir = chart_dir, filename = filename, title = title)
         optional <- list(top_n = top_n, min_count = min_count, flip = flip,
                          include_na = TRUE, show_threshold_80 = TRUE)
-        args <- c(base, optional[intersect(names(optional), fmls)])
+        
+        # Filter BOTH base and optional against formals
+        args <- c(
+          base[intersect(names(base), fmls)],
+          optional[intersect(names(optional), fmls)]
+        )
         
         if (is.na(x_arg)) {
           # no grouping arg in signature; try call as-is (your plotter will error if it needs x_expr)
@@ -115,14 +121,12 @@ report_status_closed_date_exceptions <- function(
           args_bare <- args; args_bare[[x_arg]] <- as.name(x_col_name)  # bare agency
           res_bare <- try(do.call(plot_pareto_combo, args_bare), silent = TRUE)
           if (!inherits(res_bare, "try-error")) {
-#            cat("  -> Plotted using NSE bare interface (", x_arg, " = ", x_col_name, ")\n", sep = "")
             return(invisible(TRUE))
           }
           # fallback: string (in case your plotter also supports it)
           args_str <- args; args_str[[x_arg]] <- x_col_name
           res_str <- try(do.call(plot_pareto_combo, args_str), silent = TRUE)
           if (!inherits(res_str, "try-error")) {
-#            cat("  -> Plotted using NSE string fallback (", x_arg, " = \"", x_col_name, "\")\n", sep = "")
             return(invisible(TRUE))
           }
           stop("Both bare and string calls to plot_pareto_combo(x_expr=...) failed.\n",
@@ -134,13 +138,11 @@ report_status_closed_date_exceptions <- function(
         args1 <- args; args1[[x_arg]] <- x_col_name
         res1 <- try(do.call(plot_pareto_combo, args1), silent = TRUE)
         if (!inherits(res1, "try-error")) {
-#          cat("  -> Plotted using string interface (", x_arg, " = \"", x_col_name, "\")\n", sep = "")
           return(invisible(TRUE))
         }
         args2 <- args; args2[[x_arg]] <- as.name(x_col_name)
         res2 <- try(do.call(plot_pareto_combo, args2), silent = TRUE)
         if (!inherits(res2, "try-error")) {
-          cat("  -> Plotted using bare interface (", x_arg, " = ", x_col_name, ")\n", sep = "")
           return(invisible(TRUE))
         }
         stop("Both string and bare calls to plot_pareto_combo() failed.\n",
@@ -150,18 +152,19 @@ report_status_closed_date_exceptions <- function(
       
       if (n_A > 0) {
         fn_A  <- sprintf("pareto_closed_status_missing_%s_by_%s.pdf", closed_col, x_col_name)
-        ttl_A <- sprintf("CLOSED status but missing %s (%.3f%% of CLOSED)", closed_col, pct_A)
+        # Use provided title, or default if NULL
+        ttl_A <- if (!is.null(title)) title else 
+          sprintf("CLOSED status but missing %s (%.3f%% of CLOSED)", closed_col, pct_A)
         cat(sprintf("Plot A: n=%s | file=%s\n", fmtI(n_A), fn_A))
-        .pareto_bridge(DT[idx_A], fn_A, ttl_A)  # REMOVE x_col = x_col_name
-#        cat(sprintf("  -> Saved: %s/%s\n", chart_dir, fn_A))
+        .pareto_bridge(DT[idx_A], fn_A, ttl_A)
       } else cat("Plot A: skipped (no exceptions in A)\n")
       
       if (n_B > 0) {
         fn_B  <- sprintf("pareto_nonclosed_status_with_%s_by_%s.pdf", closed_col, x_col_name)
-        ttl_B <- sprintf("NOT CLOSED but has %s (%.3f%% of has-%s)", closed_col, pct_B, closed_col)
- #       cat(sprintf("Plot B: n=%s | file=%s\n", fmtI(n_B), fn_B))
-        .pareto_bridge(DT[idx_B], fn_B, ttl_B)  # REMOVE x_col = x_col_name
-#        cat(sprintf("  -> Saved: %s/%s\n", chart_dir, fn_B))
+        ttl_B <- if (!is.null(title)) title else
+          sprintf("NOT CLOSED but has %s (%.3f%% of has-%s)", closed_col, pct_B, closed_col)
+        cat(sprintf("Plot B: n=%s | file=%s\n", fmtI(n_B), fn_B))
+        .pareto_bridge(DT[idx_B], fn_B, ttl_B)
       } else cat("Plot B: skipped (no exceptions in B)\n")
     }
   } else if (make_charts) {
