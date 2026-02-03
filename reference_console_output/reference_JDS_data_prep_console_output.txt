@@ -1,8 +1,8 @@
-✅ Console output redirected to: C:/Users/David/OneDrive/Documents/datacleaningproject/journal_of_data_science/nyc_311_data_cleaning/console_output/JDS_data_prep_console_output.txt 
+✅ Console output redirected to: C:/Users/david/OneDrive/Documents/datacleaningproject/journal_of_data_science/nyc_311_data_cleaning/console_output/JDS_data_prep_console_output.txt 
 
-Execution begins at: 2026-02-02 01:35:11 
+Execution begins at: 2026-02-03 17:16:55 
 
-Execution begins at: 2026-02-02 01:35:11 
+Execution begins at: 2026-02-03 17:16:55 
 
 ========================================
 SETUP COMPLETE
@@ -109,11 +109,16 @@ Midnight (12:00:00 AM): 3773498 (23.72%)
 Noon (12:00:00 PM):     475906 (2.99%)
 
 --- Date Field Character-Length, 'Midnight', 'Noon', and NA Summary ---
-                           column total_rows na_count total_non_na nchar_summary count_midnight pct_midnight count_noon pct_noon
-1:                   created_date   16016700        0     16016700            ()          14409       0.0900      31872   0.1990
-2:                    closed_date   16016700   230808     15785892            ()        1083862       6.8660     294817   1.8676
-3:                       due_date   16016700 15964354        52346            ()              0       0.0000          1   0.0019
-4: resolution_action_updated_date   16016700   105085     15911615            ()        3773498      23.7154     475906   2.9909
+                           column total_rows na_count total_non_na nchar_summary
+1:                   created_date   16016700        0     16016700            ()
+2:                    closed_date   16016700   230808     15785892            ()
+3:                       due_date   16016700 15964354        52346            ()
+4: resolution_action_updated_date   16016700   105085     15911615            ()
+   count_midnight pct_midnight count_noon pct_noon
+1:          14409       0.0900      31872   0.1990
+2:        1083862       6.8660     294817   1.8676
+3:              0       0.0000          1   0.0019
+4:        3773498      23.7154     475906   2.9909
 
 [created_date] Converting to POSIXct...
   ⚠️  1 rows failed to parse in created_date
@@ -153,26 +158,46 @@ Noon (12:00:00 PM):     475906 (2.99%)
 9: resolution_action_updated_date   45812896    DOT 03/08/2020 02:10:00 AM
 
 --- Combined Summary of All Parse Failures ---
-                     source_column                         column unique_key agency         original_value
- 1:                   created_date                   created_date   60555664    DOT 03/10/2024 02:00:46 AM
- 2:                    closed_date                    closed_date   60519826    DOT 03/10/2024 02:15:00 AM
- 3:                    closed_date                    closed_date   57010644    DOT 03/12/2023 02:00:00 AM
- 4:                    closed_date                    closed_date   53641228    DOT 03/13/2022 02:40:00 AM
- 5:                    closed_date                    closed_date   53635363    DOT 03/13/2022 02:30:00 AM
- 6:                    closed_date                    closed_date   50020605    DOT 03/14/2021 02:50:00 AM
- 7:                    closed_date                    closed_date   50012615    DOT 03/14/2021 02:15:00 AM
- 8:                    closed_date                    closed_date   50006636    DOT 03/14/2021 02:05:00 AM
- 9:                    closed_date                    closed_date   45792119    DOT 03/08/2020 02:40:00 AM
-10:                    closed_date                    closed_date   45812896    DOT 03/08/2020 02:10:00 AM
-11: resolution_action_updated_date resolution_action_updated_date   60519826    DOT 03/10/2024 02:15:00 AM
-12: resolution_action_updated_date resolution_action_updated_date   57010644    DOT 03/12/2023 02:00:00 AM
-13: resolution_action_updated_date resolution_action_updated_date   53641228    DOT 03/13/2022 02:40:00 AM
-14: resolution_action_updated_date resolution_action_updated_date   53635363    DOT 03/13/2022 02:30:00 AM
-15: resolution_action_updated_date resolution_action_updated_date   50020605    DOT 03/14/2021 02:50:00 AM
-16: resolution_action_updated_date resolution_action_updated_date   50012615    DOT 03/14/2021 02:15:00 AM
-17: resolution_action_updated_date resolution_action_updated_date   50006636    DOT 03/14/2021 02:05:00 AM
-18: resolution_action_updated_date resolution_action_updated_date   45792119    DOT 03/08/2020 02:40:00 AM
-19: resolution_action_updated_date resolution_action_updated_date   45812896    DOT 03/08/2020 02:10:00 AM
+                     source_column                         column unique_key agency
+ 1:                   created_date                   created_date   60555664    DOT
+ 2:                    closed_date                    closed_date   60519826    DOT
+ 3:                    closed_date                    closed_date   57010644    DOT
+ 4:                    closed_date                    closed_date   53641228    DOT
+ 5:                    closed_date                    closed_date   53635363    DOT
+ 6:                    closed_date                    closed_date   50020605    DOT
+ 7:                    closed_date                    closed_date   50012615    DOT
+ 8:                    closed_date                    closed_date   50006636    DOT
+ 9:                    closed_date                    closed_date   45792119    DOT
+10:                    closed_date                    closed_date   45812896    DOT
+11: resolution_action_updated_date resolution_action_updated_date   60519826    DOT
+12: resolution_action_updated_date resolution_action_updated_date   57010644    DOT
+13: resolution_action_updated_date resolution_action_updated_date   53641228    DOT
+14: resolution_action_updated_date resolution_action_updated_date   53635363    DOT
+15: resolution_action_updated_date resolution_action_updated_date   50020605    DOT
+16: resolution_action_updated_date resolution_action_updated_date   50012615    DOT
+17: resolution_action_updated_date resolution_action_updated_date   50006636    DOT
+18: resolution_action_updated_date resolution_action_updated_date   45792119    DOT
+19: resolution_action_updated_date resolution_action_updated_date   45812896    DOT
+            original_value
+ 1: 03/10/2024 02:00:46 AM
+ 2: 03/10/2024 02:15:00 AM
+ 3: 03/12/2023 02:00:00 AM
+ 4: 03/13/2022 02:40:00 AM
+ 5: 03/13/2022 02:30:00 AM
+ 6: 03/14/2021 02:50:00 AM
+ 7: 03/14/2021 02:15:00 AM
+ 8: 03/14/2021 02:05:00 AM
+ 9: 03/08/2020 02:40:00 AM
+10: 03/08/2020 02:10:00 AM
+11: 03/10/2024 02:15:00 AM
+12: 03/12/2023 02:00:00 AM
+13: 03/13/2022 02:40:00 AM
+14: 03/13/2022 02:30:00 AM
+15: 03/14/2021 02:50:00 AM
+16: 03/14/2021 02:15:00 AM
+17: 03/14/2021 02:05:00 AM
+18: 03/08/2020 02:40:00 AM
+19: 03/08/2020 02:10:00 AM
 
 Total rows with parsing failures across all fields: 19
 
@@ -315,15 +340,18 @@ File saved and verified in RDS format.
 No CSV file format processed.
 
 === Summary of Generated Datasets ===
-   span_years years_included start_date   end_date       rows                                                         file
-1:          1      2024–2024 2024-01-01 2024-12-31  3,458,320 1-year_311SR_01-01-2024_thru_12-31-2024_AS_OF_10-10-2025.rds
-2:          5      2020–2024 2020-01-01 2024-12-31 16,016,700 5-year_311SR_01-01-2020_thru_12-31-2024_AS_OF_10-10-2025.rds
+   span_years years_included start_date   end_date       rows
+1:          1      2024–2024 2024-01-01 2024-12-31  3,458,320
+2:          5      2020–2024 2020-01-01 2024-12-31 16,016,700
+                                                           file
+1: 1-year_311SR_01-01-2024_thru_12-31-2024_AS_OF_10-10-2025.rds
+2: 5-year_311SR_01-01-2020_thru_12-31-2024_AS_OF_10-10-2025.rds
 
 Processing USPS Zipcode data...
 
 
 *****END OF PROGRAM*****
 
-📅 Execution ends at: 2026-02-02 02:00:49 
+📅 Execution ends at: 2026-02-03 18:39:51 
 
-⏱️ Program run-time: 25 minutes, 37.629 seconds 
+⏱️ Program run-time: 1 hours, 22 minutes, 55.6274 seconds 
