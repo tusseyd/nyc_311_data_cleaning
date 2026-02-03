@@ -477,33 +477,29 @@ on the aggregate duration metric.
 \subsection{Service Request Negative Duration Analysis}
 
 
-A similar situation is illustrated in Figure~\ref{fig:boxplot-negative-durations} 
+A similar situation is illustrated in Figure~\ref{fig:violin-boxplot-negative}
 showing negative durations --- where the \texttt{closed\_date} occurs before 
-the \texttt{created\_date} resulting in a nonsensical negative duration. 
-In Figure~\ref{fig:boxplot-negative-durations}, the box plot 
-shows DOT to be the largest offender. However, the mean negative 
-duration is far greater for the Department of Environmental Protection (DEP), 
-as shown on the logarithmic x-axis. This box plot visualization 
-captures both the count and the extent of the negative duration anomaly.
-Violin charts of these same distributions are also produced and 
-available in the \texttt{charts} directory upon completion of the 
-data cleansing program. Figure~\ref{fig:violin-boxplot-negative}
-displays a violin chart that accompanies the negative duration 
-box plot, revealing the density of negative durations by magnitude. 
-Every box plot has an accompanying violin chart.
+the \texttt{created\_date} resulting in a nonsensical \emph{negative} duration. 
+Here the violin plot shows DOT to be the largest offender with \num{44143} 
+such SRs. However, the mean negative duration is far greater for the 
+Department of Environmental Protection (DEP) as shown on the logarithmic 
+x-axis. This violin plot visualization captures both the count, magnitude, 
+and the extent of the negative duration anomaly. Box charts of these 
+same distributions are also produced and available in 
+the \texttt{charts} directory upon completion of the data cleansing program. 
 
-\begin{figure}[tbp]
-\centering
-\includegraphics[width=0.9\textwidth]{boxplot_negative_days_by_agency.pdf}
-\caption{Distribution of Negative Durations (closed occurs before created date) by Agency}
-\label{fig:boxplot-negative-durations}
-\end{figure}
+%\begin{figure}[tbp]
+%\centering
+%\includegraphics[width=0.9\textwidth]{boxplot_negative_days_by_agency.pdf}
+%\caption{Distribution of Negative Durations (closed occurs before created date) by Agency}
+%\label{fig:boxplot-negative-durations}
+%\end{figure}
 
 
 \begin{figure}[tbp]
 \centering
 \includegraphics[width=0.9\textwidth]{violin_boxplot_negative_days_by_agency.pdf}
-\caption{Combined Violin and Boxplot for SRs with Negative Durations, by Agency.}
+\caption{Violin with Boxplot for SRs with Negative Durations (log x-axis), by Agency.}
 \label{fig:violin-boxplot-negative}
 \end{figure}
 
