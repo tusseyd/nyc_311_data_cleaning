@@ -65,6 +65,17 @@ summarize_complaint_response <- function(
                 format(n_total_excluded, big.mark = ","),
                 format(n_original, big.mark = ","),
                 100 * n_total_excluded / n_original))
+    
+    # Add statistics summary
+    cat("\n--- Post-Exclusion Statistics Summary ---\n")
+    cat(sprintf("Overall Mean:   %.2f days\n", mean(stats_dt$Mean_days, na.rm = TRUE)))
+    cat(sprintf("Overall Median: %.2f days\n", median(stats_dt$Median_days, na.rm = TRUE)))
+    cat(sprintf("Range of Means:   %.2f - %.2f days\n", 
+                min(stats_dt$Mean_days, na.rm = TRUE),
+                max(stats_dt$Mean_days, na.rm = TRUE)))
+    cat(sprintf("Range of Medians: %.2f - %.2f days\n", 
+                min(stats_dt$Median_days, na.rm = TRUE),
+                max(stats_dt$Median_days, na.rm = TRUE)))
   }
   cat("\n")
   

@@ -9,10 +9,10 @@
 # Write out two files in RDS format and one in CSV
 
 ################################################################################
-main_data_file <- "raw_data_5_years_AS_OF_10-10-2025.csv"
+main_data_file <- "5-year_311SR_01-01-2020_thru_12-31-2024_AS_OF_10-10-2025.csv"
 
-# Boolean flag. TRUE to redirect console output to text file
-# FALSE to display console outpx`t on the screen
+# Set to TRUE to redirect console output to text file (default)
+# Set to FALSE to display console output on the screen
 enable_sink <- TRUE      
 
 # Okabe-Ito palette for colorblind safe 
@@ -252,7 +252,7 @@ cat(sprintf("Full dataset range: %s to %s\n",
 cat(sprintf("Data AS_OF date: %s\n", as_of_date))
 
 # Spans to generate
-selected_year_spans <- c(1, 5)
+selected_year_spans <- c(5)
 cat(sprintf("\nSelected year spans: %s\n", paste(selected_year_spans, collapse = ", ")))
 
 # Ensure output directory exists

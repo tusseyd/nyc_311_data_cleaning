@@ -2767,7 +2767,7 @@ cat("\nAll charts saved to ./charts/ directory\n\n")
 
 
 # ==============================================================================
-# SECTION 4: COM PREHENSIVE DURATION CATEGORY ANALYSIS
+# SECTION 4: COMPREHENSIVE DURATION CATEGORY ANALYSIS
 # ==============================================================================
 # Systematic analysis of all duration categories:
 # - Negative (small, large, extreme)
