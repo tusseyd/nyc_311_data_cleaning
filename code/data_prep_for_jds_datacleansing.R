@@ -13,7 +13,7 @@ main_data_file <- "5-year_311SR_01-01-2020_thru_12-31-2024_AS_OF_10-10-2025.csv"
 
 # Set to TRUE to redirect console output to text file (default)
 # Set to FALSE to display console output on the screen
-enable_sink <- TRUE      
+enable_sink <- FALSE      
 
 # Okabe-Ito palette for colorblind safe 
 palette(c("#E69F00", "#56B4E9", "#009E73", "#F0E442", 

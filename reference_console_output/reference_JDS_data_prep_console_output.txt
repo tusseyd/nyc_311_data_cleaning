@@ -1,8 +1,8 @@
-✅ Console output redirected to: C:/Users/david/OneDrive/Documents/datacleaningproject/journal_of_data_science/nyc_311_data_cleaning/console_output/JDS_data_prep_console_output.txt 
+✅ Console output redirected to: C:/Users/David/OneDrive/Documents/datacleaningproject/journal_of_data_science/nyc_311_data_cleaning/console_output/JDS_data_prep_console_output.txt 
 
-Execution begins at: 2026-02-03 17:16:55 
+Execution begins at: 2026-09-09 22:19:54 
 
-Execution begins at: 2026-02-03 17:16:55 
+Execution begins at: 2026-09-09 22:19:54 
 
 ========================================
 SETUP COMPLETE
@@ -24,7 +24,7 @@ Column names standardized
  - bridge_highway_direction : 15961628 → NA (99.66%)
  - bridge_highway_name      : 15912177 → NA (99.35%)
  - bridge_highway_segment   : 15912402 → NA (99.35%)
- - city                     : 859961 → NA (5.37%)
+ - city                     : 859963 → NA (5.37%)
  - closed_date              : 230808 → NA (1.44%)
  - community_board          :  38435 → NA (0.24%)
  - complaint_type           :      0 → NA (0.00%, no changes)
@@ -35,7 +35,7 @@ Column names standardized
  - due_date                 : 15964354 → NA (99.67%)
  - facility_type            : 15805460 → NA (98.68%)
  - incident_address         : 698478 → NA (4.36%)
- - incident_zip             : 259594 → NA (1.62%)
+ - incident_zip             : 259597 → NA (1.62%)
  - intersection_street_1    : 5765476 → NA (36.00%)
  - intersection_street_2    : 5759329 → NA (35.96%)
  - landmark                 : 6958072 → NA (43.44%)
@@ -50,7 +50,7 @@ Column names standardized
  - resolution_description   : 742449 → NA (4.64%)
  - road_ramp                : 15982583 → NA (99.79%)
  - status                   :      0 → NA (0.00%, no changes)
- - street_name              : 699023 → NA (4.36%)
+ - street_name              : 699025 → NA (4.36%)
  - taxi_company_borough     : 16008136 → NA (99.95%)
  - taxi_pick_up_location    : 15879837 → NA (99.15%)
  - unique_key               :      0 → NA (0.00%, no changes)
@@ -59,17 +59,15 @@ Column names standardized
  - y_coordinate_state_plane : 301995 → NA (1.89%)
 
 Summary of values converted to NA by token:
-   <blank>    : 181520499
-   n/a        : 1453067
-   na         : 4
+   <blank>    : 182973577
 
-Total values normalized to NA: 182973570 (27.86%)
+Total values normalized to NA: 182973577 (27.86%)
 
 Missing data representation standardized to NA.
 No rows removed due to missing mandatory fields.
 
 
-Agencies consolidated:  670 ; Rows dropped:  0 ; Rows remaining:  16,016,700
+Agencies consolidated:  0 ; Rows dropped:  0 ; Rows remaining:  16,016,700
  Entering character date check
 
 ============================================================
@@ -78,8 +76,8 @@ Field: created_date
 Total rows: 16016700 | Non-empty: 16016700 | NA/empty: 0 (0.00%)
 
 created_date — Counts of Special Times
-Midnight (12:00:00 AM): 14409 (0.09%)
-Noon (12:00:00 PM):     31872 (0.20%)
+Midnight (00:00:00): 14409 (0.09%)
+Noon (12:00:00):     31872 (0.20%)
 
 ============================================================
 Field: closed_date 
@@ -87,8 +85,8 @@ Field: closed_date
 Total rows: 16016700 | Non-empty: 15785892 | NA/empty: 230808 (1.44%)
 
 closed_date — Counts of Special Times
-Midnight (12:00:00 AM): 1083862 (6.87%)
-Noon (12:00:00 PM):     294817 (1.87%)
+Midnight (00:00:00): 1083862 (6.87%)
+Noon (12:00:00):     294817 (1.87%)
 
 ============================================================
 Field: due_date 
@@ -96,8 +94,8 @@ Field: due_date
 Total rows: 16016700 | Non-empty: 52346 | NA/empty: 15964354 (99.67%)
 
 due_date — Counts of Special Times
-Midnight (12:00:00 AM): 0 (0.00%)
-Noon (12:00:00 PM):     1 (0.00%)
+Midnight (00:00:00): 0 (0.00%)
+Noon (12:00:00):     1 (0.00%)
 
 ============================================================
 Field: resolution_action_updated_date 
@@ -105,137 +103,31 @@ Field: resolution_action_updated_date
 Total rows: 16016700 | Non-empty: 15911615 | NA/empty: 105085 (0.66%)
 
 resolution_action_updated_date — Counts of Special Times
-Midnight (12:00:00 AM): 3773498 (23.72%)
-Noon (12:00:00 PM):     475906 (2.99%)
+Midnight (00:00:00): 3773498 (23.72%)
+Noon (12:00:00):     475906 (2.99%)
+
 
 --- Date Field Character-Length, 'Midnight', 'Noon', and NA Summary ---
-                           column total_rows na_count total_non_na nchar_summary
-1:                   created_date   16016700        0     16016700            ()
-2:                    closed_date   16016700   230808     15785892            ()
-3:                       due_date   16016700 15964354        52346            ()
-4: resolution_action_updated_date   16016700   105085     15911615            ()
-   count_midnight pct_midnight count_noon pct_noon
-1:          14409       0.0900      31872   0.1990
-2:        1083862       6.8660     294817   1.8676
-3:              0       0.0000          1   0.0019
-4:        3773498      23.7154     475906   2.9909
+
+                           column total_rows na_count total_non_na nchar_summary count_midnight pct_midnight count_noon pct_noon
+1:                   created_date   16016700        0     16016700            ()          14409       0.0900      31872   0.1990
+2:                    closed_date   16016700   230808     15785892            ()        1083862       6.8660     294817   1.8676
+3:                       due_date   16016700 15964354        52346            ()              0       0.0000          1   0.0019
+4: resolution_action_updated_date   16016700   105085     15911615            ()        3773498      23.7154     475906   2.9909
 
 [created_date] Converting to POSIXct...
-  ⚠️  1 rows failed to parse in created_date
-  Sample failed values:
-         column unique_key agency         original_value
-1: created_date   60555664    DOT 03/10/2024 02:00:46 AM
+  ✓ Parsed successfully (no failures)
 
 [closed_date] Converting to POSIXct...
-  ⚠️  9 rows failed to parse in closed_date
-  Sample failed values:
-        column unique_key agency         original_value
-1: closed_date   60519826    DOT 03/10/2024 02:15:00 AM
-2: closed_date   57010644    DOT 03/12/2023 02:00:00 AM
-3: closed_date   53641228    DOT 03/13/2022 02:40:00 AM
-4: closed_date   53635363    DOT 03/13/2022 02:30:00 AM
-5: closed_date   50020605    DOT 03/14/2021 02:50:00 AM
-6: closed_date   50012615    DOT 03/14/2021 02:15:00 AM
-7: closed_date   50006636    DOT 03/14/2021 02:05:00 AM
-8: closed_date   45792119    DOT 03/08/2020 02:40:00 AM
-9: closed_date   45812896    DOT 03/08/2020 02:10:00 AM
+  ✓ Parsed successfully (no failures)
 
 [due_date] Converting to POSIXct...
   ✓ Parsed successfully (no failures)
 
 [resolution_action_updated_date] Converting to POSIXct...
-  ⚠️  9 rows failed to parse in resolution_action_updated_date
-  Sample failed values:
-                           column unique_key agency         original_value
-1: resolution_action_updated_date   60519826    DOT 03/10/2024 02:15:00 AM
-2: resolution_action_updated_date   57010644    DOT 03/12/2023 02:00:00 AM
-3: resolution_action_updated_date   53641228    DOT 03/13/2022 02:40:00 AM
-4: resolution_action_updated_date   53635363    DOT 03/13/2022 02:30:00 AM
-5: resolution_action_updated_date   50020605    DOT 03/14/2021 02:50:00 AM
-6: resolution_action_updated_date   50012615    DOT 03/14/2021 02:15:00 AM
-7: resolution_action_updated_date   50006636    DOT 03/14/2021 02:05:00 AM
-8: resolution_action_updated_date   45792119    DOT 03/08/2020 02:40:00 AM
-9: resolution_action_updated_date   45812896    DOT 03/08/2020 02:10:00 AM
+  ✓ Parsed successfully (no failures)
 
---- Combined Summary of All Parse Failures ---
-                     source_column                         column unique_key agency
- 1:                   created_date                   created_date   60555664    DOT
- 2:                    closed_date                    closed_date   60519826    DOT
- 3:                    closed_date                    closed_date   57010644    DOT
- 4:                    closed_date                    closed_date   53641228    DOT
- 5:                    closed_date                    closed_date   53635363    DOT
- 6:                    closed_date                    closed_date   50020605    DOT
- 7:                    closed_date                    closed_date   50012615    DOT
- 8:                    closed_date                    closed_date   50006636    DOT
- 9:                    closed_date                    closed_date   45792119    DOT
-10:                    closed_date                    closed_date   45812896    DOT
-11: resolution_action_updated_date resolution_action_updated_date   60519826    DOT
-12: resolution_action_updated_date resolution_action_updated_date   57010644    DOT
-13: resolution_action_updated_date resolution_action_updated_date   53641228    DOT
-14: resolution_action_updated_date resolution_action_updated_date   53635363    DOT
-15: resolution_action_updated_date resolution_action_updated_date   50020605    DOT
-16: resolution_action_updated_date resolution_action_updated_date   50012615    DOT
-17: resolution_action_updated_date resolution_action_updated_date   50006636    DOT
-18: resolution_action_updated_date resolution_action_updated_date   45792119    DOT
-19: resolution_action_updated_date resolution_action_updated_date   45812896    DOT
-            original_value
- 1: 03/10/2024 02:00:46 AM
- 2: 03/10/2024 02:15:00 AM
- 3: 03/12/2023 02:00:00 AM
- 4: 03/13/2022 02:40:00 AM
- 5: 03/13/2022 02:30:00 AM
- 6: 03/14/2021 02:50:00 AM
- 7: 03/14/2021 02:15:00 AM
- 8: 03/14/2021 02:05:00 AM
- 9: 03/08/2020 02:40:00 AM
-10: 03/08/2020 02:10:00 AM
-11: 03/10/2024 02:15:00 AM
-12: 03/12/2023 02:00:00 AM
-13: 03/13/2022 02:40:00 AM
-14: 03/13/2022 02:30:00 AM
-15: 03/14/2021 02:50:00 AM
-16: 03/14/2021 02:15:00 AM
-17: 03/14/2021 02:05:00 AM
-18: 03/08/2020 02:40:00 AM
-19: 03/08/2020 02:10:00 AM
-
-Total rows with parsing failures across all fields: 19
-
---- Running DST Spring-Forward Fix for All Failures ---
-
-   [DST-fix applied: 1 corrections]
- unique_key agency                 before               after
-   60555664    DOT 03/10/2024 02:00:46 AM 2024-03-10 03:00:46
-
-  ✓ [created_date] DST-fix applied: 1 rows corrected
-
-   [DST-fix applied: 9 corrections]
- unique_key agency                 before               after
-   60519826    DOT 03/10/2024 02:15:00 AM 2024-03-10 03:15:00
-   57010644    DOT 03/12/2023 02:00:00 AM 2023-03-12 03:00:00
-   53641228    DOT 03/13/2022 02:40:00 AM 2022-03-13 03:40:00
-   53635363    DOT 03/13/2022 02:30:00 AM 2022-03-13 03:30:00
-   50020605    DOT 03/14/2021 02:50:00 AM 2021-03-14 03:50:00
-   50012615    DOT 03/14/2021 02:15:00 AM 2021-03-14 03:15:00
-   50006636    DOT 03/14/2021 02:05:00 AM 2021-03-14 03:05:00
-   45792119    DOT 03/08/2020 02:40:00 AM 2020-03-08 03:40:00
-   45812896    DOT 03/08/2020 02:10:00 AM 2020-03-08 03:10:00
-
-  ✓ [closed_date] DST-fix applied: 9 rows corrected
-
-   [DST-fix applied: 9 corrections]
- unique_key agency                 before               after
-   60519826    DOT 03/10/2024 02:15:00 AM 2024-03-10 03:15:00
-   57010644    DOT 03/12/2023 02:00:00 AM 2023-03-12 03:00:00
-   53641228    DOT 03/13/2022 02:40:00 AM 2022-03-13 03:40:00
-   53635363    DOT 03/13/2022 02:30:00 AM 2022-03-13 03:30:00
-   50020605    DOT 03/14/2021 02:50:00 AM 2021-03-14 03:50:00
-   50012615    DOT 03/14/2021 02:15:00 AM 2021-03-14 03:15:00
-   50006636    DOT 03/14/2021 02:05:00 AM 2021-03-14 03:05:00
-   45792119    DOT 03/08/2020 02:40:00 AM 2020-03-08 03:40:00
-   45812896    DOT 03/08/2020 02:10:00 AM 2020-03-08 03:10:00
-
-  ✓ [resolution_action_updated_date] DST-fix applied: 9 rows corrected
+No parsing failures detected.
 
 [created_date] Midnights: 14409 (0.0900%), Noons: 31872 (0.1990%)
 
@@ -299,7 +191,7 @@ Data Coverage Summary
 Full dataset range: 2020-01-01 to 2024-12-31
 Data AS_OF date: 10-10-2025
 
-Selected year spans: 1, 5
+Selected year spans: 5
 
 Current year: 2026
 Max complete year: 2024
@@ -308,21 +200,6 @@ Timezone: America/New_York
 ========================================
 Processing Year Spans
 ========================================
-
-----------------------------------------
-Processing 1-year span
-----------------------------------------
-Year range: 2024-2024
-Date range: 2024-01-01 00:00:00 to 2025-01-01 00:00:00
-Records filtered: 3,458,320
-Output file: 1-year_311SR_01-01-2024_thru_12-31-2024_AS_OF_10-10-2025.rds
-
-Saving RDS formatted file...
-1-year_311SR_01-01-2024_thru_12-31-2024_AS_OF_10-10-2025.rds | 3,458,320 rows ×   41 cols | ✓ OK
-  └─ File size: 310.4 MB | Full integrity verified
-
-File saved and verified in RDS format.
-No CSV file format processed.
 
 ----------------------------------------
 Processing 5-year span
@@ -340,18 +217,14 @@ File saved and verified in RDS format.
 No CSV file format processed.
 
 === Summary of Generated Datasets ===
-   span_years years_included start_date   end_date       rows
-1:          1      2024–2024 2024-01-01 2024-12-31  3,458,320
-2:          5      2020–2024 2020-01-01 2024-12-31 16,016,700
-                                                           file
-1: 1-year_311SR_01-01-2024_thru_12-31-2024_AS_OF_10-10-2025.rds
-2: 5-year_311SR_01-01-2020_thru_12-31-2024_AS_OF_10-10-2025.rds
+   span_years years_included start_date   end_date       rows                                                         file
+1:          5      2020–2024 2020-01-01 2024-12-31 16,016,700 5-year_311SR_01-01-2020_thru_12-31-2024_AS_OF_10-10-2025.rds
 
 Processing USPS Zipcode data...
 
 
 *****END OF PROGRAM*****
 
-📅 Execution ends at: 2026-02-03 18:39:51 
+📅 Execution ends at: 2026-09-09 22:49:33 
 
-⏱️ Program run-time: 1 hours, 22 minutes, 55.6274 seconds 
+⏱️ Program run-time: 29 minutes, 38.5733 seconds 
