@@ -57,7 +57,7 @@ summarize_backlog <- function(DT,
     DT = res,
     x_col = "year",
     y_col = "backlog_in",
-    title = "Annual Backlog Entering Each Year",
+    title = "",
     subtitle = sprintf("Total backlog entering across all years: %s", 
                        format(sum(res$backlog_in), big.mark = ",")),
     x_label = "Year",
@@ -65,6 +65,8 @@ summarize_backlog <- function(DT,
     show_labels = TRUE,
     add_trendline = TRUE,
     show_trend_stats = TRUE,
+    chart_dir = chart_dir,
+    filename = "annual_backlog_bar_chart",
     console_print_title = "Annual Backlog Distribution"
   )
   

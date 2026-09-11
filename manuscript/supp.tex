@@ -1,0 +1,933 @@
+%=================================================================
+% Supplementary Materials
+% Principles for Open Data Curation:
+% A Case Study with the New York City 311 Service Request Data
+%
+% Author: David Tussey
+% Submission: Journal of Data Science
+% Version: 1.0 (Initial Submission)
+% Date: <insert submission date>
+%
+% This document provides detailed documentation supporting reproducibility, 
+% along with extended analyses and supporting figures for the main manuscript.
+%=================================================================
+
+
+\documentclass[linenumber]{jdsart}
+\pdfminorversion=7
+
+\usepackage{siunitx}
+\sisetup{
+  group-separator = {,},
+  group-minimum-digits = 4,
+  round-mode = none,
+  output-decimal-marker = {.}
+}
+
+\usepackage{comment}
+\usepackage{multicol}
+%\usepackage{fontawesome5}
+%\usepackage{booktabs, textgreek}
+\usepackage{booktabs}  % for \toprule, \midrule, \bottomrule
+\usepackage{threeparttable}  % for table notes
+\usepackage{rotating}
+\usepackage{subcaption}
+\usepackage{enumitem}
+\usepackage{dirtree}
+\usepackage{tikz}
+\usetikzlibrary{positioning}
+\usepackage{placeins}  % for \FloatBarrier to control float placement
+
+% image path
+\graphicspath{{./}{./supplemental_images/}}
+
+% =========================================================
+% AUTO SUPPLEMENT NUMBERING (Tables/Figures as S1, S2, ...)
+% =========================================================
+\makeatletter
+\renewcommand{\thefigure}{S\arabic{figure}}   % Figures: S1, S2, S3...
+\renewcommand{\thetable}{T\arabic{table}}     % Tables: T1, T2, T3...
+\renewcommand{\fnum@table}{\tablename~\thetable}
+\renewcommand{\fnum@figure}{\figurename~\thefigure}
+\makeatother
+
+%% float control
+\renewcommand\floatpagefraction{0.75}
+\setcounter{totalnumber}{50}
+\setcounter{topnumber}{50}
+\setcounter{bottomnumber}{50}
+
+% hyperref settings (safe to keep)
+\hypersetup{
+  colorlinks=true,
+  linkcolor=blue,
+  citecolor=blue,
+  urlcolor=blue
+}
+
+\hyphenpenalty=950
+
+\volume{0}
+\issue{0}
+\pubyear{2025}
+\doi{0000}
+
+
+\begin{document}
+
+\begin{frontmatter}
+
+\title{\Large Supplementary Materials for:}
+\subtitle{\large Principles for Open Data Curation: A Case Study with the New York City 311 Service Request Data\\[2ex]}
+
+\author[1]{\inits{D.}\fnms{David}~\snm{Tussey}}
+\author[2]{\inits{J.}\fnms{Jun}~\snm{Yan}}
+
+\runtitle{Supplementary Materials: NYC 311 Data Cleaning}
+\runauthor{Tussey and Yan}
+
+\address[1]{\institution{NYC Department of Information Technology and Telecommunications}, \cny{USA}}
+\address[2]{Department of Statistics, \institution{University of Connecticut}, \cny{USA}}
+
+\begin{keywords}
+\kwd{data cleansing}
+\kwd{data quality}
+\kwd{data science}
+\kwd{data validation}
+\kwd{NYC open data}
+\end{keywords}
+
+\end{frontmatter}
+
+% Table of contents and lists
+%\tableofcontents
+%\listoffigures
+%\listoftables
+%\newpage
+
+
+%---------------------------------------------------------------
+\section{Overview}
+
+
+This document provides supplementary materials accompanying the main manuscript
+\emph{Principles for Open Data Curation: A Case Study with the New York City 
+311 Service Request Data}. It includes additional figures, tables, extended 
+methodological details, selected console output, and documentation 
+supporting reproducibility that is not included in the main manuscript. These 
+materials enhance transparency and provide additional technical 
+context for readers interested in the data cleaning and validation 
+processes applied in this study.
+
+
+The examples below represent typical charts and tables created by the 
+R programs. A full listing of the tables produced is available in the 
+reference-named text files stored on GitHub. The charts shown below are
+representative of the types of anomalies discovered and the associated
+Pareto and box plot visualizations. All code used to generate the tables 
+and figures in this supplement is available in the public GitHub repository 
+cited in the main manuscript as well as in Section~\ref{sec:reproducibility}
+
+%---------------------------------------------------------------
+\section{Anomaly Detection: Visualizations, Statistics, and Analysis}
+
+
+This section presents illustrative examples of the visualizations and analytical 
+approaches employed throughout the data cleansing program. While the full analysis 
+generates dozens of charts across multiple data quality dimensions, the examples 
+below demonstrate both the visualizations and the interpretive framework 
+applied to identify and characterize data quality issues.
+
+The analysis relies heavily on Pareto charts that stratify quality metrics and 
+anomalies—such as invalid \texttt{community\_board} values or 
+anomalous durations—by NYC agencies. As such, these 
+charts serve a diagnostic purpose: 
+they identify whether an anomaly concentrates within a few agencies or a 
+single agency, suggesting an agency-specific data entry error or system 
+configuration issue and thus affording targeted correction. Second, 
+they reveal whether anomalies distribute proportionally across agencies 
+mirroring the overall 311 Service Request (SR) volume distribution, 
+indicating a systemic problem affecting the entire dataset rather than 
+isolated to particular agencies.
+
+Beyond Pareto charts, the program generates complementary visualizations including 
+box plots (revealing distributional characteristics and outliers), violin plots 
+(showing probability density across agencies), and histograms (exposing temporal 
+or magnitude patterns). Each chart type supports specific analytical 
+questions about data quality. The examples below illustrate how these chart types 
+combine to enable comprehensive data quality assessment and inform targeted 
+remediation strategies.
+
+
+\subsection{Service Request Status (SR) and Closure Analysis}
+
+
+Figure~\ref{fig:pareto-closed-status-missing-date} reveals a classic 
+example of identifying the source agency associated with an anomaly. 
+In this case, the anomaly is an SR that has a \texttt{status}
+of \textit{closed}, but is missing the \texttt{closed\_date} entry. The Pareto chart reveals that
+this issue is located almost exclusively within the NYC Department of Homeless Services (DHS),
+where \SI[round-mode=places, round-precision=1]{99.7}{\percent}
+of such anomalies occur. Conversely, Figure~\ref{fig:pareto-nonclosed-with-date}
+displays the anomaly of having a \texttt{closed\_date}
+without a corresponding \texttt{status} of CLOSED.
+This pattern occurs primarily within the
+Department of Transportation (DOT),
+which accounts for
+\SI[round-mode=places, round-precision=0]{77}{\percent}
+of such cases, with smaller concentrations observed
+in the Department of Buildings (DOB)
+and the Department of Sanitation (DSNY).
+
+
+
+\begin{figure}[tbp]
+\centering
+\includegraphics[width=0.9\textwidth]{pareto_closed_status_missing_closed_date_by_agency.pdf}
+\caption{Pareto chart of SRs with a status of CLOSED, but missing a \texttt{closed\_date}, by Agency.}
+\label{fig:pareto-closed-status-missing-date}
+\end{figure}
+
+
+
+\begin{figure}[tbp]
+\centering
+\includegraphics[width=0.9\textwidth]{pareto_nonclosed_status_with_closed_date_by_agency.pdf}
+\caption{Pareto chart of SRs missing a CLOSED status, but with a \texttt{closed\_date}, by Agency.}
+\label{fig:pareto-nonclosed-with-date}
+\end{figure}
+
+
+\FloatBarrier  % Keep SR Status figures in their section
+
+
+\subsection{Temporal Pattern Analysis}
+
+
+The charts can also reveal trends in an anomaly. As noted in the main manuscript,
+there is a pronounced spike in the number of SRs closed \emph{exactly} at 
+midnight (00:00:00). This spike may reflect an automated bulk-action 
+software program that appears to close selected SRs exactly at midnight. Note, however, 
+that as shown in Figure~\ref{fig:closed-exact-midnight-cy} the yearly 
+distribution of midnight \texttt{closed\_date}(s) appears to be decreasing in 
+the more current years. Supplementing that discovery is Figure~\ref{fig:pareto-closed-midnight}, a 
+Pareto chart of the midnight  closing anomaly by agency. The chart reveals 
+that the majority of SRs closed at midnight
+originate from just two agencies, DSNY and DOB,
+which collectively account for
+\SI[round-mode=places, round-precision=1]{97.6}{\percent}
+of such cases. This concentration identifies a clear focal point for further investigation.
+
+
+\begin{figure}[tbp]
+\centering
+\includegraphics[width=0.9\textwidth]{closed_exact_midnight_cy_distribution.pdf}
+\caption{Yearly distribution of SRs with a midnight \texttt{closed\_date}.}
+\label{fig:closed-exact-midnight-cy}
+\end{figure}
+
+
+
+
+
+\begin{figure}[tbp]
+\centering
+\includegraphics[width=0.9\textwidth]{pareto_closed_exact_midnight_agency.pdf}
+\caption{Pareto chart of SRs with a midnight \texttt{closed\_date}, by Agency.}
+\label{fig:pareto-closed-midnight}
+\end{figure}
+
+
+\subsection{Service Request (SR) Positive Duration Analysis}
+
+
+One anomaly discussed in the referenced manuscript is the presence of unusually long time spans 
+between an SR being opened and when it is closed, referred to as the duration or response time. 
+Such durations are frequently used to measure the performance of an agency's customer service. 
+The following is an extended analysis of this long-duration phenomenon that 
+not only illustrates the value of various visualizations but also demonstrates 
+the methodological approach to an underlying issue—a textbook example 
+of Simpson's paradox. In this case, agency serves as the conditioning 
+variable, and aggregation across agencies obscures agency-specific patterns.
+
+
+
+In Figure~\ref{fig:boxplot-large-positive-durations} the box plot shows SR durations 
+calculated as $\texttt{closed\_date} - \texttt{created\_date}$. The anomaly 
+measured is SRs that have large positive durations, for this box plot 
+between two and five years (730--1825 days) --- duration limits that 
+seem reasonable to count as \emph{large}. This chosen range also 
+excludes \num{1240} extreme durations,
+many of which appear to be caused by data entry errors, such as a 
+\texttt{created\_date} of 1900-01-01. There are \num{139628} such \emph{large-duration} SRs.
+ As shown in Figure~\ref{fig:boxplot-large-positive-durations}, the box 
+plot indicates that the Department of Parks and Recreation (DPR) is responsible 
+for most of these large durations, followed closely by the Department
+of Health and Mental Hygiene (DOHMH), the Economic Development 
+Council (EDC) and DSNY. 
+
+
+\begin{figure}[tbp]
+\centering
+\includegraphics[width=0.9\textwidth]{boxplot_large_positive_739_1825_days_by_agency.pdf}
+\caption{Distribution of \textsc{SR}s with large durations
+(\SIrange[round-mode=none]{730}{1825}{\day}), by agency}
+\label{fig:boxplot-large-positive-durations}
+\end{figure}
+
+
+Not only do these four Agencies contribute
+significantly to the long-duration SR metric, but the statistical mean of such 
+durations, and the spread is also high. Meanwhile, as 
+Figure~\ref{fig:boxplot-large-positive-durations} reveals, 
+the NYPD, has a large number of large duration SRs, but relatively small such durations 
+limited in magnitude with the mean duration being just over the 
+two year lower limit at \num{771} days and a tight $\sigma$ of \num{79}. Other agency's
+$\sigma$ values are 2--4X that magnitude, indicating a broader spread. All 
+agency values can be obtained by observing the associated 
+box plot chart, supplemented by two tables produced in the 
+console output \texttt{.tex} file.
+
+
+Further insight emerges from examining all SRs with positive
+durations, regardless of magnitude---\num{15300000} observations
+(\SI[round-mode=places, round-precision=0]{94}{\percent}
+of the dataset). Figure~\ref{fig:bimodal-distribution}
+displays these durations on a logarithmic scale and
+reveals a bimodal distribution.
+Hartigan's dip test confirms statistically significant
+departure from unimodality
+($D = 0.027$, $p < 2.2 \times 10^{-16}$). The distribution is also strongly right-skewed.
+The median duration is \SI{0.44}{\day}, whereas the
+mean is \SI{23.72}{\day}, and theThe Bowley skewness coefficient 
+equals \num{0.8079}, all consistent with a heavy
+right tail and the presence of extreme values.
+
+
+\begin{figure}[tbp]
+\centering
+\includegraphics[width=0.9\textwidth]{nypd_vs_others_combined.pdf}
+\caption{All-other Agencies and NYPD Positive Durations Distributions (Log Scale).}
+\label{fig:bimodal-distribution}
+\end{figure}
+
+
+In order to objectively identify the separation threshold between the two modes, 
+the kernel density estimation method is employed. Using log-transformed durations
+the kernel density method located the local minimum between the two 
+peaks. This valley-based approach yielded a threshold of
+\SI[round-mode=places, round-precision=3]{0.432}{\day}
+(\SI[round-mode=places, round-precision=1]{10.4}{\hour}),
+providing a basis for classifying service requests into two
+operational categories:
+\emph{rapid-resolution} (\(< \SI{0.432}{\day}\)) and
+\emph{standard} work orders (\(\geq \SI{0.432}{\day}\)).
+
+
+Table~\ref{tab:mode_summary} presents summary statistics
+for the two operational modes: standard and rapid-resolution.
+Based on the separation threshold of
+\SI[round-mode=places, round-precision=3]{0.432}{\day},
+the rapid-resolution mode comprises
+\SI[round-mode=places, round-precision=1]{49.9}{\percent}
+of requests (\(n = \num{7660000}\))
+with a median duration of
+\SI[round-mode=places, round-precision=2]{0.87}{\hour}.
+The standard mode accounts for
+\SI[round-mode=places, round-precision=1]{50.1}{\percent}
+of requests (\(n = \num{7690000}\))
+with a median duration of
+\SI[round-mode=places, round-precision=1]{101.1}{\hour}.
+ The near-perfect 50/50 split between rapid and standard modes
+masks substantial differences in operational models across city agencies—
+a clear example of Simpson's paradox. In this case, agency is the
+conditioning variable, and aggregation across agencies obscures
+agency-specific operational patterns.
+
+\begin{table}[tbp]
+\centering
+\caption{Summary statistics by operational mode}
+\label{tab:mode_summary}
+\begin{tabular}{
+  l
+  S[table-format=7.0]
+  S[table-format=3.1]
+  S[table-format=3.3]
+  S[table-format=3.1]
+}
+\toprule
+{Mode} &
+{N} &
+{\%} &
+{Median (\si{\day})} &
+{Mean (\si{\day})} \\
+\midrule
+Rapid-resolution & 7663869  & 49.9 & 0.036 & 0.072 \\
+Standard         & 7689398  & 50.1 & 4.2   & 47.3  \\
+\midrule
+Total            & 15353267 & 100.0 & 51.6  & 569.0 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+
+\FloatBarrier  % Keep mode summary table with its discussion
+
+Table~\ref{tab:agency_mode} provides a further breakdown of
+durations by agency. NYPD dominates the rapid-resolution
+mode, accounting for
+\SI[round-mode=places, round-precision=0]{87}{\percent}
+of rapid closures
+(\num{6690000} of \num{7660000} requests).
+Moreover,
+\SI[round-mode=places, round-precision=1]{96.8}{\percent}
+of NYPD SRs close within
+\SI[round-mode=places, round-precision=1]{10.2}{\hour}
+(\SI[round-mode=places, round-precision=2]{0.43}{\day}),
+based on the bimodal threshold of
+\SI[round-mode=places, round-precision=3]{0.432}{\day},
+reflecting rapid responses to quality-of-life complaints.
+s. By contrast, infrastructure 
+and regulatory agencies operate primarily in standard mode: It 
+seems reasonable to assume that the nature of the SRs for 
+these agencies requires more physical service delivery, construction 
+permits, code enforcement, or ongoing case investigation, thus 
+potentially creating longer SR durations. 
+
+\begin{table}[tbp]
+\centering
+\caption{Distribution of service requests across operational modes by agency}
+\label{tab:agency_mode}
+\begin{tabular}{
+  l
+  S[table-format=7.0]
+  S[table-format=3.1]
+  S[table-format=7.0]
+  S[table-format=3.1]
+  S[table-format=8.0]
+}
+\toprule
+& \multicolumn{2}{c}{Rapid} & \multicolumn{2}{c}{Standard} & {Total N} \\
+\cmidrule(lr){2-3} \cmidrule(lr){4-5}
+{Agency} & {N} & {\%} & {N} & {\%} & {} \\
+\midrule
+NYPD  & 6685463 & 96.8 & 219918  & 3.2  & 6905381 \\
+HPD   & 119557  & 3.9  & 2934589 & 96.1 & 3054146 \\
+DSNY  & 134292  & 7.1  & 1764427 & 92.9 & 1898719 \\
+DOT   & 179129  & 19.7 & 728199  & 80.3 & 907328  \\
+DEP   & 269195  & 34.8 & 504883  & 65.2 & 774078  \\
+DPR   & 56297   & 9.9  & 511515  & 90.1 & 567812  \\
+DOB   & 36359   & 8.9  & 372911  & 91.1 & 409270  \\
+DOHMH & 28826   & 12.5 & 201522  & 87.5 & 230348  \\
+DHS   & 104194  & 64.1 & 58444   & 35.9 & 162638  \\
+EDC   & 3968    & 3.0  & 126227  & 97.0 & 130195  \\
+TLC   & 10119   & 8.6  & 106997  & 91.4 & 117116  \\
+DCWP  & 2378    & 2.0  & 113739  & 98.0 & 116117  \\
+OSE   & 33097   & 47.3 & 36891   & 52.7 & 69988   \\
+DOE   & 720     & 11.3 & 5654    & 88.7 & 6374    \\
+DFTA  & 238     & 9.1  & 2367    & 90.9 & 2605    \\
+OTI   & 37      & 3.2  & 1115    & 96.8 & 1152    \\
+\midrule
+All agencies & 7663869 & 49.9 & 7689398 & 50.1 & 15353267 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+
+Identifying this bimodal structure has important implications
+for data quality assessment and performance measurement.
+The overall aggregate mean duration of
+\SI[round-mode=places, round-precision=1]{23.7}{\day}
+is therefore a misleading summary statistic,
+as it lies between the two operational modes
+and reflects neither distribution adequately.
+Performance metrics, anomaly detection thresholds, and 
+quality benchmarks must account for this operational difference 
+to avoid spurious findings and invalid cross-agency comparisons.
+
+Three key conclusions emerge from this analysis: (1) the overall
+SR duration distribution is inaccurate and conceals two distinctly
+different operational modes—rapid-response and standard work-order
+processing; (2) NYPD accounts for the vast majority of rapid-response
+durations; and (3) all other agencies combined account for the majority
+of standard durations.
+
+A deeper examination reveals that these two operational modes exhibit
+distinct distributional characteristics. NYPD durations are generally
+concentrated at short response times, though a right-skewed tail
+is present due to a small number of unusually long cases. In contrast,
+durations across all other agencies span a much broader range, including
+a substantial number of \emph{extremely} long cases exceeding 1,000 days
+(note that the x-axis is presented on a logarithmic scale).
+
+When the two distributions are superimposed, the bimodal structure
+becomes evident, reflecting the fundamentally different operational
+protocols governing rapid-response and standard work-order processing.
+Given that NYPD represents
+\SI[round-mode=places, round-precision=0]{43}{\percent}
+of all NYC 311 service requests,
+its operational pattern exerts a disproportionate influence
+on the aggregate duration metric.
+
+
+
+\FloatBarrier  % Keep Positive Duration figures in their section
+
+
+\subsection{Service Request Negative Duration Analysis}
+
+
+A similar situation is illustrated in Figure~\ref{fig:violin-boxplot-negative}
+showing negative durations --- where the \texttt{closed\_date} occurs before 
+the \texttt{created\_date} resulting in a nonsensical \emph{negative} duration. 
+Here the violin plot shows DOT to be the largest offender with \num{44143} 
+such SRs. However, the mean negative duration is far greater for the 
+Department of Environmental Protection (DEP) as shown on the logarithmic 
+x-axis. This violin plot visualization captures both the count, magnitude, 
+and the extent of the negative duration anomaly. Box charts of these 
+same distributions are also produced and available in 
+the \texttt{charts} directory upon completion of the data cleansing program. 
+
+%\begin{figure}[tbp]
+%\centering
+%\includegraphics[width=0.9\textwidth]{boxplot_negative_days_by_agency.pdf}
+%\caption{Distribution of Negative Durations (closed occurs before created date) by Agency}
+%\label{fig:boxplot-negative-durations}
+%\end{figure}
+
+
+\begin{figure}[tbp]
+\centering
+\includegraphics[width=0.9\textwidth]{violin_boxplot_negative_days_by_agency.pdf}
+\caption{Violin with Boxplot for SRs with Negative Durations (log x-axis), by Agency.}
+\label{fig:violin-boxplot-negative}
+\end{figure}
+
+
+\FloatBarrier  % Keep Negative Duration figures in their section
+
+
+\subsection{Zero and Near-Zero Duration Analysis}
+
+
+Determining which duration values were logically
+impossible, statistically improbable, or inconsistent
+with expected operational patterns required careful
+evaluation. Some categories are straightforward,
+such as zero-second durations in which
+\texttt{created\_date} and \texttt{closed\_date}
+are identical to the second.
+There are \num{387329} such zero-duration SRs.
+In addition, \num{3460} SRs have a duration of
+exactly \SI{1}{\second}, a highly improbable value
+given typical operational processes. Short positive durations (e.g.,
+\SI{2}{\second} to \SI{27}{\second})
+also warrant examination. A log-normal $3\sigma$ threshold was
+computed on log-transformed duration values and back-transformed
+to the original scale, yielding a threshold of 
+\SI{27.95}{\second} (rounded to \SI{28}{\second}).
+Applying this threshold identified
+\num{10231} anomalous durations (\SI{0.067}{\percent} of records).
+The main manuscript provides the detailed
+rationale for this outlier methodology.
+
+
+Figure~\ref{fig:duration_histogram} visualizes the boundary used 
+to identify anomalous durations. It displays the overall 
+distribution of near-zero duration SRs from 2--90 seconds. Of 
+note is the spike at the one-minute 
+mark. This is not unexpected, as overall, SR durations show a spike 
+at every \emph{on-the-minute} mark. 
+Figure~\ref{fig:created-dates-by-seconds} displays this anomaly by the
+second, as shown for the first five minutes. Further analysis identified
+the NYC Department of Environmental Protection (DEP) and 
+Depatment of Sanitation(DSNY) as the largest contributors to the 
+on-the-minute spikes.
+
+\begin{figure}[tbp]
+\centering
+\includegraphics[width=0.9\textwidth]{duration_histogram.pdf}
+\caption{Distribution of Small Durations (2--90 Seconds).}
+\label{fig:duration_histogram}
+\end{figure}
+
+
+
+\begin{figure}[tbp]
+\centering
+\includegraphics[width=0.9\textwidth]{created_date_first_601_seconds.pdf}
+\caption{Distribution of Created Dates by Seconds Reveals Spikes at Every Minute (mm:00).}
+\label{fig:created-dates-by-seconds}
+\end{figure}
+
+
+%---------------------------------------------------------------
+\subsection{Dataset Field Usage by Agency}
+
+
+A complete field-usage-by-agency matrix is provided as a CSV file, rather 
+than printed to the console, due to its size and dimensionality. 
+ Each row in the file corresponds to a single data field, and 
+ each column corresponds to an NYC agency. The cell values 
+ indicate the count of records in which the given field is 
+populated for the specified agency. The final column
+contains the total count across all agencies.
+
+
+Field usage varies substantially by agency, reflecting differences in
+operational responsibilities, reporting practices, and data-collection
+requirements. Core administrative fields (i.e., \texttt{unique\_key},
+\texttt{created\_date}, \texttt{status}, \texttt{agency}, and 
+\texttt{complaint\_type}) are fully populated across all 
+agencies, whereas location-specific, infrastructure-related, 
+and program-specific fields are populated only by agencies for 
+which they are operationally relevant. The CSV file is available 
+at: \url{https://figshare.com/s/9f878b50687c9e4c540a}
+
+
+%---------------------------------------------------------------
+\section{SR Backlog}
+
+
+The analysis identified a significant volume of \emph{backlogged} SRs.
+An SR is classified as backlogged if it remains open at
+the end of the calendar year and is subsequently
+closed in the following year.
+While the total number of SRs increased by
+\SI[round-mode=places, round-precision=1]{17.5}{\percent}
+from 2020--2024,
+the backlog grew at a substantially faster rate,
+increasing by more than
+\SI[round-mode=places, round-precision=0]{200}{\percent}
+in absolute terms.
+Figure~\ref{fig:annual_backlog} illustrates this pattern,
+with backlogged SRs representing
+\SI[round-mode=places, round-precision=1]{1.7}{\percent}
+of all SRs entering 2024,
+compared with
+\SI[round-mode=places, round-precision=1]{0.7}{\percent}
+entering 2020.
+
+
+\begin{figure}[tbp]
+\centering
+\includegraphics[width=0.9\textwidth]{annual_backlog_bar_chart.pdf}
+\caption{Backlog of SRs — Open at the Beginning of the Year}
+\label{fig:annual_backlog}
+\end{figure}
+
+
+%---------------------------------------------------------------
+%=================================================================
+
+\section{Data, Code, and Reproducibility Procedures}
+\label{sec:reproducibility}
+
+%=================================================================
+
+
+All analyses presented in both the main manuscript and these supplementary
+materials are fully reproducible using the publicly archived datasets and
+source code referenced below. The datasets are preserved via DOI-assigned
+Figshare archives to ensure persistent access and version stability.
+
+
+\subsection*{System Requirements}
+
+\begin{itemize}
+  \item R version 4.5.2 or later (\url{https://cran.r-project.org/})
+  \item RStudio version 2026.01 or later (\url{https://posit.co/download/rstudio-desktop/})
+  \item Minimum memory: \SI{16}{\giga\byte} (tested); \SI{32}{\giga\byte} recommended for improved performance
+  \item Disk space: approximately \SI{15}{\giga\byte} (including \SI{9}{\giga\byte} of uncompressed data), plus additional space for intermediate files and outputs
+  \item Operating system: tested on Windows 10/11; macOS and Linux users may need to modify file paths in \texttt{base\_dir}
+\end{itemize}
+
+
+
+\subsection*{Data and Code Repository}
+
+\begin{itemize}
+  \item Source code: \url{https://github.com/tusseyd/nyc_311_data_cleaning}
+  \item NYC 311 dataset (approximately \SI{1.6}{\giga\byte} compressed; \SI{9}{\giga\byte} uncompressed):\\
+  \url{https://figshare.com/s/e8d479c391edb7224bfa}
+  \item USPS ZIP codes (\SI{4.5}{\mega\byte}): \url{https://figshare.com/s/8aea027d06f4903f2227}
+  \item Reference console output for validation is available in the GitHub repository.
+\end{itemize}
+
+
+The DOIs listed above correspond to the archived dataset versions used in 
+this submission. Any future dataset updates will be released under separate 
+versioned identifiers to preserve reproducibility.
+
+
+\subsection*{Required R Packages}
+
+
+Both scripts automatically check for and install missing packages. The two R
+programs require the following R packages:
+
+
+\begin{multicols}{4}
+\begin{itemize}
+    \item data.table
+    \item arrow
+    \item fasttime
+    \item here
+    \item zoo
+    \item ggpmisc
+    \item ggpattern
+    \item ggrastr
+    \item qcc
+    \item qicharts2
+    \item grid
+    \item gridExtra
+    \item sf
+    \item stringdist
+    \item tidyverse
+    \item bslib
+    \item shiny
+    \item DT
+    \item gt
+    \item styler
+    \item rlang
+    \item renv
+    \item remotes
+    \item moments
+    \item diptest
+\end{itemize}
+\end{multicols}
+
+
+\subsection*{Analysis Reproduction Overview}
+
+
+As noted in the \emph{Principles for Open Data Curation: A Case Study with the
+New York City 311 Service Request Data} manuscript, there are two separate R 
+programs which should be executed in order:
+
+
+\begin{enumerate}[leftmargin=4em]
+\item \texttt{data\_prep\_for\_jds\_datacleansing.R} --- Prepares the raw data for analysis
+
+\item \texttt{jds\_datacleansing.R} --- Performs data cleansing and quality assessments
+\end{enumerate}
+
+Each of these programs produces a console output file in simple text format, specifically:
+
+
+\begin{itemize}
+\item \texttt{JDS\_data\_prep\_console\_output.txt}
+
+\item \texttt{JDS\_datacleaning\_console\_output.txt}
+\end{itemize}
+
+
+These two files, along with the associated charts, provide additional insight 
+into the anomalies observed during data cleansing. Upon running 
+the \texttt{jds\_datacleansing.R} program, there will be 87 charts in PDF format in 
+the \texttt{charts} directory and a \texttt{field\_usage\_summary\_table.csv}
+file in the \texttt{analytics} directory. 
+
+
+For validation purposes, a reference copy of the two console output files is
+available on GitHub. These reference files can also be used to view the full console
+output of the two programs, without needing to run the .R programs. Unfortunately,
+the full set of \num{87} charts can only be duplicated by running the 
+\texttt{jds\_datacleansing.R} program, as it is not possible to include all charts in either 
+the main manuscript nor in this supplementary document. The additional figures are 
+diagnostic artifacts of the QA pipeline, and are reproducible outputs, not 
+interpretive embellishments.
+
+
+\subsection*{Steps for Reproducing the Analysis}
+Source files are available at:
+
+
+\begin{itemize}
+
+\item R Source Code (GitHub repository):\\
+\url{https://github.com/tusseyd/nyc_311_data_cleaning}
+
+\item USPS Zip Code Dataset (Figshare archive):\\
+DOI: \url{https://doi.org/10.6084/m9.figshare.31053361}
+
+\item NYC 311 Dataset (2020--2024), Figshare archive:\\
+DOI: \url{https://doi.org/10.6084/m9.figshare.30699800}
+
+\item Data Preparation Console Output (GitHub reference file):\\
+\url{https://github.com/tusseyd/nyc_311_data_cleaning/blob/main/reference_console_output/reference_JDS_data_prep_console_output.txt}
+
+\item Data Cleaning Console Output (GitHub reference file):\\
+\url{https://github.com/tusseyd/nyc_311_data_cleaning/blob/main/reference_console_output/reference_JDS_datacleaning_console_output.txt}
+
+\end{itemize}
+
+
+Step 1: Download the two data files
+
+
+\begin{enumerate}
+\item Download the NYC 311 and USPS Zip Code datasets from Figshare. (links above)
+\item Do not rename these files as the scripts expect original filenames:
+
+
+\begin{itemize}
+\item \texttt{5-year\_311SR\_01-01-2020\_thru\_12-31-2024\_AS\_OF\_10-10-2025.zip}
+\item \texttt{zip\_code\_database.csv}
+\end{itemize}
+
+
+\item Unzip the archive (approximately \SI{9}{\giga\byte} uncompressed) to create a CSV file.
+This .CSV file should be placed into the raw\_data directory. 
+(See directory structure below.)
+\item The \texttt{zip\_code\_database.csv} file should also be placed into the 
+raw\_data directory. Both of these .CSV files will be modified by the data 
+prep program to the .RDS format for ease in processing.
+\end{enumerate}
+
+
+Step 2: Set Up Project Structure
+
+
+\begin{enumerate}
+\item Clone or download the entire GitHub repository: \\
+\url{https://github.com/tusseyd/nyc_311_data_cleaning}
+\item Important: Ensure you download all files from the GitHub repo including:
+
+
+\begin{itemize}
+\item \texttt{code/data\_prep\_for\_jds\_datacleansing.R}
+\item \texttt{code/jds\_datacleansing.R}
+\item All files in \texttt{code/functions/} directory (required dependencies)
+\end{itemize}
+
+
+\item Running the data preparation program \texttt{data\_prep\_for\_jds\_datacleansing.R} 
+will automatically create the following directory structure. The individual files shown 
+below will be created by running the data cleansing program. Below is the 
+directory structure and the files they will contain after running the data 
+cleansing program \texttt{code/jds\_datacleansing.R}. 
+
+
+\dirtree{%
+.1 / (User's R Working Directory).
+.2 nyc\_311\_data\_cleaning/ (Project Root).
+.3 analytics/.
+.4 field\_usage\_summary\_table.csv.
+.3 charts/.
+.4 [87 PDF files].
+.3 code/.
+.4 data\_prep\_for\_jds\_datacleansing.R.
+.4 jds\_datacleansing.R.
+.4 functions/.
+.5 [function files].
+.3 console\_output/.
+.4 JDS\_data\_prep\_console\_output.txt.
+.4 JDS\_datacleansing\_console\_output.txt.
+.3 data/.
+.4 5-year\_311SR\_01-01-2020\_thru\_12-31-2024\_AS\_OF\_10-10-2025.rds.
+.4 USPS\_zipcodes.rds.
+.4 raw\_data/.
+.5 5-year\_311SR\_01-01-2020\_thru\_12-31-2024\_AS\_OF\_10-10-2025.csv.
+.5 zip\_code\_database.csv.
+.3 reference\_console\_output/.
+.4 reference\_JDS\_data\_prep\_console\_output.txt.
+.4 reference\_JDS\_datacleaning\_console\_output.txt.
+}
+
+
+Step 3:  Open RStudio and open \texttt{code/data\_prep\_for\_jds\_datacleansing.R}
+Modify the \texttt{base\_dir} variable (line 31) to match your local path:
+
+
+\begin{verbatim}
+base_dir <- file.path("your", "path", "here", "nyc_311_data_cleaning")
+\end{verbatim}
+\textit{Note: Non-Windows users should use forward slashes or 
+platform-appropriate path separators}
+
+
+Step 4: Place the downloaded data files in the following directories:
+
+
+\begin{itemize}
+\item \texttt{5-year\_311SR\_01-01-2020\_thru\_12-31-2024\_AS\_OF\_10-10-2025.csv} $\rightarrow$ \texttt{data/raw\_data/}
+\item \texttt{zip\_code\_database.csv} $\rightarrow$ \texttt{data/raw\_data/}
+\end{itemize}
+\end{enumerate}
+
+
+Step 5: Run the Data Preparation R program
+
+
+\begin{enumerate}
+\item Execute \texttt{data\_prep\_for\_jds\_datacleansing.R} in RStudio.
+\item The script will create the required directory structure (if missing) and install necessary R packages.
+\item Expected runtime: approximately \SI{90}{\minute} with \SI{16}{\giga\byte} of memory,
+or approximately \SI{30}{\minute} with \SI{32}{\giga\byte}.
+Initial data loading is memory-intensive.
+\item Upon completion, verify that the following files exist:
+  \begin{itemize}
+    \item \texttt{data/5-year\_311SR\_01-01-2020\_thru\_12-31-2024\_AS\_OF\_10-10-2025.rds}
+    \item \texttt{data/USPS\_zipcodes.rds}
+    \item \texttt{console\_output/JDS\_data\_prep\_console\_output.txt}
+  \end{itemize}
+\end{enumerate}
+
+
+Step 6: Run the Data Cleansing Analysis R program
+
+
+\begin{enumerate}
+\item Execute \texttt{code/jds\_datacleansing.R} in RStudio.
+\item Expected runtime: approximately \SI{60}{\minute}
+on a system with \SI{16}{\giga\byte} of memory,
+or approximately \SI{31}{\minute}
+on a system with \SI{32}{\giga\byte}.
+\item Monitor progress in RStudio's plot pane as charts are generated.
+\item The script will produce:
+  \begin{itemize}
+    \item \num{87} PDF charts in \texttt{charts/}
+    \item \texttt{field\_usage\_summary\_table.csv}, located in \texttt{data/analytics/}
+    \item \texttt{console\_output/JDS\_datacleaning\_console\_output.txt}
+  \end{itemize}
+\end{enumerate}
+
+\subsection*{Validation}
+
+
+Compare your directory structure along with the associated files shown
+in the above tree structure. Compare the charts to those in the main 
+manuscript and in this supplementary document. Compare your console 
+output files against the reference outputs provided in the GitHub 
+repository to verify successful reproduction. The console outputs 
+contain many tables of information which should match your 
+run. Validation console output files are located at:
+
+
+\begin{itemize}
+\item Data preparation console output: \\ \small\url{https://github.com/tusseyd/nyc_311_data_cleaning/blob/main/reference_console_output/reference_JDS_data_prep_console_output.txt}
+ \item Data cleaning console output: \\ \small\url{https://github.com/tusseyd/nyc_311_data_cleaning/blob/main/reference_console_output/reference_JDS_datacleaning_console_output.txt}
+\end{itemize}
+
+
+\subsection*{Notes}
+
+
+\begin{itemize}
+\item Total processing time (data preparation and cleansing):
+approximately \SI{2.5}{\hour}
+on a system with \SI{16}{\giga\byte} of memory;
+execution is approximately twice as fast on systems with
+\SI{32}{\giga\byte}.
+\item The scripts use \texttt{data.table} for memory-efficient processing
+of more than \num{15000000} records.
+\item All file paths are configured relative to \texttt{base\_dir}
+to ensure portability.
+\item Memory management: initial data loading requires substantial RAM;
+the script reduces memory footprint after preprocessing.
+\end{itemize}
+
+
+
+\end{document}

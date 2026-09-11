@@ -132,7 +132,7 @@ plot_duration_histogram <- function(
   hist_data <- df[, .(count = .N), by = duration_binned][order(duration_binned)]
   
   if (!is.null(threshold_numeric)) {
-    hist_data[, is_suspicious := duration_binned < threshold_numeric]
+    hist_data[, is_suspicious := duration_binned <= threshold_numeric]
   } else {
     hist_data[, is_suspicious := FALSE]
   }
