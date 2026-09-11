@@ -120,7 +120,7 @@ create_condition_plot <- function(
              label = paste("Overall mean:", format(round(process_mean, 5), 
                                                    nsmall = 5)),
              hjust = 0.5, vjust = -0.2, size = 3.5, color = "darkred", 
-             fill = "gray99", label.size = NA) +
+             fill = "gray99", linewidth = NA) +
     
     # Segment lines and mean labels
     annotate("segment", x = first_year_start, xend = first_year_end,
@@ -134,12 +134,12 @@ create_condition_plot <- function(
              label = paste0(first_year, " mean: ", 
                             format(round(mean_first_year, 5), nsmall = 5)),
              hjust = 0, vjust = -0.2, size = 4, color = "black", 
-             fill = "gray99", label.size = NA) +
+             fill = "gray99", linewidth = NA) +
     annotate("label", x = last_year_end, y = mean_last_year,
              label = paste0(last_year, " mean: ", 
                             format(round(mean_last_year, 5), nsmall = 5)),
              hjust = 1, vjust = -0.2, size = 4, color = "black", 
-             fill = "gray99", label.size = NA) +
+             fill = "gray99", linewidth = NA) +
     
     labs(
       title = title,
