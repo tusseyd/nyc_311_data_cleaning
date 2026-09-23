@@ -26,31 +26,36 @@ plot_barchart <- function(
     add_maximum = FALSE,
     add_minimum = FALSE,
     
-    # Standard deviation customization
+    # 3 sigma line customization
     add_3sd = FALSE,
     sd_color = "#D55E00",
     sd_linetype = "dashed",
-    sd_size = 1.2,
+    sd_size = 1.45,
+    sd_text_size = 6,
     
     # Mean line customization
     mean_color = "#D55E00",
     mean_linetype = "dotted",
-    mean_size = 1.2,
+    mean_size = 1.5,
+    mean_text_size = 3.5,
+    
+    # Median line customization
+    median_text_size = 3.5,
     
     # Data labels
     show_labels = TRUE,
     label_col = NULL,
     label_angle = 0,
-    label_size = 3,
+    label_size = 4,
     label_color = "black",
     label_vjust = -0.5,
-    label_hjust = -0.5,
+    label_hjust = -0.1,
     
     # Trendline
     add_trendline = FALSE,
     trendline_color = "#D55E00",
     trendline_method = "lm",
-    trendline_size = 1.2,
+    trendline_size = 1.5,
     show_r_squared = FALSE,          # NEW: Show R² on plot
     show_trend_stats = FALSE,        # NEW: Show growth/decline %
     trend_stats_x_pos = "left",      # NEW: Position for stats ("left", "right", "center")
@@ -159,16 +164,16 @@ plot_barchart <- function(
     }
     
     scale_x_date(
-      expand = c(0.01, 0), 
-      labels = scales::date_format(date_labels), 
+      expand = c(0.01, 0),
+      labels = scales::date_format(date_labels),
       breaks = scales::date_breaks(break_interval)
     )
     
   } else if (inherits(DT[[x_col]], c("POSIXct", "POSIXt"))) {
     break_interval <- paste(x_label_every, "hours")
     scale_x_datetime(
-      expand = c(0.01, 0), 
-      labels = scales::date_format("%H:%M"), 
+      expand = c(0.01, 0),
+      labels = scales::date_format("%H:%M"),
       breaks = scales::date_breaks(break_interval)
     )
   } else if (is.numeric(DT[[x_col]])) {
@@ -212,9 +217,9 @@ plot_barchart <- function(
     p <- ggplot(DT, aes(x = .data[[x_col]], y = .data[[y_col]])) +
       geom_col(fill = fill_color, width = bar_width, color = NA)
   }
-    
-    
-   p <- p + x_scale +
+  
+  
+  p <- p + x_scale +
     scale_y_continuous(labels = y_axis_labels) +
     labs(
       title = title,
@@ -229,11 +234,13 @@ plot_barchart <- function(
   } else {
     p <- p + theme_minimal() +
       theme(
-        axis.text.x = element_text(angle = x_axis_angle, 
+        axis.text.x = element_text(angle = x_axis_angle,
                                    hjust = ifelse(x_axis_angle > 0, 1, 0.5)),
         text = element_text(size = text_size)
       )
   }
+  
+  p <- p + theme(plot.subtitle = element_text(size = 14))
   
   # Statistical annotations
   if (add_mean || add_median || add_maximum || add_minimum) {
@@ -242,7 +249,7 @@ plot_barchart <- function(
     if (add_mean) {
       mean_val <- mean(y_values, na.rm = TRUE)
       p <- p +
-        geom_hline(yintercept = mean_val, linetype = mean_linetype, 
+        geom_hline(yintercept = mean_val, linetype = mean_linetype,
                    color = mean_color, linewidth = mean_size)
       
       if (inherits(DT[[x_col]], c("Date", "POSIXct"))) {
@@ -251,15 +258,21 @@ plot_barchart <- function(
         x_pos <- 1
       }
       
-      p <- p + annotate("text", x = x_pos, y = mean_val,
+      p <- p + annotate("text", 
+                        x = x_pos, 
+                        y = mean_val,
                         label = paste0("Mean: ", format(round(mean_val), big.mark = ",")),
-                        hjust = -0.1, vjust = -1.6, color = mean_color, size = 3.5)
+                        hjust = -0.1, 
+                        vjust = -1.6, 
+                        color = mean_color, 
+                        size = mean_text_size,
+                        fontface = "bold")
     }
     
     if (add_median) {
       median_val <- median(y_values, na.rm = TRUE)
       p <- p +
-        geom_hline(yintercept = median_val, linetype = "dashed", 
+        geom_hline(yintercept = median_val, linetype = "dashed",
                    color = mean_color, linewidth = mean_size)
       
       if (inherits(DT[[x_col]], c("Date", "POSIXct"))) {
@@ -268,9 +281,14 @@ plot_barchart <- function(
         x_pos <- 1
       }
       
-      p <- p + annotate("text", x = x_pos, y = median_val,
+      p <- p + annotate("text", x = x_pos, 
+                        y = median_val, 
                         label = paste0("Median: ", format(median_val, big.mark = ",")),
-                        hjust = -0.1, vjust = 1.5, color = "#0072B2", size = 3.5)
+                        hjust = -0.1, 
+                        vjust = 1.5, 
+                        color = "#0072B2", 
+                        size = median_text_size,
+                        fontface = "bold")
     }
     
     if (add_maximum) {
@@ -330,7 +348,7 @@ plot_barchart <- function(
         
         # Determine if growth or decline
         trend_word <- ifelse(pct_change >= 0, "Growth", "Decline")
-        annotation_lines <- c(annotation_lines, 
+        annotation_lines <- c(annotation_lines,
                               sprintf("%s: %.1f%%", trend_word, abs(pct_change)))
       }
       
@@ -385,16 +403,18 @@ plot_barchart <- function(
     sigma <- sd(y_vals, na.rm = TRUE)
     threshold <- mu + 3 * sigma
     
-    p <- p + 
+    p <- p +
       geom_hline(yintercept = threshold,
                  color = sd_color,
                  linetype = sd_linetype,
                  linewidth = sd_size) +
       annotate("text",
                x = Inf, y = threshold,
-               label = sprintf("3SD ≈ %.0f", threshold),
+#               label = sprintf("3SD ≈ %.0f", threshold),
+               label = sprintf("3σ ≈ %.0f", threshold),  
                hjust = 1.1, vjust = -0.5,
-               color = sd_color, size = 3)
+               color = sd_color, size = sd_text_size,
+               fontface = "bold")
   }
   
   # Data labels
@@ -436,7 +456,8 @@ plot_barchart <- function(
       filename = filepath,
       plot = p,
       width = chart_width,
-      height = chart_height
+      height = chart_height,
+      device = cairo_pdf  
     )
     
     message("File saved: ", filepath)

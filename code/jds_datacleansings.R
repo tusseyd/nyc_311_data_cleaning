@@ -6,7 +6,7 @@ main_data_file <-
  
 # Boolean flag. TRUE to redirect console output to text file
 # FALSE to display console outpx`t on the screen
-enable_sink <- TRUE        
+enable_sink <- FALSE        
 
 #The "as of" date in "YYYY-MM-DD" format
 projection_date <- "2025-11-30"   
@@ -488,6 +488,25 @@ yearly_bar_chart <- plot_annual_counts_with_projection(
 sorted_by_agency <- d311[, .(count = .N), by = agency][order(-count)]
 sorted_by_agency[, percentage := round(count / sum(count), 4)]
 sorted_by_agency[, cumulative_percentage := cumsum(percentage)]
+
+library(scales)
+
+print(
+  sorted_by_agency[, .(
+    agency,
+    count = comma(count),
+    percentage = percent(percentage, accuracy = 0.01),
+    cumulative_percentage = percent(cumulative_percentage, accuracy = 0.01)
+  )]
+)
+
+library(gt)
+sorted_by_agency |>
+  gt() |>
+  fmt_number(count, sep_mark = ",") |>
+  fmt_percent(c(percentage, cumulative_percentage), decimals = 2) |>
+  tab_header(title = "SR Volume by Agency")
+
 
 # At the top of your script
 options(warn = 2)  # Turn warnings into errors
@@ -2777,7 +2796,7 @@ cat("\nAll charts saved to ./charts/ directory\n\n")
 # - Positive (small, large, extreme)
 
 cat("\n=== COMPREHENSIVE DURATION CATEGORY ANALYSIS ===\n")
-duraton_analysis <- analyze_duration_QA(
+duration_analysis <- analyze_duration_QA(
                                   d311,
                                   lower_neg_days   = -2 * 365,
                                   extreme_neg_days = -5 * 365,
