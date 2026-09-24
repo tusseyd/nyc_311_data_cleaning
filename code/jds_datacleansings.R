@@ -6,7 +6,7 @@ main_data_file <-
  
 # Boolean flag. TRUE to redirect console output to text file
 # FALSE to display console outpx`t on the screen
-enable_sink <- FALSE        
+enable_sink <- TRUE        
 
 #The "as of" date in "YYYY-MM-DD" format
 projection_date <- "2025-11-30"   
@@ -499,14 +499,6 @@ print(
     cumulative_percentage = percent(cumulative_percentage, accuracy = 0.01)
   )]
 )
-
-library(gt)
-sorted_by_agency |>
-  gt() |>
-  fmt_number(count, sep_mark = ",") |>
-  fmt_percent(c(percentage, cumulative_percentage), decimals = 2) |>
-  tab_header(title = "SR Volume by Agency")
-
 
 # At the top of your script
 options(warn = 2)  # Turn warnings into errors
