@@ -1,3 +1,5 @@
+\pdfminorversion=7
+\pdfsuppresswarningpagegroup=1
 \documentclass[linenumber]{jdsart}
 \usepackage{setspace}
  
@@ -491,10 +493,11 @@ These steps include both structural adjustments and content standardization:
   \item Standardization of structure: Field names are normalized for ease of reference, and the raw
   \texttt{.csv} file is converted into the more efficient RDS format.
 
-  \item Date handling: All date fields are converted to the \texttt{POSIXct} class in 
-  YYYY:MM:DD HH:MM:SS format and aligned to the \texttt{America/New\_York} 
-  time zone, enabling accurate treatment of Daylight Saving Time (DST) 
-  effects (discussed in Section~\ref{subsec:datefieldissues}).
+  \item Date handling: Date handling: All date fields are converted to the \texttt{POSIXct}
+class, using the format \texttt{YYYY-MM-DD HH:MM:SS} format 
+and aligned to the \texttt{America/New\_York} time zone, 
+enabling accurate treatment of Daylight Saving Time (DST) 
+effects (discussed in Section~\ref{subsec:datefieldissues}).
 
   \item Agency harmonization: Several agencies were renamed during the study period; records were
   consolidated under their current agency designations.
@@ -939,21 +942,22 @@ by the red line.
 
 \begin{figure}[tbp]
   \centering
-  \begin{subfigure}[b]{0.97\textwidth}
+  \begin{subfigure}[b]{0.9\textwidth}
     \includegraphics[width=\textwidth]{created_top_of_hour_distribution.pdf}
     \caption{\textsc{SR}s created at the exact top of the hour. Note the spikes at noon and midnight.}
     \label{fig:created_top_hour}
   \end{subfigure}
  % \hfill
-  \begin{subfigure}[b]{0.97\textwidth}
+  \begin{subfigure}[b]{0.9\textwidth}
     \includegraphics[width=\textwidth]{closed_top_of_hour_distribution.pdf}
     \caption{\textsc{SR}s closed at the exact top of the hour. Note the spikes at noon and midnight.}
     \label{fig:closed_top_hour}
   \end{subfigure}
-\caption{311~\textsc{SR}s created and closed exactly at top of the hour (HH:00:00) showing spikes at 
-exactly midnight (00:00:00) and exactly noon (12:00:00). The red dashed line 
-represents $\mu + 3\sigma$ where $\mu$ and $\sigma$ represent the mean and 
-standard deviation of the hourly counts.}
+\caption{311~\textsc{SR}s created and closed exactly at the top of the hour
+(HH:00:00), showing spikes at exactly midnight (00:00:00) and exactly
+noon (12:00:00). The red dashed line marks $\mu + 3\sigma$, where
+$\mu$ and $\sigma$ represent the mean and standard deviation of the
+hourly counts.}
   \label{fig:exacthours}	
 \end{figure}
 
@@ -1051,7 +1055,7 @@ extremely long lifespans. A total of \num{139628}
 SRs fall into the \emph{large-duration} category
 (1--2~years). These are concentrated in DPR, DOHMH, DSNY, and DOB,
 which together account for \SI{97}{\percent} of such cases. Additionally, 
-\num{1240} SRs were classified as \emph{extreme} positive 
+\num{1258} SRs were classified as \emph{extreme} positive 
 durations (greater than 5~years). \SI{94}{\percent} of these extreme positive 
 durations occur within the DPR. Many of these extreme DPR durations
 are understandable as they include tree planting, removal, trimming, and 
@@ -1202,8 +1206,8 @@ the actual data that may mislead analytic efforts. Examples are provided below.
 
 \paragraph{Data typing:} As previously noted, while the NYC Open Data 
 portal displays the data types of various fields, the 
-Data Dictionary does not. For example, in the Data Dictionary, 
-the \texttt{incident\_zip} field is specified as text. This may 
+Data Dictionary does not. For example, the Data Dictionary 
+specifies \texttt{incident\_zip} as text. This may 
 not be the most suitable data definition. Perhaps a better 
 dictionary description would be ``categorical'' with a note 
 indicating that the data must contain only numeric values 
@@ -1243,8 +1247,8 @@ roadmap for improving data curation practices.
 \subsection{Principles}
 \label{subsec:principles}
 
-\paragraph{Principle 1: Establishing Cross-Organizational Consistency:}
-A central issue in government-released datasets is  harmonization
+\paragraph{Principle 1: Cross-Organizational Consistency:} A central 
+issue in government-released datasets is  harmonization
 of data fields across agencies and  maintaining that consistency
 over time. Inconsistent field definitions, data formats, or value
 domains can lead to erroneous analyses and hinder 
@@ -1484,9 +1488,12 @@ in machine learning models remains accurate, clean, and reliable
 See Supplementary Materials for extended results and all supporting visualizations.
 
 \begin{itemize}[leftmargin=*, nosep]
-  \item \textsc{R} source code: \url{https://github.com/tusseyd/nyc_311_data_cleaning}
-  \item USPS Zip Code dataset archived on Figshare: \url{https://doi.org/10.6084/m9.figshare.31053361}
-  \item NYC 311 SR dataset archived on Figshare: \url{https://doi.org/10.6084/m9.figshare.30699800}
+  \item R source code:\\
+        \url{https://github.com/tusseyd/nyc_311_data_cleaning}
+  \item USPS ZIP Code dataset (Figshare):\\
+        \url{https://doi.org/10.6084/m9.figshare.31053361}
+  \item NYC 311 SR dataset (Figshare):\\
+        \url{https://doi.org/10.6084/m9.figshare.30699800}
 \end{itemize}
 
 

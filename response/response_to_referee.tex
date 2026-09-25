@@ -193,7 +193,7 @@ We thank the Referee for this suggestion. In revising the caption, we
 concluded that the figure contained more detail than a reader could
 readily absorb, and that its key points are conveyed more clearly in
 the text. We have therefore removed the figure and revised the
-accompanying discussion (p.~4, ll.~27--30) to state its main takeaway
+accompanying discussion (p.~4, ll.~26--30) to state its main takeaway
 directly: just six agencies account for 90.19\% of all SRs.
 
 \refcomment{Figure 3: First, this is very hard to read. The fonts are
@@ -204,7 +204,7 @@ from the text in terms of what you want readers to know.}
 
 We agree, and we thank the Referee for the suggestion to show only the
 top contributors. We have replaced the figure with a table (Table~1 of
-the revised manuscript, p.~4) listing the six agencies that together
+the revised manuscript, p.~4, ll.~32--41) listing the six agencies that together
 account for approximately 90\% of all SRs. The table is set in the body
 font, which resolves the readability issue, and its caption states the
 key observation: SR volume is highly concentrated, with just six
@@ -221,7 +221,7 @@ days, and the violin plot shows the number of SRs; both axes are now
 labeled explicitly, and ``d'' has been spelled out as ``days''
 throughout. To improve readability, we removed panel~(b), which showed
 negative durations; those cases are now summarized numerically in the
-text (p.~12, ll.~13--23	). The remaining plot now spans the full page
+text (p.~12, ll.~12--24). The remaining plot now spans the full page
 width. The revised caption explains how to read the plot and states its
 key observations. (Figure~4(a) in the original manuscript is Figure~1
 in the revision.)
@@ -230,7 +230,7 @@ in the revision.)
 use 30 days.}
 
 Corrected. The text now reads ``more than 30 days post-closure''
-(p.~9, ll.~33--35). The abbreviation arose from the \texttt{siunitx}
+(p.~9, ll.~34--35). The abbreviation arose from the \texttt{siunitx}
 unit \verb|\day|, which prints as ``d''; we have replaced it with plain
 text throughout the document.
 
@@ -276,10 +276,11 @@ requests and overgrown, damaged, or dead trees), which can require
 lengthy efforts to plant a new tree or remove a dead or dying one.
 Likewise, the Department of Buildings (DOB) handles SRs involving
 plumbing, building use, and construction, which may also take
-considerable time to resolve (p.~13, l.~4--8).
+considerable time to resolve .
 
-Accordingly, we have revised the manuscript to include similar examples
-and to note that such SRs can reasonably require long resolution times.
+Accordingly, we have revised the manuscript to include 
+similar examples (p.~13, ll.~4--8) and to note that such 
+SRs can reasonably require long resolution times.
 
 \refcomment{Page 17, Actionable Steps: I really liked these. I have one
 suggestion (take it or leave it) on Collaboration. Agencies could
@@ -300,65 +301,67 @@ this existing structure and to recommend formalizing a data curation
 responsibility, either by extending the Coordinator role or by
 appointing a dedicated Data Curation Officer, as the Referee suggests.
 
+
 % ---- Supplementary table, placed at the end of the letter ----
 \clearpage
 \begin{table}[t]
 \centering
 \small
-\caption{Sample Complaint Types with long average positive durations, by agency.
-Durations are the mean number of days from creation to closure.}
+\caption{Selected \texttt{complaint\_type}(s) with long average positive durations, by 
+agency. Durations are the mean number of days from \texttt{created\_date} to
+\texttt{closed\_date} for each \texttt{complaint\_type}.}
 \label{tab:long-durations}
 \begin{tabular}{llrr}
 \toprule
-Agency & Complaint type & \multicolumn{1}{c}{Avg.\ duration (days)} & \multicolumn{1}{c}{Count} \\
+Agency & Complaint Type & \multicolumn{1}{c}{Avg.\ Duration (days)} & \multicolumn{1}{c}{Count} \\
 \midrule
-DEP    & SEWER                                    & 1{,}093 &      245 \\
-       & WATER SYSTEM                             &     947 &       71 \\
+DEP   & Sewer                                  & 1{,}093 &      245 \\
+      & Water System                           &     947 &       71 \\
 \midrule
-DOB    & REAL TIME ENFORCEMENT                    &     987 &       50 \\
-       & SPECIAL PROJECTS INSPECTION TEAM (SPIT)  &     975 &       91 \\
-       & GENERAL CONSTRUCTION/PLUMBING            &     930 &  1{,}173 \\
-       & PLUMBING                                 &     924 &       97 \\
-       & BUILDING/USE                             &     916 &      767 \\
+DOB   & Real Time Enforcement                  &     987 &       50 \\
+      & Special Projects Inspection Team (SPIT) &    975 &       91 \\
+      & General Construction/Plumbing          &     930 &  1{,}173 \\
+      & Plumbing                               &     924 &       97 \\
+      & Building/Use                           &     916 &      767 \\
 \midrule
-DOE    & SCHOOL MAINTENANCE                       &     931 &      189 \\
+DOE   & School Maintenance                     &     931 &      189 \\
 \midrule
-DOHMH  & POISON IVY                               & 1{,}358 &      181 \\
-       & WINDOW GUARD                             & 1{,}269 &       78 \\
-       & DAY CARE                                 & 1{,}220 &  4{,}087 \\
-       & MOBILE FOOD VENDOR                       & 1{,}206 &  6{,}489 \\
-       & TATTOOING                                & 1{,}172 &      505 \\
-       & FOOD ESTABLISHMENT                       & 1{,}162 & 20{,}906 \\
-       & SMOKING                                  & 1{,}129 &  8{,}249 \\
-       & NON-RESIDENTIAL HEAT                     & 1{,}071 &  2{,}063 \\
-       & DRINKING WATER                           &     797 &       92 \\
-       & INDOOR SEWAGE                            &     796 &      113 \\
+DOHMH & Poison Ivy                             & 1{,}358 &      181 \\
+      & Window Guard                           & 1{,}269 &       78 \\
+      & Day Care                               & 1{,}220 &  4{,}087 \\
+      & Mobile Food Vendor                     & 1{,}206 &  6{,}489 \\
+      & Tattooing                              & 1{,}172 &      505 \\
+      & Food Establishment                     & 1{,}162 & 20{,}906 \\
+      & Smoking                                & 1{,}129 &  8{,}249 \\
+      & Non-Residential Heat                   & 1{,}071 &  2{,}063 \\
+      & Drinking Water                         &     797 &       92 \\
+      & Indoor Sewage                          &     796 &      113 \\
 \midrule
-DOT    & STREET LIGHT CONDITION                   & 1{,}064 &  1{,}204 \\
-       & TRAFFIC SIGNAL CONDITION                 &     866 &      471 \\
+DOT   & Street Light Condition                 & 1{,}064 &  1{,}204 \\
+      & Traffic Signal Condition               &     866 &      471 \\
 \midrule
-DPR    & NEW TREE REQUEST                         & 1{,}162 & 28{,}262 \\
-       & OVERGROWN TREE/BRANCHES                  & 1{,}064 & 12{,}412 \\
-       & DAMAGED TREE                             & 1{,}017 &  4{,}491 \\
-       & WOOD PILE REMAINING                      &     997 &      198 \\
-       & ROOT/SEWER/SIDEWALK CONDITION            &     994 &  6{,}899 \\
-       & ILLEGAL TREE DAMAGE                      &     972 &      674 \\
-       & DEAD/DYING TREE                          &     968 &  2{,}167 \\
-       & UPROOTED STUMP                           &     955 &      151 \\
-       & MAINTENANCE OR FACILITY                  &     929 &  1{,}122 \\
+DPR   & New Tree Request                       & 1{,}162 & 28{,}262 \\
+      & Overgrown Tree/Branches                & 1{,}064 & 12{,}412 \\
+      & Damaged Tree                           & 1{,}017 &  4{,}491 \\
+      & Wood Pile Remaining                    &     997 &      198 \\
+      & Root/Sewer/Sidewalk Condition          &     994 &  6{,}899 \\
+      & Illegal Tree Damage                    &     972 &      674 \\
+      & Dead/Dying Tree                        &     968 &  2{,}167 \\
+      & Uprooted Stump                         &     955 &      151 \\
+      & Maintenance or Facility                &     929 &  1{,}122 \\
 \midrule
-DSNY   & GRAFFITI                                 & 1{,}135 &  2{,}503 \\
-       & ADOPT-A-BASKET                           & 1{,}122 &      301 \\
+DSNY  & Graffiti                               & 1{,}135 &  2{,}503 \\
+      & Adopt-a-Basket                         & 1{,}122 &      301 \\
 \midrule
-EDC    & NOISE -- HELICOPTER                      & 1{,}041 & 32{,}529 \\
+EDC   & Noise -- Helicopter                    & 1{,}041 & 32{,}529 \\
 \midrule
-HPD    & HEAT/HOT WATER                           & 1{,}088 &       64 \\
-       & PAINT/PLASTER                            &     963 &       52 \\
-       & UNSANITARY CONDITION                     &     959 &       56 \\
-       & PLUMBING                                 &     952 &       52 \\
-       & GENERAL                                  &     898 &       53 \\
+HPD   & Heat/Hot Water                         & 1{,}088 &       64 \\
+      & Paint/Plaster                          &     963 &       52 \\
+      & Unsanitary Condition                   &     959 &       56 \\
+      & Plumbing                               &     952 &       52 \\
+      & General                                &     898 &       53 \\
 \midrule
-TLC    & FOR HIRE VEHICLE COMPLAINT               &     942 &       75 \\
+TLC   & For Hire Vehicle Complaint             &     942 &       75 \\
 \bottomrule
 \end{tabular}
 \end{table}
