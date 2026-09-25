@@ -51,8 +51,13 @@ date_checks_character <- function(DT, date_cols) {
     # minute_table[, pct := round(100 * N / sum(N), 2)]
     
     # Count specific times (in 12-hour format)
-    count_midnight <- sum(time_part == "12:00:00 AM", na.rm = TRUE)
-    count_noon     <- sum(time_part == "12:00:00 PM", na.rm = TRUE)
+    # count_midnight <- sum(time_part == "12:00:00 AM", na.rm = TRUE)
+    # count_noon     <- sum(time_part == "12:00:00 PM", na.rm = TRUE)
+    
+    count_midnight <- sum(time_part == "00:00:00", na.rm = TRUE)
+    count_noon     <- sum(time_part == "12:00:00", na.rm = TRUE)
+    
+    
     total_non_na   <- length(vals)
     total_rows     <- nrow(DT)
     
@@ -86,9 +91,9 @@ date_checks_character <- function(DT, date_cols) {
     # print(minute_table)
 
     cat("\n", col, " — Counts of Special Times\n", sep = "")
-    cat(sprintf("Midnight (12:00:00 AM): %d (%.2f%%)\n",
+    cat(sprintf("Midnight (00:00:00): %d (%.2f%%)\n",
                 count_midnight, 100 * count_midnight / total_non_na))
-    cat(sprintf("Noon (12:00:00 PM):     %d (%.2f%%)\n",
+    cat(sprintf("Noon (12:00:00):     %d (%.2f%%)\n",
                 count_noon, 100 * count_noon / total_non_na))
     
     return(result)
@@ -96,7 +101,7 @@ date_checks_character <- function(DT, date_cols) {
   
   summary_dt <- rbindlist(summary_list, fill = TRUE)
   
-  cat("\n--- Date Field Character-Length, 'Midnight', 'Noon', and NA Summary ---\n")
+  cat("\n\n--- Date Field Character-Length, 'Midnight', 'Noon', and NA Summary ---\n\n")
   print(summary_dt)
   
   invisible(summary_dt)

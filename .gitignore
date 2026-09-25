@@ -14,21 +14,83 @@ code/.Rproj.user/0023D16C/sources/prop/0A39CE9C
 /code/misc_programs
 code/unused_functions.csv
 code/vs_code/create_sample
-/console_output
 /data
-JDS_manuscript/asa.bst
-JDS_manuscript/jds.bst
-JDS_manuscript/Makefile
-JDS_manuscript/jdsart.cls
-JDS_manuscript/manuscript.pdf
-JDS_manuscript/manuscript.synctex.gz
-JDS_manuscript/original_manuscript.pdf
-JDS_manuscript/original_manuscript.synctex(busy)
-JDS_manuscript/original_manuscript.synctex.gz
-JDS_manuscript/README
 code/function_usage_details.csv
 code/function_usage_details.csv
 code/function_usage_summary.csv
 code/function_usage_details.csv
 code/function_usage_details.csv
 /misc
+/analytics
+
+manuscript/jds.bst
+manuscript/jds.bst
+manuscript/jdsart.cls
+manuscript/.Rhistory
+code/.Rhistory
+
+manuscript/supplemental_images/dst_start_affected_records.csv
+
+
+# --- LaTeX / latexmk core ---
+*.aux
+*.log
+*.out
+*.toc
+*.lof
+*.lot
+*.fls
+*.fdb_latexmk
+*.synctex.gz
+
+# --- Bibliography (BibTeX / Biber) ---
+*.bbl
+*.blg
+*.bcf
+*.run.xml
+
+# --- Index / glossaries / nomenclature ---
+*.idx
+*.ilg
+*.ind
+*.glo
+*.gls
+*.glg
+*.acn
+*.acr
+*.alg
+
+# --- Beamer / hyperref side files ---
+*.nav
+*.snm
+
+# --- Graphics conversion by epstopdf ---
+*.eps-converted-to.pdf
+
+# --- Common build directories (any depth) ---
+build/
+out/
+
+# --- Editor / OS junk (any depth) ---
+*~
+*.swp
+.DS_Store
+manuscript/manuscript.pdf
+manuscript/supp.pdf
+/no_title_charts
+code/functions/no_chart_title_analyze_datetime_patterns.R
+code/functions/no_chart_title_analyze_duration_category.R
+code/functions/no_chart_title_analyze_duration_QA.R
+code/functions/no_chart_title_plot_date_field_analysis.R
+code/no_chart_titles_jds_datacleansings.R
+/console_output
+manuscript/manuscript_fixed.pdf
+-Lenovo_4_20_23.Rhistory
+/code/old_stuff
+/reference_console_output
+*.zip
+/clone_folder/nyc_311_data_cleaning
+/manuscript/archive
+response/Long duration SRs by Agency and Complaint Type.xlsx
+.Rhistory
+.Rhistory

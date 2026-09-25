@@ -1,0 +1,373 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage{parskip}
+\usepackage{booktabs,tabularx}
+\usepackage[hyphens]{url}
+\usepackage[round]{natbib}   % enables \citep and \citet
+\usepackage{placeins}        % \FloatBarrier keeps tables with their response
+
+% Tables in this letter are numbered R1, R2, ... so they are not confused
+% with the manuscript's own tables.
+\renewcommand{\thetable}{R\arabic{table}}
+
+% Let tall tables share a page with text instead of taking a page alone.
+\renewcommand{\topfraction}{0.9}
+\renewcommand{\bottomfraction}{0.8}
+\renewcommand{\textfraction}{0.07}
+\renewcommand{\floatpagefraction}{0.8}
+
+% ---------------------------------------------------------------
+% \refcomment{...} prints a numbered Referee comment in italics,
+% indented. Your response follows as ordinary text.
+% The \FloatBarrier stops any table from drifting past the next comment.
+% ---------------------------------------------------------------
+\newcounter{refcomment}
+\newcommand{\refcomment}[1]{%
+  \FloatBarrier
+  \stepcounter{refcomment}%
+  \par\medskip
+  \noindent\textbf{Comment \therefcomment.}
+  \begin{quote}\itshape #1\end{quote}
+  \noindent\textbf{Response.}~}
+
+\begin{document}
+
+\begin{center}
+{\Large\bfseries Response to the Referee}\\[0.5em]
+{\large\itshape Principles for Open Data Curation:\\
+A Case Study with the New York City 311 Service Request Data}
+\end{center}
+
+\bigskip
+
+We thank the Editor and the Referee for their careful reading and
+helpful comments, and we appreciate the Referee's positive assessment
+of the paper. We have revised the manuscript in response; the main
+changes are:
+
+\begin{enumerate}
+\item \textbf{Figures.} Figures have been revised, replaced, or
+  removed to improve readability, with larger fonts, explicit units,
+  and expanded captions that state each figure's key observations.
+  One figure has been replaced by a table, and figures and tables have
+  been renumbered accordingly.
+\item \textbf{Durations.} We added an explanation of why many long
+  durations are plausible given the agency and complaint type, and we
+  now summarize negative durations numerically in the text.
+\item \textbf{Data curation roles.} Following the Referee's
+  suggestion, the Collaboration step now recommends formalizing a data
+  curation responsibility within each agency.
+\item \textbf{Clarity and corrections.} We added examples of redundant
+  fields, removed a paragraph on embedded commas after verifying that
+  the export handles them correctly, and corrected the typographical
+  issues the Referee identified.
+\end{enumerate}
+
+Point-by-point responses follow, with the Referee's comments in
+italics. Page and line numbers refer to the revised manuscript. Where
+a figure has been renumbered, we give both its original and revised
+numbers. Tables in this letter are numbered R1 and R2 to distinguish
+them from tables in the manuscript.
+
+% ===============================================================
+\section*{Responses to the Referee}
+% ===============================================================
+
+\refcomment{Page 4, lines 31--32: The authors mention two potentially
+redundant pairs. This is discussed later, but it might help to add
+something like ``e.g., cross\_street and intersection\_street'' at this
+point in the article.}
+
+We thank the Referee for this suggestion, which improves the clarity of
+the paragraph. We now give the \texttt{cross\_street} and
+\texttt{intersection\_street} pairs as examples at first mention
+(p.~4, ll.~8--9), which now reads: ``The dataset contains seven
+street-related fields, including two likely redundant pairs, e.g.,
+\texttt{cross\_street\_1} \& \texttt{intersection\_\allowbreak street\_1}
+and \texttt{cross\_street\_2} \& \texttt{intersection\_\allowbreak street\_2}.''
+
+\refcomment{Page 4, bottom: This is just a comment for what it's worth.
+I was doing text analysis on data like this that contained a Notes
+field. It was a CSV file, and I imported it into MATLAB. I ended up
+with a strange number of columns when importing it. It turns out that
+the commas inside the Notes field were telling MATLAB that there were
+multiple columns from the Notes. So, CSV can be dangerous or
+problematic with free-form text fields. You are alluding to problems
+like this at the bottom of the page. Just wanted to pass along my
+experience.}
+
+We thank the Referee for sharing this experience, which prompted us to
+explore and verify how the NYC Open Data portal handles embedded commas. The
+portal runs on the Socrata platform (now part of Tyler Technologies), a
+mature and widely used infrastructure. Socrata's documentation states
+that ``strings containing embedded commas, newlines, or quotes will
+themselves be quoted,'' with embedded quotes escaped by doubling
+\citep{socrata_csv}.
+
+This behavior matches RFC~4180 \citep{rfc4180}, Rule~6: ``Fields
+containing line breaks (CRLF), double quotes, and commas should be
+enclosed in double-quotes.'' Although RFC~4180 is an informational memo
+rather than a formal standard, it documents common practice and is the
+closest thing to an official specification for the CSV format; it is
+widely used as the reference for CSV parsers and validators. It was
+published by the Internet Engineering Task Force (IETF), the body
+responsible for core internet protocols and formats.
+
+Our examination of the raw CSV file exported from the NYC Open Data
+portal confirms this behavior. For example, the \texttt{location} field
+contains a comma by design, separating latitude and longitude, and
+appears in the raw file enclosed in double quotation marks:
+
+
+\begin{center}
+\texttt{"(40.64224331435751, -74.00707333743664)"}
+\end{center}
+
+
+In order to explore the Referee's concern further, we scanned the full,
+unmodified export (approximately 16.0 million records; \citealp{nyc311_data}) to 
+check its compliance with RFC~4180. We found embedded commas in 
+15 of the 41 fields; Table~\ref{tab:embedded-commas} summarizes the results.
+
+
+\begin{table}[htbp]
+\centering
+\footnotesize
+\caption{Fifteen fields in the raw 311 SR CSV export ($\approx$16.0 million records)
+contain embedded commas. There are none in the remaining 26 of 41 fields. 
+No field contains an embedded line break. All values
+are properly quoted, and every record parses to 41 columns.}
+\label{tab:embedded-commas}
+\begin{tabularx}{\textwidth}{@{}lrrr>{\raggedright\arraybackslash}X@{}}
+\toprule
+Field & \multicolumn{1}{c}{Values with} & \multicolumn{1}{c}{\% of} & \multicolumn{1}{c}{Values with} & Example \\
+      & \multicolumn{1}{c}{commas}      & \multicolumn{1}{c}{records} & \multicolumn{1}{c}{quotes} & \\
+\midrule
+\texttt{location} & 15{,}713{,}332 & 98.11 & -- & \texttt{"(40.6409\ldots{}, -73.9736\ldots{})"} \\
+\texttt{resolution\_description} & 2{,}371{,}902 & 14.81 & 160{,}327 & \textit{free-text narrative} \\
+\texttt{descriptor} & 138{,}943 & 0.87 & 2{,}099 & \texttt{"NOISE, BARKING DOG (NR5)"} \\
+\texttt{taxi\_pick\_up\_location} & 136{,}328 & 0.85 & -- & \texttt{"2 AVENUE AND EAST 57 STREET, MANHATTAN, \ldots{}"} \\
+\texttt{park\_facility\_name} & 1{,}628 & 0.01 & 233 & \texttt{"CAPTAIN JOHN MCKENNA, IV PARK"} \\
+\texttt{cross\_street\_2} & 284 & $<$0.01 & -- & \texttt{"HUDSON LINES,"} \\
+\texttt{road\_ramp} & 222 & $<$0.01 & -- & \texttt{"WTC / PATH (SOUTH END, FROM \ldots{}"} \\
+\texttt{bridge\_highway\_name} & 135 & $<$0.01 & -- & \texttt{"DR. MARTIN LUTHER KING, JR. EXPWY"} \\
+\texttt{bridge\_highway\_segment} & 82 & $<$0.01 & -- & \texttt{"JCT W/CROSS BRONX EXPWY EXTENSION (I-295), \ldots{}"} \\
+\texttt{incident\_address} & 22 & $<$0.01 & -- & \texttt{"534 NEW PALTZ RD, HIGHLAND, NY 12528"} \\
+\texttt{street\_name} & 21 & $<$0.01 & -- & \texttt{"NEW PALTZ RD, HIGHLAND, NY 12528"} \\
+\texttt{location\_type} & 3 & $<$0.01 & -- & \texttt{"1-, 2- AND 3- FAMILY HOME"} \\
+\texttt{city} & 3 & $<$0.01 & -- & \texttt{"ASBURY PARK,"} \\
+\texttt{cross\_street\_1} & 1 & $<$0.01 & -- & \texttt{"(S1)SHERIDAN EXPY, TRIBORO B"} \\
+\texttt{bridge\_highway\_direction} & 1 & $<$0.01 & -- & \texttt{"S TO FRANKLIN AV, PROSPECT PARK"} \\
+\midrule
+\textbf{Total (15 fields)} & 18{,}362{,}907 & & 162{,}659 & \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+
+Besides \texttt{location}, which always contains a comma, over 2.6
+million values contain commas, mostly in the free-text
+\texttt{resolution\_description} field ($\approx$15\% of records), and
+$\approx$163{,}000 values contain escaped double quotes. Nevertheless,
+every record parses to the expected 41 columns with the
+\texttt{fread()} function from the \texttt{data.table} package,
+confirming that all embedded commas and quotes are correctly quoted and
+escaped.
+
+The Referee's experience is therefore highly relevant: a parser that
+does not honor CSV quoting would misread a substantial share of these
+records. Because the Socrata export quotes these fields correctly, and
+quote-aware readers such as \texttt{fread()} \citep{datatable2025} interpret 
+that quoting correctly, all fields are read as intended. 
+
+We have therefore removed the paragraph on this 
+issue (formerly p.~4, ll.~45--46), as the problem
+it anticipated does not arise with these data.
+
+\refcomment{Figure 2: Please add more explanation to the caption. What
+do you want the reader to notice or take away from the figure? It's ok
+to repeat what you have in the body of the paper.}
+
+We thank the Referee for this suggestion. In revising the caption, we
+concluded that the figure contained more detail than a reader could
+readily absorb, and that its key points are conveyed more clearly in
+the text. We have therefore removed the figure and revised the
+accompanying discussion (p.~4, ll.~26--30) to state its main takeaway
+directly: just six agencies account for 90.19\% of all SRs.
+
+\refcomment{Figure 3: First, this is very hard to read. The fonts are
+too small. You could do the same as Figure 2 and just show the top
+90\%. I also make the same suggestion as Figure 2, that you add more
+details and explanations to the caption, so the figure stands alone
+from the text in terms of what you want readers to know.}
+
+We agree, and we thank the Referee for the suggestion to show only the
+top contributors. We have replaced the figure with a table (Table~1 of
+the revised manuscript, p.~4, ll.~32--41) listing the six agencies that together
+account for approximately 90\% of all SRs. The table is set in the body
+font, which resolves the readability issue, and its caption states the
+key observation: SR volume is highly concentrated, with just six
+agencies generating the large majority of 311 SRs.
+
+\refcomment{Figure 4: Are the units for both of these plots days? You
+should specify the units. I guess the violin plots show Number of SRs,
+which should be made clearer. I think the one on the left mentions days
+as `d', but I would spell it out. Also, these might be more readable
+with the plot placed vertically.}
+
+We thank the Referee for these observations. The duration axis is in
+days, and the violin plot shows the number of SRs; both axes are now
+labeled explicitly, and ``d'' has been spelled out as ``days''
+throughout. To improve readability, we removed panel~(b), which showed
+negative durations; those cases are now summarized numerically in the
+text (p.~12, ll.~12--24). The remaining plot now spans the full page
+width. The revised caption explains how to read the plot and states its
+key observations. (Figure~4(a) in the original manuscript is Figure~1
+in the revision.)
+
+\refcomment{Page 11, line 26: You have 30 d. I would spell it out and
+use 30 days.}
+
+Corrected. The text now reads ``more than 30 days post-closure''
+(p.~9, ll.~34--35). The abbreviation arose from the \texttt{siunitx}
+unit \verb|\day|, which prints as ``d''; we have replaced it with plain
+text throughout the document.
+
+\refcomment{Page 11, line 34: You have `datetime'. Suggest using
+date-time or date/time.}
+
+We agree. On review, we removed the sentence containing this instance
+(p.~11, l.~34 of the original manuscript), as its description of SQL
+date handling was imprecise. The remaining instances of ``datetime''
+have been changed to ``date-time'' (p.~10, ll.~37--38).
+
+\refcomment{Figure 5: These are impossible to read, because the font is
+so small. Suggest you place these vertically and make the fonts larger.
+Also, indicate what the red dashed line represents.}
+
+We agree. The two panels are now stacked vertically at full page
+width, with enlarged axis labels, tick labels, and titles. The red
+dashed line marks three standard deviations above the mean hourly SR
+count ($\mu + 3\sigma$); it is now labeled directly on the plot, drawn
+more prominently, and defined in the caption, which also summarizes
+the figure's key observations. (Figure~5 in the original manuscript
+is Figure~2 in the revision.)
+
+\refcomment{Page 12, line 21: You need a space between the and
+``closed\ldots''}
+
+Corrected (p.~10, l.~34).
+
+\refcomment{Page 13, positive durations: Do the long durations make
+sense given the agency? If so, some words here might help readers.}
+
+We thank the Referee for this question, which required some additional
+analysis. We extracted the SRs with long (and extreme) durations and
+examined their associated agencies and \texttt{complaint\_type} values.
+Table~\ref{tab:long-durations}, at the end of this letter, summarizes
+the results by agency, showing the average duration and count for each
+complaint type.
+
+Most of these long-duration SRs are associated with complaints that
+could plausibly take a long time to resolve. For example, many of the
+Department of Parks and Recreation (DPR) SRs concern trees (new tree
+requests and overgrown, damaged, or dead trees), which can require
+lengthy efforts to plant a new tree or remove a dead or dying one.
+Likewise, the Department of Buildings (DOB) handles SRs involving
+plumbing, building use, and construction, which may also take
+considerable time to resolve .
+
+Accordingly, we have revised the manuscript to include 
+similar examples (p.~13, ll.~4--8) and to note that such 
+SRs can reasonably require long resolution times.
+
+\refcomment{Page 17, Actionable Steps: I really liked these. I have one
+suggestion (take it or leave it) on Collaboration. Agencies could
+(should?) appoint a Data Curation Officer.}
+
+We thank the Referee for the kind words and for this suggestion,
+which we have adopted. NYC's Open Data Law, Local Law~11 of 2012
+\citep{nyc_ll11}, already requires each agency to designate an Open
+Data Coordinator. However, the Coordinator's formal responsibilities,
+as set out in the City's Open Data Technical Standards Manual
+\citep{nyc_tsm}, focus on publishing, compliance reporting, and public
+outreach; none addresses data quality or curation. In our experience,
+the role is also typically assigned in addition to staff members' core
+duties, with limited training and frequent turnover.
+
+We have expanded the Collaboration step (p.~16, l.~46 to p.~17, l.~12) to describe
+this existing structure and to recommend formalizing a data curation
+responsibility, either by extending the Coordinator role or by
+appointing a dedicated Data Curation Officer, as the Referee suggests.
+
+
+% ---- Supplementary table, placed at the end of the letter ----
+\clearpage
+\begin{table}[t]
+\centering
+\small
+\caption{Selected \texttt{complaint\_type}(s) with long average positive durations, by 
+agency. Durations are the mean number of days from \texttt{created\_date} to
+\texttt{closed\_date} for each \texttt{complaint\_type}.}
+\label{tab:long-durations}
+\begin{tabular}{llrr}
+\toprule
+Agency & Complaint Type & \multicolumn{1}{c}{Avg.\ Duration (days)} & \multicolumn{1}{c}{Count} \\
+\midrule
+DEP   & Sewer                                  & 1{,}093 &      245 \\
+      & Water System                           &     947 &       71 \\
+\midrule
+DOB   & Real Time Enforcement                  &     987 &       50 \\
+      & Special Projects Inspection Team (SPIT) &    975 &       91 \\
+      & General Construction/Plumbing          &     930 &  1{,}173 \\
+      & Plumbing                               &     924 &       97 \\
+      & Building/Use                           &     916 &      767 \\
+\midrule
+DOE   & School Maintenance                     &     931 &      189 \\
+\midrule
+DOHMH & Poison Ivy                             & 1{,}358 &      181 \\
+      & Window Guard                           & 1{,}269 &       78 \\
+      & Day Care                               & 1{,}220 &  4{,}087 \\
+      & Mobile Food Vendor                     & 1{,}206 &  6{,}489 \\
+      & Tattooing                              & 1{,}172 &      505 \\
+      & Food Establishment                     & 1{,}162 & 20{,}906 \\
+      & Smoking                                & 1{,}129 &  8{,}249 \\
+      & Non-Residential Heat                   & 1{,}071 &  2{,}063 \\
+      & Drinking Water                         &     797 &       92 \\
+      & Indoor Sewage                          &     796 &      113 \\
+\midrule
+DOT   & Street Light Condition                 & 1{,}064 &  1{,}204 \\
+      & Traffic Signal Condition               &     866 &      471 \\
+\midrule
+DPR   & New Tree Request                       & 1{,}162 & 28{,}262 \\
+      & Overgrown Tree/Branches                & 1{,}064 & 12{,}412 \\
+      & Damaged Tree                           & 1{,}017 &  4{,}491 \\
+      & Wood Pile Remaining                    &     997 &      198 \\
+      & Root/Sewer/Sidewalk Condition          &     994 &  6{,}899 \\
+      & Illegal Tree Damage                    &     972 &      674 \\
+      & Dead/Dying Tree                        &     968 &  2{,}167 \\
+      & Uprooted Stump                         &     955 &      151 \\
+      & Maintenance or Facility                &     929 &  1{,}122 \\
+\midrule
+DSNY  & Graffiti                               & 1{,}135 &  2{,}503 \\
+      & Adopt-a-Basket                         & 1{,}122 &      301 \\
+\midrule
+EDC   & Noise -- Helicopter                    & 1{,}041 & 32{,}529 \\
+\midrule
+HPD   & Heat/Hot Water                         & 1{,}088 &       64 \\
+      & Paint/Plaster                          &     963 &       52 \\
+      & Unsanitary Condition                   &     959 &       56 \\
+      & Plumbing                               &     952 &       52 \\
+      & General                                &     898 &       53 \\
+\midrule
+TLC   & For Hire Vehicle Complaint             &     942 &       75 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\clearpage
+\bibliographystyle{chicago}
+\bibliography{refs}
+
+\end{document}

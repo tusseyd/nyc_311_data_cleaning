@@ -11,6 +11,8 @@ plot_barchart <- function(
     
     # Appearance
     fill_color = "#009E73",
+    fill_col = NULL,              # NEW: Column name for conditional coloring
+    fill_colors = NULL,           # NEW: Named vector of colors for fill_col levels
     bar_width = 0.8,
     
     # Data summary and printing
@@ -24,31 +26,36 @@ plot_barchart <- function(
     add_maximum = FALSE,
     add_minimum = FALSE,
     
-    # Standard deviation customization
+    # 3 sigma line customization
     add_3sd = FALSE,
     sd_color = "#D55E00",
     sd_linetype = "dashed",
-    sd_size = 1.2,
+    sd_size = 1.45,
+    sd_text_size = 7,
     
     # Mean line customization
     mean_color = "#D55E00",
     mean_linetype = "dotted",
-    mean_size = 1.2,
+    mean_size = 1.5,
+    mean_text_size = 3.5,
+    
+    # Median line customization
+    median_text_size = 3.5,
     
     # Data labels
     show_labels = TRUE,
     label_col = NULL,
     label_angle = 0,
-    label_size = 3,
+    label_size = 4,
     label_color = "black",
     label_vjust = -0.5,
-    label_hjust = 0.5,
+    label_hjust = -0.1,
     
     # Trendline
     add_trendline = FALSE,
     trendline_color = "#D55E00",
     trendline_method = "lm",
-    trendline_size = 1.2,
+    trendline_size = 1.5,
     show_r_squared = FALSE,          # NEW: Show R² on plot
     show_trend_stats = FALSE,        # NEW: Show growth/decline %
     trend_stats_x_pos = "left",      # NEW: Position for stats ("left", "right", "center")
@@ -59,6 +66,7 @@ plot_barchart <- function(
     
     # Axis customization
     x_label_every = 1,
+    x_breaks = NULL,        # NEW: Manual specification of which labels to show
     x_axis_angle = 0,
     x_axis_size = 10,
     y_axis_labels = scales::comma,
@@ -156,16 +164,16 @@ plot_barchart <- function(
     }
     
     scale_x_date(
-      expand = c(0.01, 0), 
-      labels = scales::date_format(date_labels), 
+      expand = c(0.01, 0),
+      labels = scales::date_format(date_labels),
       breaks = scales::date_breaks(break_interval)
     )
     
   } else if (inherits(DT[[x_col]], c("POSIXct", "POSIXt"))) {
     break_interval <- paste(x_label_every, "hours")
     scale_x_datetime(
-      expand = c(0.01, 0), 
-      labels = scales::date_format("%H:%M"), 
+      expand = c(0.01, 0),
+      labels = scales::date_format("%H:%M"),
       breaks = scales::date_breaks(break_interval)
     )
   } else if (is.numeric(DT[[x_col]])) {
@@ -177,22 +185,41 @@ plot_barchart <- function(
     )
   } else {
     unique_values <- unique(DT[[x_col]])
-    if (x_label_every > 1) {
+    
+    # Use manual breaks if provided, otherwise calculate automatically
+    if (!is.null(x_breaks)) {
+      x_breaks_to_use <- x_breaks
+    } else if (x_label_every > 1) {
       break_indices <- seq(1, length(unique_values), by = x_label_every)
-      x_breaks <- unique_values[break_indices]
+      x_breaks_to_use <- unique_values[break_indices]
     } else {
-      x_breaks <- unique_values
+      x_breaks_to_use <- unique_values
     }
+    
     scale_x_discrete(
       expand = c(0.01, 0),
-      breaks = x_breaks
+      breaks = x_breaks_to_use
     )
   }
   
-  # Create base plot
-  p <- ggplot(DT, aes(x = .data[[x_col]], y = .data[[y_col]])) +
-    geom_col(fill = fill_color, width = bar_width, color = NA) +
-    x_scale +
+  # Create base plot with conditional fill
+  if (!is.null(fill_col) && fill_col %in% names(DT)) {
+    # Conditional fill based on a column
+    p <- ggplot(DT, aes(x = .data[[x_col]], y = .data[[y_col]], fill = .data[[fill_col]])) +
+      geom_col(width = bar_width, color = NA)
+    
+    # Apply custom colors if provided
+    if (!is.null(fill_colors)) {
+      p <- p + scale_fill_manual(values = fill_colors)
+    }
+  } else {
+    # Single color fill
+    p <- ggplot(DT, aes(x = .data[[x_col]], y = .data[[y_col]])) +
+      geom_col(fill = fill_color, width = bar_width, color = NA)
+  }
+  
+  
+  p <- p + x_scale +
     scale_y_continuous(labels = y_axis_labels) +
     labs(
       title = title,
@@ -207,10 +234,13 @@ plot_barchart <- function(
   } else {
     p <- p + theme_minimal() +
       theme(
-        axis.text.x = element_text(angle = x_axis_angle, hjust = ifelse(x_axis_angle > 0, 1, 0.5)),
+        axis.text.x = element_text(angle = x_axis_angle,
+                                   hjust = ifelse(x_axis_angle > 0, 1, 0.5)),
         text = element_text(size = text_size)
       )
   }
+  
+  p <- p + theme(plot.subtitle = element_text(size = 14))
   
   # Statistical annotations
   if (add_mean || add_median || add_maximum || add_minimum) {
@@ -219,7 +249,7 @@ plot_barchart <- function(
     if (add_mean) {
       mean_val <- mean(y_values, na.rm = TRUE)
       p <- p +
-        geom_hline(yintercept = mean_val, linetype = mean_linetype, 
+        geom_hline(yintercept = mean_val, linetype = mean_linetype,
                    color = mean_color, linewidth = mean_size)
       
       if (inherits(DT[[x_col]], c("Date", "POSIXct"))) {
@@ -228,15 +258,21 @@ plot_barchart <- function(
         x_pos <- 1
       }
       
-      p <- p + annotate("text", x = x_pos, y = mean_val,
+      p <- p + annotate("text", 
+                        x = x_pos, 
+                        y = mean_val,
                         label = paste0("Mean: ", format(round(mean_val), big.mark = ",")),
-                        hjust = -0.1, vjust = -0.5, color = mean_color, size = 3.5)
+                        hjust = -0.1, 
+                        vjust = -1.6, 
+                        color = mean_color, 
+                        size = mean_text_size,
+                        fontface = "bold")
     }
     
     if (add_median) {
       median_val <- median(y_values, na.rm = TRUE)
       p <- p +
-        geom_hline(yintercept = median_val, linetype = "dashed", 
+        geom_hline(yintercept = median_val, linetype = "dashed",
                    color = mean_color, linewidth = mean_size)
       
       if (inherits(DT[[x_col]], c("Date", "POSIXct"))) {
@@ -245,9 +281,14 @@ plot_barchart <- function(
         x_pos <- 1
       }
       
-      p <- p + annotate("text", x = x_pos, y = median_val,
+      p <- p + annotate("text", x = x_pos, 
+                        y = median_val, 
                         label = paste0("Median: ", format(median_val, big.mark = ",")),
-                        hjust = -0.1, vjust = 1.5, color = "#0072B2", size = 3.5)
+                        hjust = -0.1, 
+                        vjust = 1.5, 
+                        color = "#0072B2", 
+                        size = median_text_size,
+                        fontface = "bold")
     }
     
     if (add_maximum) {
@@ -307,7 +348,7 @@ plot_barchart <- function(
         
         # Determine if growth or decline
         trend_word <- ifelse(pct_change >= 0, "Growth", "Decline")
-        annotation_lines <- c(annotation_lines, 
+        annotation_lines <- c(annotation_lines,
                               sprintf("%s: %.1f%%", trend_word, abs(pct_change)))
       }
       
@@ -362,16 +403,21 @@ plot_barchart <- function(
     sigma <- sd(y_vals, na.rm = TRUE)
     threshold <- mu + 3 * sigma
     
-    p <- p + 
+    p <- p +
       geom_hline(yintercept = threshold,
                  color = sd_color,
                  linetype = sd_linetype,
                  linewidth = sd_size) +
       annotate("text",
                x = Inf, y = threshold,
-               label = sprintf("3SD ≈ %.0f", threshold),
+               # label = sprintf("\u03bc + 3\u03c3 \u2248 %s",
+               #                 format(round(threshold), big.mark = ",")),
+               label = sprintf("mu + 3*sigma %%~~%% '%s'",
+                               format(round(threshold), big.mark = ",")),
+               parse = TRUE,
                hjust = 1.1, vjust = -0.5,
-               color = sd_color, size = 3)
+               color = sd_color, size = sd_text_size,
+               fontface = "bold")
   }
   
   # Data labels
@@ -407,9 +453,19 @@ plot_barchart <- function(
       dir.create(chart_dir, recursive = TRUE, showWarnings = FALSE)
     }
     
-    filepath <- file.path(chart_dir, filename)
-    ggsave(filepath, plot = p, width = chart_width, height = chart_height, dpi = dpi)
+    filepath <- file.path(chart_dir, paste0(filename, ".pdf"))
+    
+    ggsave(
+      filename = filepath,
+      plot = p,
+      width = chart_width,
+      height = chart_height,
+      device = cairo_pdf  
+    )
+    
+    message("File saved: ", filepath)
   }
+  
   
   invisible(p)
 }

@@ -175,6 +175,7 @@ plot_pareto_combo <- function(
     pct = format(temp_dt$pct, justify = "right"),
     cum_pct = format(temp_dt$cum_pct, justify = "right")
   )
+  
   print(temp_df, row.names = FALSE)
   
   # --- plot (vertical by default)
@@ -204,7 +205,7 @@ plot_pareto_combo <- function(
       ggplot2::geom_hline(
         yintercept = 0.8 * maxN,
         linetype   = "dotted",
-        linewidth  = 1.25,
+        linewidth  = 1.35,
         color      = "#D55E00",
         alpha      = 0.7
       ) +
@@ -212,9 +213,10 @@ plot_pareto_combo <- function(
         "text",
         x = Inf, y = 0.8 * maxN,
         label = "80%",
-        hjust = 1.1, vjust = -0.3,
-        size  = 3,
-        color = "#D55E00"
+        hjust = 1.2, vjust = -0.3,
+        size  = 3.5,
+        color = "#D55E00",
+        fontface = "bold"
       )
   }
   

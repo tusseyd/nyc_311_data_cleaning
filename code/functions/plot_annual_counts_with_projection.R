@@ -163,7 +163,7 @@ plot_annual_counts_with_projection <- function(
         fill = "white",
         color = "gray20",
         size = 4,
-        label.size = 0.4
+        linewidth = 0.4
       )
   }
   

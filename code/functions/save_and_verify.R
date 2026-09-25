@@ -236,6 +236,12 @@ save_and_verify <- function(dt,
     })
   }
   
-  cat("Files saved in RDS and CSV format complete. Saved and verified.\n")
+  cat("File saved and verified in RDS format.\n")
+  if (write_csv){
+    cat("File saved and verified in CSV format.\n")
+  } else {
+    cat("No CSV file format processed.\n")
+  }
+      
   invisible(list(rds = path, csv = csv_result))
 }

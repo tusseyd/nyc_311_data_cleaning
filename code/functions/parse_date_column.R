@@ -3,7 +3,7 @@ parse_date_column <- function(
                               valid_date_columns,
                               unique_key_col = "unique_key",
                               agency_col = "agency",
-                              fmt = "%m/%d/%Y %I:%M:%S %p",
+                              fmt = "%Y-%m-%d %H:%M:%S",
                               local_tz = "America/New_York")
   {
   
