@@ -76,3 +76,20 @@ out/
 *.swp
 .DS_Store
 manuscript/manuscript.pdf
+manuscript/supp.pdf
+/no_title_charts
+code/functions/no_chart_title_analyze_datetime_patterns.R
+code/functions/no_chart_title_analyze_duration_category.R
+code/functions/no_chart_title_analyze_duration_QA.R
+code/functions/no_chart_title_plot_date_field_analysis.R
+code/no_chart_titles_jds_datacleansings.R
+/console_output
+manuscript/manuscript_fixed.pdf
+-Lenovo_4_20_23.Rhistory
+/code/old_stuff
+/reference_console_output
+*.zip
+/clone_folder/nyc_311_data_cleaning
+/manuscript/archive
+response/Long duration SRs by Agency and Complaint Type.xlsx
+.Rhistory
