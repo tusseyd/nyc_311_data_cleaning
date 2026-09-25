@@ -31,7 +31,7 @@ plot_barchart <- function(
     sd_color = "#D55E00",
     sd_linetype = "dashed",
     sd_size = 1.45,
-    sd_text_size = 6,
+    sd_text_size = 7,
     
     # Mean line customization
     mean_color = "#D55E00",
@@ -410,8 +410,11 @@ plot_barchart <- function(
                  linewidth = sd_size) +
       annotate("text",
                x = Inf, y = threshold,
-#               label = sprintf("3SD ≈ %.0f", threshold),
-               label = sprintf("3σ ≈ %.0f", threshold),  
+               # label = sprintf("\u03bc + 3\u03c3 \u2248 %s",
+               #                 format(round(threshold), big.mark = ",")),
+               label = sprintf("mu + 3*sigma %%~~%% '%s'",
+                               format(round(threshold), big.mark = ",")),
+               parse = TRUE,
                hjust = 1.1, vjust = -0.5,
                color = sd_color, size = sd_text_size,
                fontface = "bold")

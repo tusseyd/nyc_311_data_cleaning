@@ -137,12 +137,14 @@ that benefits individuals, communities, governments, and economies worldwide
 \citep{barns2016mine, wang2016adoption}.
 Despite these global efforts, the effective use of open data depends
 critically on effective data curation, particularly with respect to
-quality, consistency, and usability.
+quality, consistency, and usability. Indeed, poor data quality is a
+well-documented barrier to the use of open government data
+\citep{janssen2012benefits}.
 
 
 The City of New York (NYC) emerged as a leader in the open data movement,
 marked by the enactment of the 2012 Open Data Law
-\citep{zuiderwijk2014open}. This landmark legislation led to the
+\citep{nyc_ll11, zuiderwijk2014open}. This landmark legislation led to the
 creation of the NYC Open Data portal \citep{dataNYC}, which 
 today hosts an impressive array of 2,700 datasets
 across 80 different city agencies. This wealth of data serves as a
@@ -195,6 +197,11 @@ open data is evident in public health and global contexts. For
 example, \citet{cantor2018facets} demonstrated its application in evaluating
 community health determinants, while \citet{shankar2021data} highlighted
 its critical role during the COVID-19 pandemic in managing collective responses.
+At a broader level, the FAIR Guiding Principles hold that data should
+be findable, accessible, interoperable, and reusable
+\citep{wilkinson2016fair}. These principles, however, focus largely on
+how data are described and shared rather than on the quality of the
+data content itself.
 Despite these advances, there remains a gap in providing
 actionable frameworks for managing large-scale municipal datasets.
 
@@ -306,8 +313,10 @@ are available in the supplementary material. Characteristics include:
 \begin{itemize}[left=1.5em, itemsep=0.25\baselineskip]
 \item The dataset is approximately \num{9} GB in size and contains 
 over \num{16} million rows, each row representing a single 
-SR. The dataset exports as a CSV file. For efficiency in the R 
-programming environment, the file was converted to RDS format.
+SR. The dataset exports as a CSV file. The analysis was conducted in
+R \citep{R2025} using the \texttt{data.table} package
+\citep{datatable2025}; for efficiency, the file was converted to
+RDS format.
 
 \item Each record has \num{41} columns of data, representing 
 a single SR (complaint, issue, request). 
@@ -368,7 +377,7 @@ cross\_street\_2 \& intersection\_street\_2.
 
 Noise-related complaints are especially prominent, represented by eight separate
 categories (e.g., vehicle, residential, helicopter, street/sidewalk). 
-Collectively, these noise complaints account for nearly one-quarter \SI{23.4}{\percent}
+Collectively, these noise complaints account for nearly one-quarter (\SI{23.4}{\percent})
 of all complaints, making \textit{noise} by far the most common complaint.
 Other major categories include illegal parking, heat/hot water, and blocked
 driveway. 
@@ -382,18 +391,18 @@ these six agencies underscores the necessity for optimal data curation processes
 
 \begin{table}[htbp]
 \centering
-\caption{Top six agencies by SR volume. These "big six" constitute 90\% of all SRs.}
+\caption{Top six agencies by SR volume. These 'big six' constitute 90\% of all SRs.}
 \label{tab:top-agencies}
 \begin{tabular}{llrr}
 \toprule
 Agency & Abbreviation & Percentage & Cumulative \% \\
 \midrule
-New York Police Department & NYPD & \SI{43}{\percent} & \SI{43}{\percent} \\
-Dept of Housing Preservation \& Development & HPD & \SI{19}{\percent} & \SI{62}{\percent} \\
-Dept of Sanitation & DSNY & \SI{12}{\percent} & \SI{74}{\percent} \\
-Dept of Transportation & DOT & \SI{7}{\percent} & \SI{81}{\percent} \\
-Dept of Environmental Protection & DEP & \SI{5}{\percent} & \SI{86}{\percent} \\
-Dept of Parks \& Recreation & DPR & \SI{4}{\percent} & \SI{90}{\percent} \\
+New York Police Department & NYPD & \SI{43.12}{\percent} & \SI{43.12}{\percent} \\
+Dept of Housing Preservation \& Development & HPD & \SI{19.15}{\percent} & \SI{62.27}{\percent} \\
+Dept of Sanitation & DSNY & \SI{12.01}{\percent} & \SI{74.28}{\percent} \\
+Dept of Transportation & DOT & \SI{6.73}{\percent} & \SI{81.01}{\percent} \\
+Dept of Environmental Protection & DEP & \SI{5.21}{\percent} & \SI{86.22}{\percent} \\
+Dept of Parks \& Recreation & DPR & \SI{3.97}{\percent} & \SI{90.19}{\percent} \\
 \bottomrule
 \end{tabular}
 \end{table}
@@ -852,8 +861,8 @@ follow-up actions related to an SR. No values were found in implausible years; h
 occur before the corresponding \texttt{created\_date}.
 Nearly \SI{80}{\percent} of these premature dates occur within
 one day (often within seconds) of the \texttt{created\_date},
-suggesting automated prepopulation during early processing.
-A more consequential anomaly concerns post-closure updates.
+suggesting that the field is populated automatically during early
+processing. A more consequential anomaly concerns post-closure updates.
 
 While it is certainly possible---and even routine---to 
 update an SR after it is closed, 
@@ -861,26 +870,20 @@ update an SR after it is closed,
 do occur after the \texttt{closed\_date}.
 However, some of these updates appear to be 
 well beyond a normal or expected timeframe. A total of \num{27810} 
-entries occur more than \SI{30} day post-closure, with some extending to
-\SI{1593} days (over four years). Figure~\ref{fig:resolution-violin} 
+entries occur more than 30~days post-closure, with some extending to
+\num{1593}~days, over four years. Figure~\ref{fig:resolution-violin} 
 illustrates both the extent and volume of these post-closure updates,
 showing a concentration within the 30--200 day range. These patterns raise 
 questions about whether such delayed updates reflect standard 
 operational practice or a systemic irregularity. \SI{84}{\percent} of these 
 late updates are associated with the TLC and \SI{12}{\percent} with 
-DSNY. In addition, \num{91} records exhibit extremely late
-post-closure updates due to default \texttt{closed\_date}
-values such as 1899-12-31 or 1900-01-01, which produce
-artificially extended post-closure durations. This behavior is consistent 
-with default date handling in Structured Query Language 
-(SQL), where null date-time values may be coerced to 1900-01-01. 
-A similar effect can occur in Microsoft Excel.
+DSNY.
 
 
 \begin{figure}[tbp]
 \centering
 \includegraphics[width=0.97\textwidth]{post_closed_resolution_violin.pdf}
-\caption{Violin plot showing SRs with long post-closure resolution updates. Note the 
+\caption{Violin plot showing the number of SRs with long post-closure updates in days. Note the 
 broad distribution and large number of extreme outliers, some exceeding four years.}
 \label{fig:resolution-violin}
 \end{figure}
@@ -912,7 +915,7 @@ the \texttt{created\_date} and \texttt{closed\_date}
 fields reveals spikes at midnight (00{:}00{:}00) and noon
 (12{:}00{:}00). These spikes suggest automated 
 batch-processing, perhaps assigning timestamps of midnight (00:00:00) to 
-large batches of SRs prior to sending the data to the 311. 
+large batches of SRs prior to sending the data to the 311 database. 
 This behavior distorts the calculated duration of these SRs 
 as well as overall system usage. Distribution by agency indicates that \SI{92}{\percent} of 
 the ``closed-exactly-at-midnight'' SRs originate 
@@ -922,15 +925,17 @@ from just two agencies: the Department of Buildings (DOB)
 
 One possible explanation for the midnight peak is that some records were
 originally stored with only a YYYY-MM-DD calendar date 
-(e.g., \texttt{2024-09-11}) and later converted to a datetime type 
-during processing. When a timestamp is absent and field is converted to a datetime 
+(e.g., \texttt{2024-09-11}) and later converted to a date-time type 
+during processing. When a timestamp is absent and a field is converted to a date-time 
 value, typical system behavior is to assign a default time value of
 \texttt{00{:}00{:}00}. Such behavior would artificially 
 inflate counts at midnight, but does not explain the spikes
 at noon. As shown in Figure~\ref{fig:exacthours}, both 
 \texttt{created\_date} and \texttt{closed\_date} timestamps
 display significant spikes at both noon and midnight, 
-exceeding expectations and a \(+3\sigma\) threshold indicated by the red line.
+exceeding expectations and the conventional \(+3\sigma\) control limit
+of statistical quality control \citep{grant1996statistical}, indicated
+by the red line.
 
 \begin{figure}[tbp]
   \centering
@@ -946,7 +951,9 @@ exceeding expectations and a \(+3\sigma\) threshold indicated by the red line.
     \label{fig:closed_top_hour}
   \end{subfigure}
 \caption{311~\textsc{SR}s created and closed exactly at top of the hour (HH:00:00) showing spikes at 
-exactly midnight (00:00:00) and exactly noon (12:00:00). The red line represents 3$\sigma$ deviation.}
+exactly midnight (00:00:00) and exactly noon (12:00:00). The red dashed line 
+represents $\mu + 3\sigma$ where $\mu$ and $\sigma$ represent the mean and 
+standard deviation of the hourly counts.}
   \label{fig:exacthours}	
 \end{figure}
 
@@ -964,40 +971,45 @@ responsiveness. Given this, SR duration
 warrants close scrutiny. While duration is not directly 
 present in the dataset, 
 it is easily computed as the difference between
-\texttt{closed\_date} and \texttt{created\_date}. Given the prevalence of
-automated workflows, these timestamps might be expected to be populated
-programmatically in response to user actions such as a change in 
-SR \texttt{status}. However, this appears not to be the case, as 
+\texttt{closed\_date} and \texttt{created\_date}. Given the prevalence of automated workflows, one would expect these
+timestamps to be generated by the system itself: when an SR's
+\texttt{status} changes to \texttt{Closed}, for example, the
+\texttt{closed\_date} should be recorded automatically, with no
+manual entry. However, this appears not to always be the case, as 
 the dataset includes anomalies in these fields that would ordinarily be
 prevented by robust automation.
 
 \paragraph{Negative Durations:}
 \label{par:negativedurations}
-A total of \num{45296} SRs
-(\SI[round-mode=places, round-precision=2]{0.29}{\percent})
-have a \texttt{closed\_date} that precedes the
-\texttt{created\_date}, producing a nonsensical negative duration. Across 
-all affected SRs, negative durations 
-average \SI[round-mode=places, round-precision=1]{-118.7}{\day},
-representing a substantial temporal distortion.
-Within this group, \num{115} SRs exhibit \emph{extreme}
-negative durations due to default \texttt{closed\_date} values
-(1899-12-31 and 1900-01-01), with durations exceeding
-$-122$~years. Those dates are consistent with default SQL for NULL datetime 
-field behaviors. These extreme negative durations are concentrated 
-within DOT,which accounts for \SI{98}{\percent} of such cases.
+A total of \num{45296} SRs (\SI{0.29}{\percent}) have a
+\texttt{closed\_date} that precedes the \texttt{created\_date},
+producing a nonsensical negative duration. Across all affected SRs,
+negative durations average $-118.7$~days, a substantial temporal
+distortion. Within this group, \num{115} SRs exhibit \emph{extreme} negative
+durations of about $-122$~years because their \texttt{closed\_date} is
+1899-12-31 or 1900-01-01. These are not plausible closing dates but
+placeholder values: 1900-01-01 is day~1 of the 1900 date system used
+by Microsoft Excel \citep{excel_datesystems} and the default value of
+the SQL Server \texttt{datetime} type \citep{mssql_datetime}, while
+1899-12-31 corresponds to day~0 of the Excel system, which Excel
+displays as ``1/0/1900.'' Their presence suggests that missing closing
+dates were recorded as zero or default values at some stage of data
+processing and later converted to calendar dates. A \texttt{closed\_date} in the past
+will create a large, nonsensical negative duration. These extreme cases appear
+concentrated within DOT, which accounts for \SI{98}{\percent} of them.
 
 
 \paragraph{Zero and One-Second Durations:}
 A more substantial issue arises when \texttt{closed\_date} and
 \texttt{created\_date} share identical timestamps to the second,
 creating a nonsensical zero-duration value. There are \num{387329}
-(\SI{2.5}{\percent}) such zero-duration SRs. In addition, \num{3460} SRs 
-are closed within one second of their creation. While not logically 
-impossible, these near-instantaneous SR resolutions are statistically improbable.
-\SI{81}{\percent} of these cases originate from just three agencies:
-the Department of Health and Mental Hygiene (DOHMH),
-DOT, and DOB.
+(\SI{2.5}{\percent}) such zero-duration SRs. 
+
+In addition, \num{3460} SRs are closed within one second of their 
+creation. While not logically impossible, these near-instantaneous 
+SR resolutions are statistically improbable. \SI{81}{\percent} of these cases 
+originate from just three agencies: the Department of Health and 
+Mental Hygiene (DOHMH), DOT, and DOB.
 
 \paragraph{Near-Zero Durations:}
 \label{par:suspiciousdurations}
@@ -1008,7 +1020,9 @@ for identifying implausibly small duration values.
 Durations were truncated to values greater than
 \SI{2}{\second} (excluding zero- and one-second artifacts)
 and less than or equal to \SI{172800}{\second}
-(\SI{48}{\hour}). The analysis evaluated five complementary outlier screening methods:
+(\SI{48}{\hour}). 
+
+The analysis evaluated five complementary outlier screening methods:
 standard deviation (SD), median absolute deviation (MAD),
 log-normal thresholds, percentile cutoffs
 (\SIrange{1}{10}{\percent}), and interquartile range (IQR).
@@ -1017,17 +1031,17 @@ whereas the log-normal and percentile approaches produced
 operationally reasonable limits.
 
 The log-normal method yielded a $+3\sigma$ cutoff
-of \SI{27.95}{\second}, which served as the outlier threshold.
-This threshold identified
-\SI[round-mode=places, round-precision=2]{0.07}{\percent}
-of records as outliers (\num{14741}~SRs) with statistically
-anomalous durations. Combining zero-duration cases (\num{387329}),
-one-second durations (\num{1240}),
-and durations durations less than \SI{28}{\second} (rounded 
-from \SI{27.95}{\second}) (\num{14471}), a total of \num{403310}~SRs
-(\SI{2.6}{\percent}) were classified as statistically anomalous
-or operationally implausible.
+of \SI{27.95} seconds, which served as the outlier threshold. This 
+threshold identified \SI[round-mode=places, round-precision=2]{0.09}{\percent}  (\num{14741}) 	
+of SRs with a \texttt{closed\_date} as outliers with statistically
+anomalous durations. 
 
+Combining zero-duration cases (\num{387329}), one-second durations
+(\num{3460}), and near-zero durations below 28 seconds (\num{14741}), 
+a total of \num{405530}~SRs (\SI{2.57}{\percent} of the \num{15785892} of 
+SRs with a \texttt{closed\_date}) were classified as statistically anomalous or
+operationally implausible.
+	
 
 \paragraph{Positive Durations:}
 \label{par:positivedurations}
@@ -1324,22 +1338,43 @@ improving data curation, validation, and long-term dataset stewardship.
 \label{par:realtime}
 Governments can begin by investing in real-time validation systems, 
 regularly updated data dictionaries, and tools for encoding and 
-standardizing data fields. Automated rule-based checks can 
-significantly improve data quality at the point of 
-data entry. Automated systems can proactively detect and possibly 
+standardizing data fields. Automated rule-based checks, such as those formalized in
+statistical data-validation frameworks \citep{van2018statistical},
+can significantly improve data quality at the point of data entry. Automated systems can proactively detect and possibly 
 correct common issues, reducing the downstream manual workload.
 
 
 \paragraph{Collaboration Among Stakeholders:}
 \label{par:collaboration}
-Effective data curation relies on collaboration among city 
-agencies and engagement with the broader open-data community. Regular 
-discussions regarding data standards, formats, and metadata ensure that  NYC
-datasets support the needs of policymakers, researchers, and 
-the public. Clear communication helps surface recurring 
-issues, clarify user requirements, and guide improvements to dataset 
-documentation and structure. Accordingly, agencies should appoint a
-Data Curation Officer to oversee these efforts.
+Effective data curation relies on collaboration among city agencies
+and engagement with the broader open-data community. Regular
+discussions regarding data standards, formats, and metadata help
+ensure that NYC datasets support the needs of policymakers,
+researchers, and the public. Clear communication helps surface
+recurring issues, clarify user requirements, and guide improvements
+to dataset documentation and structure.
+
+Collaboration, however, requires clear ownership. NYC already has a
+governance structure for open data: under Local Law~11 of 2012
+\citep{nyc_ll11}, each agency must designate an 
+Open Data Coordinator (ODC), who works with
+a citywide Chief Open Platform Officer in the Office of Technology
+and Innovation (OTI, formerly DoITT) \citep{nyc_tsm}. The ODC's
+defined responsibilities center on publication and compliance:
+delivering datasets to the portal, contributing to the annual
+compliance report, liaising with the central Open Data team,
+responding to public feedback, and conducting outreach. None of these roles
+explicitly addresses data quality or curation. In practice, the
+role is often assigned in addition to other duties, with limited
+training and frequent turnover.
+
+We therefore recommend that agencies formalize responsibility for
+data curation, either by extending the ODC role or by appointing a
+dedicated Data Curation Officer, with defined duties, training, and
+time allocated to the work. A named curator in each agency would give the
+collaboration described above a consistent point of contact and make
+data quality an explicit, accountable responsibility rather than an
+incidental one.
 
 \paragraph{Automated Quality-Assurance:}
 \label{par:qa}
