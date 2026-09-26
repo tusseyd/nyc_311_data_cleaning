@@ -5,14 +5,14 @@ create_violin_chart <- function(
     chart_title,
     chart_file_name,
     chart_directory,
-    chart_width = 10,
-    chart_height = 7,
+    chart_width = 6,
+    chart_height = 3,
     margin_top = 1,
     margin_right = 2,
     margin_bottom = 1,
     margin_left = 2,
-    x_axis_tick_size = 14,
-    x_axis_label_size = 14,
+    x_axis_tick_size = 9,
+    x_axis_label_size = 9,
     x_axis_tick_length = unit(0.3, "cm"),
     subtitle_offset_pos = 45,  # Offset for positive distributions (left margin)
     subtitle_offset_neg = 30   # Offset for negative distributions (right margin)
@@ -59,8 +59,8 @@ create_violin_chart <- function(
     ) +
     
     theme(
-      plot.title = element_text(size = 13, hjust = 0.5),
-      plot.subtitle = element_text(size = 12, hjust = subtitle_hjust, face = "bold", 
+      plot.title = element_text(size = 10, hjust = 0.5),
+      plot.subtitle = element_text(size = 9, hjust = subtitle_hjust, face = "bold",
                                    margin = subtitle_margin),
       axis.text.x = element_text(face = "bold", size = x_axis_tick_size),
       axis.title.x = element_text(size = x_axis_label_size, face = "bold"),

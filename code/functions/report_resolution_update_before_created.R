@@ -198,7 +198,7 @@ report_resolution_update_before_created <- function(
           
           # Save plot
           ggsave(file.path(chart_dir, "histogram_resolution_updates_before_created.pdf"),
-                 plot = p_pareto, width = 13, height = 8.5)
+                 plot = p_pareto, width = 13, height = 8)
           
         }
       }

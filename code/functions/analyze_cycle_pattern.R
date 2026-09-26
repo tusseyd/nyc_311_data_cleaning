@@ -177,7 +177,7 @@ analyze_cycle_pattern <- function(data,
   # Sys.sleep(3)
   # 
   # chart_file <- paste0("./charts/", output_prefix, "_", cycle_short, "_minute_pattern.pdf")
-  # ggsave(chart_file, plot = p_minute, width = 18, height = 8.5)
+  # ggsave(chart_file, plot = p_minute, width = 18, height = 8)
   # cat("\nMinute distribution chart saved to: ", chart_file, "\n", sep = "")
   
   # ============================================================================
@@ -556,7 +556,7 @@ analyze_cycle_pattern <- function(data,
     Sys.sleep(3)
     
     pareto_file <- paste0("./charts/", output_prefix, "_", cycle_short, "_pareto_by_agency.pdf")
-    ggsave(pareto_file, plot = p, width = 14, height = 8.5)
+    ggsave(pareto_file, plot = p, width = 14, height = 8)
     
     cat("Chart saved to: ", pareto_file, "\n", sep = "")
   }

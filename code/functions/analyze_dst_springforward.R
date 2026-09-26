@@ -122,8 +122,8 @@ analyze_dst_springforward <- function(
       x_axis_angle = 30,
       y_axis_labels = scales::comma,
       text_size    = 12,
-      chart_width  = 13,
-      chart_height = 8.5,
+      chart_width = 6,
+      chart_height = 3,
       chart_dir    = chart_dir,
       filename     = "dst_springforward_overlap_by_date.pdf"
     )

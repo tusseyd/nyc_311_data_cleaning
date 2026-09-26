@@ -7,8 +7,8 @@ plot_date_field_analysis <- function(
     condition_text = "",
     min_agency_count = 2,
     top_n = 30L,
-    width_in = 13,
-    height_in = 8.5
+    width_in = 6,
+    height_in = 3
 ) {
   
   # Get string versions of column names

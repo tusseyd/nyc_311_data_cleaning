@@ -31,7 +31,7 @@ plot_barchart <- function(
     sd_color = "#D55E00",
     sd_linetype = "dashed",
     sd_size = 1.45,
-    sd_text_size = 7,
+    sd_text_size = 9 / (72.27 / 25.4),  # geom_text uses mm; theme text uses pt
     
     # Mean line customization
     mean_color = "#D55E00",
@@ -74,8 +74,8 @@ plot_barchart <- function(
     
     # Theme and sizing
     text_size = 12,
-    chart_width = 13,
-    chart_height = 8.5,
+    chart_width = 6,
+    chart_height = 3,
     
     # Save options
     chart_dir = NULL,
@@ -240,7 +240,7 @@ plot_barchart <- function(
       )
   }
   
-  p <- p + theme(plot.subtitle = element_text(size = 14))
+  p <- p + theme(plot.subtitle = element_text(size = 9))
   
   # Statistical annotations
   if (add_mean || add_median || add_maximum || add_minimum) {

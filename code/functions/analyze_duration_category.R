@@ -164,7 +164,7 @@ analyze_duration_category <- function(
           filename  = boxplot_file,
           title     = paste0(title_case, " Duration (days) by agency"),
           top_n     = 30,
-          y_axis_tick_size = 10,
+          y_axis_tick_size = 9,
           order_by  = "count",
           flip      = TRUE,
           x_scale_type = "pseudo_log",
@@ -218,9 +218,9 @@ analyze_duration_category <- function(
           x_scale_type     = "pseudo_log",
           y_axis_side      = "left",
           x_limits = c(lower_limit, upper_limit),
-          y_axis_label_size = 12,
-          y_axis_tick_size = 13,
-          x_axis_tick_size = 15,
+          y_axis_label_size = 9,
+          y_axis_tick_size = 9,
+          x_axis_tick_size = 9,
           plot_title_size  = 14,
           min_count        = 5L
         )

@@ -281,7 +281,7 @@ plot_annual_counts_with_projection <- function(
   
   # ----- Save plot -----
   if (!dir.exists(chart_dir)) dir.create(chart_dir, recursive = TRUE)
-  ggplot2::ggsave(file.path(chart_dir, filename), plot = p, width = 13, height = 8.5)
+  ggplot2::ggsave(file.path(chart_dir, filename), plot = p, width = 13, height = 8)
   
   invisible(list(data = annual, model = model, plot = p, stats = multi_year_stats))
 }

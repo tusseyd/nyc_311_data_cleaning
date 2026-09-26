@@ -253,7 +253,7 @@ report_post_closed_updates <- function(
           zero_line        = TRUE,
           x_scale_type     = "linear",
           y_axis_side = "left", 
-          y_axis_label_size = 12,
+          y_axis_label_size = 9,
           count_label_hjust = 1,
           min_count        = 5L
         )
@@ -264,6 +264,10 @@ report_post_closed_updates <- function(
           x_axis_field = "postClosedUpdateDuration",
           chart_directory = chart_dir,
           chart_file_name = "post_closed_resolution_violin.pdf",
+          # Figure 1: 6 x 3 inches; LaTeX controls its displayed width.
+          chart_width = 6,
+          chart_height = 3,
+          x_axis_title = "Days from closure to resolution-action update",
           chart_title = ""
         )
         
@@ -299,9 +303,9 @@ report_post_closed_updates <- function(
           x_scale_type     = "linear",
           y_axis_side      = "left",
           x_limits = c(lower_limit, upper_limit),
-          y_axis_label_size = 12,
-          y_axis_tick_size = 13,
-          x_axis_tick_size = 15,
+          y_axis_label_size = 9,
+          y_axis_tick_size = 9,
+          x_axis_tick_size = 9,
           plot_title_size  = 14,
           min_count        = 5L
         )

@@ -509,8 +509,8 @@ plot_pareto_combo(
   title            = "Pareto Analysis by Agency",
   filename         = "SR_by_agency_pareto_combo_chart.pdf",
   chart_dir        = chart_dir,
-  width_in         = 18,
-  height_in        = 8.5,
+  width_in = 6,
+  height_in = 3,
   show_labels      = FALSE,
   show_threshold_80 = TRUE,   # whether to draw the 80% reference line
   annotation_size  = 3.5
@@ -1979,7 +1979,7 @@ Sys.sleep(3)
 # Save to chart directory
 ggsave(file.path(chart_dir, "positive_all_agencies.pdf"), 
        plot = positive_all_agencies,
-       width = 18, height = 8.5, dpi = 300)
+       width = 18, height = 8, dpi = 300)
 
 # Create the summary and transpose it
 summary_stats <- positive_data[, .(
@@ -2187,9 +2187,9 @@ Sys.sleep(3)
 
 # Save individual plots
 ggsave(file.path(chart_dir, "nypd_only_positive_durations.pdf"), p3, 
-       width = 18, height = 8.5, units = "in")
+       width = 18, height = 8, units = "in")
 ggsave(file.path(chart_dir, "others_only_positive_durations.pdf"), p4, 
-       width = 18, height = 8.5, units = "in")
+       width = 18, height = 8, units = "in")
 
 # 1. Combine data with agency group label
 combined_data <- rbind(
@@ -2234,7 +2234,7 @@ p_combined <- ggplot(combined_data, aes(x = duration_days, fill = group)) +
             aes(x = median_val, y = Inf, label = label, color = group, vjust = v_adj),
             angle = 90, 
             hjust = 1.1,      # Pushes text slightly down from the very top edge
-            size = 3.8, 
+            size = 9 / (72.27 / 25.4),  # annotation size in mm
             fontface = "bold",
             show.legend = FALSE) + 
   
@@ -2270,8 +2270,9 @@ p_combined <- ggplot(combined_data, aes(x = duration_days, fill = group)) +
 print(p_combined)
 Sys.sleep(3)
 
-ggsave(file.path(chart_dir, "nypd_vs_others_combined.pdf"), p_combined, 
-       width = 18, height = 8.5, units = "in")
+# Supplement: 6 x 3 inches; LaTeX controls its displayed width.
+ggsave(file.path(chart_dir, "nypd_vs_others_combined.pdf"), p_combined,
+       width = 6, height = 3, units = "in")
 
 # Set histogram display limits for readability
 upper_limit <- 30*3    # Maximum days to display (90 days)
@@ -2303,7 +2304,7 @@ plot_histogram(
   outlier_percentile = 1.0,
   add_stats  = TRUE,
   width      = 18,
-  height     = 8.5,
+  height     = 8,
   xlim       = c(0, upper_limit)
 )
 
@@ -2358,7 +2359,7 @@ plot_histogram(
   # Stats & output
   add_stats  = TRUE,
   width      = 18,
-  height     = 8.5
+  height     = 8
 )
 
 plot_result <- plot_boxplot(
@@ -2369,7 +2370,7 @@ plot_result <- plot_boxplot(
   filename  = "negative_duration_SR_boxplot.pdf",
   title     = " Negative Duration (days) by agency",
   top_n     = 30,
-  y_axis_tick_size = 10,
+  y_axis_tick_size = 9,
   order_by  = "count",
   flip      = TRUE,
   x_scale_type = "pseudo_log",
@@ -2418,7 +2419,7 @@ plot_duration_histogram(
   DT = d311,
   duration_col = "duration_sec",
   bin_width = 1,
-  x_label_skip = 2,         # Show every 2nd x-axis label
+  x_label_skip = 10,        # Show every 10th x-axis label
   x_axis_angle = 45,        # Rotate labels for readability
   max_value = 90,           # Focus on first 90 seconds
   min_value = 2L,
@@ -2502,8 +2503,8 @@ p_minute_created <- plot_barchart(
   # Save options
   chart_dir = "./charts",
   filename = "created_date_minute_distribution",
-  chart_width = 18,
-  chart_height = 8.5
+  chart_width = 6,
+  chart_height = 3
 )
 
 # Run cycle pattern analysis (for agency-level investigation)
@@ -2578,8 +2579,8 @@ p_minute_closed <- plot_barchart(
   # Save options
   chart_dir = "./charts",
   filename = "closed_date_minute_distribution",
-  chart_width = 18,
-  chart_height = 8.5
+  chart_width = 6,
+  chart_height = 3
 )
 
 # Run 5-minute cycle pattern analysis
@@ -2704,9 +2705,11 @@ p_combined <- ggplot(second_counts, aes(x = total_seconds, y = N)) +
     x = "Time from Hour Start (MM:SS)",
     y = "Number of Service Requests"
   ) +
-  theme_minimal(base_size = 12) +
+  theme_minimal(base_size = 9) +
   theme(
-    axis.text.x = element_text(angle = 45, hjust = 1),
+    axis.text.x = element_text(size = 9, angle = 45, hjust = 1),
+    axis.text.y = element_text(size = 9),
+    axis.title = element_text(size = 9),
     panel.grid.minor.x = element_blank()
   )
 
@@ -2718,8 +2721,8 @@ chart_filename <- paste0("./charts/created_date_first_", second_limit,
                          "_seconds.pdf")
 ggsave(chart_filename, 
        plot = p_combined, 
-       width = 18, 
-       height = 8.5)
+       width = 6,
+       height = 3, units = "in")
 
 message("Chart saved to: ", chart_filename, "\n", sep = "")
 

@@ -82,8 +82,8 @@ analyze_datetime_patterns <- function(
       show_labels = FALSE,
       x_axis_angle  = 0,
       y_axis_labels = scales::comma,
-      chart_width = 13,
-      chart_height = 8.5,
+      chart_width = 6,
+      chart_height = 3,
       chart_dir = chart_dir,
       filename  = sprintf("%s_hour_distribution_working_order", 
                           tolower(label))
@@ -128,8 +128,8 @@ analyze_datetime_patterns <- function(
         show_labels  = TRUE,
         x_axis_angle = 0,
         y_axis_labels = scales::comma,
-        chart_width  = 13,
-        chart_height = 8.5,
+        chart_width = 6,
+        chart_height = 3,
         chart_dir = chart_dir,
         filename  = sprintf("%s_exact_midnight_cy_distribution", tolower(label))
       )
@@ -191,8 +191,8 @@ analyze_datetime_patterns <- function(
         show_labels  = TRUE,
         x_axis_angle = 0,
         y_axis_labels = scales::comma,
-        chart_width  = 13,
-        chart_height = 8.5,
+        chart_width = 6,
+        chart_height = 3,
         chart_dir = chart_dir,
         filename  = sprintf("%s_exact_noon_cy_distribution", tolower(label))
       )
@@ -264,6 +264,8 @@ analyze_datetime_patterns <- function(
         DT        = hourly_top_hour,
         x_col     = "hour",
         y_col     = "top_of_hour",
+        x_label   = "Hour of day",
+        y_label   = "SRs at HH:00:00",
         title      = "",
         subtitle  = sprintf("n = %s ", format(top_hour_records, big.mark = ",")), 
         bar_width = 0.8,
@@ -272,8 +274,8 @@ analyze_datetime_patterns <- function(
         show_labels = FALSE,
         x_axis_angle  = 0,
         y_axis_labels = scales::comma,
-        chart_width = 13,
-        chart_height = 8.5,
+        chart_width = 6,
+        chart_height = 2,
         chart_dir = chart_dir,
         filename  = sprintf("%s_top_of_hour_distribution", tolower(label))
       )

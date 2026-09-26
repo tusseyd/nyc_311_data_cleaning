@@ -1,10 +1,10 @@
 david_theme <- function(
-    text_size          = 12,
-    plot_title_size    = text_size + 3,
-    plot_subtitle_size = text_size - 1,   # <-- new: size for subtitle text
-    axis_title_size    = text_size - 1,
-    x_axis_text_size   = text_size - 1,
-    y_axis_text_size   = text_size - 1,
+    text_size          = 9,
+    plot_title_size    = 10,
+    plot_subtitle_size = 9,
+    axis_title_size    = 9,
+    x_axis_text_size   = 9,
+    y_axis_text_size   = 9,
     x_axis_angle       = 0,
     x_axis_hjust       = if (x_axis_angle > 0) 1 else 0.5,
     x_axis_vjust       = 1,
@@ -20,6 +20,8 @@ david_theme <- function(
 ) {
   t <- ggplot2::theme(
     legend.position      = "none",
+    legend.text          = ggplot2::element_text(size = 9, family = base_family),
+    legend.title         = ggplot2::element_text(size = 9, family = base_family),
     panel.grid.major.y   = ggplot2::element_line(
       color = grid_line_color,
       linetype = grid_line_type,

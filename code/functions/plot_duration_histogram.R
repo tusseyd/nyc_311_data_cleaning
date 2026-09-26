@@ -13,8 +13,8 @@ plot_duration_histogram <- function(
     bin_width         = 1,                # bin width in same units as duration_col
     bin_type          = c("custom","individual","minutes","hours","days","auto"),
     create_cumulative = TRUE,
-    width_in          = 13,
-    height_in         = 8.5,
+    width_in = 6,
+    height_in = 3,
     bar_color         = "#009E73",
     text_size         = 12,
     threshold_numeric = NULL,   # Optional: where to draw vertical red line
