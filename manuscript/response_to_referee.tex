@@ -1,9 +1,16 @@
-\documentclass[11pt]{article}
+\documentclass[12pt]{article}
 \usepackage[margin=1in]{geometry}
 \usepackage[T1]{fontenc}
-\usepackage{parskip}
-\usepackage{booktabs,tabularx}
+\usepackage{xcolor}
 \usepackage[hyphens]{url}
+\usepackage{hyperref}
+\hypersetup{hidelinks}
+\definecolor{darkblue}{rgb}{0.1, 0.2, 0.6}
+
+\newenvironment{comment}
+{\begin{quotation}\noindent\small\itshape\color{darkblue}\ignorespaces}
+{\end{quotation}}
+\usepackage{booktabs,tabularx}
 \usepackage[round]{natbib}   % enables \citep and \citet
 \usepackage{placeins}        % \FloatBarrier keeps tables with their response
 
@@ -17,24 +24,12 @@
 \renewcommand{\textfraction}{0.07}
 \renewcommand{\floatpagefraction}{0.8}
 
-% ---------------------------------------------------------------
-% \refcomment{...} prints a numbered Referee comment in italics,
-% indented. Your response follows as ordinary text.
-% The \FloatBarrier stops any table from drifting past the next comment.
-% ---------------------------------------------------------------
-\newcounter{refcomment}
-\newcommand{\refcomment}[1]{%
-  \FloatBarrier
-  \stepcounter{refcomment}%
-  \par\medskip
-  \noindent\textbf{Comment \therefcomment.}
-  \begin{quote}\itshape #1\end{quote}
-  \noindent\textbf{Response.}~}
+\sloppy
 
 \begin{document}
 
 \begin{center}
-{\Large\bfseries Response to the Referee}\\[0.5em]
+{\Large\bfseries Response to the Comments}\\[0.5em]
 {\large\itshape Principles for Open Data Curation:\\
 A Case Study with the New York City 311 Service Request Data}
 \end{center}
@@ -65,19 +60,22 @@ changes are:
 \end{enumerate}
 
 Point-by-point responses follow, with the Referee's comments in
-italics. Page and line numbers refer to the revised manuscript. Where
+\emph{\color{darkblue}italic and blue}. Page and line numbers refer to the revised manuscript. Where
 a figure has been renumbered, we give both its original and revised
 numbers. Tables in this letter are numbered R1 and R2 to distinguish
 them from tables in the manuscript.
 
 % ===============================================================
-\section*{Responses to the Referee}
+\subsection*{To the Referee}
 % ===============================================================
 
-\refcomment{Page 4, lines 31--32: The authors mention two potentially
+\FloatBarrier
+\begin{comment}
+Page 4, lines 31--32: The authors mention two potentially
 redundant pairs. This is discussed later, but it might help to add
 something like ``e.g., cross\_street and intersection\_street'' at this
-point in the article.}
+point in the article.
+\end{comment}
 
 We thank the Referee for this suggestion, which improves the clarity of
 the paragraph. We now give the \texttt{cross\_street} and
@@ -87,7 +85,9 @@ street-related fields, including two likely redundant pairs, e.g.,
 \texttt{cross\_street\_1} \& \texttt{intersection\_\allowbreak street\_1}
 and \texttt{cross\_street\_2} \& \texttt{intersection\_\allowbreak street\_2}.''
 
-\refcomment{Page 4, bottom: This is just a comment for what it's worth.
+\FloatBarrier
+\begin{comment}
+Page 4, bottom: This is just a comment for what it's worth.
 I was doing text analysis on data like this that contained a Notes
 field. It was a CSV file, and I imported it into MATLAB. I ended up
 with a strange number of columns when importing it. It turns out that
@@ -95,7 +95,8 @@ the commas inside the Notes field were telling MATLAB that there were
 multiple columns from the Notes. So, CSV can be dangerous or
 problematic with free-form text fields. You are alluding to problems
 like this at the bottom of the page. Just wanted to pass along my
-experience.}
+experience.
+\end{comment}
 
 We thank the Referee for sharing this experience, which prompted us to
 explore and verify how the NYC Open Data portal handles embedded commas. The
@@ -185,9 +186,12 @@ We have therefore removed the paragraph on this
 issue (formerly p.~4, ll.~45--46), as the problem
 it anticipated does not arise with these data.
 
-\refcomment{Figure 2: Please add more explanation to the caption. What
+\FloatBarrier
+\begin{comment}
+Figure 2: Please add more explanation to the caption. What
 do you want the reader to notice or take away from the figure? It's ok
-to repeat what you have in the body of the paper.}
+to repeat what you have in the body of the paper.
+\end{comment}
 
 We thank the Referee for this suggestion. In revising the caption, we
 concluded that the figure contained more detail than a reader could
@@ -196,11 +200,14 @@ the text. We have therefore removed the figure and revised the
 accompanying discussion (p.~4, ll.~26--30) to state its main takeaway
 directly: just six agencies account for 90.19\% of all SRs.
 
-\refcomment{Figure 3: First, this is very hard to read. The fonts are
+\FloatBarrier
+\begin{comment}
+Figure 3: First, this is very hard to read. The fonts are
 too small. You could do the same as Figure 2 and just show the top
 90\%. I also make the same suggestion as Figure 2, that you add more
 details and explanations to the caption, so the figure stands alone
-from the text in terms of what you want readers to know.}
+from the text in terms of what you want readers to know.
+\end{comment}
 
 We agree, and we thank the Referee for the suggestion to show only the
 top contributors. We have replaced the figure with a table (Table~1 of
@@ -210,11 +217,14 @@ font, which resolves the readability issue, and its caption states the
 key observation: SR volume is highly concentrated, with just six
 agencies generating the large majority of 311 SRs.
 
-\refcomment{Figure 4: Are the units for both of these plots days? You
+\FloatBarrier
+\begin{comment}
+Figure 4: Are the units for both of these plots days? You
 should specify the units. I guess the violin plots show Number of SRs,
 which should be made clearer. I think the one on the left mentions days
 as `d', but I would spell it out. Also, these might be more readable
-with the plot placed vertically.}
+with the plot placed vertically.
+\end{comment}
 
 We thank the Referee for these observations. The duration axis is in
 days, and the violin plot shows the number of SRs; both axes are now
@@ -226,25 +236,34 @@ width. The revised caption explains how to read the plot and states its
 key observations. (Figure~4(a) in the original manuscript is Figure~1
 in the revision.)
 
-\refcomment{Page 11, line 26: You have 30 d. I would spell it out and
-use 30 days.}
+\FloatBarrier
+\begin{comment}
+Page 11, line 26: You have 30 d. I would spell it out and
+use 30 days.
+\end{comment}
 
 Corrected. The text now reads ``more than 30 days post-closure''
 (p.~9, ll.~34--35). The abbreviation arose from the \texttt{siunitx}
 unit \verb|\day|, which prints as ``d''; we have replaced it with plain
 text throughout the document.
 
-\refcomment{Page 11, line 34: You have `datetime'. Suggest using
-date-time or date/time.}
+\FloatBarrier
+\begin{comment}
+Page 11, line 34: You have `datetime'. Suggest using
+date-time or date/time.
+\end{comment}
 
 We agree. On review, we removed the sentence containing this instance
 (p.~11, l.~34 of the original manuscript), as its description of SQL
 date handling was imprecise. The remaining instances of ``datetime''
 have been changed to ``date-time'' (p.~10, ll.~37--38).
 
-\refcomment{Figure 5: These are impossible to read, because the font is
+\FloatBarrier
+\begin{comment}
+Figure 5: These are impossible to read, because the font is
 so small. Suggest you place these vertically and make the fonts larger.
-Also, indicate what the red dashed line represents.}
+Also, indicate what the red dashed line represents.
+\end{comment}
 
 We agree. The two panels are now stacked vertically at full page
 width, with enlarged axis labels, tick labels, and titles. The red
@@ -254,13 +273,19 @@ more prominently, and defined in the caption, which also summarizes
 the figure's key observations. (Figure~5 in the original manuscript
 is Figure~2 in the revision.)
 
-\refcomment{Page 12, line 21: You need a space between the and
-``closed\ldots''}
+\FloatBarrier
+\begin{comment}
+Page 12, line 21: You need a space between the and
+``closed\ldots''
+\end{comment}
 
 Corrected (p.~10, l.~34).
 
-\refcomment{Page 13, positive durations: Do the long durations make
-sense given the agency? If so, some words here might help readers.}
+\FloatBarrier
+\begin{comment}
+Page 13, positive durations: Do the long durations make
+sense given the agency? If so, some words here might help readers.
+\end{comment}
 
 We thank the Referee for this question, which required some additional
 analysis. We extracted the SRs with long (and extreme) durations and
@@ -282,9 +307,12 @@ Accordingly, we have revised the manuscript to include
 similar examples (p.~13, ll.~4--8) and to note that such 
 SRs can reasonably require long resolution times.
 
-\refcomment{Page 17, Actionable Steps: I really liked these. I have one
+\FloatBarrier
+\begin{comment}
+Page 17, Actionable Steps: I really liked these. I have one
 suggestion (take it or leave it) on Collaboration. Agencies could
-(should?) appoint a Data Curation Officer.}
+(should?) appoint a Data Curation Officer.
+\end{comment}
 
 We thank the Referee for the kind words and for this suggestion,
 which we have adopted. NYC's Open Data Law, Local Law~11 of 2012
