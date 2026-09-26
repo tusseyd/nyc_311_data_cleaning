@@ -183,7 +183,7 @@ and the Department of Sanitation (DSNY).
 
 \begin{figure}[tbp]
 \centering
-\includegraphics[width=0.9\textwidth]{pareto_closed_status_missing_closed_date_by_agency.pdf}
+\includegraphics[width=\textwidth,height=0.7\textheight,keepaspectratio]{pareto_closed_status_missing_closed_date_by_agency.pdf}
 \caption{Pareto chart of SRs with a status of CLOSED, but missing a \texttt{closed\_date}, by Agency.}
 \label{fig:pareto-closed-status-missing-date}
 \end{figure}
@@ -192,7 +192,7 @@ and the Department of Sanitation (DSNY).
 
 \begin{figure}[tbp]
 \centering
-\includegraphics[width=0.9\textwidth]{pareto_nonclosed_status_with_closed_date_by_agency.pdf}
+\includegraphics[width=\textwidth,height=0.7\textheight,keepaspectratio]{pareto_nonclosed_status_with_closed_date_by_agency.pdf}
 \caption{Pareto chart of SRs missing a CLOSED status, but with a \texttt{closed\_date}, by Agency.}
 \label{fig:pareto-nonclosed-with-date}
 \end{figure}
@@ -221,7 +221,7 @@ of such cases. This concentration identifies a clear focal point for further inv
 
 \begin{figure}[tbp]
 \centering
-\includegraphics[width=0.9\textwidth]{closed_exact_midnight_cy_distribution.pdf}
+\includegraphics[width=\textwidth,height=0.7\textheight,keepaspectratio]{closed_exact_midnight_cy_distribution.pdf}
 \caption{Yearly distribution of SRs with a midnight \texttt{closed\_date}.}
 \label{fig:closed-exact-midnight-cy}
 \end{figure}
@@ -232,7 +232,7 @@ of such cases. This concentration identifies a clear focal point for further inv
 
 \begin{figure}[tbp]
 \centering
-\includegraphics[width=0.9\textwidth]{pareto_closed_exact_midnight_agency.pdf}
+\includegraphics[width=\textwidth,height=0.7\textheight,keepaspectratio]{pareto_closed_exact_midnight_agency.pdf}
 \caption{Pareto chart of SRs with a midnight \texttt{closed\_date}, by Agency.}
 \label{fig:pareto-closed-midnight}
 \end{figure}
@@ -255,21 +255,20 @@ variable, and aggregation across agencies obscures agency-specific patterns.
 In Figure~\ref{fig:boxplot-large-positive-durations} the box plot shows SR durations 
 calculated as $\texttt{closed\_date} - \texttt{created\_date}$. The anomaly 
 measured is SRs that have large positive durations, for this box plot 
-between two and five years (730--1825 days) --- duration limits that 
+greater than 730 and at most 1825 days (approximately two to five years) --- duration limits that
 seem reasonable to count as \emph{large}. This chosen range also 
-excludes \num{1240} extreme durations,
-many of which appear to be caused by data entry errors, such as a 
-\texttt{created\_date} of 1900-01-01. There are \num{139628} such \emph{large-duration} SRs.
+excludes \num{1258} extreme durations,
+which exceed five years and require separate investigation. There are \num{139713} such \emph{large-duration} SRs.
  As shown in Figure~\ref{fig:boxplot-large-positive-durations}, the box 
 plot indicates that the Department of Parks and Recreation (DPR) is responsible 
 for most of these large durations, followed closely by the Department
 of Health and Mental Hygiene (DOHMH), the Economic Development 
-Council (EDC) and DSNY. 
+Corporation (EDC) and DSNY.
 
 
 \begin{figure}[tbp]
 \centering
-\includegraphics[width=0.9\textwidth]{boxplot_large_positive_739_1825_days_by_agency.pdf}
+\includegraphics[width=\textwidth,height=0.7\textheight,keepaspectratio]{boxplot_large_positive_739_1825_days_by_agency.pdf}
 \caption{Distribution of \textsc{SR}s with large durations
 (\SIrange[round-mode=none]{730}{1825}{\day}), by agency}
 \label{fig:boxplot-large-positive-durations}
@@ -306,7 +305,7 @@ right tail and the presence of extreme values.
 
 \begin{figure}[tbp]
 \centering
-\includegraphics[width=0.9\textwidth]{nypd_vs_others_combined.pdf}
+\includegraphics[width=\textwidth,height=0.7\textheight,keepaspectratio]{nypd_vs_others_combined.pdf}
 \caption{All-other Agencies and NYPD Positive Durations Distributions (Log Scale).}
 \label{fig:bimodal-distribution}
 \end{figure}
@@ -387,7 +386,7 @@ of NYPD SRs close within
 based on the bimodal threshold of
 \SI[round-mode=places, round-precision=3]{0.432}{\day},
 reflecting rapid responses to quality-of-life complaints.
-s. By contrast, infrastructure 
+By contrast, infrastructure
 and regulatory agencies operate primarily in standard mode: It 
 seems reasonable to assume that the nature of the SRs for 
 these agencies requires more physical service delivery, construction 
@@ -498,7 +497,7 @@ the \texttt{charts} directory upon completion of the data cleansing program.
 
 \begin{figure}[tbp]
 \centering
-\includegraphics[width=0.9\textwidth]{violin_boxplot_negative_days_by_agency.pdf}
+\includegraphics[width=\textwidth,height=0.7\textheight,keepaspectratio]{violin_boxplot_negative_days_by_agency.pdf}
 \caption{Violin with Boxplot for SRs with Negative Durations (log x-axis), by Agency.}
 \label{fig:violin-boxplot-negative}
 \end{figure}
@@ -526,8 +525,12 @@ also warrant examination. A log-normal $3\sigma$ threshold was
 computed on log-transformed duration values and back-transformed
 to the original scale, yielding a threshold of 
 \SI{27.95}{\second} (rounded to \SI{28}{\second}).
-Applying this threshold identified
-\num{10231} anomalous durations (\SI{0.067}{\percent} of records).
+Applying the unrounded cutoff identified \num{10231} short durations
+(\SI{0.067}{\percent} of positive durations of at least two seconds).
+The category summary uses a rounded boundary of at most \SI{28}{\second},
+yielding \num{14741} positive durations, including \num{3460} one-second
+cases. Together with \num{387329} zero-duration cases, these comprise
+\num{402070} SRs (\SI{2.55}{\percent} of closed rows).
 The main manuscript provides the detailed
 rationale for this outlier methodology.
 
@@ -539,14 +542,14 @@ note is the spike at the one-minute
 mark. This is not unexpected, as overall, SR durations show a spike 
 at every \emph{on-the-minute} mark. 
 Figure~\ref{fig:created-dates-by-seconds} displays this anomaly by the
-second, as shown for the first five minutes. Further analysis identified
+second, as shown for approximately the first ten minutes of each hour. Further analysis identified
 the NYC Department of Environmental Protection (DEP) and 
-Depatment of Sanitation(DSNY) as the largest contributors to the 
+Department of Sanitation (DSNY) as the largest contributors to the
 on-the-minute spikes.
 
 \begin{figure}[tbp]
 \centering
-\includegraphics[width=0.9\textwidth]{duration_histogram.pdf}
+\includegraphics[width=\textwidth,height=0.7\textheight,keepaspectratio]{duration_histogram.pdf}
 \caption{Distribution of Small Durations (2--90 Seconds).}
 \label{fig:duration_histogram}
 \end{figure}
@@ -555,7 +558,7 @@ on-the-minute spikes.
 
 \begin{figure}[tbp]
 \centering
-\includegraphics[width=0.9\textwidth]{created_date_first_601_seconds.pdf}
+\includegraphics[width=\textwidth,height=0.7\textheight,keepaspectratio]{created_date_first_601_seconds.pdf}
 \caption{Distribution of Created Dates by Seconds Reveals Spikes at Every Minute (mm:00).}
 \label{fig:created-dates-by-seconds}
 \end{figure}
@@ -611,7 +614,7 @@ entering 2020.
 
 \begin{figure}[tbp]
 \centering
-\includegraphics[width=0.9\textwidth]{annual_backlog_bar_chart.pdf}
+\includegraphics[width=\textwidth,height=0.7\textheight,keepaspectratio]{annual_backlog_bar_chart.pdf}
 \caption{Backlog of SRs — Open at the Beginning of the Year}
 \label{fig:annual_backlog}
 \end{figure}
@@ -709,7 +712,7 @@ programs which should be executed in order:
 \begin{enumerate}[leftmargin=4em]
 \item \texttt{data\_prep\_for\_jds\_datacleansing.R} --- Prepares the raw data for analysis
 
-\item \texttt{jds\_datacleansing.R} --- Performs data cleansing and quality assessments
+\item \texttt{jds\_datacleansings.R} --- Performs data cleansing and quality assessments
 \end{enumerate}
 
 Each of these programs produces a console output file in simple text format, specifically:
@@ -724,7 +727,7 @@ Each of these programs produces a console output file in simple text format, spe
 
 These two files, along with the associated charts, provide additional insight 
 into the anomalies observed during data cleansing. Upon running 
-the \texttt{jds\_datacleansing.R} program, there will be 87 charts in PDF format in 
+the \texttt{jds\_datacleansings.R} program, there will be 87 charts in PDF format in
 the \texttt{charts} directory and a \texttt{field\_usage\_summary\_table.csv}
 file in the \texttt{analytics} directory. 
 
@@ -733,7 +736,7 @@ For validation purposes, a reference copy of the two console output files is
 available on GitHub. These reference files can also be used to view the full console
 output of the two programs, without needing to run the .R programs. Unfortunately,
 the full set of \num{87} charts can only be duplicated by running the 
-\texttt{jds\_datacleansing.R} program, as it is not possible to include all charts in either 
+\texttt{jds\_datacleansings.R} program, as it is not possible to include all charts in either
 the main manuscript nor in this supplementary document. The additional figures are 
 diagnostic artifacts of the QA pipeline, and are reproducible outputs, not 
 interpretive embellishments.
@@ -758,7 +761,7 @@ DOI: \url{https://doi.org/10.6084/m9.figshare.30699800}
 \url{https://github.com/tusseyd/nyc_311_data_cleaning/blob/main/reference_console_output/reference_JDS_data_prep_console_output.txt}
 
 \item Data Cleaning Console Output (GitHub reference file):\\
-\url{https://github.com/tusseyd/nyc_311_data_cleaning/blob/main/reference_console_output/reference_JDS_datacleaning_console_output.txt}
+\url{https://github.com/tusseyd/nyc_311_data_cleaning/blob/main/reference_console_output/referenc_JDS_datacleaning_console_output.txt}
 
 \end{itemize}
 
@@ -797,7 +800,7 @@ Step 2: Set Up Project Structure
 
 \begin{itemize}
 \item \texttt{code/data\_prep\_for\_jds\_datacleansing.R}
-\item \texttt{code/jds\_datacleansing.R}
+\item \texttt{code/jds\_datacleansings.R}
 \item All files in \texttt{code/functions/} directory (required dependencies)
 \end{itemize}
 
@@ -806,7 +809,7 @@ Step 2: Set Up Project Structure
 will automatically create the following directory structure. The individual files shown 
 below will be created by running the data cleansing program. Below is the 
 directory structure and the files they will contain after running the data 
-cleansing program \texttt{code/jds\_datacleansing.R}. 
+cleansing program \texttt{code/jds\_datacleansings.R}.
 
 
 \dirtree{%
@@ -818,12 +821,12 @@ cleansing program \texttt{code/jds\_datacleansing.R}.
 .4 [87 PDF files].
 .3 code/.
 .4 data\_prep\_for\_jds\_datacleansing.R.
-.4 jds\_datacleansing.R.
+.4 jds\_datacleansings.R.
 .4 functions/.
 .5 [function files].
 .3 console\_output/.
 .4 JDS\_data\_prep\_console\_output.txt.
-.4 JDS\_datacleansing\_console\_output.txt.
+.4 JDS\_datacleaning\_console\_output.txt.
 .3 data/.
 .4 5-year\_311SR\_01-01-2020\_thru\_12-31-2024\_AS\_OF\_10-10-2025.rds.
 .4 USPS\_zipcodes.rds.
@@ -832,20 +835,19 @@ cleansing program \texttt{code/jds\_datacleansing.R}.
 .5 zip\_code\_database.csv.
 .3 reference\_console\_output/.
 .4 reference\_JDS\_data\_prep\_console\_output.txt.
-.4 reference\_JDS\_datacleaning\_console\_output.txt.
+.4 referenc\_JDS\_datacleaning\_console\_output.txt.
 }
 
 
-Step 3:  Open RStudio and open \texttt{code/data\_prep\_for\_jds\_datacleansing.R}
-Modify the \texttt{base\_dir} variable (line 31) to match your local path:
-
+Step 3: Open RStudio with the project root as the working directory,
+then open \texttt{code/data\_prep\_for\_jds\_datacleansing.R}.
+Both scripts set \texttt{base\_dir} from \texttt{getwd()}, so this directory must
+be \path{nyc_311_data_cleaning}. Alternatively, set
+\texttt{base\_dir} explicitly in both scripts:
 
 \begin{verbatim}
-base_dir <- file.path("your", "path", "here", "nyc_311_data_cleaning")
+base_dir <- file.path("your", "path", "nyc_311_data_cleaning")
 \end{verbatim}
-\textit{Note: Non-Windows users should use forward slashes or 
-platform-appropriate path separators}
-
 
 Step 4: Place the downloaded data files in the following directories:
 
@@ -879,7 +881,7 @@ Step 6: Run the Data Cleansing Analysis R program
 
 
 \begin{enumerate}
-\item Execute \texttt{code/jds\_datacleansing.R} in RStudio.
+\item Execute \texttt{code/jds\_datacleansings.R} in RStudio.
 \item Expected runtime: approximately \SI{60}{\minute}
 on a system with \SI{16}{\giga\byte} of memory,
 or approximately \SI{31}{\minute}
@@ -888,7 +890,7 @@ on a system with \SI{32}{\giga\byte}.
 \item The script will produce:
   \begin{itemize}
     \item \num{87} PDF charts in \texttt{charts/}
-    \item \texttt{field\_usage\_summary\_table.csv}, located in \texttt{data/analytics/}
+    \item \texttt{field\_usage\_summary\_table.csv}, located in \texttt{analytics/}
     \item \texttt{console\_output/JDS\_datacleaning\_console\_output.txt}
   \end{itemize}
 \end{enumerate}
@@ -907,7 +909,7 @@ run. Validation console output files are located at:
 
 \begin{itemize}
 \item Data preparation console output: \\ \small\url{https://github.com/tusseyd/nyc_311_data_cleaning/blob/main/reference_console_output/reference_JDS_data_prep_console_output.txt}
- \item Data cleaning console output: \\ \small\url{https://github.com/tusseyd/nyc_311_data_cleaning/blob/main/reference_console_output/reference_JDS_datacleaning_console_output.txt}
+ \item Data cleaning console output: \\ \small\url{https://github.com/tusseyd/nyc_311_data_cleaning/blob/main/reference_console_output/referenc_JDS_datacleaning_console_output.txt}
 \end{itemize}
 
 

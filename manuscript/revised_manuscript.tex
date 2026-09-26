@@ -493,10 +493,9 @@ These steps include both structural adjustments and content standardization:
   \item Standardization of structure: Field names are normalized for ease of reference, and the raw
   \texttt{.csv} file is converted into the more efficient RDS format.
 
-  \item Date handling: Date handling: All date fields are converted to the \texttt{POSIXct}
-class, using the format \texttt{YYYY-MM-DD HH:MM:SS} format 
-and aligned to the \texttt{America/New\_York} time zone, 
-enabling accurate treatment of Daylight Saving Time (DST) 
+  \item Date handling: All date fields are converted to the \texttt{POSIXct}
+class and interpreted in the \texttt{America/New\_York} time zone,
+to support analysis of Daylight Saving Time (DST)
 effects (discussed in Section~\ref{subsec:datefieldissues}).
 
   \item Agency harmonization: Several agencies were renamed during the study period; records were
@@ -555,13 +554,13 @@ particularly given that 90\% of the values share the same level of precision.
 
 For reference, the official New York City Borough Boundary--Water Included
  (\textsc{NYBBWI}) dataset, published by the Department of City Planning (DCP),
-provides coordinates to six decimal places, corresponding to a practical
-accuracy of a few meters. In this analysis, the original coordinates were retained without
-rounding and evaluated against the official NYC city boundary
-contained in \textsc{NYBBWI}, using a tolerance of \SI{100}{\meter}.
-All records met this criterion.
+provides coordinates to six decimal places. Decimal precision alone does
+not establish positional accuracy. Original coordinates were retained
+without rounding and checked against a bounding box derived from the
+\textsc{NYBBWI} metadata, with a tolerance of \SI{100}{\meter}.
+All nonmissing coordinates tested met this criterion; this check does
+not establish that every point lies within the city polygon.
 
- 
 \paragraph{Inconsistent Representation of Missing Data:} 
 \label{par:missingdata}
 The 311 SR data contains inconsistent representations
@@ -585,11 +584,11 @@ of Daylight Saving Time (DST): clocks move forward one hour in the
 spring and backward one hour in the fall. This can introduce 
 some unexpected results. For example, 
 on both March 13, 2022, and March 12, 2023, there are no times 
-between 1:59 AM and 2:59 AM. The 2:00 AM hour on those dates 
+between 2:00 AM and 2:59 AM. The 2:00 AM hour on those dates
 is simply missing owing to the clocks moving forward; at 2:00 AM 
 it instantly becomes 3:00 AM. This creates a gap in the hourly 
-distribution of SRs on those days, and exaggerates the 
-lifespan of SRs, albeit by a single hour. 
+distribution of SRs on those days. Subtracting local clock times without
+accounting for the transition can overstate elapsed time by one hour.
 
 During preprocessing, several date fields were found to violate the DST
 spring-forward rule, with timestamps recorded during the nonexistent hour
@@ -597,14 +596,17 @@ between 02:00:00 and 02:59:59
 (e.g., \texttt{2024-03-10 02:00:46},
 \texttt{2020-03-08 02:10:00}). Such values are invalid, as local time
 advances directly from 01:59:59 to 03:00:00 on those dates. These anomalies
-were corrected by shifting the affected timestamps forward one hour 
+were adjusted by shifting the affected timestamps forward one hour
 to valid times (e.g., \texttt{2024-03-10 03:00:46},
-\texttt{2020-03-08 03:10:00}).
+\texttt{2020-03-08 03:10:00}). This adjustment assumes a one-hour
+offset; the original event times cannot be established from these
+values alone.
 
-The fall DST adjustment introduces a more serious systemic issue by producing
-SRs with \emph{negative} durations, where the \texttt{closed\_date} precedes
-the \texttt{created\_date}. Such cases are logically impossible and can
-distort agency-level performance measures, particularly for time-sensitive SRs.
+The fall DST adjustment repeats the 01:00 hour, so local timestamps
+without UTC offsets can appear to yield negative durations even when
+closure follows creation. Such ambiguity can distort performance
+measures, particularly for time-sensitive SRs.
+
 The following example illustrates the problem:
 
 
@@ -620,13 +622,13 @@ The following example illustrates the problem:
   so the resolution is time-stamped in the 311 system as 01{:}30 local time. 
 
   \item As a result, the SR is recorded as having closed
-\SI{20}{\minute} \emph{before} it was created, yielding an impossible negative duration of
+\SI{20}{\minute} \emph{before} it was created, yielding an apparent wall-clock difference of
 \SI{-20}{\minute}.
 
 \end{itemize}
 
 
-On average, \SI{86} SRs per year exhibit this systemic issue, 
+On average, \num{86} SRs per year exhibit this systemic issue,
 with a mean negative duration of \SI[round-precision=2]{-42.24}{\minute}. 
 Although rare, these anomalies can disproportionately affect 
 time-sensitive complaint categories such as
@@ -646,7 +648,7 @@ DST effects are found in Section~\ref{par:dst}.
 Understanding the absence of data by field greatly aids analysis. 
 For example, determining whether SRs were closed
 before or after their \texttt{due\_date} is difficult,
-as \SI[round-mode=places, round-precision=1]{99.6}{\percent}
+as \SI[round-mode=places, round-precision=2]{99.67}{\percent}
 of those field values are empty. Field completeness divides
 into three groups, as summarized in 
 Table~\ref{tab:completeness-lower}, which presents fields
@@ -831,7 +833,7 @@ detail later in this section.
 \label{par:duedate}
 The \texttt{due\_date} field is used almost exclusively by \textsc{DSNY} 
 and is populated in only about
-\SI[round-precision = 2]{0.05}{\percent} of cases. All values passed validation
+\SI[round-precision = 2]{0.33}{\percent} of cases. All values passed validation
 (no implausibly past or future dates), and no unusual patterns were observed.
 However, sixteen cases were found where the \texttt{due\_date} precedes the
 \texttt{created\_date}—a nonsensical condition. These ranged from just over
@@ -839,8 +841,9 @@ one year early to more than two years early.
 
 \paragraph{Closed Date:}
 \label{par:closeddate}
-Most records were compliant with respect to temporal bounds;
-none were set before 2003 or in the future.
+Most nonmissing closing dates were within the expected temporal bounds.
+Exceptions include dates in 1899 and 1900 and three dates later than
+the extraction date, including one in 2033.
 However, there is a clustering of timestamps at exactly midnight
 (\num{1083862};
 \SI[round-mode=places, round-precision=2]{6.77}{\percent}
@@ -871,44 +874,38 @@ While it is certainly possible---and even routine---to
 update an SR after it is closed, 
 \SI[round-precision=0]{54}{\percent} of updates
 do occur after the \texttt{closed\_date}.
-However, some of these updates appear to be 
-well beyond a normal or expected timeframe. A total of \num{27810} 
-entries occur more than 30~days post-closure, with some extending to
-\num{1593}~days, over four years. Figure~\ref{fig:resolution-violin} 
-illustrates both the extent and volume of these post-closure updates,
-showing a concentration within the 30--200 day range. These patterns raise 
-questions about whether such delayed updates reflect standard 
-operational practice or a systemic irregularity. \SI{84}{\percent} of these 
-late updates are associated with the TLC and \SI{12}{\percent} with 
-DSNY.
-
+Figure~\ref{fig:resolution-violin} summarizes \num{27616} SRs with updates
+more than 30 and at most \num{1095} days after closure. This subset is
+concentrated within the 30--200 day range. TLC, DPR, and DOHMH account
+for approximately \SI{36}{\percent}, \SI{29}{\percent}, and
+\SI{20}{\percent} of the subset, respectively. Longer intervals are
+excluded from the figure; some involve implausible historical closing
+dates. Agency consultation is needed to distinguish normal follow-up
+activity from timestamp errors.
 
 \begin{figure}[tbp]
 \centering
-\includegraphics[width=0.97\textwidth]{post_closed_resolution_violin.pdf}
-\caption{Violin plot showing the number of SRs with long post-closure updates in days. Note the 
-broad distribution and large number of extreme outliers, some exceeding four years.}
+\includegraphics[width=\textwidth]{post_closed_resolution_violin.pdf}
+\caption{Days from closure to resolution-action update for \num{27616} SRs
+with intervals greater than 30 and at most \num{1095} days. Violin width
+represents estimated density, the boxplot summarizes the distribution,
+and jittered points represent individual SRs. Most intervals are
+concentrated within 30--200 days, with a long right tail.}
 \label{fig:resolution-violin}
 \end{figure}
 
 \paragraph{Daylight Saving Time (DST) Anomalies:}
 \label{par:dst}
-As discussed in Section~\ref{par:dstsystemic},
-DST adjustments create a systemic anomaly.
-The DST \mbox{fall-back} adjustment yields negative
-durations in approximately \SI{86} SRs per year,
-with a mean negative duration of
-\SI[round-mode=places, round-precision=2]{-42.24}{\minute}.
-Similarly, the spring-forward adjustment inflates
-durations for approximately \num{55000} SRs annually
-due to the missing 02{:}00--02{:}59 interval. Although offsets of \SI{1}{\hour} or
-\SI{42}{\minute} may appear modest,
-such distortions can materially affect performance
-metrics for time-sensitive complaints such as
-\texttt{Noise--Residential},
-\texttt{Homeless~Person~Assistance}, and
-\texttt{Drug~Activity}.
-
+As discussed in Section~\ref{par:dstsystemic}, local timestamps can be
+ambiguous during DST transitions. The fall-back diagnostic identified
+approximately \num{86} SRs per year with apparent negative wall-clock
+differences averaging \SI[round-mode=places, round-precision=2]{-42.24}{\minute}.
+The spring-forward diagnostic identified approximately \num{55000} SRs
+annually spanning the transition. This describes exposure to the clock
+change, rather than confirmed errors in elapsed duration: correctly
+interpreted timezone-aware timestamps account for the missing hour.
+Reliable calculations require consistent timezone handling and, for
+the repeated fall-back hour, the applicable UTC offset.
 
 \paragraph{Midnight and Noon: Creation and Closure Issues:}
 \label{par:midnightnoonissues}
@@ -919,8 +916,8 @@ fields reveals spikes at midnight (00{:}00{:}00) and noon
 (12{:}00{:}00). These spikes suggest automated 
 batch-processing, perhaps assigning timestamps of midnight (00:00:00) to 
 large batches of SRs prior to sending the data to the 311 database. 
-This behavior distorts the calculated duration of these SRs 
-as well as overall system usage. Distribution by agency indicates that \SI{92}{\percent} of 
+If timestamps are assigned this way, they may distort calculated durations
+and the apparent timing of system usage. Distribution by agency indicates that \SI{92}{\percent} of
 the ``closed-exactly-at-midnight'' SRs originate 
 from just two agencies: the Department of Buildings (DOB)
 (\SI{69}{\percent}) and DSNY (\SI{23}{\percent}).
@@ -935,27 +932,28 @@ value, typical system behavior is to assign a default time value of
 inflate counts at midnight, but does not explain the spikes
 at noon. As shown in Figure~\ref{fig:exacthours}, both 
 \texttt{created\_date} and \texttt{closed\_date} timestamps
-display significant spikes at both noon and midnight, 
-exceeding expectations and the conventional \(+3\sigma\) control limit
-of statistical quality control \citep{grant1996statistical}, indicated
-by the red line.
+display peaks at noon and midnight. In the creation panel, the noon peak
+exceeds the $\mu + 3\sigma$ reference line, whereas the midnight peak
+remains below it. This descriptive screening threshold is motivated by
+statistical quality control \citep{grant1996statistical}; it does not
+account for expected daily variation or establish that a peak is an error.
 
 \begin{figure}[tbp]
   \centering
-  \begin{subfigure}[b]{0.9\textwidth}
+  \begin{subfigure}[b]{\textwidth}
     \includegraphics[width=\textwidth]{created_top_of_hour_distribution.pdf}
     \caption{\textsc{SR}s created at the exact top of the hour. Note the spikes at noon and midnight.}
     \label{fig:created_top_hour}
   \end{subfigure}
  % \hfill
-  \begin{subfigure}[b]{0.9\textwidth}
+  \begin{subfigure}[b]{\textwidth}
     \includegraphics[width=\textwidth]{closed_top_of_hour_distribution.pdf}
     \caption{\textsc{SR}s closed at the exact top of the hour. Note the spikes at noon and midnight.}
     \label{fig:closed_top_hour}
   \end{subfigure}
 \caption{311~\textsc{SR}s created and closed exactly at the top of the hour
 (HH:00:00), showing spikes at exactly midnight (00:00:00) and exactly
-noon (12:00:00). The red dashed line marks $\mu + 3\sigma$, where
+noon (12:00:00). The orange dashed line marks $\mu + 3\sigma$, where
 $\mu$ and $\sigma$ represent the mean and standard deviation of the
 hourly counts.}
   \label{fig:exacthours}	
@@ -989,24 +987,17 @@ A total of \num{45296} SRs (\SI{0.29}{\percent}) have a
 \texttt{closed\_date} that precedes the \texttt{created\_date},
 producing a nonsensical negative duration. Across all affected SRs,
 negative durations average $-118.7$~days, a substantial temporal
-distortion. Within this group, \num{115} SRs exhibit \emph{extreme} negative
-durations of about $-122$~years because their \texttt{closed\_date} is
-1899-12-31 or 1900-01-01. These are not plausible closing dates but
-placeholder values: 1900-01-01 is day~1 of the 1900 date system used
-by Microsoft Excel \citep{excel_datesystems} and the default value of
-the SQL Server \texttt{datetime} type \citep{mssql_datetime}, while
-1899-12-31 corresponds to day~0 of the Excel system, which Excel
-displays as ``1/0/1900.'' Their presence suggests that missing closing
-dates were recorded as zero or default values at some stage of data
-processing and later converted to calendar dates. A \texttt{closed\_date} in the past
-will create a large, nonsensical negative duration. These extreme cases appear
-concentrated within DOT, which accounts for \SI{98}{\percent} of them.
-
+distortion. Within this group, \num{115} SRs have extreme negative
+durations exceeding five years in magnitude. Most involve closing
+dates in 1899 or 1900, suggesting placeholder values or date-conversion
+artifacts. Their origin cannot be established from the export alone.
+DOT accounts for \num{44143} negative-duration SRs overall; this
+concentration should be distinguished from the extreme subset.
 
 \paragraph{Zero and One-Second Durations:}
 A more substantial issue arises when \texttt{closed\_date} and
 \texttt{created\_date} share identical timestamps to the second,
-creating a nonsensical zero-duration value. There are \num{387329}
+creating a zero-duration value that warrants investigation. There are \num{387329}
 (\SI{2.5}{\percent}) such zero-duration SRs. 
 
 In addition, \num{3460} SRs are closed within one second of their 
@@ -1021,7 +1012,7 @@ Service request (\textsc{SR}) durations are right-skewed,
 with some cases extending for months or years.
 The analysis determined appropriate lower-bound thresholds
 for identifying implausibly small duration values.
-Durations were truncated to values greater than
+Durations used to estimate thresholds were restricted to values of at least
 \SI{2}{\second} (excluding zero- and one-second artifacts)
 and less than or equal to \SI{172800}{\second}
 (\SI{48}{\hour}). 
@@ -1034,34 +1025,37 @@ The SD, MAD, and IQR methods did not flag additional anomalies,
 whereas the log-normal and percentile approaches produced
 operationally reasonable limits.
 
-The log-normal method yielded a $+3\sigma$ cutoff
-of \SI{27.95} seconds, which served as the outlier threshold. This 
-threshold identified \SI[round-mode=places, round-precision=2]{0.09}{\percent}  (\num{14741}) 	
-of SRs with a \texttt{closed\_date} as outliers with statistically
-anomalous durations. 
+The log-normal method uses the lower-tail cutoff
+$\exp(\mu_{\log} - 3\sigma_{\log})$, where $\mu_{\log}$ and
+$\sigma_{\log}$ are the mean and standard deviation of log-transformed
+durations in the restricted sample. The cutoff of \SI{27.95}{\second}
+identifies \num{10231} durations of at least \SI{2}{\second} below
+this boundary. The duration-category summary instead uses a rounded
+boundary of at most \SI{28}{\second}, yielding \num{14741} positive
+durations, including the \num{3460} one-second cases.
 
-Combining zero-duration cases (\num{387329}), one-second durations
-(\num{3460}), and near-zero durations below 28 seconds (\num{14741}), 
-a total of \num{405530}~SRs (\SI{2.57}{\percent} of the \num{15785892} of 
-SRs with a \texttt{closed\_date}) were classified as statistically anomalous or
-operationally implausible.
-	
+Combining \num{387329} zero-duration cases with these \num{14741}
+short positive durations gives \num{402070} SRs
+(\SI{2.55}{\percent} of the \num{15785892} SRs with a closing date).
+These are screening flags for investigation, rather than confirmed errors.
 
 \paragraph{Positive Durations:}
 \label{par:positivedurations}
 While a positive duration is the norm, some SRs exhibit
-extremely long lifespans. A total of \num{139628}
-(\SI[round-mode=places, round-precision=2]{0.88}{\percent})
+extremely long lifespans. A total of \num{139713}
+(\SI[round-mode=places, round-precision=2]{0.89}{\percent})
 SRs fall into the \emph{large-duration} category
-(1--2~years). These are concentrated in DPR, DOHMH, DSNY, and DOB,
-which together account for \SI{97}{\percent} of such cases. Additionally, 
+(greater than 730 and at most \num{1825} days, approximately 2--5 years).
+DPR, DOHMH, and EDC together account for approximately
+\SI{94}{\percent} of these cases. Additionally,
 \num{1258} SRs were classified as \emph{extreme} positive 
 durations (greater than 5~years). \SI{94}{\percent} of these extreme positive 
 durations occur within the DPR. Many of these extreme DPR durations
-are understandable as they include tree planting, removal, trimming, and 
-uprooting; activities which normally take a long time. Likewise, DOB 
-deals with many long-running issues such as plumbing, building 
-usage, and construction.
+may reflect tree planting, removal, trimming, or uprooting. Likewise,
+DOB handles plumbing, building use, and construction issues that can
+involve lengthy operational or administrative processes. These types
+make long durations plausible, but do not establish that individual
+multi-year intervals are accurate.
 
 
 %-------------------------------------------------------------------------------
@@ -1112,7 +1106,7 @@ potential need for consolidation:
 
   \item \texttt{cross\_street\_1 \& 2} \& \texttt{intersection\_street\_1 \& 2}:  
   These two street pairs are used to help identify the 
-  \texttt{incident address}. \SI{84}{\percent} of these street pairs (1 and 2)
+  \texttt{incident address}. Approximately \SI{83.6}{\percent} of each corresponding street pair
 are duplicates. Given this high level of duplication, it raises the question of 
 which field-pair should be trusted and whether they serve distinct 
 purposes. It is possible that these originated from different agencies 
@@ -1127,7 +1121,7 @@ Beyond analytical concerns, removing duplicate and near-duplicate fields
 can reduce file size by \SI{18.5}{\percent}. A smaller file size 
 means faster downloads, reduced storage, and often simpler data analysis. 
 The following list identifies duplicate and near-duplicate fields that 
-could be removed from the dataset with minimal data loss.
+could be consolidated after verifying that distinct information is preserved.
 
 
 \begin{itemize}[left=1.5em,itemsep=0.1\baselineskip]
@@ -1135,13 +1129,15 @@ could be removed from the dataset with minimal data loss.
   \item \texttt{park\_borough}: identical to \texttt{borough}.
   \item \texttt{location}: a concatenation of \texttt{latitude} and \texttt{longitude} coordinates.
   \item \texttt{cross\_street\_1/2} and \texttt{intersection\_street\_1/2}: 
- \SI{83}{\percent} match; perhaps justifying that retention of a single pair is sufficient.
+ approximately \SI{83.6}{\percent} agreement; reconcile nonmatching values before retaining a single pair.
 
 \end{itemize}
 
 Additionally, certain fields may not be useful for broad analysis
 due to their sparse data population. This applies to the fields 
-below which are less than \SI{0.01}{\percent} complete.
+below, whose use is limited or agency-specific. For example,
+\texttt{due\_date} is \SI{0.33}{\percent} complete and
+\texttt{facility\_type} is \SI{1.32}{\percent} complete.
 
 \begin{multicols}{2}
 \begin{itemize}[left=1.5em]
@@ -1219,7 +1215,7 @@ domains of legal values. For example, the \texttt{status} field is noted as
 having values of \textit{assigned, canceled, 
 closed}, and \textit{pending}. However, the dataset also contains 
 additional values, including \textit{in progress, started},
-\textit{canceled}, and \textit{unspecified}. Similarly, 
+and \textit{unspecified}. Similarly,
 the \texttt{address\_type} field shows acceptable values 
 of \textit{address, blockface, intersection, latlong}, 
 and \textit{placename}. However, the dataset also 
@@ -1288,8 +1284,7 @@ entries are accurate and valid. Some examples include
 Efficient storage and data representation are essential for handling 
 large government datasets. Our research found several duplicate and
 near-duplicate fields in the 311 SR dataset. Removing these
-redundancies could reduce the dataset size by 18.5\%, without 
-compromising analytical value. Eliminating redundant fields and 
+redundancies could reduce the dataset size by 18.5\%, provided that distinct information in nonmatching records is preserved. Eliminating redundant fields and
 encoding categorical variables can significantly reduce file 
 sizes and improve the efficiency of data analysis. Similarly, 
 categorical variables could be encoded in a standardized 
@@ -1359,8 +1354,9 @@ recurring issues, clarify user requirements, and guide improvements
 to dataset documentation and structure.
 
 Collaboration, however, requires clear ownership. NYC already has a
-governance structure for open data: under Local Law~11 of 2012
-\citep{nyc_ll11}, each agency must designate an 
+governance structure for open data: the Technical Standards Manual
+implementing Local Law~11 of 2012 \citep{nyc_ll11, nyc_tsm}
+requires each agency to designate an
 Open Data Coordinator (ODC), who works with
 a citywide Chief Open Platform Officer in the Office of Technology
 and Innovation (OTI, formerly DoITT) \citep{nyc_tsm}. The ODC's
@@ -1368,7 +1364,7 @@ defined responsibilities center on publication and compliance:
 delivering datasets to the portal, contributing to the annual
 compliance report, liaising with the central Open Data team,
 responding to public feedback, and conducting outreach. None of these roles
-explicitly addresses data quality or curation. In practice, the
+explicitly assigns data quality or curation responsibilities. In our experience, the
 role is often assigned in addition to other duties, with limited
 training and frequent turnover.
 
