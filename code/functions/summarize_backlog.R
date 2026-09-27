@@ -254,6 +254,14 @@ summarize_backlog <- function(DT,
        paste0("4. Excluded from all measures: status Closed with no closed date;\n",
               "   closed date before created date or after the as-of date"))
   
+  # 5. Activity among pre-2020 never-closed SRs
+  n_updated_2020_on <- sum(prior_still_open_by_year$n[!is.na(prior_still_open_by_year$uy) &
+                                                        prior_still_open_by_year$uy >= 2020L])
+  cat(sprintf(paste0("\n5. Pre-2020 never-closed SRs with a resolution update in 2020 or later: ",
+                     "%s of %s (%.1f%%)\n"),
+              fmt(n_updated_2020_on), fmt(prior_still_open),
+              100 * n_updated_2020_on / prior_still_open))
+  
   # --- Charts ---
   chart_labels <- c(
     backlog_strict = "SRs open on January 1",
@@ -275,6 +283,7 @@ summarize_backlog <- function(DT,
       show_labels = TRUE,
       add_trendline = TRUE,
       show_trend_stats = TRUE,
+      trend_stats_size  = 5.5,
       show_summary = FALSE,
       chart_width = 13,
       chart_height = 8.5,

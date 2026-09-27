@@ -588,62 +588,67 @@ at: \url{https://figshare.com/s/9f878b50687c9e4c540a}
 %---------------------------------------------------------------
 \section{SR Backlog}
 
-
 The analysis identified a substantial and growing volume of
-\emph{backlogged} SRs. The backlog at the start of year $Y$ is defined as
-the SRs created before 00:00 on 1~January of $Y$ that had not been closed
-before that moment, determined from recorded created and closed dates
-rather than current status. SRs marked Closed but lacking a closed date,
-and SRs whose closed date precedes their created date or falls after the
-extract date, are excluded because their closure time is unknown or
-invalid. Each year's backlog is a point-in-time count; values are not
-summed across years.
+\emph{backlogged} SRs. The backlog is measured at the start of each year,
+as a point-in-time count based on recorded created and closed dates rather
+than current status; yearly values are not summed. The \emph{active
+backlog} at the start of year $Y$ is determined in three steps:
+
+\begin{enumerate}
+  \item Select all SRs with a \texttt{created\_date} before 00:00 on
+  1~January of $Y$.
+  \item Remove SRs with a \texttt{closed\_date} before that moment, SRs
+  with a \texttt{status} of Closed but no \texttt{closed\_date}, and SRs
+  whose \texttt{closed\_date} precedes their \texttt{created\_date} or
+  falls after the extract date. The remaining SRs were open at the
+  boundary.
+  \item Remove SRs judged abandoned: no \texttt{closed\_date}, and no
+  activity for three or more years before the boundary, where activity is
+  the later of \texttt{resolution\_action\_updated\_date} and \texttt{created\_date }.
+\end{enumerate}
 
 Because the study extract begins in 2020, SRs created earlier that remained
 open at these boundaries were counted from the historical NYC Open Data
-dataset ``311 Service Requests from 2010 to 2019'' (NYC OpenData,
-dataset 76ig-c548) using API queries run on
-26~September~2026.
-\footnote{These counts are fixed in the analysis code. The script that
-reruns the queries, regenerates the counts, and checks them against the
-values in the code is available at
-\url{https://github.com/[user]/[repository]/blob/[tag]/recreate_pre2020_backlog_values.R}.}
-On 1~January~2020 the backlog stood at \num{631372} SRs, of which
-\num{492497} were pre-2020 records that had never been closed, about
-two-thirds of them created between 2010 and 2015. Having no closed date,
-these records count as open at every later boundary, adding a large,
-constant block that obscures year-to-year change.
+dataset ``311 Service Requests from 2010 to 2019'' (dataset 76ig-c548)
+using API queries run on 26~September~2026. These counts are fixed in the
+analysis code. The script that reruns the queries, regenerates the counts,
+and checks them against the values in the code is
+\href{https://github.com/tusseyd/nyc_311_data_cleaning/blob/a353c07/code/recreate_pre2020_backlog_values.R}{\texttt{code/recreate\_pre2020\_backlog\_values.R}}
+in the GitHub repository (Section~\ref{sec:reproducibility}).
 
-Two adjusted measures address this. Option~A excludes all never-closed SRs
-created before 2020. Option~B treats a never-closed SR as abandoned if its
-most recent activity, the later of its created date and its last
-resolution update, occurred three or more years before the boundary, and
-applies this rule equally to SRs created before and after 2020. The
-three-year cutoff is one year beyond the two-year threshold used to
-classify long durations.
+Step~3 is needed because of a large body of old records that were never
+closed. On 1~January~2020, \num{631372} SRs were open after step~2, of which
+\num{492497} were pre-2020 records with no \texttt{closed\_date}, about
+two-thirds of them with a \texttt{created\_date} between 2010 and 2015.
+Lacking a \texttt{closed\_date}, such records count as open at every later
+boundary, adding a large, constant block that obscures year-to-year change.
+The vast majority of these pre-2020 SRs show no activity after the year
+they were created: only \num{3985}
+(\SI[round-mode=places, round-precision=1]{0.8}{\percent})
+have a \texttt{resolution\_action\_updated\_date} in 2020 or later.
+The three-year inactivity cutoff is one year beyond the two-year threshold
+used to classify long durations, so an SR is treated as abandoned only
+after remaining inactive well past the point at which a closed SR would
+already be considered unusually long. The rule applies equally to SRs
+created before and after 2020. For 1~January~2020, step~3 removes
+\num{365825} abandoned SRs, leaving an active backlog of \num{265547}.
 
 While the total number of SRs increased by
 \SI[round-mode=places, round-precision=1]{17.5}{\percent}
-from 2020 to 2024, the backlog grew considerably faster under every
-measure. The unadjusted backlog rose by
-\SI[round-mode=places, round-precision=1]{51.0}{\percent},
-from \num{631372} to \num{953148}. Under Option~A it rose by
-\SI[round-mode=places, round-precision=1]{231.7}{\percent},
-from \num{138875} to \num{460651}, although this measure retains
-never-closed SRs created after 2020 however long they remain inactive.
-Under Option~B, shown in Figure~\ref{fig:annual_backlog}, the backlog rose by
+from 2020 to 2024, the active backlog grew considerably faster, rising by
 \SI[round-mode=places, round-precision=1]{60.4}{\percent},
-from \num{265547} to \num{425940}, with nearly all of the increase occurring
-before 2023; between 2023 and 2024 it grew by only \num{1810} SRs.
-
+from \num{265547} to \num{425940} (Figure~\ref{fig:annual_backlog}).
+Nearly all of the increase occurred before 2023; between 2023 and 2024
+the active backlog grew by only \num{1810} SRs.
 
 \begin{figure}[tbp]
 \centering
- \includegraphics[width=0.9\textwidth]{annual_backlog_B_bar_chart.pdf}
-\caption{Backlog of SRs — Open at the Beginning of the Year}
+\includegraphics[width=0.9\textwidth]{annual_backlog_B_bar_chart.pdf}
+\caption{Active backlog: SRs open on 1~January of each year, 2020--2024,
+excluding abandoned SRs (no activity for three or more years) and SRs with
+missing or invalid closed dates.}
 \label{fig:annual_backlog}
 \end{figure}
-
 
 %---------------------------------------------------------------
 %=================================================================

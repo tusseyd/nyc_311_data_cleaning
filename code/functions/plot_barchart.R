@@ -56,6 +56,7 @@ plot_barchart <- function(
     trendline_color = "#D55E00",
     trendline_method = "lm",
     trendline_size = 1.5,
+    trend_stats_size  = 4.5,   # text size of the R² / Growth annotation (ggplot size units, mm)
     show_r_squared = FALSE,          # NEW: Show R² on plot
     show_trend_stats = FALSE,        # NEW: Show growth/decline %
     trend_stats_x_pos = "left",      # NEW: Position for stats ("left", "right", "center")
@@ -391,7 +392,7 @@ plot_barchart <- function(
                         hjust = hjust_val,
                         vjust = 1,
                         color = trendline_color,
-                        size = 3.5,
+                        size = trend_stats_size,
                         fontface = "bold")
     }
   }
