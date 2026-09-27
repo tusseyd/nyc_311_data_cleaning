@@ -1,18 +1,35 @@
 # ==========================================================
-# Updated analyze_duration_QA (using duration_days only)
+# analyze_duration_QA (using duration_days only)
+# ----------------------------------------------------------
+# All thresholds are parameters. Chart labels, condition text,
+# and printed messages are built from those parameters, so
+# changing a threshold changes every label that describes it.
 # ==========================================================
 analyze_duration_QA <- function(
     DT,
     created_col      = "created_date",
-    closed_col       = "closed_date", 
+    closed_col       = "closed_date",
     key_col          = "unique_key",
     tz               = "UTC",
+    
+    # --- Duration thresholds (days) ---
     lower_neg_days   = -2 * 365.25,
     extreme_neg_days = -5 * 365.25,
-    upper_pos_days   = 2 * 365.25,
-    extreme_pos_days = 5 * 365.25,
+    upper_pos_days   =  2 * 365.25,
+    extreme_pos_days =  5 * 365.25,
     max_outlier_days = 10 * 365.25,
-    near_zero_days   = threshold_numeric / 86400,  # Convert seconds to days
+    
+    # --- Short-duration thresholds (seconds) ---
+    near_zero_secs   = 29,   # 0 < duration <= near_zero_secs
+    one_sec_max_secs = 2,    # 0 < duration <  one_sec_max_secs
+    
+    # --- Minimum agency counts for each category chart ---
+    min_agency_obs_negative       = 5,
+    min_agency_obs_zero           = 4,
+    min_agency_obs_one_sec        = 4,
+    min_agency_obs_large_positive = 4,
+    min_agency_obs_extreme_pos    = 3,
+    
     show_examples    = 10,
     show_samples     = TRUE,
     sample_size      = 10,
@@ -26,9 +43,56 @@ analyze_duration_QA <- function(
   
   stopifnot(data.table::is.data.table(DT))
   
-  # thresholds must be negative and ordered: extreme < lower < 0
-  stopifnot(is.numeric(lower_neg_days), is.numeric(extreme_neg_days))
+  # --- Threshold validation ---
+  stopifnot(is.numeric(lower_neg_days), is.numeric(extreme_neg_days),
+            is.numeric(upper_pos_days), is.numeric(extreme_pos_days),
+            is.numeric(max_outlier_days))
+  # negatives: extreme < lower < 0
   stopifnot(extreme_neg_days < lower_neg_days, lower_neg_days < 0)
+  # positives: 0 < upper < extreme < max_outlier
+  stopifnot(0 < upper_pos_days,
+            upper_pos_days < extreme_pos_days,
+            extreme_pos_days < max_outlier_days)
+  # short durations
+  stopifnot(near_zero_secs > 0, one_sec_max_secs > 0)
+  
+  if (!is.null(example_seed)) set.seed(example_seed)
+  
+  # --- Derived thresholds ---
+  secs_per_day     <- 86400
+  days_per_year    <- 365.25
+  near_zero_days   <- near_zero_secs   / secs_per_day
+  one_sec_max_days <- one_sec_max_secs / secs_per_day
+  
+  # --- Label helpers ---
+  fmt_d <- function(x) formatC(x, format = "f", digits = 0, big.mark = ",")
+  fmt_y <- function(x) formatC(x / days_per_year, format = "g", digits = 3)
+  fmt_s <- function(x) formatC(x, format = "g", digits = 4)
+  
+  # --- Chart labels and condition text (all built from parameters) ---
+  lbl_negative        <- "NEGATIVE"
+  lbl_large_negative  <- sprintf("LARGE NEGATIVE (%s to %s yrs)",
+                                 fmt_y(extreme_neg_days), fmt_y(lower_neg_days))
+  lbl_extreme_neg     <- sprintf("EXTREME NEGATIVE (<= %s yrs)",
+                                 fmt_y(extreme_neg_days))
+  lbl_zero            <- "ZERO"
+  lbl_one_sec         <- sprintf("ONE-SECOND (< %s sec)", fmt_s(one_sec_max_secs))
+  lbl_near_zero       <- sprintf("NEAR-ZERO (<= %s sec)", fmt_s(near_zero_secs))
+  lbl_large_positive  <- sprintf("LARGE POSITIVE (%s to %s yrs)",
+                                 fmt_y(upper_pos_days), fmt_y(extreme_pos_days))
+  lbl_extreme_pos     <- sprintf("EXTREME POSITIVE (%s to %s yrs)",
+                                 fmt_y(extreme_pos_days), fmt_y(max_outlier_days))
+  
+  cond_large_negative <- sprintf("(<= %s days and > %s days)",
+                                 fmt_d(lower_neg_days), fmt_d(extreme_neg_days))
+  cond_extreme_neg    <- sprintf("(<= %s days)", fmt_d(extreme_neg_days))
+  cond_zero           <- "(= 0 days)"
+  cond_one_sec        <- sprintf("(0 < duration < %s sec)", fmt_s(one_sec_max_secs))
+  cond_near_zero      <- sprintf("(0 < duration <= %s sec)", fmt_s(near_zero_secs))
+  cond_large_positive <- sprintf("(> %s and <= %s days)",
+                                 fmt_d(upper_pos_days), fmt_d(extreme_pos_days))
+  cond_extreme_pos    <- sprintf("(> %s and < %s days)",
+                                 fmt_d(extreme_pos_days), fmt_d(max_outlier_days))
   
   rsample <- function(DT, n) DT[sample(.N, min(.N, n))]
   
@@ -39,7 +103,7 @@ analyze_duration_QA <- function(
   X <- if (in_place) DT else data.table::copy(DT)
   
   # Check if durations already exist, if not calculate them
-  if (!all(c("duration_days") %in% names(X))) {
+  if (!"duration_days" %in% names(X)) {
     calculate_durations(
       X, created_col, closed_col, tz,
       in_place = TRUE, keep_parsed_timestamps = TRUE
@@ -65,23 +129,24 @@ analyze_duration_QA <- function(
   }
   
   # Denominator: rows with both timestamps present
-  denom <- !is.na(X$created_ts) & !is.na(X$closed_ts)
-  base_filter <- denom
+  base_filter <- !is.na(X$created_ts) & !is.na(X$closed_ts)
   
-  N_denom <- sum(denom)
+  N_denom <- sum(base_filter)
   if (N_denom == 0L) warning("No rows with both timestamps; summary is empty.")
   
-  neg_total <- if (N_denom) X[denom, sum(duration_days < 0, na.rm = TRUE)] else 0L
-  zero_total <- if (N_denom) X[denom, sum(duration_days == 0, na.rm = TRUE)] else 0L
-  pos_total <- if (N_denom) X[denom, sum(duration_days > 0, na.rm = TRUE)] else 0L
-  near_zero_excl_zero <- if (N_denom) X[denom, sum(duration_days > 0 & 
-                                                     duration_days <= near_zero_days, na.rm = TRUE)] else 0L
+  # Independent counts taken directly from X (used for QA table and checks)
+  neg_total <- if (N_denom) X[base_filter, sum(duration_days < 0,  na.rm = TRUE)] else 0L
+  zero_total <- if (N_denom) X[base_filter, sum(duration_days == 0, na.rm = TRUE)] else 0L
+  pos_total <- if (N_denom) X[base_filter, sum(duration_days > 0,  na.rm = TRUE)] else 0L
+  near_zero_excl_zero <- if (N_denom) X[base_filter, sum(duration_days > 0 &
+                                                         duration_days <= near_zero_days,
+                                                         na.rm = TRUE)] else 0L
   
   pct <- function(x) if (N_denom) sprintf("%.2f%%", 100 * x / N_denom) else "NA"
   
   # Skew-oriented quantiles for positive durations (days)
   qs <- if (N_denom) {
-    X[denom & duration_days > 0,
+    X[base_filter & duration_days > 0,
       as.list(stats::quantile(duration_days,
                               probs = c(0, .5, .9, .95, .99, 1),
                               na.rm = TRUE))]
@@ -94,19 +159,19 @@ analyze_duration_QA <- function(
     metric = c(
       "denominator_rows",
       "negative_total", "zero_total", "positive_total", "near_zero_excl_zero",
-      "pct_negative_total", "pct_zero", "pct_positive_total", 
-      "pct_near_zero_excl_zero", "pos_days_min", "pos_days_median", "pos_days_p90", 
+      "pct_negative_total", "pct_zero", "pct_positive_total",
+      "pct_near_zero_excl_zero", "pos_days_min", "pos_days_median", "pos_days_p90",
       "pos_days_p95", "pos_days_p99", "pos_days_max"
     ),
     value = c(
-      formatC(N_denom, format = "d", big.mark = ","),
-      formatC(neg_total, format = "d", big.mark = ","),
-      formatC(zero_total, format = "d", big.mark = ","),
-      formatC(pos_total, format = "d", big.mark = ","),
+      formatC(N_denom,             format = "d", big.mark = ","),
+      formatC(neg_total,           format = "d", big.mark = ","),
+      formatC(zero_total,          format = "d", big.mark = ","),
+      formatC(pos_total,           format = "d", big.mark = ","),
       formatC(near_zero_excl_zero, format = "d", big.mark = ","),
-      pct(neg_total), pct(zero_total), pct(pos_total), 
+      pct(neg_total), pct(zero_total), pct(pos_total),
       pct(near_zero_excl_zero),
-      if (is.na(qs$min)) rep(NA_character_, 6) else 
+      if (is.na(qs$min)) rep(NA_character_, 6) else
         as.character(round(unlist(qs), 3))
     )
   )
@@ -123,37 +188,59 @@ analyze_duration_QA <- function(
   # Subsets
   # =========
   negative_all <- X[base_filter & duration_days < 0, .SD, .SDcols = keep_cols]
-  negative_small <- X[base_filter & duration_days < 0 & duration_days > lower_neg_days, .SD, .SDcols = keep_cols]
-  negative_large <- X[base_filter & duration_days < 0 & duration_days <= lower_neg_days & duration_days > extreme_neg_days, .SD, .SDcols = keep_cols]
-  negative_extreme <- X[base_filter & duration_days < 0 & duration_days <= extreme_neg_days, .SD, .SDcols = keep_cols]
   
-  zero_all       <- X[base_filter & (duration_days == 0), .SD, .SDcols = keep_cols]
-  one_sec_all    <- X[base_filter & (duration_days > 0 & duration_days < 1/86400 * 2), .SD, .SDcols = keep_cols]  # ~1 second = 0.0000116 days
-  near_zero_ex   <- X[base_filter & (duration_days != 0) & (abs(duration_days) <= near_zero_days), .SD, .SDcols = keep_cols]
+  negative_small <- X[base_filter & duration_days < 0 &
+                        duration_days > lower_neg_days, .SD, .SDcols = keep_cols]
   
-  positive_all    <- X[base_filter & duration_days > 0, .SD, .SDcols = keep_cols]
-  positive_small  <- X[base_filter & duration_days > 0 & duration_days <= upper_pos_days, .SD, .SDcols = keep_cols]
-  positive_large  <- X[base_filter & duration_days > 0 & duration_days > upper_pos_days & duration_days <= extreme_pos_days, .SD, .SDcols = keep_cols]
-  positive_extreme <- X[base_filter & duration_days > 0 & duration_days > extreme_pos_days & duration_days < max_outlier_days, .SD, .SDcols = keep_cols]
+  negative_large <- X[base_filter &
+                        duration_days <= lower_neg_days &
+                        duration_days >  extreme_neg_days, .SD, .SDcols = keep_cols]
   
-  excluded_extreme <- X[base_filter & duration_days > 0 & duration_days > extreme_pos_days & duration_days >= max_outlier_days, .SD, .SDcols = keep_cols]
+  negative_extreme <- X[base_filter &
+                          duration_days <= extreme_neg_days, .SD, .SDcols = keep_cols]
+  
+  zero_all <- X[base_filter & duration_days == 0, .SD, .SDcols = keep_cols]
+  
+  one_sec_all <- X[base_filter & duration_days > 0 &
+                     duration_days < one_sec_max_days, .SD, .SDcols = keep_cols]
+  
+  # Positive only, matching near_zero_excl_zero in the QA table and the label
+  near_zero_ex <- X[base_filter & duration_days > 0 &
+                      duration_days <= near_zero_days, .SD, .SDcols = keep_cols]
+  
+  positive_all <- X[base_filter & duration_days > 0, .SD, .SDcols = keep_cols]
+  
+  positive_small <- X[base_filter & duration_days > 0 &
+                        duration_days <= upper_pos_days, .SD, .SDcols = keep_cols]
+  
+  positive_large <- X[base_filter &
+                        duration_days >  upper_pos_days &
+                        duration_days <= extreme_pos_days, .SD, .SDcols = keep_cols]
+  
+  positive_extreme <- X[base_filter &
+                          duration_days >  extreme_pos_days &
+                          duration_days <  max_outlier_days, .SD, .SDcols = keep_cols]
+  
+  excluded_extreme <- X[base_filter &
+                          duration_days >= max_outlier_days, .SD, .SDcols = keep_cols]
+  
   if (nrow(excluded_extreme)) {
     cat(sprintf(
-      "\nExcluded %s rows with duration_days ≥ %s (beyond max_outlier_days cap):\n",
+      "\nExcluded %s rows with duration_days >= %s days (%s yrs; beyond max_outlier_days cap):\n",
       prettyNum(nrow(excluded_extreme), big.mark = ","),
-      max_outlier_days
+      fmt_d(max_outlier_days), fmt_y(max_outlier_days)
     ))
     nshow <- min(nrow(excluded_extreme), show_examples)
     tmp <- rsample(excluded_extreme, nshow)[order(-duration_days)]
-    print(tmp[, c(.SD, .(duration_days = round(duration_days, 2))), .SDcols = setdiff(names(tmp), "duration_days")],
+    print(tmp[, c(.SD, .(duration_days = round(duration_days, 2))),
+              .SDcols = setdiff(names(tmp), "duration_days")],
           row.names = FALSE, right = FALSE)
   }
   
-  # Always define this once, up top
-  print_cols <- setdiff(keep_cols, c("created_ts","closed_ts"))
+  print_cols <- setdiff(keep_cols, c("created_ts", "closed_ts"))
   
   # Counts
-  total_closed <- X[base_filter, .N]
+  total_closed    <- N_denom
   neg_count       <- nrow(negative_all)
   neg_small       <- nrow(negative_small)
   neg_large       <- nrow(negative_large)
@@ -165,39 +252,44 @@ analyze_duration_QA <- function(
   pos_small       <- nrow(positive_small)
   pos_large       <- nrow(positive_large)
   pos_extreme_cnt <- nrow(positive_extreme)
+  pos_excluded    <- nrow(excluded_extreme)
   
-  # Averages, mins, and maxs
-  avg_neg_all     <- if (neg_count        > 0) round(mean(negative_all$duration_days,     na.rm = TRUE), 2) else NA_real_
-  avg_neg_small   <- if (neg_small        > 0) round(mean(negative_small$duration_days,   na.rm = TRUE), 2) else NA_real_
-  avg_neg_large   <- if (neg_large        > 0) round(mean(negative_large$duration_days,   na.rm = TRUE), 2) else NA_real_
-  avg_neg_extreme <- if (neg_extreme_cnt  > 0) round(mean(negative_extreme$duration_days, na.rm = TRUE), 2) else NA_real_
+  # Summary stat helper
+  stat_or_na <- function(DT, fun) {
+    if (nrow(DT) > 0) round(fun(DT$duration_days, na.rm = TRUE), 2) else NA_real_
+  }
   
   # --- Negative durations ---
-  min_neg_all     <- if (neg_count > 0) round(min(negative_all$duration_days,     na.rm = TRUE), 2) else NA_real_
-  min_neg_small   <- if (neg_small > 0) round(min(negative_small$duration_days,   na.rm = TRUE), 2) else NA_real_
-  min_neg_large   <- if (neg_large > 0) round(min(negative_large$duration_days,   na.rm = TRUE), 2) else NA_real_
-  min_neg_extreme <- if (neg_extreme_cnt > 0) round(min(negative_extreme$duration_days, na.rm = TRUE), 2) else NA_real_
+  avg_neg_all     <- stat_or_na(negative_all,     mean)
+  avg_neg_small   <- stat_or_na(negative_small,   mean)
+  avg_neg_large   <- stat_or_na(negative_large,   mean)
+  avg_neg_extreme <- stat_or_na(negative_extreme, mean)
   
-  max_neg_all     <- if (neg_count > 0) round(max(negative_all$duration_days,     na.rm = TRUE), 2) else NA_real_
-  max_neg_small   <- if (neg_small > 0) round(max(negative_small$duration_days,   na.rm = TRUE), 2) else NA_real_
-  max_neg_large   <- if (neg_large > 0) round(max(negative_large$duration_days,   na.rm = TRUE), 2) else NA_real_
-  max_neg_extreme <- if (neg_extreme_cnt > 0) round(max(negative_extreme$duration_days, na.rm = TRUE), 2) else NA_real_
+  min_neg_all     <- stat_or_na(negative_all,     min)
+  min_neg_small   <- stat_or_na(negative_small,   min)
+  min_neg_large   <- stat_or_na(negative_large,   min)
+  min_neg_extreme <- stat_or_na(negative_extreme, min)
+  
+  max_neg_all     <- stat_or_na(negative_all,     max)
+  max_neg_small   <- stat_or_na(negative_small,   max)
+  max_neg_large   <- stat_or_na(negative_large,   max)
+  max_neg_extreme <- stat_or_na(negative_extreme, max)
   
   # --- Positive durations ---
-  min_pos_all     <- if (pos_count > 0) round(min(positive_all$duration_days,     na.rm = TRUE), 2) else NA_real_
-  min_pos_small   <- if (pos_small > 0) round(min(positive_small$duration_days,   na.rm = TRUE), 2) else NA_real_
-  min_pos_large   <- if (pos_large > 0) round(min(positive_large$duration_days,   na.rm = TRUE), 2) else NA_real_
-  min_pos_extreme <- if (pos_extreme_cnt > 0) round(min(positive_extreme$duration_days, na.rm = TRUE), 2) else NA_real_
+  avg_pos_all     <- stat_or_na(positive_all,     mean)
+  avg_pos_small   <- stat_or_na(positive_small,   mean)
+  avg_pos_large   <- stat_or_na(positive_large,   mean)
+  avg_pos_extreme <- stat_or_na(positive_extreme, mean)
   
-  max_pos_all     <- if (pos_count > 0) round(max(positive_all$duration_days,     na.rm = TRUE), 2) else NA_real_
-  max_pos_small   <- if (pos_small > 0) round(max(positive_small$duration_days,   na.rm = TRUE), 2) else NA_real_
-  max_pos_large   <- if (pos_large > 0) round(max(positive_large$duration_days,   na.rm = TRUE), 2) else NA_real_
-  max_pos_extreme <- if (pos_extreme_cnt > 0) round(max(positive_extreme$duration_days, na.rm = TRUE), 2) else NA_real_
+  min_pos_all     <- stat_or_na(positive_all,     min)
+  min_pos_small   <- stat_or_na(positive_small,   min)
+  min_pos_large   <- stat_or_na(positive_large,   min)
+  min_pos_extreme <- stat_or_na(positive_extreme, min)
   
-  avg_pos_all     <- if (pos_count > 0) round(mean(positive_all$duration_days,     na.rm = TRUE), 2) else NA_real_
-  avg_pos_small   <- if (pos_small > 0) round(mean(positive_small$duration_days,   na.rm = TRUE), 2) else NA_real_
-  avg_pos_large   <- if (pos_large > 0) round(mean(positive_large$duration_days,   na.rm = TRUE), 2) else NA_real_
-  avg_pos_extreme <- if (pos_extreme_cnt > 0) round(mean(positive_extreme$duration_days, na.rm = TRUE), 2) else NA_real_
+  max_pos_all     <- stat_or_na(positive_all,     max)
+  max_pos_small   <- stat_or_na(positive_small,   max)
+  max_pos_large   <- stat_or_na(positive_large,   max)
+  max_pos_extreme <- stat_or_na(positive_extreme, max)
   
   # Print negative breakdown
   cat("\nNegative duration breakdown:\n")
@@ -207,35 +299,30 @@ analyze_duration_QA <- function(
   cat("    Negative large:   ", neg_large, "\n")
   cat("    Negative extreme: ", neg_extreme_cnt, "\n")
   
-  if (neg_small + neg_large + neg_extreme_cnt != neg_count) {
-    cat("⚠️ Warning: Breakdown counts do not add up to total negatives.\n")
-  }
-  
   # Define summary table
+  pct_of_closed <- function(n) if (total_closed) round(100 * n / total_closed, 2) else NA_real_
+  
   summary_dt <- data.table::data.table(
     denominator_closed_rows = total_closed,
     negative_total       = neg_count,
     negative_small       = neg_small,
     negative_large       = neg_large,
     negative_extreme     = neg_extreme_cnt,
-    pct_negative_total   = if (total_closed) round(100 * neg_count / total_closed, 2) else NA_real_,
-    pct_negative_small   = if (total_closed) round(100 * neg_small / total_closed, 2) else NA_real_,
-    pct_negative_large   = if (total_closed) round(100 * neg_large / total_closed, 2) else NA_real_,
-    pct_negative_extreme = if (total_closed) round(100 * neg_extreme_cnt / total_closed, 2) else NA_real_,
+    pct_negative_total   = pct_of_closed(neg_count),
+    pct_negative_small   = pct_of_closed(neg_small),
+    pct_negative_large   = pct_of_closed(neg_large),
+    pct_negative_extreme = pct_of_closed(neg_extreme_cnt),
     
-    # Negative averages
     avg_neg_all     = avg_neg_all,
     avg_neg_small   = avg_neg_small,
     avg_neg_large   = avg_neg_large,
     avg_neg_extreme = avg_neg_extreme,
     
-    # Negative mins
     min_neg_all     = min_neg_all,
     min_neg_small   = min_neg_small,
     min_neg_large   = min_neg_large,
     min_neg_extreme = min_neg_extreme,
     
-    # Negative maxs
     max_neg_all     = max_neg_all,
     max_neg_small   = max_neg_small,
     max_neg_large   = max_neg_large,
@@ -243,6 +330,7 @@ analyze_duration_QA <- function(
     
     zero_total           = zero_cnt,
     near_zero_leq_days   = near_zero_days,
+    near_zero_leq_secs   = near_zero_secs,
     one_sec_total        = one_sec_cnt,
     near_zero_excl_zero  = nearz_cnt,
     
@@ -250,37 +338,35 @@ analyze_duration_QA <- function(
     positive_small       = pos_small,
     positive_large       = pos_large,
     positive_extreme     = pos_extreme_cnt,
+    positive_excluded    = pos_excluded,
     
-    pct_positive_total   = if (total_closed) round(100 * pos_count / total_closed, 2) else NA_real_,
-    pct_positive_small   = if (total_closed) round(100 * pos_small / total_closed, 2) else NA_real_,
-    pct_positive_large   = if (total_closed) round(100 * pos_large / total_closed, 2) else NA_real_,
-    pct_positive_extreme = if (total_closed) round(100 * pos_extreme_cnt / total_closed, 2) else NA_real_,
+    pct_positive_total   = pct_of_closed(pos_count),
+    pct_positive_small   = pct_of_closed(pos_small),
+    pct_positive_large   = pct_of_closed(pos_large),
+    pct_positive_extreme = pct_of_closed(pos_extreme_cnt),
     
-    # Positive averages
     avg_pos_all     = avg_pos_all,
     avg_pos_small   = avg_pos_small,
     avg_pos_large   = avg_pos_large,
     avg_pos_extreme = avg_pos_extreme,
     
-    # Positive mins
     min_pos_all     = min_pos_all,
     min_pos_small   = min_pos_small,
     min_pos_large   = min_pos_large,
     min_pos_extreme = min_pos_extreme,
     
-    # Positive maxs
     max_pos_all     = max_pos_all,
     max_pos_small   = max_pos_small,
     max_pos_large   = max_pos_large,
     max_pos_extreme = max_pos_extreme,
     
-    pct_zero             = if (total_closed) round(100 * zero_cnt / total_closed, 2) else NA_real_,
-    pct_one_sec_total    = if (total_closed) round(100 * one_sec_cnt / total_closed, 2) else NA_real_,
-    pct_near_zero_excl_zero = if (total_closed) round(100 * nearz_cnt / total_closed, 2) else NA_real_
+    pct_zero                = pct_of_closed(zero_cnt),
+    pct_one_sec_total       = pct_of_closed(one_sec_cnt),
+    pct_near_zero_excl_zero = pct_of_closed(nearz_cnt)
   )
   
   if (isTRUE(print_summary)) {
-    cat("\n\nDuration QA summary (closed rows with non-missing created):\n")
+    cat("\n\nDuration QA summary (rows with both created and closed timestamps):\n")
     
     vals_num <- as.numeric(unlist(as.list(summary_dt[1, ]), use.names = FALSE))
     existing <- names(summary_dt)
@@ -288,9 +374,10 @@ analyze_duration_QA <- function(
     preferred <- c(
       "denominator_closed_rows",
       "negative_total", "negative_small", "negative_large", "negative_extreme",
-      "zero_total", "near_zero_leq_days", "near_zero_excl_zero",
+      "zero_total", "near_zero_leq_days", "near_zero_leq_secs", "near_zero_excl_zero",
       "one_sec_total",
       "positive_total", "positive_small", "positive_large", "positive_extreme",
+      "positive_excluded",
       "pct_negative_total", "pct_negative_small", "pct_negative_large", "pct_negative_extreme",
       "pct_zero", "pct_one_sec_total", "pct_near_zero_excl_zero",
       "pct_positive_total", "pct_positive_small", "pct_positive_large", "pct_positive_extreme"
@@ -306,7 +393,9 @@ analyze_duration_QA <- function(
     )
     data.table::setorder(summary_vert, metric)
     
-    fmt_num <- function(x) ifelse(is.na(x), "—", prettyNum(x, big.mark = ",", scientific = FALSE, preserve.width = "individual"))
+    fmt_num <- function(x) ifelse(is.na(x), "—",
+                                  prettyNum(x, big.mark = ",", scientific = FALSE,
+                                            preserve.width = "individual"))
     fmt_pct <- function(x) ifelse(is.na(x), "—", sprintf("%.2f%%", x))
     
     summary_vert[
@@ -329,41 +418,41 @@ analyze_duration_QA <- function(
   # -------------------------------
   analyze_duration_category(
     DT             = negative_all,
-    label          = "NEGATIVE",
+    label          = lbl_negative,
     chart_dir      = chart_dir,
     alt_DT         = negative_small,
-    min_agency_obs = 5,
+    min_agency_obs = min_agency_obs_negative,
     show_examples  = show_examples,
     key_col        = key_col,
     print_cols     = print_cols,
-    sort_desc = FALSE,
+    sort_desc      = FALSE,
     show_threshold_80_flag = FALSE,
-    show_count_labels = TRUE,       
+    show_count_labels = TRUE,
     make_boxplot   = TRUE
   )
   
   analyze_duration_category(
     DT             = negative_large,
-    label          = "LARGE NEGATIVE",
-    condition_text = sprintf("(≤ %.0f days and > %.0f days)", lower_neg_days, extreme_neg_days),
+    label          = lbl_large_negative,
+    condition_text = cond_large_negative,
     chart_dir      = chart_dir,
     threshold_days = extreme_neg_days,
     show_examples  = show_examples,
     key_col        = key_col,
     show_threshold_80_flag = FALSE,
-    show_count_labels = TRUE,       
+    show_count_labels = TRUE,
     print_cols     = print_cols
   )
   
   analyze_duration_category(
     DT             = negative_extreme,
-    label          = "EXTREME NEGATIVE",
-    condition_text = sprintf("(≤ %.0f days)", extreme_neg_days),
+    label          = lbl_extreme_neg,
+    condition_text = cond_extreme_neg,
     chart_dir      = chart_dir,
     threshold_days = extreme_neg_days,
     show_examples  = show_examples,
     key_col        = key_col,
-    make_boxplot = FALSE,
+    make_boxplot   = FALSE,
     show_threshold_80_flag = TRUE,
     show_count_labels = TRUE,
     print_cols     = print_cols
@@ -371,49 +460,48 @@ analyze_duration_QA <- function(
   
   analyze_duration_category(
     DT             = zero_all,
-    label          = "ZERO",
-    condition_text = "(= 0 days)",
+    label          = lbl_zero,
+    condition_text = cond_zero,
     chart_dir      = chart_dir,
     show_examples  = show_examples,
     key_col        = key_col,
     print_cols     = print_cols,
-    make_boxplot = FALSE,
+    make_boxplot   = FALSE,
     show_threshold_80_flag = TRUE,
     show_count_labels = TRUE,
-    min_agency_obs = 4
+    min_agency_obs = min_agency_obs_zero
   )
   
   analyze_duration_category(
     DT             = one_sec_all,
-    label          = "ONE-SECOND",
-    condition_text = "(≈ 1 second)",
+    label          = lbl_one_sec,
+    condition_text = cond_one_sec,
     chart_dir      = chart_dir,
     show_examples  = show_examples,
     key_col        = key_col,
     print_cols     = print_cols,
-    make_boxplot = FALSE,
+    make_boxplot   = FALSE,
     show_threshold_80_flag = TRUE,
     show_count_labels = TRUE,
-    min_agency_obs = 4
+    min_agency_obs = min_agency_obs_one_sec
   )
   
   analyze_duration_category(
     DT             = near_zero_ex,
-    label          = "NEAR-ZERO (< 29 sec)",
-    condition_text = sprintf("(0 < days ≤ %.4f)", near_zero_days),
+    label          = lbl_near_zero,
+    condition_text = cond_near_zero,
     chart_dir      = chart_dir,
     show_examples  = show_examples,
     key_col        = key_col,
     show_threshold_80_flag = TRUE,
-    show_count_labels = TRUE,       
+    show_count_labels = TRUE,
     print_cols     = print_cols
   )
   
-  # Large & Extreme Positive
   analyze_duration_category(
     DT             = positive_large,
-    label          = "LARGE POSITIVE (739 < 1825)",
-    condition_text = sprintf("(> %.0f and ≤ %.0f days)", upper_pos_days, extreme_pos_days),
+    label          = lbl_large_positive,
+    condition_text = cond_large_positive,
     chart_dir      = chart_dir,
     threshold_days = extreme_pos_days,
     show_examples  = show_examples,
@@ -421,39 +509,81 @@ analyze_duration_QA <- function(
     print_cols     = print_cols,
     make_boxplot   = TRUE,
     show_threshold_80_flag = TRUE,
-    show_count_labels = TRUE,       
-    min_agency_obs = 4,
+    show_count_labels = TRUE,
+    min_agency_obs = min_agency_obs_large_positive,
     sort_desc      = TRUE
   )
   
   analyze_duration_category(
     DT             = positive_extreme,
-    label          = "EXTREME POSITIVE (< 1825)",
-    condition_text = sprintf("(> %.0f days)", extreme_pos_days),
+    label          = lbl_extreme_pos,
+    condition_text = cond_extreme_pos,
     chart_dir      = chart_dir,
     threshold_days = extreme_pos_days,
     show_examples  = show_examples,
     key_col        = key_col,
     print_cols     = print_cols,
-    min_agency_obs = 3,
+    min_agency_obs = min_agency_obs_extreme_pos,
     make_boxplot   = TRUE,
     show_count_labels = TRUE,
     show_threshold_80_flag = FALSE,
     sort_desc      = TRUE
   )
   
+  # -------------------------------
+  # Integrity checks (independent of summary_dt)
+  # -------------------------------
+  # 1. Bins partition the totals counted directly from X
+  if (neg_small + neg_large + neg_extreme_cnt != neg_total) {
+    stop(sprintf("Negative bins (%s) do not sum to negative total (%s).",
+                 neg_small + neg_large + neg_extreme_cnt, neg_total))
+  }
+  if (pos_small + pos_large + pos_extreme_cnt + pos_excluded != pos_total) {
+    stop(sprintf("Positive bins (%s) do not sum to positive total (%s).",
+                 pos_small + pos_large + pos_extreme_cnt + pos_excluded, pos_total))
+  }
+  
+  # 2. Each bin's durations fall inside its own thresholds
+  in_range <- function(DT, lo, hi, lo_incl = FALSE, hi_incl = TRUE) {
+    if (!nrow(DT)) return(TRUE)
+    d <- DT$duration_days
+    lo_ok <- if (lo_incl) all(d >= lo) else all(d > lo)
+    hi_ok <- if (hi_incl) all(d <= hi) else all(d < hi)
+    lo_ok && hi_ok
+  }
+  stopifnot(
+    in_range(negative_small,   lower_neg_days,   0,                hi_incl = FALSE),
+    in_range(negative_large,   extreme_neg_days, lower_neg_days),
+    in_range(negative_extreme, -Inf,             extreme_neg_days),
+    in_range(positive_small,   0,                upper_pos_days),
+    in_range(positive_large,   upper_pos_days,   extreme_pos_days),
+    in_range(positive_extreme, extreme_pos_days, max_outlier_days, hi_incl = FALSE),
+    in_range(excluded_extreme, max_outlier_days, Inf,              lo_incl = TRUE)
+  )
+  
   invisible(list(
-    summary                 = summary_dt,
-    qa_summary_table        = qa_summary_dt,
-    negative_all            = negative_all,
-    negative_extreme        = negative_large,
-    negative_nonextreme     = negative_small,
-    zero_rows               = zero_all,
-    one_sec_rows            = one_sec_all,
-    near_zero_rows          = near_zero_ex,
-    positive_all            = positive_all,
-    positive_extreme        = positive_large,
-    positive_nonextreme     = positive_small,
-    data                    = if (in_place) NULL else X
+    summary          = summary_dt,
+    qa_summary_table = qa_summary_dt,
+    thresholds       = list(
+      lower_neg_days   = lower_neg_days,
+      extreme_neg_days = extreme_neg_days,
+      upper_pos_days   = upper_pos_days,
+      extreme_pos_days = extreme_pos_days,
+      max_outlier_days = max_outlier_days,
+      near_zero_secs   = near_zero_secs,
+      one_sec_max_secs = one_sec_max_secs
+    ),
+    negative_all     = negative_all,
+    negative_small   = negative_small,
+    negative_large   = negative_large,
+    negative_extreme = negative_extreme,
+    zero_rows        = zero_all,
+    one_sec_rows     = one_sec_all,
+    near_zero_rows   = near_zero_ex,
+    positive_all     = positive_all,
+    positive_small   = positive_small,
+    positive_large   = positive_large,
+    positive_extreme = positive_extreme,
+    excluded_extreme = excluded_extreme
   ))
 }

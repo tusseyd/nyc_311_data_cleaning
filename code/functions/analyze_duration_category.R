@@ -116,8 +116,8 @@ analyze_duration_category <- function(
       
       # Optional boxplot
       if (make_boxplot) {
-        cat("\n>>> Starting boxplot section...\n")
-        cat("make_boxplot is TRUE\n")
+        # cat("\n>>> Starting boxplot section...\n")
+        # cat("make_boxplot is TRUE\n")
         
         # Check if we have enough agencies with min_count >= 5
         agency_counts_plot <- chart_DT[, .N, by = agency][N >= 5]
@@ -125,7 +125,7 @@ analyze_duration_category <- function(
           cat("\n*** WARNING: No agencies with >= 5 observations. Boxplot will not be created. ***\n")
           cat("*** Summary statistics will still show all agencies with >", min_agency_obs, "observations ***\n\n")
         } else {
-          cat("Proceeding with boxplot for", nrow(agency_counts_plot), "agencies\n")
+          # cat("Proceeding with boxplot for", nrow(agency_counts_plot), "agencies\n")
         }
         
         # Check if duration_days exists
@@ -133,11 +133,11 @@ analyze_duration_category <- function(
           cat("ERROR: duration_days column not found in chart_DT!\n")
           cat("Available columns:", paste(names(chart_DT), collapse = ", "), "\n")
         } else {
-          cat("duration_days column exists\n")
-          cat("Range of duration_days:",
-              min(chart_DT$duration_days, na.rm = TRUE), "to",
-              max(chart_DT$duration_days, na.rm = TRUE), "\n")
-          cat("NA values in duration_days:", sum(is.na(chart_DT$duration_days)), "\n")
+          # cat("duration_days column exists\n")
+          # cat("Range of duration_days:",
+          #     min(chart_DT$duration_days, na.rm = TRUE), "to",
+          #     max(chart_DT$duration_days, na.rm = TRUE), "\n")
+          # cat("NA values in duration_days:", sum(is.na(chart_DT$duration_days)), "\n")
         }
         
         # Compute min and max

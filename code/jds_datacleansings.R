@@ -6,7 +6,7 @@ main_data_file <-
  
 # Boolean flag. TRUE to redirect console output to text file
 # FALSE to display console outpx`t on the screen
-enable_sink <- TRUE        
+enable_sink <- FALSE        
 
 #The "as of" date in "YYYY-MM-DD" format
 projection_date <- "2025-11-30"   
@@ -90,6 +90,13 @@ timing <- setup_project(
   verbose = TRUE
 )
 
+# Remove objects that exist (ignores any that don't) and release memory.
+free_objects <- function(...) {
+  objs <- intersect(c(...), ls(envir = .GlobalEnv))
+  if (length(objs)) rm(list = objs, envir = .GlobalEnv)
+  invisible(gc())
+}
+
 ################################################################################
 # Extract the date after "AS_OF_"
 extracted_date <- sub(".*AS_OF_([0-9-]+).*", "\\1", main_data_file)
@@ -99,8 +106,9 @@ as_of_date <- as.POSIXct(
   tz = "America/New_York"
 )
 
-# Earliest possible genesis date as POSIXct with America/New_York timezone
-genesis_date <- as.POSIXct("2003-01-01 00:00:00", tz = "America/New_York")
+# NYC 311 system launch. Any date field earlier than this is impossible
+# and indicates a placeholder or entry error.
+genesis_date <- as.POSIXct("2003-03-09 00:00:00", tz = "America/New_York")
 
 # Convert to POSIXct format
 max_closed_date <- as.POSIXct(extracted_date, format = "%m-%d-%Y", 
@@ -142,7 +150,7 @@ setindex(d311, unique_key)   # no reorder; speeds joins/subsets on unique_key
 #copy_raw_data <- d311
 #d311 <- copy_raw_data
 
-table(lubridate::year(d311$closed_date)) 
+print(table(lubridate::year(d311$closed_date)) )
 
 ################################################################################
 # Check for unique keys and index
@@ -228,6 +236,8 @@ cat(sprintf("Total filled: %s\n", format(total_filled, big.mark = ",")))
 cat(sprintf("Percent missing: %s%%\n", overall_pct_missing))
 cat(sprintf("Percent complete: %s%%\n", overall_pct_complete))
 
+completeness_thresholds <- c(94, 53)
+
 # Plot
 create_basic_bar_chart(
   DT            = completenessPerColumn,
@@ -236,9 +246,12 @@ create_basic_bar_chart(
   title         = "Data Completeness by Field",
   use_color_groups = TRUE,
   horizontal = TRUE,
-  group_thresholds = c(94, 53),
+  group_thresholds = completeness_thresholds,
+  group_labels     = c(
+    sprintf("Excellent (≥%d%%)", completeness_thresholds[1]),
+    sprintf("Fair (%d–%d%%)",    completeness_thresholds[2], completeness_thresholds[1]),
+    sprintf("Poor (<%d%%)",      completeness_thresholds[2])),
   group_colors     = c("#009E73", "#F0E442", "#D55E00"),
-  group_labels     = c("Excellent (≥94%)", "Fair (56–94%)", "Poor (<56%)"),
   legend_position  = "top",
   text_size        = 9,
   x_axis_angle     = 50,
@@ -359,7 +372,7 @@ columns_to_keep <- c(
 
 # Remove unnecessary columns to free up memory. Garbage collection.
 d311[, setdiff(names(d311), columns_to_keep) := NULL]
-gc(verbose = TRUE)
+invisible(gc())
 
 # Make a copy for troubleshooting purposes to avoid re-reading in data
 #copy_d311 <- d311
@@ -433,7 +446,8 @@ d311[, c(
   "intersection_street_2",
   "landmark",
   "street_name") := NULL]  # Remove immediately
-gc(verbose = TRUE)
+
+invisible(gc())
 
 ################################################################################
 
@@ -452,6 +466,14 @@ if (any(is.infinite(rng))) stop("created_date has no non-missing values")
 earliest_date <- rng[1L]
 latest_date   <- rng[2L]
 
+# First created_date in the NYC Open Data extract used for this analysis.
+extract_start_date <- as.POSIXct("2020-01-01 00:00:00", tz = "America/New_York")
+
+n_before_extract <- d311[created_date < extract_start_date, .N]
+cat(sprintf("  Created before extract start (%s): %s\n",
+            format(extract_start_date, "%Y-%m-%d"),
+            format(n_before_extract, big.mark = ",")))
+
 # Timestamp strings
 earliest_date_formatted <- format(earliest_date, fmt_ts, tz = tz_out)
 latest_date_formatted   <- format(latest_date,   fmt_ts, tz = tz_out)
@@ -462,8 +484,8 @@ latest_title   <- format(latest_date,   fmt_day, tz = tz_out)
 
 ################################################################################
 # Probe right before function call
-range(d311$created_date)
-summary(attr(d311$created_date, "tzone"))
+print(range(d311$created_date))
+print(summary(attr(d311$created_date, "tzone")))
 
 # Plot yearly growth of 311 SRs.
 message("\nCreating year plot and statistics.")
@@ -929,6 +951,8 @@ if (nrow(valid_data) == 0) {
   }
 }
 
+free_objects("valid_data", "complete_rows", "coords")
+
 ################################################################################
 # check to see if there are any non-matches between 'borough' and 'park_borough'
 
@@ -965,7 +989,8 @@ dup_summary <- data.table::rbindlist(lapply(seq_along(res_list), function(i) {
     pct_duplication = res_list[[i]]$stats$pct_matching
   )
 }))
-dup_summary[order(-pct_duplication)]
+
+print(dup_summary[order(-pct_duplication)])
 
 
 ################################################################################
@@ -1157,6 +1182,8 @@ d311[, c(
   "x_coordinate_state_plane"
   ) := NULL]  # Remove immediately
 
+free_objects("d311_clean", "x_outliers", "y_outliers")
+
 ################################################################################
 # --- Allowed sets -------------------------------------------------------------
 
@@ -1277,6 +1304,9 @@ for (field_name in names(all_validation_results)) {
   }
 }
 
+free_objects("invalid_rows", "invalid_mask", "USPSzipcodes", 
+             "valid_USPS_zipcodes")
+
 # --- Preserve your original per-field variables (for drop-in compatibility) ----
 
 address_type_results          <- all_validation_results[["address_type"]]
@@ -1330,12 +1360,12 @@ cat("\n\n**********CHECKING FOR DATE FIELD ISSUES **********\n")
 # SECTION 0: DURATION CALCULATIONS -- Do this first
 # ==============================================================================
 # Calculate service request durations between created_date and closed_date
-# Uses UTC timezone for consistent temporal calculations
+# Uses America/New_York timezone for consistent temporal calculations and DST
 
 cat("\n=== CALCULATING SR DURATIONS FOR LATER USE ===\n")
 
-d311 <- calculate_durations(d311, "created_date", "closed_date", 
-                            tz = "America/New_York", in_place = FALSE)
+calculate_durations(d311, "created_date", "closed_date",
+                    tz = "America/New_York", in_place = TRUE)
 
 # ==============================================================================
 # SECTION 1: CREATED DATE ANALYSIS
@@ -1388,6 +1418,7 @@ for (col in date_cols) {
   cat("\n")
 }
 
+free_objects("years", "freq_table")
 
 cat("\n=== CREATED DATE ANALYSIS ===\n")
 
@@ -1435,9 +1466,9 @@ fmt_count_pct <- function(n, total) {
     ),
     list(
       dt = past_created_dates,
-      label = paste0("Past Created Dates: before ", 
-                     genesis_date,  " -- 311 launch date"),
-      condition = "Created Before 311 System launch"
+      label = paste0("Past Created Dates: before ",
+                     format(genesis_date, "%Y-%m-%d"), " (311 launch)"),
+      condition = "Created Before 311 launch"
     ),
     list(
       dt = midnight_only_created_dates,
@@ -1484,6 +1515,11 @@ fmt_count_pct <- function(n, total) {
     cat("No records with missing created_date found.\n")
   }
   
+  # end of Section 1 (created)
+  free_objects("future_created_dates", "past_created_dates", "missing_created_dates",
+               "midnight_only_created_dates", "noon_only_created_dates",
+               "anomaly_list_created")
+    
 # ==============================================================================
 # SECTION 2: DUE DATE ANALYSIS
 # ==============================================================================
@@ -1548,7 +1584,7 @@ cat("\n=== DUE DATE ANALYSIS ===\n")
     ),
     list(
       dt = due_before_created,
-      label = "Noon Due Dates before Created Date",
+      label = "Due Dates before Created Date",
       condition = "Due < Created"
     )
   )
@@ -1591,6 +1627,12 @@ cat("\n=== DUE DATE ANALYSIS ===\n")
     boxplot_file = "due_before_created_boxplot.pdf",
     pareto_file = "due_before_created_pareto.pdf"
   )
+  
+  
+  # end of Section 2 (due), after report_due_before_created()
+  free_objects("future_due_dates", "past_due_dates", "missing_due_dates",
+               "midnight_only_due_dates", "noon_only_due_dates",
+               "due_before_created", "anomaly_list_due")
   
 # ==============================================================================
 # SECTION 3: RESOLUTION UPDATE DATE ANALYSIS
@@ -1715,6 +1757,14 @@ res <- report_resolution_update_before_created(
   make_boxplot = TRUE
 )
 
+# end of Section 3 (resolution), after report_resolution_update_before_created()
+free_objects("future_resolution_action_updated_dates",
+             "past_resolution_action_updated_dates",
+             "missing_resolution_action_updated_dates",
+             "midnight_only_resolution_action_updated_dates",
+             "noon_only_resolution_action_updated_dates",
+             "updates_before_created", "anomaly_list_resolution")
+
 # ==============================================================================
 # SECTION 4: POST-CLOSED RESOLUTION UPDATE ANALYSIS
 # ==============================================================================
@@ -1723,13 +1773,10 @@ res <- report_resolution_update_before_created(
 
 cat("\n=== POST-CLOSED RESOLUTION UPDATE ANALYSIS ===\n")
 
-# Enable interactive debugging on error
-options(error = recover)
-
 res <- report_post_closed_updates(
     DT = d311,
     resolution_action_threshold = 30,        # Days after closure
-    too_large_threshold = 365 * 3,        # 6 years in days
+    too_large_threshold = 365 * 3,        # 3 years in days
     chart_dir = chart_dir
 )
 
@@ -1779,7 +1826,7 @@ anomaly_list_closed <- list(
     dt = past_closed_dates,
     label = "Closed Dates in the Past",
     
-    condition = "Closed Before Created"
+    condition = "Closed Before 311 Genesis"
   ),
   list(
     dt = midnight_only_closed_dates,
@@ -1802,7 +1849,7 @@ anomaly_list_closed <- list(
 )
 
 # Loop through and create charts
-for (anomaly in anomaly_list_resolution) {
+for (anomaly in anomaly_list_closed) {
   if (nrow(anomaly$dt) > 0) {
     plot_date_field_analysis(
       DT = anomaly$dt,
@@ -1842,6 +1889,12 @@ res <- report_future_closed(
   pareto_file = "future_closed_pareto.pdf"
 )
 
+
+# end of Section 5 (closed), after report_future_closed()
+free_objects("future_closed_dates", "past_closed_dates", "missing_closed_dates",
+             "midnight_only_closed_dates", "noon_only_closed_dates",
+             "closed_before_created", "anomaly_list_closed", "missing_summary")
+
 # ==============================================================================
 # SECTION 6: DAYLIGHT SAVING TIME ANALYSIS
 # ==============================================================================
@@ -1868,11 +1921,7 @@ dst_start_summary <- analyze_dst_springforward(
 
 ################################################################################
 
-# Call with the 2019 file path
-result <- summarize_backlog(
-  DT = d311,
-  data_dir = data_dir
-)
+result <- summarize_backlog(DT = d311, data_dir = data_dir)
 
 ################################################################################
 # ==============================================================================
@@ -2308,6 +2357,12 @@ plot_histogram(
   xlim       = c(0, upper_limit)
 )
 
+
+free_objects("positive_data", "limited_positive_data",
+             "nypd_data", "other_data", "combined_data",
+             "positive_all_agencies", "p3", "p4", "p_combined",
+             "density_est", "log_dens")
+
 # ==============================================================================
 # SECTION 2: NEGATIVE DURATION ANALYSIS
 # ==============================================================================
@@ -2329,7 +2384,7 @@ limited_negative_data <- negative_data[
 ]
 
 # Generate summary statistics
-summary(negative_data$duration_day)
+print(summary(negative_data$duration_days))
 
 # Count records within plotting bounds
 n_plotted_neg <- nrow(limited_negative_data)
@@ -2362,6 +2417,9 @@ plot_histogram(
   height     = 8
 )
 
+label_hjust = 0.5
+show_count_labels = TRUE
+
 plot_result <- plot_boxplot(
   DT        = limited_negative_data,
   value_col = duration_days,
@@ -2374,7 +2432,7 @@ plot_result <- plot_boxplot(
   order_by  = "count",
   flip      = TRUE,
   x_scale_type = "pseudo_log",
-  x_limits = c(lower_limit, upper_limit),
+  x_limits = c(lower_limit_neg, upper_limit_neg),
   min_count = 5,  # FIXED: was min_agency_obs (which defaults to 1)
   jitter_size = 1.3,
   jitter_alpha = 0.55,
@@ -2390,6 +2448,9 @@ create_violin_chart(
   chart_file_name = "negative_duration_SR_violin.pdf",
   chart_title = "Distribution of Negative Duration Days"
 )
+
+
+free_objects("negative_data", "limited_negative_data", "plot_result")
 
 # ==============================================================================
 # SECTION 3: SHORT DURATION ANALYSIS & THRESHOLD DETERMINATION
@@ -2775,6 +2836,8 @@ cat("  - Combined minute:second: Check first ", second_limit,
     " seconds for detailed patterns\n", sep = "")
 cat("\nAll charts saved to ./charts/ directory\n\n")
 
+free_objects("timestamp_analysis", "p_combined")
+
 ################################################################################
 # END OF TIMESTAMP DISTRIBUTION ANALYSIS
 ################################################################################
@@ -2792,24 +2855,120 @@ cat("\nAll charts saved to ./charts/ directory\n\n")
 
 cat("\n=== COMPREHENSIVE DURATION CATEGORY ANALYSIS ===\n")
 duration_analysis <- analyze_duration_QA(
-                                  d311,
-                                  lower_neg_days   = -2 * 365,
-                                  extreme_neg_days = -5 * 365,
-                                  upper_pos_days   = 2 * 365,
-                                  extreme_pos_days = 5 * 365,
-                                  max_outlier_days = 10 * 365,
-                                  chart_dir = chart_dir)
+  d311,
+  lower_neg_days   = -2 * 365,
+  extreme_neg_days = -5 * 365,
+  upper_pos_days   = 2 * 365,
+  extreme_pos_days = 5 * 365,
+  max_outlier_days = 10 * 365,
+  near_zero_secs   = threshold_numeric,
+  genesis_date     = genesis_date,
+  chart_dir = chart_dir)
+
+duration_analysis[c("positive_all", "positive_small",
+                    "negative_all", "negative_small")] <- NULL
+invisible(gc())
+
+# ==================================================================
+# Long-duration SRs by agency and complaint type
+# ------------------------------------------------------------------
+#
+# Bins come from analyze_duration_QA():
+#   positive_large   : > upper_pos_days   and <= extreme_pos_days
+#   positive_extreme : > extreme_pos_days and <  max_outlier_days
+#
+# pct     = share of ALL SRs in the bin (before the count cutoff)
+# cum_pct = running total down the table, sorted by count
+# ==================================================================
+
+# --- Count cutoffs: complaint types below these are omitted ---
+positive_large_count_cutoff   <- 50
+positive_extreme_count_cutoff <- 1
+
+# --- Bin boundaries, taken from the QA run so labels match the analysis ---
+thr     <- duration_analysis$thresholds
+fmt_yrs <- function(d) formatC(d / 365.25, format = "g", digits = 3)
+fmt_day <- function(d) formatC(d, format = "f", digits = 0, big.mark = ",")
+
+large_label   <- sprintf("POSITIVE LARGE (%s to %s yrs; > %s and <= %s days)",
+                     fmt_yrs(thr$upper_pos_days),   fmt_yrs(thr$extreme_pos_days),
+                     fmt_day(thr$upper_pos_days),   fmt_day(thr$extreme_pos_days))
+extreme_label <- sprintf("POSITIVE EXTREME (%s to %s yrs; > %s and < %s days)",
+                     fmt_yrs(thr$extreme_pos_days), fmt_yrs(thr$max_outlier_days),
+                     fmt_day(thr$extreme_pos_days), fmt_day(thr$max_outlier_days))
+
+message("\n=== Long-duration SR summary: started ", 
+        format(Sys.time(), "%H:%M:%S"), " ===")
+
+# ---------------------------------------------
+# 1. Positive large (2-5 years by default)
+# ---------------------------------------------
+res_large <- summarize_by_complaint(duration_analysis$positive_large,
+                                    d311,
+                                    min_count = positive_large_count_cutoff,
+                                    label     = "positive_large")
+
+cat(sprintf("\n%s\nComplaint types with count >= %d\n\n",
+            large_label, positive_large_count_cutoff))
+print(res_large, nrows = Inf)          # show every row in the console
+
+# ---------------------------------------------
+# 2. Positive extreme (5-10 years by default)
+# ---------------------------------------------
+res_extreme <- summarize_by_complaint(duration_analysis$positive_extreme,
+                                      d311,
+                                      min_count = positive_extreme_count_cutoff,
+                                      label     = "positive_extreme")
+
+cat(sprintf("\n%s\nComplaint types with count >= %d\n\n",
+            extreme_label, positive_extreme_count_cutoff))
+print(res_extreme, nrows = Inf)        # show every row in the console
+
+# Batch-closure check (closures concentrated on single days):
+# duration_analysis$positive_extreme[, .N, by = .(agency, close_day = as.Date(closed_ts))][order(-N)][1:10]
+
+message("=== Long-duration SR summary: finished ", format(Sys.time(), "%H:%M:%S"), " ===\n")
+
+# ---------------------------------------------
+# 3. Batch-closure check: close dates for one agency
+#    Large N on one close date, with requests created
+#    over many earlier dates, indicates a batch closure.
+# ---------------------------------------------
+batch_agency  <- "DPR"
+batch_source  <- duration_analysis$positive_extreme   
+batch_top_n   <- 15
+
+message("Batch-closure check: ", batch_agency, " (", 
+        format(nrow(batch_source), big.mark = ","), " SRs in source)")
+
+batch_by_date <- batch_source[agency == batch_agency, .(
+  N             = .N,
+  first_created = min(as.Date(created_ts)),
+  last_created  = max(as.Date(created_ts)),
+  created_days  = uniqueN(as.Date(created_ts)),
+  med_age_days  = round(median(duration_days))
+), by = .(close_day = as.Date(closed_ts))]
+
+# Share of the agency's SRs closed on each date
+batch_by_date[, pct := round(100 * N / sum(N), 2)]
+
+# Sort largest close dates first, then build the running total in that order
+setorder(batch_by_date, -N, close_day)
+batch_by_date[, cum_pct := round(100 * cumsum(N) / sum(N), 2)]
+
+cat(sprintf("\n%s close dates, top %d by count\n\n", batch_agency, batch_top_n))
+print(head(batch_by_date, batch_top_n), nrows = Inf)
 
 # ==============================================================================
 # SECTION 5: RESPONSE TIMES BY COMPLAINT TYPE
 # ==============================================================================
 
 cat("\n=== RESPONSE TIMES BY COMPLAINT CATEGORY ANALYSIS ===\n")
-# Exclude durations <= 28 seconds (in days) and > 365* N days (typically 10 yrs)
+# Exclude durations <= threshold_numeric seconds and > 10 years
 complaint_stats <- summarize_complaint_response(
                       d311, 
                       min_records = 100,
-                      lower_exclusion_limit = 0.00032407,
+                      lower_exclusion_limit = threshold_numeric / 86400,
                       upper_exclusion_limit = 365*10
   )
   
