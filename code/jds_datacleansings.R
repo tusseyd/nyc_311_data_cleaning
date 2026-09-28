@@ -23,9 +23,9 @@ use_gc           <- TRUE
 # and logs them to memory_monitor_<computer>_<flags>_<time>.csv in the
 # console folder. mem_messages = TRUE also prints a line in this console at
 # each free_objects() / run_gc() point. Needs the ps package.
-monitor_memory       <- TRUE
+monitor_memory       <- FALSE
 monitor_interval_sec <- 60
-mem_messages         <- TRUE
+mem_messages         <- FALSE
 
 #The "as of" date in "YYYY-MM-DD" format
 projection_date <- "2025-11-30"   
