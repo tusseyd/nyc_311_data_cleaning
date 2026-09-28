@@ -13,15 +13,15 @@ main_data_file <- "5-year_311SR_01-01-2020_thru_12-31-2024_AS_OF_09-23-2025.csv"
 
 # Set to TRUE to redirect console output to text file (default)
 # Set to FALSE to display console output on the screen
-enable_sink <- TRUE      
+enable_sink <- FALSE      
 
 # Memory-management flags and monitor (same meaning as in jds_datacleansings.R;
 # the tools themselves are in functions/free_objects.R)
 use_free_objects     <- TRUE
 use_gc               <- TRUE
-monitor_memory       <- FALSE
+monitor_memory       <- TRUE
 monitor_interval_sec <- 60
-mem_messages         <- FALSE
+mem_messages         <- TRUE
 
 ################################################################################
 
