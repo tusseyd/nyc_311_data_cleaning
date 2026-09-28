@@ -179,9 +179,6 @@ setup_project <- function(
     cat("\nExecution begins at:", formattedStartTime, "\n")
   }
   
-  # Always print to screen (will only show if sink is off)
-  cat("\nExecution begins at:", formattedStartTime, "\n")
-  
   # ----------------------------------------------------------
   # STEP 6: Return timing info
   # ----------------------------------------------------------
