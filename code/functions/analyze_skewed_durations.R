@@ -216,12 +216,12 @@ analyze_skewed_durations <- function(
     # Save plots
     outfile1 <- file.path(chart_dir, paste0(filename_base, "_comparison.pdf"))
     ggplot2::ggsave(outfile1, plot = p1, width = 10, height = 6, dpi = 300)
-#    cat(sprintf("\nSaved comparison plot to: %s\n", outfile1))
+    #    cat(sprintf("\nSaved comparison plot to: %s\n", outfile1))
     
     if (!is.null(p2)) {
       outfile2 <- file.path(chart_dir, paste0(filename_base, "_methods.pdf"))
       ggplot2::ggsave(outfile2, plot = p2, width = 10, height = 8, dpi = 300)
-#      cat(sprintf("Saved methods plot to: %s\n", outfile2))
+      #      cat(sprintf("Saved methods plot to: %s\n", outfile2))
     }
   }
   

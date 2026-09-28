@@ -1,7 +1,11 @@
 #########################################################################
 # Consolidate agencies where names have changed.
 
-consolidate_agencies <- function(DT, drop_agencies = character(), verbose = TRUE) {
+consolidate_agencies <- function(
+    DT, 
+    drop_agencies = character(), 
+    verbose = TRUE) {
+  
   stopifnot(is.data.frame(DT))
   if (!is.data.table(DT)) setDT(DT)
   if (!"agency" %in% names(DT)) stop("'agency' column not found.")
@@ -9,9 +13,9 @@ consolidate_agencies <- function(DT, drop_agencies = character(), verbose = TRUE
   
   # Map legacy/alias values -> current codes (exact matches only)
   lookup <- c(
-    "DCA"  = "DCWP",
-    "DEPARTMENT OF CONSUMER AND WORKER PROTECTION" = "DCWP",
-    "NYC311-PRD" = "OTI",
+    # "DCA"  = "DCWP",
+    # "DEPARTMENT OF CONSUMER AND WORKER PROTECTION" = "DCWP",
+    # "NYC311-PRD" = "OTI",
     "DOITT" = "OTI",
     "311"   = "OTI",
     "3-1-1" = "OTI"

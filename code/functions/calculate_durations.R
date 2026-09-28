@@ -30,8 +30,10 @@ calculate_durations <- function(
   
   # Calculate durations (only for rows with both timestamps present)
   denom <- !is.na(X$created_ts) & !is.na(X$closed_ts)
-  X[denom, duration_sec := as.numeric(closed_ts) - as.numeric(created_ts)]
-  X[denom, duration_days := duration_sec / 86400]
+  X[denom, `:=`(
+    duration_sec = as.numeric(closed_ts) - as.numeric(created_ts),
+    duration_days = (as.numeric(closed_ts) - as.numeric(created_ts)) / 86400
+  )]
   
   # Optionally remove parsed timestamps
   if (!keep_parsed_timestamps) {

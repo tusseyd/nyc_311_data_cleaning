@@ -1,4 +1,12 @@
-##########################################################################
+# create_violin_chart
+# Single violin with a box plot and jittered points for one numeric column.
+#
+# Print-safe PDF: the jittered points are drawn as one raster image
+# (ggrastr, 300 dpi) instead of one vector shape per SR, and the fills are
+# opaque. Transparent vector layers with tens of thousands of points make
+# Acrobat freeze when it flattens the page for printing. The box colour
+# #958F3E is what the old 65%-transparent orange box looked like over the
+# blue points, so the chart looks the same.
 create_violin_chart <- function(
     dataset,
     x_axis_title = NULL,
@@ -6,54 +14,84 @@ create_violin_chart <- function(
     chart_title,
     chart_file_name,
     chart_directory,
-    chart_width = 10,
-    chart_height = 7,
-    margin_top = 1,     # Default margin values (units in pts)
+    chart_width = 6,
+    chart_height = 3,
+    margin_top = 1,
     margin_right = 2,
     margin_bottom = 1,
     margin_left = 2,
-    x_axis_tick_size = 14,       # New parameter for x-axis tick size
-    x_axis_label_size = 14,      # New parameter for x-axis label font size
-    x_axis_tick_length = unit(0.3, "cm")  # New parameter for x-axis tick length
+    x_axis_tick_size = 9,
+    x_axis_label_size = 9,
+    x_axis_tick_length = unit(0.3, "cm"),
+    subtitle_offset_pos = 45,  # Offset for positive distributions (left margin)
+    subtitle_offset_neg = 30   # Offset for negative distributions (right margin)
 ) {
+  
+  # Compute count
+  n <- nrow(dataset)
+  
+  # Determine if distribution is entirely negative
+  x_values <- dataset[[x_axis_field]]
+  x_range <- range(x_values, na.rm = TRUE)
+  is_negative <- x_range[2] < 0  # max < 0 means all negative
+  
+  # Set subtitle alignment and margin based on distribution
+  if (is_negative) {
+    subtitle_text <- paste0("n = ", format(n, big.mark = ","))
+    subtitle_hjust <- 1  # Right align
+    subtitle_margin <- margin(l = 0, r = subtitle_offset_neg, unit = "pt")
+  } else {
+    subtitle_text <- paste0("n = ", format(n, big.mark = ","))
+    subtitle_hjust <- 0  # Left align
+    subtitle_margin <- margin(l = subtitle_offset_pos, r = 0, unit = "pt")
+  }
+  
+  # Jittered points: one raster image if ggrastr is installed, else vector
+  jitter_layer <- if (requireNamespace("ggrastr", quietly = TRUE)) {
+    ggrastr::geom_jitter_rast(width = 0.2, height = 0.4, color = "#0072B2",
+                              size = 2, shape = 17, raster.dpi = 300)
+  } else {
+    geom_jitter(width = 0.2, height = 0.4, color = "#0072B2", size = 2, shape = 17)
+  }
   
   # Create the violin chart
   violin_chart <- ggplot(
     data = dataset,
     aes(x = !!rlang::sym(x_axis_field), y = factor(1))) +
     
-    geom_jitter(width = 0.2, height = 0.4, alpha = 0.85, color = "#0072B2", size = 2, shape = 17) +
+    jitter_layer +
     
-    geom_violin(linewidth = 0.7, fill = "transparent", color = "black") +
+    geom_violin(linewidth = 0.7, fill = NA, color = "black") +
     
-    geom_boxplot(width = 0.25, fill = "#E69F00", color = "black", alpha = 0.65, 
+    geom_boxplot(width = 0.25, fill = "#958F3E", color = "black",
                  outlier.colour = "black", outlier.size = 0.75) +
     
-    scale_y_discrete(expand = c(0, 0)) +  # Remove vertical padding
+    scale_y_discrete(expand = c(0, 0)) +
+    
     labs(
       title = chart_title,
+      subtitle = subtitle_text,
       x = x_axis_title,
       y = NULL
     ) +
     
     theme(
-      plot.title = element_text(size = 13, hjust = 0.5),
-      axis.text.x = element_text(face = "bold", size = x_axis_tick_size),  # Adjust tick font size
-      axis.title.x = element_text(size = x_axis_label_size, face = "bold"), # Adjust axis label font size
-      axis.text.y = element_blank(),  # Remove y-axis labels
-      axis.ticks.y = element_blank(), # Remove y-axis tick marks
-      axis.ticks.length = x_axis_tick_length,  # Adjust tick mark length
+      plot.title = element_text(size = 10, hjust = 0.5),
+      plot.subtitle = element_text(size = 9, hjust = subtitle_hjust, face = "bold",
+                                   margin = subtitle_margin),
+      axis.text.x = element_text(face = "bold", size = x_axis_tick_size),
+      axis.title.x = element_text(size = x_axis_label_size, face = "bold"),
+      axis.text.y = element_blank(),
+      axis.ticks.y = element_blank(),
+      axis.ticks.length = x_axis_tick_length,
       panel.background = element_rect(fill = "gray96", color = "gray96"),
       plot.margin = margin(t = margin_top, r = margin_right, 
                            b = margin_bottom, l = margin_left, unit = "pt")
     )
   
-  # Print the chart (suppress unnecessary warnings)
   suppressMessages(print(violin_chart))
   
-  # Save the chart to the specified path
   chart_path <- file.path(chart_directory, chart_file_name)
   ggsave(chart_path, plot = violin_chart, dpi = 300,
          width = chart_width, height = chart_height)
 }
-##########################################################################

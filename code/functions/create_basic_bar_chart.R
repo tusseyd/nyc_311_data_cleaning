@@ -41,8 +41,8 @@ create_basic_bar_chart <- function(
     # Save
     chart_dir    = NULL,
     filename     = NULL,
-    width        = 13,
-    height       = 8.5,
+    width        = 6,
+    height       = 3,
     dpi          = 300
 ) {
   stopifnot(x_col %in% names(DT), y_col %in% names(DT))
