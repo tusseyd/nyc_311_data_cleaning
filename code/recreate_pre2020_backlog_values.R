@@ -197,3 +197,10 @@ if (n_diff) print(tab_cmp[embedded != recreated], row.names = FALSE)
 
 cat(sprintf("\nRecreated on %s. Embedded values were queried on 2026-09-26.\n", run_date))
 cat("Small differences reflect daily updates to the source dataset.\n")
+
+cat(sprintf("\nPre-2020 still-open SRs updated in 2020 or later: %s (embedded table: %s)\n",
+            format(q3[!is.na(uy) & uy >= 2020, sum(n)], big.mark = ","),
+            format(embedded_table[!is.na(uy) & uy >= 2020, sum(n)], big.mark = ",")))
+
+cat("\nRecreated table in dput() form (the source of PRE2020_STILL_OPEN_BY_YEAR):\n")
+dput(q3[order(cy, uy)])

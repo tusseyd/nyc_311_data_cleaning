@@ -41,7 +41,7 @@ message("check_embedded_commas.R started: ", format(run_start, "%Y-%m-%d %H:%M:%
 # Path to the raw CSV. Relative paths are resolved from the working
 # directory; set the working directory to the project root before running.
 csv_file      <- file.path("data", "raw_data",
-                           "5-year_311SR_01-01-2020_thru_12-31-2024_AS_OF_10-10-2025.csv")
+                           "5-year_311SR_01-01-2020_thru_12-31-2024_AS_OF_09-23-2025.csv")
 out_dir       <- file.path("console_output", "embedded_commas")
 expected_cols <- 41L     # columns in the NYC Open Data 311 SR export
 naive_lines   <- 1e6     # raw lines checked by the naive-split test

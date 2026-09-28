@@ -6,18 +6,22 @@
 # Check for presence of mandatory fields
 # Combine NYC Agencies to accommodate name changes
 # Replace missing values with NA for standardization
-# Write out two files in RDS format and one in CSV
+# Write the 311 data and the USPS ZIP codes as RDS files (CSV output optional)
 
 ################################################################################
-main_data_file <- "5-year_311SR_01-01-2020_thru_12-31-2024_AS_OF_10-10-2025.csv"
+main_data_file <- "5-year_311SR_01-01-2020_thru_12-31-2024_AS_OF_09-23-2025.csv"
 
 # Set to TRUE to redirect console output to text file (default)
 # Set to FALSE to display console output on the screen
 enable_sink <- TRUE      
 
-# Okabe-Ito palette for colorblind safe 
-palette(c("#E69F00", "#56B4E9", "#009E73", "#F0E442", 
-          "#0072B2", "#D55E00", "#CC79A7", "#999999"))
+# Memory-management flags and monitor (same meaning as in jds_datacleansings.R;
+# the tools themselves are in functions/free_objects.R)
+use_free_objects     <- TRUE
+use_gc               <- TRUE
+monitor_memory       <- TRUE
+monitor_interval_sec <- 60
+mem_messages         <- TRUE
 
 ################################################################################
 
@@ -29,7 +33,20 @@ palette(c("#E69F00", "#56B4E9", "#009E73", "#F0E442",
 ################################################################################
 
 # STEP 1: Create directory structure (inline)
-# Set base directory to current working directory
+# Project folder (same as in jds_datacleansings.R), so the program works
+# no matter which folder RStudio starts in
+wd_path <- file.path(
+  "C:",
+  "Users",
+  "David",
+  "OneDrive",
+  "Documents",
+  "datacleaningproject",
+  "journal_of_data_science",
+  "nyc_311_data_cleaning"
+)
+setwd(wd_path)
+
 base_dir <- getwd()
 cat("Base directory:", base_dir, "\n")
 
@@ -75,6 +92,15 @@ timing <- setup_project(
   verbose = TRUE
 )
 
+# Memory tools (shared with jds_datacleansings.R)
+if (!exists("free_objects", mode = "function")) source(file.path(functions_dir, "free_objects.R"))
+mem_init("dataprep")
+if (isTRUE(monitor_memory)) start_memory_monitor(monitor_interval_sec)
+
+# Progress messages (progress_msg() in free_objects.R) appear on screen even
+# when enable_sink = TRUE sends the rest of the output to the console file.
+progress_msg("Data preparation started (8 steps)")
+
 ################################################################################
 
 # ========= Main Execution =========
@@ -89,13 +115,14 @@ valid_date_columns <- c(
 )
 
 # Read raw 311 data
+progress_msg("Step 1 of 8: Reading the raw 311 CSV (the longest step)")
 cat("\nReading in raw 311 Service Request data... \n")
 main_data_path <- file.path(raw_data_dir, main_data_file)
 
 # When first reading the file
 raw_data <- fread(
   main_data_path,
-  nThread       = parallel::detectCores() - 1,
+  nThread       = max(1L, parallel::detectCores() - 1L),
   check.names   = FALSE,
   strip.white   = TRUE,
   showProgress  = TRUE,
@@ -107,9 +134,12 @@ raw_data <- fread(
 
 num_rows_raw_data <- nrow(raw_data)
 cat("\nRaw Data row count:", format(num_rows_raw_data, big.mark = ","))
+mem_log("after reading raw CSV")
 
 ################################################################################
 # Standardize column names
+progress_msg(sprintf("Step 2 of 8: Standardizing column names and missing values (%s rows read)",
+                     format(num_rows_raw_data, big.mark = ",")))
 raw_data <- modify_column_names(raw_data)
 cat("\n\nColumn names standardized")
 
@@ -129,12 +159,19 @@ mandatory_fields <- c(
 )
 
 # Keep only those fields that actually exist in the data
+progress_msg("Step 3 of 8: Removing rows missing a mandatory field")
 present_mandatory_fields <- intersect(mandatory_fields, names(raw_data))
 
-# Remove rows with NA or blank values in any present mandatory field
+# Remove rows with NA or blank values in any present mandatory field.
+# One combined filter, so the full table is copied once rather than once
+# per field.
+keep_row <- rep(TRUE, nrow(raw_data))
 for (field in present_mandatory_fields) {
-  raw_data <- raw_data[!is.na(get(field)) & trimws(get(field)) != ""]
+  v <- raw_data[[field]]
+  keep_row <- keep_row & !is.na(v) & trimws(v) != ""
 }
+raw_data <- raw_data[keep_row]
+free_objects("keep_row", "v")   # also releases the pre-filter copy of raw_data
 
 removed_rows <- num_rows_raw_data - nrow(raw_data)
 
@@ -146,13 +183,17 @@ if (removed_rows > 0) {
 
 ################################################################################
 # consolidate Agencies (DCA, DOITT, NYC311-PRD)
+progress_msg("Step 4 of 8: Consolidating agencies")
 raw_data <- consolidate_agencies( DT = raw_data,
                                   drop_agencies = NULL)
 
 ################################################################################
-# Check date fields for missingHH:MM:SS time values
-
-# Define date columns to be converted to POSIXct format
+# Convert date columns to POSIXct (America/New_York).
+# parse_date_column() reports, for each field: the format used, missing
+# values, DST repairs, the ambiguous fall-back hour, and midnight/noon
+# counts. (The earlier text-based check, date_checks_character(), was
+# removed: it looked for "00:00:00" and so found no midnights in the raw
+# export, which writes them as "12:00:00 AM".)
 date_columns <- c(
   "created_date",
   "closed_date",
@@ -160,12 +201,7 @@ date_columns <- c(
   "resolution_action_updated_date"
 )
 
-# Example call:
-summary_dt <- date_checks_character(
-  DT = raw_data,
-  date_cols = date_columns
-)
-
+progress_msg("Step 5 of 8: Parsing date columns")
 result <- parse_date_column(
   temp_raw_data      = raw_data,
   valid_date_columns = date_columns
@@ -173,7 +209,8 @@ result <- parse_date_column(
 
 raw_data <- result$parsed_data
 failed_to_parse <- result$failures
-parsed_summmary <- result$summary
+parsed_summary  <- result$summary
+free_objects("result")          # releases the unparsed text date columns
 
 ################################################################################
 # Define columns containing text to convert to uppercase
@@ -209,7 +246,9 @@ columns_to_upper <- c(
   "vehicle_type"
 )
 
-# Step 1: Ensure columns where text to be converted actually exist in dataset
+progress_msg("Step 6 of 8: Converting text columns to upper case")
+
+# (a) Ensure columns where text to be converted actually exist in dataset
 existing_cols <- columns_to_upper[columns_to_upper %in% names(raw_data)]
 
 # Warn about any missing columns
@@ -219,10 +258,10 @@ if (length(missing_cols) > 0) {
       paste(" -", missing_cols, collapse = "\n"), "\n")
 } 
 
-# Step 2: Keep only those that are character columns
+# (b) Keep only those that are character columns
 valid_cols <- existing_cols[sapply(raw_data[, ..existing_cols], is.character)]
 
-# Step 3: Convert to uppercase
+# (c) Convert to uppercase
 for (col in valid_cols) {
   raw_data[, (col) := toupper(get(col))]
   cat("\n -", col, "converted to upper case")
@@ -259,8 +298,10 @@ cat(sprintf("\nSelected year spans: %s\n", paste(selected_year_spans, collapse =
 if (!dir.exists(data_dir)) dir.create(data_dir, recursive = TRUE)
 
 ################################################################################
-# Find max complete year (exclude current partial year)
-current_year <- year(Sys.Date())
+# Find max complete year (exclude the partial year of the as-of date).
+# Uses the as-of date in the file name, not today's date, so the result
+# does not change with the day the program is run.
+current_year <- as.integer(sub(".*-", "", as_of_date))   # as_of_date is MM-DD-YYYY
 max_complete_year <- raw_data[year(created_date) < current_year, 
                               year(max(created_date, na.rm = TRUE))]
 date_tz <- attr(raw_data$created_date, "tzone")
@@ -270,6 +311,7 @@ cat(sprintf("Max complete year: %d\n", max_complete_year))
 cat(sprintf("Timezone: %s\n", date_tz))
 
 # Collect results for summary
+progress_msg("Step 7 of 8: Saving the 311 data as RDS")
 summary_list <- list()
 
 cat("\n========================================\n")
@@ -294,7 +336,12 @@ for (span in selected_year_spans) {
               format(start_date, "%Y-%m-%d %H:%M:%S"),
               format(end_date, "%Y-%m-%d %H:%M:%S")))
   
-  filtered_data <- raw_data[created_date >= start_date & created_date < end_date]
+  # When every row is already inside the span (the usual case: the raw
+  # file covers exactly these years), use raw_data as is instead of making
+  # a second full copy of the table.
+  in_span <- raw_data$created_date >= start_date & raw_data$created_date < end_date
+  filtered_data <- if (all(in_span, na.rm = TRUE) && !anyNA(in_span)) raw_data else raw_data[in_span]
+  rm(in_span)
   
   if (nrow(filtered_data) == 0L) {
     cat(sprintf("WARNING: No data found for %d-year span [%s to %s]\n",
@@ -350,6 +397,9 @@ if (length(summary_list) > 0) {
   print(summary_dt)
 }
 
+# The 311 data are saved; release them before the USPS step
+free_objects("raw_data", "filtered_data")
+
 ################################################################################
 usps_data_file <- "zip_code_database.csv"
 usps_path      <- file.path(raw_data_dir, usps_data_file)
@@ -359,6 +409,7 @@ if (!file.exists(usps_path)) {
   stop("USPS CSV not found at: ", usps_path)
 }
 
+progress_msg("Step 8 of 8: Processing USPS ZIP code data")
 cat("\nProcessing USPS Zipcode data...\n")
 
 # Read only the 'zip' column; if not found exactly, read headers and detect it
@@ -403,6 +454,11 @@ zipcode_data[, zip := trimws(zip)]
 saveRDS(zipcode_data[, .(zip)], usps_rds_file)
 
 ################################################################################
+
+progress_msg("Data preparation finished")
+
+# Memory trace for this program (also closes the memory monitor window)
+mem_report()
 
 # Close program
 close_program(
