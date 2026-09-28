@@ -14,6 +14,7 @@
 #   elevated_minutes: custom vector of elevated minutes (overrides cycle_type)
 #   output_prefix: prefix for output files (default: uses date_col name)
 #   create_chart: whether to create Pareto chart (default: TRUE)
+#   chart_dir: folder for the chart (default: global chart_dir, else "charts")
 #
 # Returns: List containing:
 #   - agency_analysis: full agency-level analysis
@@ -33,7 +34,9 @@ analyze_cycle_pattern <- function(data,
                                   cycle_type = "3min",
                                   elevated_minutes = NULL,
                                   output_prefix = NULL,
-                                  create_chart = TRUE) {
+                                  create_chart = TRUE,
+                                  chart_dir = get0("chart_dir", envir = .GlobalEnv,
+                                                   ifnotfound = "charts")) {
   
   # Validate inputs
   if (!date_col %in% names(data)) {
@@ -141,46 +144,6 @@ analyze_cycle_pattern <- function(data,
       " excess records\n", sep = "")
   
   # ============================================================================
-  # VISUALIZATION: MINUTE DISTRIBUTION WITH PATTERN HIGHLIGHTED
-  # ============================================================================
-  
-  # minute_data[, pattern_label := factor(is_elevated, 
-  #                                       levels = c(FALSE, TRUE),
-  #                                       labels = c("Normal Minutes", 
-  #                                                  "Elevated Minutes"))]
-  # 
-  # p_minute <- ggplot(minute_data, aes(x = minute_label, y = pct, fill = pattern_label)) +
-  #   geom_bar(stat = "identity", width = 0.8) +
-  #   scale_fill_manual(values = c(
-  #     "Normal Minutes" = "#0072B2",
-  #     "Elevated Minutes" = "#D55E00"
-  #   )) +
-  #   geom_hline(yintercept = 1.69, color = "firebrick4", linetype = "dashed", linewidth = 1) +
-  #   annotate("text", x = 55, y = 1.69 + 0.03, 
-  #            label = "Expected: 1.69% (uniform)", 
-  #            color = "firebrick4", size = 3.5, hjust = 1, vjust = -2) +
-  #   labs(
-  #     title = paste0(cycle_desc, ": ", col_display),
-  #     subtitle = pattern_explanation,
-  #     x = "Minute Value (01-59)",
-  #     y = "Percentage (%)",
-  #     fill = "Pattern"
-  #   ) +
-  #   theme_minimal(base_size = 12) +
-  #   theme(
-  #     axis.text.x = element_text(angle = 0, size = 7),
-  #     legend.position = "top"
-  #   ) +
-  #   scale_x_discrete(breaks = sprintf("%02d", seq(1, 59, by = 3)))
-  # 
-  # print(p_minute)
-  # Sys.sleep(3)
-  # 
-  # chart_file <- paste0("./charts/", output_prefix, "_", cycle_short, "_minute_pattern.pdf")
-  # ggsave(chart_file, plot = p_minute, width = 18, height = 8)
-  # cat("\nMinute distribution chart saved to: ", chart_file, "\n", sep = "")
-  
-  # ============================================================================
   # EXACT CYCLE TIMESTAMPS: ROWS AT HH:Mx:00
   # ============================================================================
   
@@ -189,20 +152,21 @@ analyze_cycle_pattern <- function(data,
   cat("Date Field: ", col_display, "\n", sep = "")
   cat(rep("=", 80), "\n", sep = "")
   
-  # Create temporary working copy
-  data_temp <- copy(data)
-  data_temp[, `:=`(
-    temp_minute = minute(get(date_col)),
-    temp_second = second(get(date_col))
-  )]
+  # Minute, second, and agency as vectors (no copy of the full table)
+  temp_minute <- minute(data[[date_col]])
+  temp_second <- second(data[[date_col]])
+  agency_vec  <- data[[agency_col]]
+  is_elev     <- temp_minute %in% elevated_minutes
+  n_rows      <- nrow(data)
   
   # Extract rows EXACTLY at cycle minutes with 0 seconds
-  data_exact_cycle <- data_temp[temp_minute %in% elevated_minutes & temp_second == 0]
+  data_exact_cycle <- data[is_elev & temp_second == 0]
+  rm(temp_minute, temp_second)
   
-  cat("\nTotal rows in dataset: ", format(nrow(data_temp), big.mark = ","), "\n", sep = "")
+  cat("\nTotal rows in dataset: ", format(n_rows, big.mark = ","), "\n", sep = "")
   cat("Rows EXACTLY at cycle timestamps (e.g., HH:02:00, HH:05:00, etc.): ", 
       format(nrow(data_exact_cycle), big.mark = ","), "\n", sep = "")
-  cat("Percentage: ", round(nrow(data_exact_cycle) / nrow(data_temp) * 100, 4), "%\n\n", sep = "")
+  cat("Percentage: ", round(nrow(data_exact_cycle) / n_rows * 100, 4), "%\n\n", sep = "")
   
   # Create Pareto table by agency
   exact_cycle_summary <- NULL
@@ -269,15 +233,13 @@ analyze_cycle_pattern <- function(data,
   cat("\nElevated minutes:\n")
   cat(paste(sprintf("%02d", elevated_minutes), collapse = ", "), "\n\n")
   
-  # Extract all rows where date_col minute is in elevated_minutes
-  data_elevated <- data_temp[temp_minute %in% elevated_minutes]
-  
-  cat("Total rows: ", format(nrow(data_temp), big.mark = ","), "\n", sep = "")
-  cat("Rows in elevated minutes: ", format(nrow(data_elevated), big.mark = ","), "\n", sep = "")
-  cat("Percentage: ", round(nrow(data_elevated) / nrow(data_temp) * 100, 2), "%\n\n", sep = "")
+  n_elev <- sum(is_elev)
+  cat("Total rows: ", format(n_rows, big.mark = ","), "\n", sep = "")
+  cat("Rows in elevated minutes: ", format(n_elev, big.mark = ","), "\n", sep = "")
+  cat("Percentage: ", round(n_elev / n_rows * 100, 2), "%\n\n", sep = "")
   
   # Create simple Pareto table of elevated minutes by agency
-  agency_summary <- data_elevated[, .N, by = get(agency_col)][order(-N)]
+  agency_summary <- data.table(get = agency_vec[is_elev])[, .N, by = get][order(-N)]
   setnames(agency_summary, "get", agency_col)
   agency_summary[, `:=`(
     pct = round(N / sum(N) * 100, 2),
@@ -308,16 +270,14 @@ analyze_cycle_pattern <- function(data,
   # PART 3: EXCESS ANALYSIS (OBSERVED VS EXPECTED)
   # ============================================================================
   
-  # Create flags on temp data
-  data_temp[, is_elevated := temp_minute %in% elevated_minutes]
-  
   # Count total records by agency
-  agency_totals <- data_temp[, .(total_records = .N), by = get(agency_col)]
+  agency_totals <- data.table(get = agency_vec)[, .(total_records = .N), by = get]
   setnames(agency_totals, "get", agency_col)
   
   # Count elevated minute records by agency
-  agency_elevated_counts <- data_temp[is_elevated == TRUE, .(elevated_count = .N), by = get(agency_col)]
+  agency_elevated_counts <- data.table(get = agency_vec[is_elev])[, .(elevated_count = .N), by = get]
   setnames(agency_elevated_counts, "get", agency_col)
+  rm(agency_vec, is_elev)
   
   # Merge the two
   agency_analysis <- merge(agency_totals, agency_elevated_counts, by = agency_col, all.x = TRUE)
@@ -523,42 +483,17 @@ analyze_cycle_pattern <- function(data,
     cat("CREATING PARETO CHART...\n")
     cat(rep("=", 80), "\n", sep = "")
     
-    chart_data <- agency_analysis[excess > 0]
-    
-    p <- ggplot(chart_data, aes(x = reorder(.data[[agency_col]], -excess))) +
-      geom_bar(aes(y = excess), stat = "identity", fill = "#D55E00", width = 0.7) +
-      geom_line(aes(y = cum_pct * max(excess) / 100, group = 1), 
-                color = "#0072B2", linewidth = 1.5) +
-      geom_point(aes(y = cum_pct * max(excess) / 100), 
-                 color = "#0072B2", size = 3) +
-      scale_y_continuous(
-        name = "Excess Records in Pattern",
-        labels = scales::comma,
-        sec.axis = sec_axis(~ . * 100 / max(chart_data$excess), 
-                            name = "Cumulative Percentage (%)")
-      ) +
-      labs(
-        title = paste0("Pareto Chart: ", cycle_desc, " - ", col_display),
-        subtitle = paste0("Excess records in elevated minutes (", 
-                          paste(sprintf("%02d", head(elevated_minutes, 5)), collapse = ", "),
-                          ", ...) vs expected"),
-        x = "Agency"
-      ) +
-      theme_minimal(base_size = 12) +
-      theme(
-        axis.text.x = element_text(angle = 45, hjust = 1),
-        plot.title = element_text(face = "bold"),
-        panel.grid.minor = element_blank()
-      ) +
-      geom_hline(yintercept = 0, color = "black", linewidth = 0.5)
-    
-    print(p)
-    Sys.sleep(3)
-    
-    pareto_file <- paste0("./charts/", output_prefix, "_", cycle_short, "_pareto_by_agency.pdf")
-    ggsave(pareto_file, plot = p, width = 14, height = 8)
-    
-    cat("Chart saved to: ", pareto_file, "\n", sep = "")
+    plot_pareto_combo(
+      DT         = agency_analysis[excess > 0],
+      x_name     = agency_col,
+      weight_col = "excess",
+      chart_dir  = chart_dir,
+      filename   = paste0(output_prefix, "_", cycle_short, "_pareto_by_agency.pdf"),
+      title      = paste0("Excess Records in ", cycle_desc, " by Agency - ", col_display),
+      subtitle   = sprintf("Records above expected in minutes %s, ... (total excess %s)",
+                           paste(sprintf("%02d", head(elevated_minutes, 5)), collapse = ", "),
+                           format(sum(agency_analysis[excess > 0, excess]), big.mark = ","))
+    )
   }
   
   # ============================================================================

@@ -112,7 +112,6 @@ analyze_duration_category <- function(
         show_labels = show_count_labels,
         flip      = FALSE
       )
-      Sys.sleep(3)
       
       # Optional boxplot
       if (make_boxplot) {
@@ -153,83 +152,20 @@ analyze_duration_category <- function(
         upper_limit <- ifelse(max_val >= 0, max_val * (1 + margin), 
                               max_val * (1 - margin))
         
-        # Determine if we need right-justified labels (for negative data)
-        label_hjust <- if (max_val <= 0) 0 else 1 
-        
-        plot_result <- plot_boxplot(
-          DT        = chart_DT,
-          value_col = duration_days,
-          by_col    = agency,
-          chart_dir = chart_dir,
-          filename  = boxplot_file,
-          title     = paste0(title_case, " Duration (days) by agency"),
-          top_n     = 30,
-          y_axis_tick_size = 9,
-          order_by  = "count",
-          flip      = TRUE,
+        plot_boxplot(
+          DT           = chart_DT,
+          value_col    = duration_days,
+          by_col       = agency,
+          chart_dir    = chart_dir,
+          filename     = boxplot_file,
+          title        = paste0(title_case, " Duration (days) by agency"),
+          order_by     = "count",
           x_scale_type = "pseudo_log",
-          x_limits = c(lower_limit, upper_limit),
-          min_count = 5,
-          jitter_size = 1.3,
-          jitter_alpha = 0.55,
-          outlier_size = 1.4,
-          count_label_hjust = label_hjust,
-          show_count_labels = show_count_labels  
+          x_limits     = c(lower_limit, upper_limit),
+          show_count_labels = show_count_labels
         )
-        
-        # Display boxplot in RStudio
-        if (!is.null(plot_result) && !is.null(plot_result$plot)) {
-          print(plot_result$plot)
-          Sys.sleep(3)
-        }
-        
-        # Before calling plot_violin_boxplot, assign to a simple name
-        violin_data <- chart_DT
-        
-        # Compute min and max
-        min_val <- min(violin_data$duration_days, na.rm = TRUE)
-        max_val <- max(violin_data$duration_days, na.rm = TRUE)
-        
-        # Determine margin based on max_val
-        margin <- ifelse(max_val >= 2000, 0.04, 0.07)
-        
-        # Adjust by margin based on sign
-        lower_limit <- ifelse(min_val >= 0, min_val * (1 - margin), 
-                              min_val * (1 + margin))
-        upper_limit <- ifelse(max_val >= 0, max_val * (1 + margin), 
-                              max_val * (1 - margin))
-        
-        violin_result <- plot_violin_boxplot(
-          DT               = violin_data,
-          value_col        = duration_days,
-          chart_dir        = chart_dir,
-          filename         = gsub("boxplot", "violin_boxplot", boxplot_file),
-          title     = paste0(title_case, 
-                             " Duration (days) by agency - Violin chart"),
-          by_col           = agency,
-          include_na_group = FALSE,
-          top_n            = 30L,
-          order_by         = "count",
-          flip             = TRUE,
-          plot_type        = "hybrid",
-          violin_alpha     = 0.6,
-          violin_trim      = FALSE,
-          zero_line        = TRUE,
-          x_scale_type     = "pseudo_log",
-          y_axis_side      = "left",
-          x_limits = c(lower_limit, upper_limit),
-          y_axis_label_size = 9,
-          y_axis_tick_size = 9,
-          x_axis_tick_size = 9,
-          plot_title_size  = 14,
-          min_count        = 5L
-        )
-        
-        # Display violin plot in RStudio
-        if (!is.null(violin_result) && !is.null(violin_result$plot)) {
-          print(violin_result$plot)
-          Sys.sleep(3)
-        }
+        # (By-agency violin removed: the box plot above shows the same data.
+        #  save_chart() in plot_boxplot() already displays and pauses.)
       }
     } else if (pareto) {
       cat(sprintf("\nSkipping %s charts - no agencies with >%d observations\n",

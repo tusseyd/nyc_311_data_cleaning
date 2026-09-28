@@ -239,23 +239,15 @@ report_post_closed_updates <- function(
     if (exists("plot_boxplot", mode = "function")) {
 #      tryCatch({
         plot_boxplot(
-          DT               = updated_late,
-          value_col        = postClosedUpdateDuration,     # NSE numeric
-          chart_dir        = chart_dir,
-          filename         = boxplot_file,
-          title            = sprintf("Post-Closed Updates > %d days (by agency)", resolution_action_threshold),
-          by_col           = agency,                        # NSE grouping
-          include_na_group = FALSE,
-          top_n            = 30L,
-          order_by         = "count",
-          plot_title_size    = 14,
-          flip             = TRUE,
-          zero_line        = TRUE,
-          x_scale_type     = "linear",
-          y_axis_side = "left", 
-          y_axis_label_size = 9,
-          count_label_hjust = 1,
-          min_count        = 5L
+          DT           = updated_late,
+          value_col    = postClosedUpdateDuration,
+          by_col       = agency,
+          chart_dir    = chart_dir,
+          filename     = boxplot_file,
+          title        = sprintf("Post-Closed Updates > %d days (by agency)", resolution_action_threshold),
+          value_label  = "Days from closure to resolution-action update",
+          order_by     = "count",
+          zero_line    = TRUE
         )
         files$boxplot <- file.path(chart_dir, boxplot_file)
         
@@ -271,46 +263,8 @@ report_post_closed_updates <- function(
           chart_title = ""
         )
         
-        # Add violin + boxplot hybrid
-        
-        # Before calling plot_violin_boxplot, assign to a simple name
-        violin_data <- updated_late
-        
-        # Compute min and max
-        min_val <- min(violin_data$postClosedUpdateDuration, na.rm = TRUE)
-        max_val <- max(violin_data$postClosedUpdateDuration, na.rm = TRUE)
-        
-        # Adjust by 10% based on sign
-        lower_limit <- ifelse(min_val >= 0, min_val * 0.9, min_val * 1.1)
-        upper_limit <- ifelse(max_val >= 0, max_val * 1.1, max_val * 0.9)
-        
-        plot_violin_boxplot(
-          DT               = violin_data,
-          value_col        = postClosedUpdateDuration,
-          chart_dir        = chart_dir,
-          filename         = gsub("boxplot", "violin_boxplot", boxplot_file),
-#         title            = sprintf("Post-Closed Updates > %d days (by agency) - Violin + Box", resolution_action_threshold),
-          title            = "",
-          by_col           = agency,
-          include_na_group = FALSE,
-          top_n            = 30L,
-          order_by         = "count",
-          flip             = TRUE,
-          plot_type        = "hybrid",
-          violin_alpha     = 0.3,
-          violin_trim      = FALSE,
-          zero_line        = TRUE,
-          x_scale_type     = "linear",
-          y_axis_side      = "left",
-          x_limits = c(lower_limit, upper_limit),
-          y_axis_label_size = 9,
-          y_axis_tick_size = 9,
-          x_axis_tick_size = 9,
-          plot_title_size  = 14,
-          min_count        = 5L
-        )
+        # (By-agency violin removed: the box plot above shows the same data.)
 
-        
         #        cat("\nBoxplot saved to: ", files$boxplot, "\n", sep = "")
     #   }, error = function(e) {
     #     cat("\nNOTE: plot_boxplot() errored: ", conditionMessage(e), "\n", sep = "")

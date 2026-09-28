@@ -94,13 +94,13 @@ analyze_duration_QA <- function(
   cond_extreme_pos    <- sprintf("(> %s and < %s days)",
                                  fmt_d(extreme_pos_days), fmt_d(max_outlier_days))
   
-  rsample <- function(DT, n) DT[sample(.N, min(.N, n))]
-  
   if (!all(c(created_col, closed_col) %in% names(DT))) {
     stop("created_col and/or closed_col not found in DT.")
   }
   
   X <- if (in_place) DT else data.table::copy(DT)
+  cols_before <- data.table::copy(names(X))   # copy: names() of a data.table
+                                               # updates in place when columns are added
   
   # Check if durations already exist, if not calculate them
   if (!"duration_days" %in% names(X)) {
@@ -208,10 +208,11 @@ analyze_duration_QA <- function(
   near_zero_ex <- X[base_filter & duration_days > 0 &
                       duration_days <= near_zero_days, .SD, .SDcols = keep_cols]
   
-  positive_all <- X[base_filter & duration_days > 0, .SD, .SDcols = keep_cols]
-  
-  positive_small <- X[base_filter & duration_days > 0 &
-                        duration_days <= upper_pos_days, .SD, .SDcols = keep_cols]
+  # All positive and small positive durations are ~15M rows each, so they
+  # are summarised from the duration vector instead of copied as tables.
+  dd             <- X$duration_days
+  pos_mask       <- base_filter & !is.na(dd) & dd > 0
+  pos_small_mask <- pos_mask & dd <= upper_pos_days
   
   positive_large <- X[base_filter &
                         duration_days >  upper_pos_days &
@@ -248,8 +249,8 @@ analyze_duration_QA <- function(
   zero_cnt        <- nrow(zero_all)
   one_sec_cnt     <- nrow(one_sec_all)
   nearz_cnt       <- nrow(near_zero_ex)
-  pos_count       <- nrow(positive_all)
-  pos_small       <- nrow(positive_small)
+  pos_count       <- sum(pos_mask)
+  pos_small       <- sum(pos_small_mask)
   pos_large       <- nrow(positive_large)
   pos_extreme_cnt <- nrow(positive_extreme)
   pos_excluded    <- nrow(excluded_extreme)
@@ -275,19 +276,26 @@ analyze_duration_QA <- function(
   max_neg_large   <- stat_or_na(negative_large,   max)
   max_neg_extreme <- stat_or_na(negative_extreme, max)
   
+  # Same summary for a plain vector (all and small positive durations)
+  stat_vec <- function(v, fun) if (length(v)) round(fun(v, na.rm = TRUE), 2) else NA_real_
+  v_all   <- dd[pos_mask]
+  v_small <- dd[pos_small_mask]
+  pos_small_in_range <- !length(v_small) || all(v_small > 0 & v_small <= upper_pos_days)
+  
   # --- Positive durations ---
-  avg_pos_all     <- stat_or_na(positive_all,     mean)
-  avg_pos_small   <- stat_or_na(positive_small,   mean)
+  avg_pos_all     <- stat_vec(v_all,   mean)
+  avg_pos_small   <- stat_vec(v_small, mean)
   avg_pos_large   <- stat_or_na(positive_large,   mean)
   avg_pos_extreme <- stat_or_na(positive_extreme, mean)
   
-  min_pos_all     <- stat_or_na(positive_all,     min)
-  min_pos_small   <- stat_or_na(positive_small,   min)
+  min_pos_all     <- stat_vec(v_all,   min)
+  min_pos_small   <- stat_vec(v_small, min)
   min_pos_large   <- stat_or_na(positive_large,   min)
   min_pos_extreme <- stat_or_na(positive_extreme, min)
   
-  max_pos_all     <- stat_or_na(positive_all,     max)
-  max_pos_small   <- stat_or_na(positive_small,   max)
+  max_pos_all     <- stat_vec(v_all,   max)
+  max_pos_small   <- stat_vec(v_small, max)
+  rm(v_all, v_small, pos_mask, pos_small_mask, dd)
   max_pos_large   <- stat_or_na(positive_large,   max)
   max_pos_extreme <- stat_or_na(positive_extreme, max)
   
@@ -555,11 +563,16 @@ analyze_duration_QA <- function(
     in_range(negative_small,   lower_neg_days,   0,                hi_incl = FALSE),
     in_range(negative_large,   extreme_neg_days, lower_neg_days),
     in_range(negative_extreme, -Inf,             extreme_neg_days),
-    in_range(positive_small,   0,                upper_pos_days),
+    pos_small_in_range,
     in_range(positive_large,   upper_pos_days,   extreme_pos_days),
     in_range(positive_extreme, extreme_pos_days, max_outlier_days, hi_incl = FALSE),
     in_range(excluded_extreme, max_outlier_days, Inf,              lo_incl = TRUE)
   )
+  
+  # Remove helper timestamp columns this function added to DT (the subsets
+  # keep their own copies of created_ts / closed_ts)
+  added <- intersect(setdiff(names(X), cols_before), c("created_ts", "closed_ts"))
+  if (in_place && length(added)) X[, (added) := NULL]
   
   invisible(list(
     summary          = summary_dt,
@@ -580,8 +593,6 @@ analyze_duration_QA <- function(
     zero_rows        = zero_all,
     one_sec_rows     = one_sec_all,
     near_zero_rows   = near_zero_ex,
-    positive_all     = positive_all,
-    positive_small   = positive_small,
     positive_large   = positive_large,
     positive_extreme = positive_extreme,
     excluded_extreme = excluded_extreme

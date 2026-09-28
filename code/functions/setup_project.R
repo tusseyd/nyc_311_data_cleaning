@@ -39,32 +39,20 @@ setup_project <- function(
   if (verbose) cat("========================================\n\n")
   
   required_packages <- c(
-    "data.table",      # Load FIRST - most important to avoid masking
-    "arrow",
+    "data.table",      # Loaded first. tidyverse (loaded later) masks some of its
+    # functions: lubridate hour/minute/second/year/month/...,
+    # dplyr between/first/last, purrr transpose. The results
+    # are the same for this data (whole-second timestamps).
     "fasttime",
-    "here",
-    "zoo",
-    "ggpmisc",
-    "ggpattern",
-    "ggrastr",
-    "qcc",
-    "qicharts2",
+    "ggrastr",         # raster point layers (print-safe PDFs)
     "grid",
-    "gridExtra",
-    "sf",              # Load before tidyverse - can mask dplyr functions
+    "sf",              # spatial functions; no conflicts with tidyverse
     "stringdist",
-    "tidyverse",       # Load late - includes dplyr, ggplot2, stringr, lubridate, scales
-    "bslib",
-    "shiny",
-    "DT",
-    "gt",
-    "styler",
-    "rlang",
-    "renv",
-    "remotes",
-    "moments",
-    "diptest",
-    "scales"
+    "tidyverse",       # dplyr, ggplot2, stringr, lubridate, purrr, scales, rlang, ...
+    "scales",
+    "moments",         # skewness()
+    "diptest",         # dip.test()
+    "ps"               # memory monitor
   )
   
   for (pkg in required_packages) {

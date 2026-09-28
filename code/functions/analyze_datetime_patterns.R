@@ -7,14 +7,14 @@ analyze_datetime_patterns <- function(
 ) {
   stopifnot(data.table::is.data.table(DT))
   
-  
-  # No need for deparse/substitute - already strings
+  # Column names are passed as strings
   datetime_name <- datetime_col
   agency <- agency_col
   
-  class(agency)
-  length(agency)
-  head(agency)
+  # Helper columns (year_local, hour, minute, second) are added to DT below
+  # and removed again at the end, so the full table does not keep ~16M x 4
+  # extra values. copy(): names() of a data.table updates in place.
+  cols_before <- data.table::copy(names(DT))
   
   # Ensure POSIXct
   if (!inherits(DT[[datetime_name]], "POSIXct")) {
@@ -82,8 +82,6 @@ analyze_datetime_patterns <- function(
       show_labels = FALSE,
       x_axis_angle  = 0,
       y_axis_labels = scales::comma,
-      chart_width = 6,
-      chart_height = 3,
       chart_dir = chart_dir,
       filename  = sprintf("%s_hour_distribution_working_order", 
                           tolower(label))
@@ -128,8 +126,6 @@ analyze_datetime_patterns <- function(
         show_labels  = TRUE,
         x_axis_angle = 0,
         y_axis_labels = scales::comma,
-        chart_width = 6,
-        chart_height = 3,
         chart_dir = chart_dir,
         filename  = sprintf("%s_exact_midnight_cy_distribution", tolower(label))
       )
@@ -191,8 +187,6 @@ analyze_datetime_patterns <- function(
         show_labels  = TRUE,
         x_axis_angle = 0,
         y_axis_labels = scales::comma,
-        chart_width = 6,
-        chart_height = 3,
         chart_dir = chart_dir,
         filename  = sprintf("%s_exact_noon_cy_distribution", tolower(label))
       )
@@ -256,7 +250,9 @@ analyze_datetime_patterns <- function(
     # BARCHART CHECK: Requires > 1 unique hour with top_of_hour records
     if (nrow(hourly_top_hour[top_of_hour > 0]) > 1) {
       
-      # Reorder factor levels to start at 08:00 and wrap to 07:00
+      # Manuscript Figure 2 (panels a and b): hours ordered 07-23 then 00-06,
+      # 6 x 2 in, no title. The mu + 3 sigma line is always drawn because the
+      # text refers to it (ref_line_band = NULL).
       hour_order <- c(7:23, 0:6)
       hourly_top_hour[, hour := factor(hour, levels = hour_order)]
       
@@ -266,21 +262,24 @@ analyze_datetime_patterns <- function(
         y_col     = "top_of_hour",
         x_label   = "Hour of day",
         y_label   = "SRs at HH:00:00",
-        title      = "",
-        subtitle  = sprintf("n = %s ", format(top_hour_records, big.mark = ",")), 
+        subtitle  = sprintf("n = %s", format(top_hour_records, big.mark = ",")), 
         bar_width = 0.8,
         add_median = FALSE,
         add_3sd   = TRUE,
+        ref_line_band = NULL,
         show_labels = FALSE,
         x_axis_angle  = 0,
         y_axis_labels = scales::comma,
-        chart_width = 6,
-        chart_height = 2,
+        height_in = 2,
         chart_dir = chart_dir,
         filename  = sprintf("%s_top_of_hour_distribution", tolower(label))
       )
     }
   }
+  
+  # Remove the helper columns this function added to DT
+  added <- intersect(setdiff(names(DT), cols_before), c("year_local", "hour", "minute", "second"))
+  if (length(added)) DT[, (added) := NULL]
   
   invisible(list(
     hour_summary          = hour_summary

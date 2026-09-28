@@ -57,21 +57,21 @@ summarize_by_complaint <- function(subset_dt,
   }
   msg("  Subset rows: %s", fmt(n_subset))
   
-  # --- Lookup table: only the two columns needed from the large table ---
-  lookup <- source_dt[, .(unique_key, complaint_type)]
-  
   # --- Match key types: convert the small side, not the large side ---
   sub <- subset_dt[, .(unique_key, agency, duration_days)]
-  if (is.numeric(lookup$unique_key)) {
+  if (is.numeric(source_dt$unique_key)) {
     sub[, unique_key := as.numeric(unique_key)]
   } else {
     sub[, unique_key := as.character(unique_key)]
   }
   
   # --- Join complaint_type onto the subset by unique_key ---
+  # Joins against source_dt directly and returns only the needed columns,
+  # so the large table is never copied.
   msg("  Joining complaint_type from source table (%s rows)", fmt(nrow(source_dt)))
-  dt <- lookup[sub, on = "unique_key"]
-  
+  dt <- source_dt[sub, on = "unique_key",
+                  .(unique_key, complaint_type,
+                    agency = i.agency, duration_days = i.duration_days)]  
   n_miss <- dt[is.na(complaint_type), .N]
   if (n_miss > 0L) {
     warning(sprintf("%s: %s rows had no complaint_type match on unique_key",

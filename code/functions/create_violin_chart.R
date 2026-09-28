@@ -1,3 +1,12 @@
+# create_violin_chart
+# Single violin with a box plot and jittered points for one numeric column.
+#
+# Print-safe PDF: the jittered points are drawn as one raster image
+# (ggrastr, 300 dpi) instead of one vector shape per SR, and the fills are
+# opaque. Transparent vector layers with tens of thousands of points make
+# Acrobat freeze when it flattens the page for printing. The box colour
+# #958F3E is what the old 65%-transparent orange box looked like over the
+# blue points, so the chart looks the same.
 create_violin_chart <- function(
     dataset,
     x_axis_title = NULL,
@@ -37,16 +46,24 @@ create_violin_chart <- function(
     subtitle_margin <- margin(l = subtitle_offset_pos, r = 0, unit = "pt")
   }
   
+  # Jittered points: one raster image if ggrastr is installed, else vector
+  jitter_layer <- if (requireNamespace("ggrastr", quietly = TRUE)) {
+    ggrastr::geom_jitter_rast(width = 0.2, height = 0.4, color = "#0072B2",
+                              size = 2, shape = 17, raster.dpi = 300)
+  } else {
+    geom_jitter(width = 0.2, height = 0.4, color = "#0072B2", size = 2, shape = 17)
+  }
+  
   # Create the violin chart
   violin_chart <- ggplot(
     data = dataset,
     aes(x = !!rlang::sym(x_axis_field), y = factor(1))) +
     
-    geom_jitter(width = 0.2, height = 0.4, alpha = 0.85, color = "#0072B2", size = 2, shape = 17) +
+    jitter_layer +
     
-    geom_violin(linewidth = 0.7, fill = "transparent", color = "black") +
+    geom_violin(linewidth = 0.7, fill = NA, color = "black") +
     
-    geom_boxplot(width = 0.25, fill = "#E69F00", color = "black", alpha = 0.65, 
+    geom_boxplot(width = 0.25, fill = "#958F3E", color = "black",
                  outlier.colour = "black", outlier.size = 0.75) +
     
     scale_y_discrete(expand = c(0, 0)) +

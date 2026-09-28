@@ -1,8 +1,20 @@
+################################################################################
+# plot_pareto_combo.R
+# Pareto chart: bars of counts by group, cumulative-% line, optional 80% line.
+#
+# Sizes come from chart_style() (see chart_style.R). Every size argument
+# below defaults to NULL, meaning "use the standard size". Pass a value only
+# when one chart needs to differ from the rest.
+#
+# Requires: chart_style.R (chart_style, chart_theme, save_chart, pt_to_mm,
+#           auto_height) and david_theme.R
+################################################################################
+
 plot_pareto_combo <- function(
     DT,
     x_name = NULL,         # existing style (string)
-    x_col  = "NULL",         # NEW: legacy style, bare or string
-    x_expr = NULL,         # NEW: very legacy NSE style, bare/string/var
+    x_col  = "NULL",       # legacy style, bare or string
+    x_expr = NULL,         # very legacy NSE style, bare/string/var
     chart_dir,
     filename,
     title,
@@ -10,242 +22,195 @@ plot_pareto_combo <- function(
     top_n             = 30L,
     include_na        = FALSE,
     na_label          = "(NA)",
-    width_in = 6,
-    height_in = 3,
-    annotation_size   = 3.5,
-    x_axis_label_angle= 0,
-    x_axis_label_size = 9,
-    plot_subtitle_size= 9,
     min_count         = 1L,
     flip              = FALSE,
     show_threshold_80 = TRUE,
-    show_labels       = TRUE
+    threshold_80_band = 0.10,   # draw the 80% line only if a cumulative point on the
+                                # chart falls within 80% +/- this (NULL = always)
+    show_labels       = TRUE,
+    x_label_wrap      = NULL,   # wrap long category labels at N characters
+    weight_col        = NULL,   # column to sum per group instead of counting rows
+                                # (e.g. "excess" from a pre-aggregated table)
+
+    # --- Size overrides (NULL = standard size from chart_style()) ---
+    width_in           = NULL,  # inches
+    height_in          = NULL,  # inches; flipped charts grow with the number of bars
+    title_pt           = NULL,
+    plot_subtitle_size = NULL,  # points
+    x_axis_label_size  = NULL,  # points
+    y_axis_label_pt    = NULL,  # points
+    label_pt           = NULL,  # count labels above bars, points
+    x_axis_label_angle = NULL,  # default 30 (0 when flipped)
+
+    # --- Appearance (rarely changed) ---
+    bar_width            = 0.55,
+    bar_fill             = "#009E73",
+    label_comma          = TRUE,
+    y_headroom           = 0.12,
+    cum_line_width       = NULL,   # NULL = chart_style()$line_width
+    cum_point_size       = NULL,   # NULL = chart_style()$point_size
+    threshold_line_width = NULL    # NULL = chart_style()$ref_line_width
 ) {
-  
-# cat("\n Entering plot_pareto_combo\n\n")
-   
-  .resolve_expr_to_name <- function(expr, env = parent.frame()) {
+
+  `%||%` <- function(a, b) if (is.null(a)) b else a
+  st <- chart_style()
+  caller <- parent.frame()   # where x_col / x_name variables are looked up
+
+  .resolve_expr_to_name <- function(expr, env = caller) {
     if (is.null(expr)) return(NULL)
     if (is.symbol(expr)) {
-      # Could be bare column (agency) OR variable name; eval to allow x_col = x_col_name
       val <- tryCatch(eval(expr, env), error = function(e) NULL)
       if (is.character(val) && length(val) == 1 && nzchar(val)) return(val)
-      return(deparse(expr))  # bare symbol -> "agency"
+      return(deparse(expr))
     } else if (is.character(expr) && length(expr) == 1 && nzchar(expr)) {
-      # Literal string in the call: x_col = "agency"
       return(expr)
     } else {
-      # Anything else: try to evaluate (e.g., a name that holds "agency")
       val <- tryCatch(eval(expr, env), error = function(e) NULL)
       if (is.character(val) && length(val) == 1 && nzchar(val)) return(val)
       return(NULL)
     }
   }
-  
-  x_col_name <- .resolve_expr_to_name(substitute(x_col))
-  # if (is.null(x_col_name)) {
-  #   stop("Could not resolve x_col: ", deparse(substitute(x_col)))
-  # } else {
-  #   message("Resolved x_col: ", x_col_name)
-  # }
 
-  # Capture call-time code WITHOUT evaluating values
-  x_col_expr  <- substitute(x_col)
-  x_name_expr <- substitute(x_name)
-  
-  # Prefer x_col (legacy), then x_name (current)
-  col_from_x_col  <- .resolve_expr_to_name(x_col_expr)
+  # --- Resolve the grouping column (x_col legacy first, then x_name) ---
+  col_from_x_col  <- .resolve_expr_to_name(substitute(x_col))
   col_from_x_name <- {
-    # prioritize direct string in x_name if provided
     if (is.character(x_name) && length(x_name) == 1 && nzchar(x_name)) x_name
-    else .resolve_expr_to_name(x_name_expr)
+    else .resolve_expr_to_name(substitute(x_name))
   }
-  
-  resolved_col <- if (!is.null(col_from_x_col)) col_from_x_col else 
-    col_from_x_name
+  resolved_col <- if (!is.null(col_from_x_col) && col_from_x_col %in% names(DT))
+    col_from_x_col else col_from_x_name
   if (is.null(resolved_col)) {
     stop("plot_pareto_combo(): unable to resolve grouping column. ",
-         "Use x_col = agency (bare) or x_col = \"agency\", or x_name = \"agency\".", 
+         "Use x_col = agency (bare) or x_col = \"agency\", or x_name = \"agency\".",
          call. = FALSE)
   }
-  if (!(resolved_col %in% names(DT))) {
-    stop(sprintf("plot_pareto_combo(): column '%s' not found in DT.", 
-                 resolved_col), call. = FALSE)
-  }
-  
-  # From here on, use x_name (a single character string) everywhere
-  x_name <- resolved_col
-  
-  x_str <- resolved_col
-  
-   if (!(x_name %in% names(DT))) {
-    stop(sprintf("Column '%s' not found in DT.", x_name), call. = FALSE)
-  }
-
-  # --- hard requirements
-  if (!data.table::is.data.table(DT)) 
+  if (!data.table::is.data.table(DT))
     stop("DT must be a data.table. Use data.table::setDT() first.")
-  
-  if (is.name(x_name)) {
-    # bare column name (e.g., agency)
-    x_str <- deparse(x_name)
-  } else if (is.character(x_name) && length(x_name) == 1) {
-    # string provided (e.g., "agency")
-    x_str <- x_name
-    x_name <- as.name(x_name)
-  } else {
-    stop("x_name must be either an unquoted column name (e.g., agency) or a string (\"agency\").")
+  if (!(resolved_col %in% names(DT))) {
+    stop(sprintf("plot_pareto_combo(): column '%s' not found in DT.", resolved_col),
+         call. = FALSE)
   }
-  
-  if (!x_str %in% names(DT)) 
-    stop(sprintf("Column '%s' not found in DT.", x_str))
-  
-  for (pkg in c("ggplot2","scales")) if (!requireNamespace(pkg, quietly = TRUE)) 
-    stop(sprintf("Package '%s' is required.", pkg))
-  
-  if (!dir.exists(chart_dir)) dir.create(chart_dir, recursive = TRUE, 
-                                         showWarnings = FALSE)
-  
-  # cat("\n Aggregatiing in plot_pareto_combo\n\n")
-  # 
-  # #    Right before the aggregate section:
-  # cat("\n=== DEBUG plot_pareto_combo aggregation ===\n")
-  # cat("  x_str:", x_str, "\n")
-  # cat("  class(x_str):", class(x_str), "\n")
-  # cat("  length(x_str):", length(x_str), "\n")
-  # cat("  include_na:", include_na, "\n")
-  # cat("  nrow(DT):", nrow(DT), "\n")
-  
-  # --- aggregate (DT-only)
-  if (include_na) {
-    agg <- DT[, .(N = .N), by = .(group = get(x_str))][order(-N)]
+  x_str <- resolved_col
+
+  # --- Aggregate: row counts, or the sum of weight_col ---
+  if (!is.null(weight_col) && !weight_col %in% names(DT))
+    stop(sprintf("plot_pareto_combo(): weight_col '%s' not found in DT.", weight_col), call. = FALSE)
+  rows <- if (include_na) DT else DT[!is.na(get(x_str))]
+  agg <- if (is.null(weight_col)) {
+    rows[, .(N = .N), by = .(group = get(x_str))][order(-N)]
   } else {
-    agg <- DT[!is.na(get(x_str)), .(N = .N), by = .(group = get(x_str))][order(-N)]
+    rows[, .(N = sum(get(weight_col), na.rm = TRUE)), by = .(group = get(x_str))][order(-N)]
   }
   if (!nrow(agg)) {
     message(sprintf("plot_pareto_combo: no rows to plot for '%s'.", x_str))
     return(invisible(NULL))
   }
   if (include_na) agg[is.na(group), group := na_label]
-  
+
   totalN <- sum(agg$N)
-  agg[, `:=`(
-    pct     = N / totalN,
-    cum_pct = cumsum(N) / totalN
-  )]
-  
-  # Filter out groups with too few observations
+  agg[, `:=`(pct = N / totalN, cum_pct = cumsum(N) / totalN)]
+
+  # --- Filter out groups with too few observations ---
   if (min_count > 1L) {
     before_count <- nrow(agg)
     agg <- agg[N >= min_count]
-    after_count <- nrow(agg)
-    if (before_count > after_count) {
-      cat(sprintf("\nFiltered out %d groups with < %d observations\n", 
-                  before_count - after_count, min_count))
+    if (before_count > nrow(agg)) {
+      cat(sprintf("\nFiltered out %d groups with < %d observations\n",
+                  before_count - nrow(agg), min_count))
     }
-    # Recalculate percentages after filtering
     totalN <- sum(agg$N)
-    agg[, `:=`(
-      pct     = N / totalN,
-      cum_pct = cumsum(N) / totalN
-    )]
+    agg[, `:=`(pct = N / totalN, cum_pct = cumsum(N) / totalN)]
   }
-  
-  # --- summary table (top N) - MOVED OUTSIDE min_count block
+
+  # --- Summary table (top N) ---
   total_groups <- nrow(agg)
   df <- agg[1:min(top_n, total_groups)]
-  df[, `:=`(
-    pct = round(pct, 2),
-    cum_pct = round(cum_pct, 2)
-  )]
+  df[, `:=`(pct = round(pct, 2), cum_pct = round(cum_pct, 2))]
   df[, group := factor(group, levels = df$group)]  # lock order
-  
+
   cat("\nPareto summary by ", x_str,
-      if (total_groups > nrow(df)) sprintf(" (first %d of %d)", nrow(df), 
-                                        total_groups) else "", ":\n", sep = "")
-  
-  old_opt <- options(datatable.print.class = FALSE); on.exit(options(old_opt), 
-                                                             add = TRUE)
-  
-  temp_dt <- df[, .(group, N, pct = round(pct, 4), 
-                    cum_pct = round(cum_pct, 4))]
-  temp_df <- data.frame(
-    group = format(temp_dt$group, justify = "left"),
-    N = format(temp_dt$N, justify = "right"),
-    pct = format(temp_dt$pct, justify = "right"),
-    cum_pct = format(temp_dt$cum_pct, justify = "right")
-  )
-  
-  print(temp_df, row.names = FALSE)
-  
-  # --- plot (vertical by default)
+      if (total_groups > nrow(df)) sprintf(" (first %d of %d)", nrow(df), total_groups) else "",
+      ":\n", sep = "")
+  old_opt <- options(datatable.print.class = FALSE); on.exit(options(old_opt), add = TRUE)
+  print(data.frame(
+    group   = format(df$group, justify = "left"),
+    N       = format(df$N, justify = "right"),
+    pct     = format(round(df$pct, 4), justify = "right"),
+    cum_pct = format(round(df$cum_pct, 4), justify = "right")
+  ), row.names = FALSE)
+
+  # --- Sizes: explicit arguments win, otherwise chart_style() ---
+  axis_pt   <- y_axis_label_pt   %||% st$y_axis_text_pt
+  x_axis_pt <- x_axis_label_size %||% st$x_axis_text_pt
+  lab_mm    <- pt_to_mm(label_pt %||% st$label_pt)
+  angle     <- x_axis_label_angle %||% (if (isTRUE(flip)) 0 else 30)
+  cum_lw    <- cum_line_width       %||% st$line_width     %||% 0.3
+  cum_pt    <- cum_point_size       %||% st$point_size     %||% 0.8
+  thr_lw    <- threshold_line_width %||% st$ref_line_width %||% 0.5
+  w_in      <- width_in  %||% st$width_in
+  h_in      <- height_in %||% (if (isTRUE(flip)) auto_height(nrow(df), st) else st$height_in)
+
+  # --- Plot ---
   maxN <- max(df$N)
-  count_labels <- df$N
-  cum_labels   <- round(df$cum_pct, 2)
-  
+  df[, count_label := if (isTRUE(label_comma)) scales::comma(N) else as.character(N)]
+
   p <- ggplot2::ggplot(df, ggplot2::aes(x = group, y = N)) +
-    ggplot2::geom_col(width = 0.55, fill = "#009E73")
-  
+    ggplot2::geom_col(width = bar_width, fill = bar_fill)
+
   if (isTRUE(show_labels)) {
     p <- p + ggplot2::geom_text(
-      ggplot2::aes(label = count_labels),
-      colour = "black", hjust = 0.5, vjust = -0.5,
-      size = annotation_size
+      ggplot2::aes(label = count_label),
+      colour = "black", hjust = 0.5, vjust = -0.5, size = lab_mm
     )
   }
-  
-  # Always include cumulative line and points
+
   p <- p +
-    ggplot2::geom_line(ggplot2::aes(y = cum_pct * maxN, group = 1)) +
-    ggplot2::geom_point(ggplot2::aes(y = cum_pct * maxN))
-  
-  # Conditionally include 80% line + label
+    ggplot2::geom_line(ggplot2::aes(y = cum_pct * maxN, group = 1), linewidth = cum_lw) +
+    ggplot2::geom_point(ggplot2::aes(y = cum_pct * maxN), size = cum_pt)
+
+  # 80% line only when a cumulative point is near it
+  if (isTRUE(show_threshold_80) && !is.null(threshold_80_band) &&
+      !any(abs(df$cum_pct - 0.8) <= threshold_80_band + 1e-9)) {
+    message(sprintf("  80%% line omitted: no cumulative point within %d-%d%%",
+                    round(100 * (0.8 - threshold_80_band)), round(100 * (0.8 + threshold_80_band))))
+    show_threshold_80 <- FALSE
+  }
   if (isTRUE(show_threshold_80)) {
     p <- p +
-      ggplot2::geom_hline(
-        yintercept = 0.8 * maxN,
-        linetype   = "dotted",
-        linewidth  = 1.35,
-        color      = "#D55E00",
-        alpha      = 0.7
-      ) +
-      ggplot2::annotate(
-        "text",
-        x = Inf, y = 0.8 * maxN,
-        label = "80%",
-        hjust = 1.2, vjust = -0.3,
-        size  = 3.5,
-        color = "#D55E00",
-        fontface = "bold"
-      )
+      ggplot2::geom_hline(yintercept = 0.8 * maxN, linetype = "dotted",
+                          linewidth = thr_lw, color = "#D55E00", alpha = 0.7) +
+      ggplot2::annotate("text", x = Inf, y = 0.8 * maxN, label = "80%",
+                        hjust = 1.2, vjust = -0.3, size = lab_mm * 1.1,
+                        color = "#D55E00", fontface = "bold")
   }
-  
-  # Y-axis secondary scale and labels
+
+  x_labels <- if (!is.null(x_label_wrap)) scales::label_wrap(x_label_wrap) else ggplot2::waiver()
+
   p <- p +
+    ggplot2::scale_x_discrete(labels = x_labels) +
     ggplot2::scale_y_continuous(
-      sec.axis = ggplot2::sec_axis(
-        ~ . / maxN,
-        labels = scales::percent_format(accuracy = 1),
-        name   = NULL
-      )
+      labels = scales::comma,
+      expand = ggplot2::expansion(mult = c(0, y_headroom)),
+      sec.axis = ggplot2::sec_axis(~ . / maxN,
+                                   labels = scales::percent_format(accuracy = 1),
+                                   name = NULL)
     ) +
     ggplot2::labs(
-      title    = if (is.null(title)) sprintf("Pareto by %s (counts & cumulative %% )", 
-                                             x_str) else title,
-      subtitle = if (is.null(subtitle)) sprintf("n = %d", totalN) else subtitle,
+      title    = if (is.null(title)) sprintf("Pareto by %s (counts & cumulative %%)", x_str) else title,
+      subtitle = if (is.null(subtitle)) sprintf("n = %s", scales::comma(totalN)) else subtitle,
       x = NULL, y = NULL
     ) +
-    david_theme(text_size = 12, x_axis_text_size = 9, x_axis_angle = 30)
-  
-  
+    chart_theme(
+      plot_title_size    = title_pt           %||% st$title_pt,
+      plot_subtitle_size = plot_subtitle_size %||% st$subtitle_pt,
+      x_axis_text_size   = x_axis_pt,
+      y_axis_text_size   = axis_pt,
+      x_axis_angle       = angle
+    )
+
   if (isTRUE(flip)) p <- p + ggplot2::coord_flip()
-  
-  print(p)
-  Sys.sleep(3)
-  
-  outfile <- file.path(chart_dir, filename)
-  ggplot2::ggsave(outfile, plot = p, width = width_in, height = height_in, 
-                  dpi = 300)
-  
+
+  outfile <- save_chart(p, chart_dir, filename, width_in = w_in, height_in = h_in)
+
   invisible(list(plot = p, table = df, file = outfile))
 }

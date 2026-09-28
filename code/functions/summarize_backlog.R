@@ -262,7 +262,9 @@ summarize_backlog <- function(DT,
               fmt(n_updated_2020_on), fmt(prior_still_open),
               100 * n_updated_2020_on / prior_still_open))
   
-  # --- Charts ---
+  # --- Charts (one bar chart per metric in chart_metrics) ---
+  # Sizes come from chart_style(). Growth is shown in the subtitle; no
+  # trendline, because with five bars it runs through the bar labels.
   chart_labels <- c(
     backlog_strict = "SRs open on January 1",
     backlog_A      = "SRs open on January 1, excluding pre-2020 SRs never closed",
@@ -272,24 +274,19 @@ summarize_backlog <- function(DT,
   stopifnot(all(chart_metrics %in% names(chart_labels)))
   
   for (m in chart_metrics) {
+    first <- res[1L, get(m)]
+    last  <- res[.N, get(m)]
+    growth <- sprintf("growth %d-%d: %.1f%%", res[1L, year], res[.N, year],
+                      100 * (last - first) / first)
     plot_barchart(
-      DT = res,
-      x_col = "year",
-      y_col = m,
-      title = "",
-      subtitle = chart_labels[[m]],
-      x_label = "Year",
-      y_label = "Service requests",
-      show_labels = TRUE,
-      add_trendline = TRUE,
-      show_trend_stats = TRUE,
-      trend_stats_size  = 5.5,
-      show_summary = FALSE,
-      chart_width = 13,
-      chart_height = 8.5,
-      chart_dir = chart_dir,
-      filename = paste0("annual_", m, "_bar_chart"),
-      console_print_title = paste("Backlog at Start of Year:", m)
+      DT            = res,
+      x_col         = "year",
+      y_col         = m,
+      title         = "SR Backlog at Start of Year",
+      subtitle      = paste0(chart_labels[[m]], "; ", growth),
+      show_summary  = FALSE,
+      chart_dir     = chart_dir,
+      filename      = paste0("annual_", m, "_bar_chart")
     )
   }
   
