@@ -16,7 +16,7 @@
 %% Either version 1.3 or (at your option) any later version.
 %%
 \NeedsTeXFormat{LaTeX2e}
-\ProvidesClass{jdsart}[2025/09/03 v0.25 Journal of Data Science class]
+\ProvidesClass{jdsart}[2026/09/28 v0.34 Journal of Data Science class]
 
 \def\fmt@name{jdsart}
 
@@ -62,7 +62,7 @@
     \if@chinese
     \else
       \RequirePackage{bibunits}
-      \defaultbibliographystyle{jds}
+      \defaultbibliographystyle{jds2}
     \fi
 \fi
 
@@ -104,6 +104,10 @@
   \RequirePackage{lastpage}
   \def\@@lastpage{\pageref*{LastPage}}
   }
+
+\ifcsundef{jobstart@date@info}%
+  {\xdef\jobstart@date@info{\the\year\two@digits{\the\month}\two@digits{\the\day}}}%
+  {}
 
 \def\@journal{Journal of Data Science}
 \def\@journalabbrev{Journal of Data Science}
@@ -324,24 +328,25 @@
     \ifx\@tempa\@empty
       \def\keywords@prefix{\textbf{Keywords}\enskip\space}%
     \else
-      \ifx\@tempa\PACS@name
-        \def\keywords@prefix{\it PACS:\space}%
-      \else
-        \ifx\@tempa\JEL@name
-          \def\keywords@prefix{\textbf{JEL~classification}\enskip\space}%
-        \else
-          \ifx\@tempa\MSC@MMX@name
-            \def\keywords@prefix{\textbf{2010~MSC}\enskip\space}%
-            \def\MSC@active@keywords{1}%
-          \else
-            \def\keywords@prefix{\textbf{#1~MSC}\enskip\space}%
-            \def\msc@tempa{2010}%
-            \ifx\@tempa\msc@tempa
-              \def\MSC@active@keywords{1}%
-            \fi
-          \fi
-        \fi
-      \fi
+      \ClassError{jdsart}{The option 'class' is not allowed in the 'keyword' environment!}{}%
+%      \ifx\@tempa\PACS@name
+%        \def\keywords@prefix{\it PACS:\space}%
+%      \else
+%        \ifx\@tempa\JEL@name
+%          \def\keywords@prefix{\textbf{JEL~classification}\enskip\space}%
+%        \else
+%          \ifx\@tempa\MSC@MMX@name
+%            \def\keywords@prefix{\textbf{2010~MSC}\enskip\space}%
+%            \def\MSC@active@keywords{1}%
+%          \else
+%            \def\keywords@prefix{\textbf{#1~MSC}\enskip\space}%
+%            \def\msc@tempa{2010}%
+%            \ifx\@tempa\msc@tempa
+%              \def\MSC@active@keywords{1}%
+%            \fi
+%          \fi
+%        \fi
+%      \fi
     \fi
     \@firstkwdtrue
     \global\advance\keyboxcnt\@ne
@@ -363,6 +368,12 @@
     \egroup
     \gdef\first@keyword@env{1}%
   }
+\ifnum\jobstart@date@info>20260428\relax
+  \let\keyword\keywords
+  \let\endkeyword\endkeywords
+  \let\keywords\@undefined
+  \let\endkeywords\@undefined
+\fi
 
 \ifdefined\directlua
   \def\fix@italic@cor{%
@@ -466,8 +477,8 @@
       \let\snm\@gobble
       \let\suffix\@gobble
       \let\roles\@gobble
-      \def\thanks##1##{\@gobble}%
-      \def\thanksref##1##{\@gobble}%
+      \def\thanks####1####{\@gobble}%
+      \def\thanksref####1####{\@gobble}%
       \let\thankstext\@gobble
       \def\ead####1####{\global\stepcounter{countead}}%
       \csname ##1\endcsname}%
@@ -496,8 +507,9 @@
   \let\printaug\relax
 \else
   \def\editorial@articletype@control{%
-    \let\output@frontmatter@authors\validate@frontmatter@authors
+%    \let\output@frontmatter@authors\validate@frontmatter@authors
     \let\output@publishedonline\relax
+    \gdef\author@list{}%
     }
   \def\other@articletype@control{%
     \let\output@publishedonline\relax
@@ -803,7 +815,7 @@
   
 \setlength{\bibsep}{0em}
 
-\def\MR@url{https://www.ams.org/mathscinet-getitem?mr=}
+\def\MR@url{https://mathscinet.ams.org/mathscinet-getitem?mr=}
 \def\MR#1{\href{\MR@url#1}{MR#1}}
 
 \RequirePackage{xcolor}
@@ -863,7 +875,7 @@
 \def\set@proof@mr{%
   \define@key{bid}{mr}{%
     \@nameuse{startchkuriskip}%
-    \safe@href{https://www.ams.org/mathscinet-getitem?mr=##1}{MR##1}%
+    \safe@href{https://mathscinet.ams.org/mathscinet-getitem?mr=##1}{MR##1}%
     \@nameuse{endchkuriskip}%
     \ignorespaces
     }%
@@ -1819,6 +1831,10 @@
 %% <<< Funding <<<
 
 %% >>> esm environment for xml >>>
+\def\fmt@esmtitle{%
+  \edef\@tempa{\noexpand\section*{\@esmtitle}}%
+  \@tempa
+  \esm@titlesep}
 \def\esm@titlesep{}
 \def\esm{%
   \@ifnextchar[%
@@ -1828,14 +1844,19 @@
 \def\@esm[#1]{%
   \bgroup
   \par
-  \def\esmtitle##1{%
-    \section*{##1}%
-    \esm@titlesep}%
-  \def\esmdescription{\@firstofone}%
-  \def\esmfiletype{\@gobble}%
-  \def\esmfilename{\@gobble}%
+  \def\esmtitle##1{\def\@esmtitle{##1}}%
+  \long\def\esmdescription##1{\def\@esmdescription{##1}}%
+  \def\esmfiletype##1{\def\@esmfiletype{##1}}%
+  \def\esmfilename##1{\def\@esmfilename{##1}}%
+  \def\esmlink##1{\def\@esmlink{\url{##1}}}%
   }
-\def\endesm{\egroup}
+\def\endesm{%
+  \fmt@esmtitle
+  \ifdefined\@esmdescription
+    \@esmdescription
+  \fi
+  \egroup
+  }
 %% <<< esm environment for xml <<<
 
 \newenvironment{backmatter}{\goodbreak\ignorespaces}{}
@@ -1897,6 +1918,55 @@
 \RequirePackage{marginnote}
 % \reversemarginpar
 \setlength{\marginparwidth}{2.4cm}
+
+%%%%%%%%%%%%%%%% BIBLIOGRAPHY
+
+\def\bellipsis{\textellipsis}
+
+\ifdefined\bvolume
+\else
+  \DeclareRobustCommand\surl[1]{\url{#1}}
+  \DeclareRobustCommand\doiurl[1]{\url{#1}}
+  \DeclareRobustCommand\arxivurl[1]{\url{#1}}
+
+  \def\set@bibl@cmd#1{\expandafter\def\csname #1\endcsname##1{{\csname #1@style\endcsname ##1}}}
+
+  \def\set@bibl@env#1{%
+    \newenvironment{#1}
+      {%
+        \csname start@bibenv@hook\endcsname
+        \csname start@#1@hook\endcsname
+      }{%
+        \unskip
+        \csname stop@#1@hook\endcsname
+        \csname stop@bibenv@hook\endcsname
+        \nolinebreak
+      }%
+    }
+
+  \def\bibl@cmds@I{bvolume,binits,bsnm,bparticle,bsuffix,bdegs,%
+    bsertitle,batitle,bjtitle,bctitle,bbtitle,bauthor,%
+    binstitute,binstitutionaled,bissue,bnumber,bmonth,bedition,bpublisher,blocation,%
+    bisbn,bissn,bfpage,blpage,byear,bcomment,bsupplement,%
+    beditor,bseriesno,bconfname,bconflocation,bconfdate,%
+    oauthor,oinstitute}
+  \def\do#1{\set@bibl@cmd{#1}}
+  \expandafter\docsvlist\expandafter{\bibl@cmds@I}
+
+  \def\bibl@envs{barticle,bchapter,botherref,bbook,breport,bthesis,bpatent}
+  \def\do#1{\set@bibl@env{#1}}
+  \expandafter\docsvlist\expandafter{\bibl@envs}
+
+  \@ifundefined{adsurl}{\let\adsurl\surl}{}
+  \@ifundefined{url}{\let\url\surl}{}
+
+  \let\endbibitem\relax
+  \let\betal@style\relax
+  \def\@betal{et al.}
+  \def\betal{{\betal@style \@betal}}
+  \long\def\OrigBibText#1\endOrigBibText{}
+  \def\bptok#1{\ignorespaces}
+\fi
 
 \endinput
 %%

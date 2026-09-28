@@ -14,16 +14,17 @@
 
 
 \documentclass[linenumber]{jdsart}
+\makeatletter\def\@betal{et al.\ }\makeatother
 \pdfminorversion=7
 
 \usepackage{siunitx}
 \sisetup{
   group-separator = {,},
   group-minimum-digits = 4,
+  group-digits = integer,      % no grouping after the decimal point
   round-mode = none,
   output-decimal-marker = {.}
 }
-
 \usepackage{comment}
 \usepackage{multicol}
 %\usepackage{fontawesome5}
@@ -73,6 +74,8 @@
 \pubyear{2025}
 \doi{0000}
 
+% Make the days suffice show the word "days"
+\DeclareSIUnit\day{days}
 
 \begin{document}
 
@@ -90,13 +93,13 @@
 \address[1]{\institution{NYC Department of Information Technology and Telecommunications}, \cny{USA}}
 \address[2]{Department of Statistics, \institution{University of Connecticut}, \cny{USA}}
 
-\begin{keywords}
+\begin{keyword}
 \kwd{data cleansing}
 \kwd{data quality}
 \kwd{data science}
 \kwd{data validation}
 \kwd{NYC open data}
-\end{keywords}
+\end{keyword}
 
 \end{frontmatter}
 
@@ -122,8 +125,8 @@ processes applied in this study.
 
 
 The examples below represent typical charts and tables created by the 
-R programs. A full listing of the tables produced is available in the 
-reference-named text files stored on GitHub. The charts shown below are
+R programs. Complete versions of the generated tables are available in the
+reference console-output files stored in the GitHub repository. The charts shown below are
 representative of the types of anomalies discovered and the associated
 Pareto and box plot visualizations. All code used to generate the tables 
 and figures in this supplement is available in the public GitHub repository 
@@ -184,7 +187,7 @@ and the Department of Sanitation (DSNY).
 \begin{figure}[tbp]
 \centering
 \includegraphics[width=\textwidth]{pareto_closed_status_missing_closed_date_by_agency.pdf}
-\caption{Pareto chart of SRs with a status of CLOSED, but missing a \texttt{closed\_date}, by Agency.}
+\caption{Pareto chart of SRs with a status of CLOSED, but missing a \texttt{closed\_date}, by agency.}
 \label{fig:pareto-closed-status-missing-date}
 \end{figure}
 
@@ -193,7 +196,7 @@ and the Department of Sanitation (DSNY).
 \begin{figure}[tbp]
 \centering
 \includegraphics[width=\textwidth]{pareto_nonclosed_status_with_closed_date_by_agency.pdf}
-\caption{Pareto chart of SRs missing a CLOSED status, but with a \texttt{closed\_date}, by Agency.}
+\caption{Pareto chart of SRs missing a CLOSED status, but with a \texttt{closed\_date}, by agency.}
 \label{fig:pareto-nonclosed-with-date}
 \end{figure}
 
@@ -204,13 +207,14 @@ and the Department of Sanitation (DSNY).
 \subsection{Temporal Pattern Analysis}
 
 
-The charts can also reveal trends in an anomaly. As noted in the main manuscript,
+The charts can also reveal temporal patterns in anomalies. As noted in the main manuscript,
 there is a pronounced spike in the number of SRs closed \emph{exactly} at 
-midnight (00:00:00). This spike may reflect an automated bulk-action 
-software program that appears to close selected SRs exactly at midnight. Note, however, 
+midnight (00:00:00). This spike may reflect an automated or batch-processing mechanism
+that records selected SR closures exactly at midnight. Note, however, 
 that as shown in Figure~\ref{fig:closed-exact-midnight-cy} the yearly 
-distribution of midnight \texttt{closed\_date} values appears to be decreasing in 
-more recent years. Supplementing that discovery is Figure~\ref{fig:pareto-closed-midnight}, a 
+distribution of midnight \texttt{closed\_date} values appears to be decreasing in
+more recent years. The isolated values in 1899, 1900, 2004, and 2033 are themselves
+examples of anomalous \texttt{closed\_date} entries. Supplementing that discovery is Figure~\ref{fig:pareto-closed-midnight}, a 
 Pareto chart of the midnight closing anomaly by agency. The chart reveals 
 that the majority of SRs closed at midnight
 originate from just two agencies, DSNY and DOB,
@@ -233,7 +237,7 @@ of such cases. This concentration identifies a clear focal point for further inv
 \begin{figure}[tbp]
 \centering
 \includegraphics[width=\textwidth]{pareto_closed_exact_midnight_agency.pdf}
-\caption{Pareto chart of SRs with a midnight \texttt{closed\_date}, by Agency.}
+\caption{Pareto chart of SRs with a midnight \texttt{closed\_date}, by agency.}
 \label{fig:pareto-closed-midnight}
 \end{figure}
 
@@ -246,9 +250,9 @@ between an SR being opened and when it is closed, referred to as the duration or
 Such durations are frequently used to measure the performance of an agency's customer service. 
 The following is an extended analysis of this long-duration phenomenon that 
 not only illustrates the value of various visualizations but also demonstrates 
-the methodological approach to an underlying issue—a textbook example 
-of Simpson's paradox. In this case, agency serves as the conditioning 
-variable, and aggregation across agencies obscures agency-specific patterns.
+the methodological approach to an underlying issue: how pooling
+heterogeneous subpopulations can obscure substantially different
+agency-specific patterns.
 
 
 
@@ -273,8 +277,8 @@ Recreation (DPR, \num{56238}), the Department of Health and Mental Hygiene
 \begin{figure}[tbp]
 \centering
 \includegraphics[width=\textwidth]{boxplot_large_positive_2_to_5_yrs_days_by_agency.pdf}
-\caption{Distribution of SRs with large durations
-(\SIrange[round-mode=none]{730}{1825}{\day}), by agency.}
+\caption{Distribution of SRs with large positive durations
+(\SIrange[round-mode=none]{730}{1825}{\day}), by agency. Three DCWP SRs are omitted.}
 \label{fig:boxplot-large-positive-durations}
 \end{figure}
 
@@ -292,7 +296,7 @@ console output \texttt{.txt} file.
 
 
 Further insight emerges from examining all SRs with positive
-durations, regardless of magnitude---\num{15352535} observations
+durations, regardless of magnitude: \num{15352535} observations
 (\SI[round-mode=places, round-precision=1]{97.3}{\percent}
 of SRs with both a \texttt{created\_date} and a \texttt{closed\_date}). Figure~\ref{fig:bimodal-distribution}
 displays these durations on a logarithmic scale and
@@ -314,51 +318,49 @@ right tail and the presence of extreme values.
 \end{figure}
 
 
-In order to objectively identify the separation threshold between the two modes, 
+To identify a data-driven separation threshold between the two distributional modes,
 the kernel density estimation method is employed. Using log-transformed durations,
 the kernel density method located the local minimum between the two 
 peaks. This valley-based approach yielded a threshold of
 \SI[round-mode=places, round-precision=3]{0.432}{\day}
 (\SI[round-mode=places, round-precision=1]{10.4}{\hour}),
-providing a basis for classifying service requests into two
-operational categories:
-\emph{rapid-resolution} (\(< \SI{0.432}{\day}\)) and
-\emph{standard} work orders (\(\geq \SI{0.432}{\day}\)).
+providing a basis for a descriptive classification of service requests into two
+groups: \emph{rapid-resolution} (\(< \SI{0.432}{\day}\)) and
+\emph{standard} (\(\geq \SI{0.432}{\day}\)).
 
 
 Table~\ref{tab:mode_summary} presents summary statistics
-for the two operational modes: standard and rapid-resolution.
+for the two duration groups: standard and rapid-resolution.
 Based on the separation threshold of
 \SI[round-mode=places, round-precision=3]{0.432}{\day},
-the rapid-resolution mode comprises
+the rapid-resolution group comprises
 \SI[round-mode=places, round-precision=1]{49.9}{\percent}
 of requests (\(n = \num{7663885}\))
 with a median duration of
 \SI[round-mode=places, round-precision=2]{0.87}{\hour}.
-The standard mode accounts for
+The standard group accounts for
 \SI[round-mode=places, round-precision=1]{50.1}{\percent}
 of requests (\(n = \num{7688650}\))
 with a median duration of
 \SI[round-mode=places, round-precision=1]{101.1}{\hour}.
-The near-perfect 50/50 split between rapid and standard modes
-masks substantial differences in operational models across city agencies—
-a clear example of Simpson's paradox. In this case, agency is the
-conditioning variable, and aggregation across agencies obscures
-agency-specific operational patterns.
+The near-perfect 50/50 split between rapid and standard groups
+masks substantial differences across city agencies. Agency is an important
+stratifying variable, and aggregation across agencies obscures these
+agency-specific duration patterns.
 
 \begin{table}[tbp]
 \centering
-\caption{Summary statistics by operational mode}
+\caption{Summary statistics by duration group}
 \label{tab:mode_summary}
 \begin{tabular}{
   l
-  S[table-format=7.0]
+  S[table-format=8.0]
   S[table-format=3.1]
   S[table-format=3.3]
   S[table-format=3.1]
 }
 \toprule
-{Mode} &
+{Group} &
 {N} &
 {\%} &
 {Median (\si{\day})} &
@@ -388,17 +390,15 @@ of NYPD SRs close within
 (\SI[round-mode=places, round-precision=2]{0.43}{\day}),
 based on the bimodal threshold of
 \SI[round-mode=places, round-precision=3]{0.432}{\day},
-reflecting rapid responses to quality-of-life complaints.
-By contrast, infrastructure 
-and regulatory agencies operate primarily in standard mode. It 
-seems reasonable to assume that the nature of the SRs for 
-these agencies requires more physical service delivery, construction 
-permits, code enforcement, or ongoing case investigation, thus 
-potentially creating longer SR durations. 
+consistent with the relatively rapid processing of many NYPD quality-of-life complaints.
+By contrast, infrastructure and regulatory agencies fall primarily in the standard
+group. Their longer durations may reflect the nature of the SRs handled by these
+agencies, including physical service delivery, construction permits, code enforcement,
+or ongoing case investigation. 
 
 \begin{table}[tbp]
 \centering
-\caption{Distribution of service requests across operational modes by agency}
+\caption{Distribution of service requests across duration groups by agency}
 \label{tab:agency_mode}
 \begin{tabular}{
   l
@@ -441,20 +441,20 @@ for data quality assessment and performance measurement.
 The overall aggregate mean duration of
 \SI[round-mode=places, round-precision=1]{23.7}{\day}
 is therefore a misleading summary statistic,
-as it lies between the two operational modes
+as it lies between the two duration groups
 and reflects neither distribution adequately.
-Performance metrics, anomaly detection thresholds, and 
-quality benchmarks must account for this operational difference 
+Performance metrics, anomaly detection thresholds, and
+quality benchmarks should account for these distributional differences 
 to avoid spurious findings and invalid cross-agency comparisons.
 
 Three key conclusions emerge from this analysis: (1) the overall
 SR duration distribution, taken as a whole, is misleading and conceals two distinctly
-different operational modes—rapid-response and standard work-order
-processing; (2) NYPD accounts for the vast majority of rapid-response
+different duration groups—rapid-resolution and standard; (2) NYPD 
+accounts for the vast majority of rapid-response
 durations; and (3) all other agencies combined account for the majority
 of standard durations.
 
-A deeper examination reveals that these two operational modes exhibit
+A deeper examination reveals that these two duration groups exhibit
 distinct distributional characteristics. NYPD durations are generally
 concentrated at short response times, though a right-skewed tail
 is present due to a small number of unusually long cases. In contrast,
@@ -463,12 +463,12 @@ a substantial number of \emph{extremely} long cases exceeding \num{1000} days
 (note that the x-axis is presented on a logarithmic scale).
 
 When the two distributions are superimposed, the bimodal structure
-becomes evident, reflecting the fundamentally different operational
-protocols governing rapid-response and standard work-order processing.
+becomes evident, consistent with substantially different agency-specific
+duration patterns.
 Given that NYPD represents
 \SI[round-mode=places, round-precision=0]{43}{\percent}
 of all NYC 311 service requests,
-its operational pattern exerts a disproportionate influence
+its duration pattern exerts a disproportionate influence
 on the aggregate duration metric.
 
 
@@ -480,8 +480,8 @@ on the aggregate duration metric.
 
 
 A similar situation is illustrated in Figure~\ref{fig:boxplot-negative}
-showing negative durations --- where the \texttt{closed\_date} occurs before 
-the \texttt{created\_date} resulting in a nonsensical \emph{negative} duration. 
+showing negative durations, where the \texttt{closed\_date} occurs before 
+the \texttt{created\_date}, resulting in a nonsensical \emph{negative} duration. 
 Here the box plot shows DOT to be the largest offender with \num{44143} 
 such SRs. However, negative durations are far larger in magnitude for the 
 Department of Environmental Protection (DEP), as shown on the logarithmic 
@@ -491,7 +491,7 @@ negative duration anomaly.
 \begin{figure}[tbp]
 \centering
 \includegraphics[width=\textwidth]{boxplot_negative_days_by_agency.pdf}
-\caption{Box Plot of SRs with Negative Durations (log x-axis), by Agency.}
+\caption{Box plot of SRs with negative durations (log x-axis), by agency.}
 \label{fig:boxplot-negative}
 \end{figure}
 
@@ -518,7 +518,8 @@ computed on log-transformed duration values and back-transformed
 to the original scale, yielding a threshold of 
 \SI{27.95}{\second} (rounded to \SI{28}{\second}).
 Applying this threshold identified
-\num{10231} anomalous durations (\SI{0.067}{\percent} of records).
+\num{10231} anomalous durations (\SI{0.067}{\percent} of the restricted sample of
+\SI{2}{\second} to \SI{48}{\hour} durations).
 The main manuscript provides the detailed
 rationale for this outlier methodology.
 
@@ -538,7 +539,7 @@ on-the-minute spikes.
 \begin{figure}[tbp]
 \centering
 \includegraphics[width=\textwidth]{duration_histogram.pdf}
-\caption{Distribution of Small Durations (2--90 Seconds).}
+\caption{Distribution of small durations (2--90 seconds).}
 \label{fig:duration_histogram}
 \end{figure}
 
@@ -547,7 +548,7 @@ on-the-minute spikes.
 \begin{figure}[tbp]
 \centering
 \includegraphics[width=\textwidth]{created_date_first_601_seconds.pdf}
-\caption{Distribution of Created Dates by Seconds Reveals Spikes at Every Minute (mm:00).}
+\caption{Distribution of \texttt{created\_date} values by second, revealing spikes at every minute (mm:00).}
 \label{fig:created-dates-by-seconds}
 \end{figure}
 
@@ -556,13 +557,12 @@ on-the-minute spikes.
 \subsection{Dataset Field Usage by Agency}
 
 
-A complete field-usage-by-agency matrix is provided as a CSV file, rather 
-than printed to the console, due to its size and dimensionality. 
- Each row in the file corresponds to a single data field, and 
- each column corresponds to an NYC agency. The cell values 
- indicate the count of records in which the given field is 
-populated for the specified agency. The final column
-contains the total count across all agencies.
+The complete field-usage-by-agency matrix, with one row per data field and
+one column per NYC agency, is printed in the reference console output. Each
+cell gives the number of records in which the field is populated for that
+agency, and the final column gives the total across all agencies. The
+program also writes the matrix to \texttt{field\_usage\_summary\_table.csv}
+in the \texttt{analytics} directory.
 
 
 Field usage varies substantially by agency, reflecting differences in
@@ -572,15 +572,17 @@ requirements. Core administrative fields (i.e., \texttt{unique\_key},
 \texttt{complaint\_type}) are fully populated across all 
 agencies, whereas location-specific, infrastructure-related, 
 and program-specific fields are populated only by agencies for 
-which they are operationally relevant. The CSV file is available 
-at: \url{https://figshare.com/s/9f878b50687c9e4c540a}
+which they are operationally relevant. Additional information on field
+usage by agency is available in the reference console output on GitHub at:\\
+\href{https://github.com/tusseyd/nyc_311_data_cleaning/blob/main/reference_console_output/reference_JDS_datacleaning_console_output.txt}{\texttt{reference\_JDS\_datacleaning\_console\_output}}
 
 
 %---------------------------------------------------------------
 \section{SR Backlog}
 
 The analysis identified a substantial and growing volume of
-\emph{backlogged} SRs. The backlog is measured at the start of each year,
+\emph{backlogged} SRs. For this analysis, we define the \emph{active backlog}
+using the procedure below. The backlog is measured at the start of each year,
 as a point-in-time count based on recorded created and closed dates rather
 than current status; yearly values are not summed. The \emph{active
 backlog} at the start of year $Y$ is determined in three steps:
@@ -605,7 +607,10 @@ using API queries run on 26~September~2026. These counts are fixed in the
 analysis code. The script that reruns the queries, regenerates the counts,
 and checks them against the values in the code is
 \href{https://github.com/tusseyd/nyc_311_data_cleaning/blob/a353c07/code/recreate_pre2020_backlog_values.R}{\texttt{code/recreate\_pre2020\_backlog\_values.R}}
-in the GitHub repository (Section~\ref{sec:reproducibility}).
+in the GitHub repository (Section~\ref{sec:reproducibility}). For these 
+pre-2020 SRs, a \texttt{closed\_date} after the query date is
+treated as invalid; SRs closed between the extract date and the query date
+were open at every boundary from 2020 to 2024 and are counted as such.
 
 Step~3 is needed because of a large body of old records that were never
 closed. On 1~January~2020, \num{631372} SRs were open after step~2, of which
@@ -629,8 +634,8 @@ While the total number of SRs increased by
 from 2020 to 2024, the active backlog grew considerably faster, rising by
 \SI[round-mode=places, round-precision=1]{60.4}{\percent},
 from \num{265547} to \num{425878} (Figure~\ref{fig:annual_backlog}).
-Nearly all of the increase occurred before 2023; between 2023 and 2024
-the active backlog grew by only \num{1760} SRs.
+Nearly all of the increase occurred before 2023; from 2023 to 2024
+it grew by only \num{1760}.
 
 \begin{figure}[tbp]
 \centering
@@ -688,10 +693,11 @@ Figshare archives to ensure persistent access and version stability.
 \end{itemize}
 
 
-The Figshare archive listed above (its DOI is given under Steps for
-Reproducing the Analysis) corresponds to the 311 dataset version used in 
-this submission. Any future dataset updates will be released under separate 
-versioned identifiers to preserve reproducibility.
+The Figshare archive listed above holds the 311 dataset used in this
+submission. Version~2 has its own permanent identifier,
+\url{https://doi.org/10.6084/m9.figshare.30699800.v2}, which will continue
+to point to these data if the archive is updated; the DOI without the version
+suffix always resolves to the latest version.
 
 \paragraph{Changes to the source dataset after the extract.}
 The study extract was exported from NYC Open Data on 23~September~2025.
@@ -771,12 +777,10 @@ file in the \texttt{analytics} directory.
 
 For validation purposes, a reference copy of the two console output files is
 available on GitHub. These reference files can also be used to view the full console
-output of the two programs, without needing to run the .R programs. Unfortunately,
-the full set of \num{94} charts can only be duplicated by running the 
-\texttt{jds\_datacleansings.R} program, as it is not possible to include all charts in either 
-the main manuscript or in this supplementary document. The additional figures are 
-diagnostic artifacts of the QA pipeline, and are reproducible outputs, not 
-interpretive embellishments.
+output of the two programs, without needing to run the .R programs. The full set of
+charts is generated by running the \texttt{jds\_datacleansings.R} program;
+because of their number, they are not reproduced individually in the main manuscript
+or this supplementary document.
 
 
 \subsection*{Steps for Reproducing the Analysis}
@@ -812,6 +816,9 @@ from its publisher (links above). The ZIP code file used in this study has
 \num{42735} records. The publisher updates the file, so a current download may
 differ slightly (it listed \num{42522} ZIP codes in September 2026); this can
 change the count of invalid \texttt{incident\_zip} values by a small amount.
+The ZIP code file is optional: without it, both programs run but skip the
+\texttt{incident\_zip} validation, so those counts will not appear in the
+console output.
 \item Do not rename these files as the scripts expect original filenames:
 
 
@@ -822,7 +829,8 @@ change the count of invalid \texttt{incident\_zip} values by a small amount.
 
 
 \item Unzip the archive (approximately \SI{9}{\giga\byte} uncompressed) to create a CSV file.
-This CSV file should be placed into the \texttt{data/raw\_data} directory. 
+This CSV file should be placed into the \texttt{data/raw\_data} directory
+(create it if it does not yet exist). 
 (See directory structure below.)
 \item The \texttt{zip\_code\_database.csv} file should also be placed into the 
 \texttt{data/raw\_data} directory. The data preparation program converts both
@@ -850,7 +858,8 @@ CSV files to RDS format for faster processing.
 creates the directory structure below. The tree shows the files each
 directory contains after both programs have run.
 
-
+\medskip
+\noindent\begin{minipage}{\linewidth}
 \dirtree{%
 .1 / (User's R Working Directory).
 .2 nyc\_311\_data\_cleaning/ (Project Root).
@@ -876,8 +885,8 @@ directory contains after both programs have run.
 .4 reference\_JDS\_data\_prep\_console\_output.txt.
 .4 reference\_JDS\_datacleaning\_console\_output.txt.
 }
+\end{minipage}
 \end{enumerate}
-
 
 \medskip\noindent\textbf{Step 3: Set the project path}
 
@@ -908,12 +917,12 @@ platform-appropriate path separators}
 \item Execute \texttt{data\_prep\_for\_jds\_datacleansing.R} in RStudio.
 \item The script will create the required directory structure (if missing) and install necessary R packages.
 \item Expected runtime: approximately \SI{60}{\minute} with \SI{16}{\giga\byte} of memory,
-or approximately \SI{30}{\minute} with \SI{32}{\giga\byte}.
+or approximately \SI{20}{\minute} with \SI{32}{\giga\byte}.
 Initial data loading is memory-intensive.
 \item Upon completion, verify that the following files exist:
   \begin{itemize}
     \item \texttt{data/5-year\_311SR\_01-01-2020\_thru\_12-31-2024\_AS\_OF\_09-23-2025.rds}
-    \item \texttt{data/USPS\_zipcodes.rds}
+    \item \texttt{data/USPS\_zipcodes.rds} (if the ZIP code file was supplied)
     \item \texttt{console\_output/JDS\_data\_prep\_console\_output.txt}
   \end{itemize}
 \end{enumerate}
@@ -924,8 +933,9 @@ Initial data loading is memory-intensive.
 
 \begin{enumerate}
 \item Execute \texttt{code/jds\_datacleansings.R} in RStudio.
-\item Expected runtime: approximately \SI{30}{\minute}
-on a system with \SI{16}{\giga\byte} or \SI{32}{\giga\byte}.
+\item Expected runtime: approximately \SI{35}{\minute}
+on a system with \SI{16}{\giga\byte} and approximately \SI{20}{\minute} 
+on a system with \SI{32}{\giga\byte}.
 \item Monitor progress in RStudio's plot pane as charts are generated.
 \item The script will produce:
   \begin{itemize}
@@ -957,13 +967,12 @@ run. Validation console output files are located at:
 
 
 \begin{itemize}
-\item Total processing time (data preparation and cleansing):
-approximately \SI{1.5}{\hour}
-on a system with \SI{16}{\giga\byte} of memory;
-execution is approximately twice as fast on systems with
-\SI{32}{\giga\byte} of memory.
+\item Total processing time for the data preparation and cleansing programs 
+combined is approximately \SI{1.5}{\hour}
+on a system with \SI{16}{\giga\byte} of memory; and approximately \SI{0.7}{\hour}
+on systems with \SI{32}{\giga\byte} of memory.
 \item The scripts use \texttt{data.table} \citep{datatable2025} for memory-efficient processing
-of more than \num{16000000} records.
+of \num{16016700} records.
 \item All file paths are configured relative to \texttt{wd\_path}
 to ensure portability.
 \item Memory management: initial data loading requires substantial RAM;
@@ -972,16 +981,17 @@ the script reduces memory footprint after preprocessing.
 
 
 \section*{AI Use Disclosure}
-The authors used Claude (Anthropic; model claude-opus-5-5, accessed
-September 2026) for coding assistance with R programming, 
-for validating reported figures against program output, and for 
- \LaTeX{} editing of the manuscript, supplement, and response to the
-referee. All AI-assisted material was reviewed and 
-validated by the authors, who take full responsibility for 
-the manuscript's content, accuracy, originality, and integrity.
+The authors used Claude (Anthropic; model Claude Opus 5.5) and 
+ChatGPT (OpenAI; model GPT-5.6 Sol), accessed September 2026, for 
+coding assistance with R programming, validation of reported 
+figures against program output, and \LaTeX{} editing of the 
+manuscript, supplementary materials, and response to the 
+referee. All \mbox{AI-assisted} material was reviewed and validated by 
+the authors, who take full responsibility for the 
+manuscript's content, accuracy, originality, and integrity.
 
 
-\bibliographystyle{jds}
+\bibliographystyle{jds2}
 \bibliography{refs}
 
 \end{document}

@@ -80,7 +80,7 @@ point in the article.
 We thank the Referee for this suggestion, which improves the clarity of
 the paragraph. We now give the \texttt{cross\_street} and
 \texttt{intersection\_street} pairs as examples at first mention
-(p.~4, ll.~10--11), which now reads: ``The dataset contains seven
+(p.~4, ll.~10--12), which now reads: ``The dataset contains seven
 street-related fields, including two likely redundant pairs, e.g.,
 \texttt{cross\_street\_1} \& \texttt{intersection\_\allowbreak street\_1}
 and \texttt{cross\_street\_2} \& \texttt{intersection\_\allowbreak street\_2}.''
@@ -99,92 +99,27 @@ experience.
 \end{comment}
 
 We thank the Referee for sharing this experience, which prompted us to
-explore and verify how the NYC Open Data portal handles embedded commas. The
-portal runs on the Socrata platform (now part of Tyler Technologies), a
-mature and widely used infrastructure. Socrata's documentation states
-that ``strings containing embedded commas, newlines, or quotes will
-themselves be quoted,'' with embedded quotes escaped by doubling
-\citep{socrata_csv}.
-
-This behavior matches RFC~4180 \citep{rfc4180}, Rule~6: ``Fields
-containing line breaks (CRLF), double quotes, and commas should be
-enclosed in double-quotes.'' Although RFC~4180 is an informational memo
-rather than a formal standard, it documents common practice and is the
-closest thing to an official specification for the CSV format; it is
-widely used as the reference for CSV parsers and validators. It was
-published by the Internet Engineering Task Force (IETF), the body
-responsible for core internet protocols and formats.
-
-Our examination of the raw CSV file exported from the NYC Open Data
-portal confirms this behavior. For example, the \texttt{location} field
-contains a comma by design, separating latitude and longitude, and
-appears in the raw file enclosed in double quotation marks:
+check the export directly. The NYC Open Data portal runs on the Socrata
+platform, whose CSV exports quote any field containing commas, line
+breaks, or quotation marks and escape embedded quotes by doubling
+\citep{socrata_csv}, consistent with RFC~4180 \citep{rfc4180}. 
 
 
-\begin{center}
-\texttt{"(40.64224331435751, -74.00707333743664)"}
-\end{center}
+We scanned
+the full, unmodified export (approximately 16.0 million records;
+\citealp{nyc311_data}) and found embedded commas in 15 of the 41 fields
+(see Table~\ref{tab:embedded-commas}, at the end of this letter). Apart from
+\texttt{location}, which always contains one, over 2.6 million values
+contain commas, mostly in the free-text \texttt{resolution\_description}
+field, and about 163{,}000 contain escaped double quotes. All are correctly
+quoted, and every record parses to the expected 41 columns with
+\texttt{fread()} \citep{datatable2025}.
 
-
-In order to explore the Referee's concern further, we scanned the full,
-unmodified export (approximately 16.0 million records; \citealp{nyc311_data}) to 
-check its compliance with RFC~4180. We found embedded commas in 
-15 of the 41 fields; Table~\ref{tab:embedded-commas} summarizes the results.
-
-
-\begin{table}[htbp]
-\centering
-\footnotesize
-\caption{Fifteen fields in the raw 311 SR CSV export ($\approx$16.0 million records)
-contain embedded commas. There are none in the remaining 26 of 41 fields. 
-No field contains an embedded line break. All values
-are properly quoted, and every record parses to 41 columns.}
-\label{tab:embedded-commas}
-\begin{tabularx}{\textwidth}{@{}lrrr>{\raggedright\arraybackslash}X@{}}
-\toprule
-Field & \multicolumn{1}{c}{Values with} & \multicolumn{1}{c}{\% of} & \multicolumn{1}{c}{Values with} & Example \\
-      & \multicolumn{1}{c}{commas}      & \multicolumn{1}{c}{records} & \multicolumn{1}{c}{quotes} & \\
-\midrule
-\texttt{location} & 15{,}713{,}330 & 98.11 & -- & \texttt{"(40.6409\ldots{}, -73.9736\ldots{})"} \\
-\texttt{resolution\_description} & 2{,}371{,}940 & 14.81 & 160{,}310 & \textit{free-text narrative} \\
-\texttt{descriptor} & 138{,}943 & 0.87 & 2{,}099 & \texttt{"Noise, Barking Dog (NR5)"} \\
-\texttt{taxi\_pick\_up\_location} & 136{,}328 & 0.85 & -- & \texttt{"2 AVENUE AND EAST 57 STREET, MANHATTAN, \ldots{}"} \\
-\texttt{park\_facility\_name} & 1{,}628 & 0.01 & 233 & \texttt{"Captain John McKenna, IV Park"} \\
-\texttt{cross\_street\_2} & 284 & $<$0.01 & -- & \texttt{"HUDSON LINES,"} \\
-\texttt{road\_ramp} & 222 & $<$0.01 & -- & \texttt{"WTC / PATH (south end, from \ldots{}"} \\
-\texttt{bridge\_highway\_name} & 135 & $<$0.01 & -- & \texttt{"Dr. Martin Luther King, Jr. Expwy"} \\
-\texttt{bridge\_highway\_segment} & 82 & $<$0.01 & -- & \texttt{"JCT w/Cross Bronx Expwy Extension (I-295), \ldots{}"} \\
-\texttt{incident\_address} & 22 & $<$0.01 & -- & \texttt{"534 New Paltz Rd, Highland, NY 12528"} \\
-\texttt{street\_name} & 21 & $<$0.01 & -- & \texttt{"New Paltz Rd, Highland, NY 12528"} \\
-\texttt{location\_type} & 3 & $<$0.01 & -- & \texttt{"1-, 2- and 3- Family Home"} \\
-\texttt{city} & 3 & $<$0.01 & -- & \texttt{"Asbury Park,"} \\
-\texttt{cross\_street\_1} & 1 & $<$0.01 & -- & \texttt{"(S1)SHERIDAN EXPY, TRIBORO B"} \\
-\texttt{bridge\_highway\_direction} & 1 & $<$0.01 & -- & \texttt{"S to Franklin Av, Prospect Park"} \\
-\midrule
-\textbf{Total (15 fields)} & 18{,}362{,}943 & & 162{,}642 & \\
-\bottomrule
-\end{tabularx}
-\end{table}
-
-
-Besides \texttt{location}, which always contains a comma, over 2.6
-million values contain commas, mostly in the free-text
-\texttt{resolution\_description} field ($\approx$15\% of records), and
-$\approx$163{,}000 values contain escaped double quotes. Nevertheless,
-every record parses to the expected 41 columns with the
-\texttt{fread()} function from the \texttt{data.table} package,
-confirming that all embedded commas and quotes are correctly quoted and
-escaped.
-
-The Referee's experience is therefore highly relevant: a parser that
-does not honor CSV quoting would misread a substantial share of these
-records. Because the Socrata export quotes these fields correctly, and
-quote-aware readers such as \texttt{fread()} \citep{datatable2025} interpret 
-that quoting correctly, all fields are read as intended. 
-
-We have therefore removed the paragraph on this 
-issue (formerly p.~4, ll.~45--46), as the problem
-it anticipated does not arise with these data.
+The Referee's point is well taken: a parser that ignores CSV quoting would
+misread a substantial share of these records. Because the export is
+correctly quoted and we read it with a quote-aware parser, the problem
+does not arise with these data, and we have removed the paragraph on this
+issue (formerly p.~4, ll.~45--46).
 
 \FloatBarrier
 \begin{comment}
@@ -212,7 +147,7 @@ from the text in terms of what you want readers to know.
 We agree, and we thank the Referee for the suggestion to show only the
 top contributors. We have replaced the figure with a table (Table~1 of
 the revised manuscript, p.~4, ll.~34--42) listing the six agencies that together
-account for approximately 90\% of all SRs. The table is set in the body
+account for 90.19\% of all SRs. The table is set in the body
 font, which resolves the readability issue, and its caption states the
 key observation: SR volume is highly concentrated, with just six
 agencies generating the large majority of 311 SRs.
@@ -228,11 +163,11 @@ with the plot placed vertically.
 
 We thank the Referee for these observations. The duration axis is in
 days and is now labeled explicitly, and ``d'' has been spelled out as
-``days'' throughout. The violin's width shows the relative density of
-SRs at each duration, and the number of SRs ($n = 27{,}620$) is shown on
-the plot. To improve readability, we removed panel~(b), which showed
+``days'' throughout. The violin's width represents the relative density of SRs at each duration, not the
+number of SRs; the total number of observations ($n = 27{,}620$) is shown
+separately on the plot. To improve readability, we removed panel~(b), which showed
 negative durations; those cases are now summarized numerically in the
-text (p.~12, ll.~7--13). The remaining plot now spans the full page
+text (p.~12, ll.~1--7). The remaining plot now spans the full page
 width. The revised caption explains how to read the plot and states its
 key observations. (Figure~4(a) in the original manuscript is Figure~1
 in the revision.)
@@ -256,8 +191,8 @@ date-time or date/time.
 
 We agree. On review, we removed the sentence containing this instance
 (p.~11, l.~34 of the original manuscript), as its description of SQL
-date handling was imprecise. The remaining instances of ``datetime''
-have been changed to ``date-time'' (p.~11, ll.~32--33).
+date handling was imprecise; the term no longer appears in the
+revision.
 
 \FloatBarrier
 \begin{comment}
@@ -280,7 +215,7 @@ Page 12, line 21: You need a space between the and
 ``closed\ldots''
 \end{comment}
 
-Corrected (p.~10, l.~39).
+Corrected (p.~9, l.~44).
 
 \FloatBarrier
 \begin{comment}
@@ -295,17 +230,17 @@ Table~\ref{tab:long-durations}, at the end of this letter, summarizes
 the results by agency, showing the average duration and count for each
 complaint type.
 
-Most of these long-duration SRs are associated with complaints that
-could plausibly take a long time to resolve. For example, many of the
-Department of Parks and Recreation (DPR) SRs concern trees (new tree
-requests and overgrown, damaged, or dead trees), which can require
-lengthy efforts to plant a new tree or remove a dead or dying one.
-Likewise, the Department of Buildings (DOB) handles SRs involving
-plumbing, building use, and construction, which may also take
-considerable time to resolve.
+Most of these long-duration SRs are associated with complaint types for
+which extended resolution periods are plausible. For example, many
+Department of Parks and Recreation (DPR) SRs concern new tree requests
+and overgrown, damaged, or dead trees. Similarly, Department of Buildings
+(DOB) SRs include plumbing, building-use, and construction complaints.
+These examples do not establish that every recorded duration represents
+continuous work on an SR, but they indicate that long resolution intervals
+are not inherently implausible for these complaint types.
 
 Accordingly, we have revised the manuscript to include 
-similar examples (p.~12, l.~47 to p.~13, l.~3) and to note that such 
+similar examples (p.~12, ll.~42--45) and to note that such 
 SRs can reasonably require long resolution times.
 
 \FloatBarrier
@@ -322,18 +257,62 @@ Data Coordinator. However, the Coordinator's formal responsibilities,
 as set out in the City's Open Data Technical Standards Manual
 \citep{nyc_tsm}, focus on publishing, compliance reporting, and public
 outreach; none explicitly assigns data quality or curation
-responsibilities. In our experience,
-the role is also typically assigned in addition to staff members' core
-duties, with limited training and frequent turnover.
+responsibilities. In our experience with NYC Open Data, the role has also
+often been assigned in addition to staff members' core duties.
 
-We have expanded the Collaboration step (p.~16, l.~38 to p.~17, l.~5) to describe
+We have expanded the Collaboration step (p.~16, ll.~28--47) to describe
 this existing structure and to recommend formalizing a data curation
 responsibility, either by extending the Coordinator role or by
 appointing a dedicated Data Curation Officer, as the Referee suggests.
 
 
-% ---- Supplementary table, placed at the end of the letter ----
+\section*{AI Use Disclosure}
+The authors used Claude (Anthropic; model Claude Opus 5.5) and 
+ChatGPT (OpenAI; model GPT-5.6 Sol), accessed September 2026, for 
+coding assistance with R programming, validation of reported figures 
+against program output, and \LaTeX{} editing of the manuscript, 
+supplementary materials, and response to the referee. All \mbox{AI-assisted} 
+material was reviewed and validated by the authors, 
+who take full responsibility for the manuscript's content, 
+accuracy, originality, and integrity.
+
+
+% ---- Supplementary tables, placed at the end of the letter ----
 \clearpage
+\begin{table}[t]
+\centering
+\footnotesize
+\caption{Fifteen fields in the raw 311 SR CSV export ($\approx$16.0 million records)
+contain embedded commas. There are none in the remaining 26 of 41 fields. 
+No field contains an embedded line break. All values
+are properly quoted, and every record parses to 41 columns.}
+\label{tab:embedded-commas}
+\begin{tabularx}{\textwidth}{@{}lrrr>{\raggedright\arraybackslash}X@{}}
+\toprule
+Field & \multicolumn{1}{c}{Values with} & \multicolumn{1}{c}{\% of} & \multicolumn{1}{c}{Values with} & Example \\
+      & \multicolumn{1}{c}{commas}      & \multicolumn{1}{c}{records} & \multicolumn{1}{c}{quotes} & \\
+\midrule
+\texttt{location} & 15{,}713{,}330 & 98.11 & -- & \texttt{"(40.6409\ldots{}, -73.9736\ldots{})"} \\
+\texttt{resolution\_description} & 2{,}371{,}940 & 14.81 & 160{,}310 & \textit{free-text narrative} \\
+\texttt{descriptor} & 138{,}943 & 0.87 & 2{,}099 & \texttt{"Noise, Barking Dog (NR5)"} \\
+\texttt{taxi\_pick\_up\_location} & 136{,}328 & 0.85 & -- & \texttt{"2 AVENUE AND EAST 57 STREET, MANHATTAN, \ldots{}"} \\
+\texttt{park\_facility\_name} & 1{,}628 & 0.01 & 233 & \texttt{"Captain John McKenna, IV Park"} \\
+\texttt{cross\_street\_2} & 284 & $<$0.01 & -- & \texttt{"HUDSON LINES,"} \\
+\texttt{road\_ramp} & 222 & $<$0.01 & -- & \texttt{"WTC / PATH (south end, from \ldots{}"} \\
+\texttt{bridge\_highway\_name} & 135 & $<$0.01 & -- & \texttt{"Dr.\ Martin Luther King, Jr. Expwy"} \\
+\texttt{bridge\_highway\_segment} & 82 & $<$0.01 & -- & \texttt{"JCT w/Cross Bronx Expwy Extension (I-295), \ldots{}"} \\
+\texttt{incident\_address} & 22 & $<$0.01 & -- & \texttt{"534 New Paltz Rd, Highland, NY 12528"} \\
+\texttt{street\_name} & 21 & $<$0.01 & -- & \texttt{"New Paltz Rd, Highland, NY 12528"} \\
+\texttt{location\_type} & 3 & $<$0.01 & -- & \texttt{"1-, 2- and 3- Family Home"} \\
+\texttt{city} & 3 & $<$0.01 & -- & \texttt{"Asbury Park,"} \\
+\texttt{cross\_street\_1} & 1 & $<$0.01 & -- & \texttt{"(S1)SHERIDAN EXPY, TRIBORO B"} \\
+\texttt{bridge\_highway\_direction} & 1 & $<$0.01 & -- & \texttt{"S to Franklin Av, Prospect Park"} \\
+\midrule
+\textbf{Total (15 fields)} & 18{,}362{,}943 & & 162{,}642 & \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
 \begin{table}[t]
 \centering
 \small
@@ -396,6 +375,7 @@ TLC   & For Hire Vehicle Complaint             &     942 &       75 \\
 \bottomrule
 \end{tabular}
 \end{table}
+
 
 \clearpage
 \bibliographystyle{chicago}
