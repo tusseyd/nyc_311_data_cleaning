@@ -672,14 +672,16 @@ Figshare archives to ensure persistent access and version stability.
 
 \begin{itemize}
   \item Source code: \url{https://github.com/tusseyd/nyc_311_data_cleaning}
-  \item NYC 311 dataset (approximately \SI{1.6}{\giga\byte} compressed; \SI{9}{\giga\byte} uncompressed):\\
-  \url{https://figshare.com/s/e8d479c391edb7224bfa}
+  \item NYC 311 dataset (approximately \SI{1.7}{\giga\byte} compressed; \SI{9}{\giga\byte} uncompressed):\\
+  \url{https://doi.org/10.6084/m9.figshare.30699800} (version~2, the
+  23~September~2025 export; version~1 held a file that had already been
+  through the data-preparation step)
   \item ZIP code database (free version, \texttt{zip\_code\_database.csv}):
   \url{https://www.unitedstateszipcodes.org/zip-code-database/}.
-  Their license does not permit public redistribution, so it is not included
+  Its license does not permit public redistribution, so it is not included
   in the study archive; download it from the publisher.
   The file includes \num{1040} decommissioned ZIP codes but not the dates
-  they were retired, accordingly the analysis treats them as valid. Only one appears
+  they were retired, so the analysis treats them as valid. Only one appears
   in the 2020--2024 SRs: 10048, the former World Trade Center ZIP code,
   in \num{58} SRs.
   \item Reference console output for validation is available in the GitHub repository.
@@ -696,7 +698,6 @@ The study extract was exported from NYC Open Data on 23~September~2025.
 In December 2025 the NYC Open Data team restructured the 311 Service
 Requests dataset
 (\url{https://www.nyc.gov/opendata/news/all-news/311-Service-Requests-Updates}):
-
 \begin{itemize}
   \item The records were split into two datasets, ``311 Service Requests
   from 2020 to Present'' (at the original address) and ``311 Service
@@ -707,11 +708,11 @@ Requests dataset
   \item Three columns were added: \texttt{Council District},
   \texttt{Police Precinct}, and \texttt{Additional Details}.
 \end{itemize}
-
 The R programs expect the 41-column layout and column names of the
 archived extract. A CSV exported from the portal after December 2025
-has different column labels and more columns, so the programs would need 
-modification to run on that dataset.To reproduce the
+has different column labels and more columns, so the programs would need
+some modification to run on it, and its records may also differ because
+SRs continue to be updated after they are created. To reproduce the
 results reported here, use the Figshare archive.
 
 
@@ -792,7 +793,7 @@ Source files are available at:
 \url{https://www.unitedstateszipcodes.org/zip-code-database/}
 
 \item NYC 311 Dataset (2020--2024), Figshare archive:\\
-DOI: \url{https://doi.org/10.6084/m9.figshare.30699800}
+DOI: \url{https://doi.org/10.6084/m9.figshare.30699800} (version~2)
 
 \item Data Preparation Console Output (GitHub reference file):\\
 \href{https://github.com/tusseyd/nyc_311_data_cleaning/blob/main/reference_console_output/reference_JDS_data_prep_console_output.txt}{\texttt{reference\_console\_output/reference\_JDS\_data\_prep\_console\_output.txt}}
