@@ -19,9 +19,9 @@ enable_sink <- TRUE
 # the tools themselves are in functions/free_objects.R)
 use_free_objects     <- TRUE
 use_gc               <- TRUE
-monitor_memory       <- TRUE
-monitor_interval_sec <- 60
-mem_messages         <- TRUE
+monitor_memory       <- FALSE
+monitor_interval_sec <- 120
+mem_messages         <- FALSE
 
 ################################################################################
 

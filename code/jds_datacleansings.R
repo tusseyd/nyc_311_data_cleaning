@@ -6,7 +6,7 @@ main_data_file <-
  
 # Boolean flag. TRUE to redirect console output to text file
 # FALSE to display console outpx`t on the screen
-enable_sink <- FALSE        
+enable_sink <- TRUE        
 
 # Memory-management flags (to compare runs with them on and off)
 #   use_free_objects: TRUE = free_objects() removes the objects it is given
@@ -23,9 +23,9 @@ use_gc           <- TRUE
 # and logs them to memory_monitor_<computer>_<flags>_<time>.csv in the
 # console folder. mem_messages = TRUE also prints a line in this console at
 # each free_objects() / run_gc() point. Needs the ps package.
-monitor_memory       <- TRUE
-monitor_interval_sec <- 60
-mem_messages         <- TRUE
+monitor_memory       <- FALSE
+monitor_interval_sec <- 120
+mem_messages         <- FALSE
 
 #The "as of" date in "YYYY-MM-DD" format
 projection_date <- "2025-11-30"   
