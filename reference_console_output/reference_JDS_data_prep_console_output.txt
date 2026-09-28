@@ -1,17 +1,23 @@
 ✅ Console output redirected to: C:/Users/David/OneDrive/Documents/datacleaningproject/journal_of_data_science/nyc_311_data_cleaning/console_output/JDS_data_prep_console_output.txt 
 
-Execution begins at: 2026-09-27 19:10:04 
+Execution begins at: 2026-09-28 18:37:15 
 
-Execution begins at: 2026-09-27 19:10:04 
+Execution begins at: 2026-09-28 18:37:15 
 
 ========================================
 SETUP COMPLETE
 ========================================
 
 
+[18:37:17  +00:00:00]  Data preparation started (8 steps)
+
+[18:37:17  +00:00:00]  Step 1 of 8: Reading the raw 311 CSV (the longest step)
+
 Reading in raw 311 Service Request data... 
 
 Raw Data row count: 16,016,700
+[18:38:42  +00:01:25]  Step 2 of 8: Standardizing column names and missing values (16,016,700 rows read)
+
 
 Column names standardized
 
@@ -66,56 +72,15 @@ Summary of values converted to NA by token:
 Total values normalized to NA: 182974531 (27.86%)
 
 Missing data representation standardized to NA.
+[18:46:25  +00:09:08]  Step 3 of 8: Removing rows missing a mandatory field
+
 No rows removed due to missing mandatory fields.
+
+[18:46:50  +00:09:33]  Step 4 of 8: Consolidating agencies
 
 
 Agencies consolidated:  670 ; Rows dropped:  0 ; Rows remaining:  16,016,700
- Entering character date check
-
-============================================================
-Field: created_date 
-============================================================
-Total rows: 16016700 | Non-empty: 16016700 | NA/empty: 0 (0.00%)
-
-created_date — Counts of Special Times
-Midnight (00:00:00): 0 (0.00%)
-Noon (12:00:00):     0 (0.00%)
-
-============================================================
-Field: closed_date 
-============================================================
-Total rows: 16016700 | Non-empty: 15785257 | NA/empty: 231443 (1.45%)
-
-closed_date — Counts of Special Times
-Midnight (00:00:00): 0 (0.00%)
-Noon (12:00:00):     0 (0.00%)
-
-============================================================
-Field: due_date 
-============================================================
-Total rows: 16016700 | Non-empty: 52345 | NA/empty: 15964355 (99.67%)
-
-due_date — Counts of Special Times
-Midnight (00:00:00): 0 (0.00%)
-Noon (12:00:00):     0 (0.00%)
-
-============================================================
-Field: resolution_action_updated_date 
-============================================================
-Total rows: 16016700 | Non-empty: 15911481 | NA/empty: 105219 (0.66%)
-
-resolution_action_updated_date — Counts of Special Times
-Midnight (00:00:00): 0 (0.00%)
-Noon (12:00:00):     0 (0.00%)
-
-
---- Date Field Character-Length, 'Midnight', 'Noon', and NA Summary ---
-
-                           column total_rows na_count total_non_na nchar_summary count_midnight pct_midnight count_noon pct_noon
-1:                   created_date   16016700        0     16016700            ()              0            0          0        0
-2:                    closed_date   16016700   231443     15785257            ()              0            0          0        0
-3:                       due_date   16016700 15964355        52345            ()              0            0          0        0
-4: resolution_action_updated_date   16016700   105219     15911481            ()              0            0          0        0
+[18:46:51  +00:09:34]  Step 5 of 8: Parsing date columns
 
 [created_date] Converting to POSIXct (America/New_York)...
   Format detection (share of sample parsed):
@@ -201,6 +166,8 @@ Column classes after conversion:
                   created_date                    closed_date                       due_date resolution_action_updated_date 
                      "POSIXct"                      "POSIXct"                      "POSIXct"                      "POSIXct" 
 
+[18:53:39  +00:16:22]  Step 6 of 8: Converting text columns to upper case
+
  - address_type converted to upper case
  - agency converted to upper case
  - agency_name converted to upper case
@@ -243,6 +210,8 @@ Current year: 2025
 Max complete year: 2024
 Timezone: America/New_York
 
+[18:55:51  +00:18:34]  Step 7 of 8: Saving the 311 data as RDS
+
 ========================================
 Processing Year Spans
 ========================================
@@ -266,20 +235,24 @@ No CSV file format processed.
    span_years years_included start_date   end_date       rows                                                         file
 1:          5      2020–2024 2020-01-01 2024-12-31 16,016,700 5-year_311SR_01-01-2020_thru_12-31-2024_AS_OF_09-23-2025.rds
 
+[19:00:18  +00:23:01]  Step 8 of 8: Processing USPS ZIP code data
+
 Processing USPS Zipcode data...
+
+[19:00:18  +00:23:01]  Data preparation finished
 
 === Memory trace: dataprep (use_free_objects = TRUE, use_gc = TRUE) ===
  step                                 label elapsed_sec rss_mb peak_mb
-    1                 after reading raw CSV        88.2  12927   21884
-    2             free_objects: keep_row, v       561.9  10981   21884
-    3                  free_objects: result      1077.2   9800   24211
-    4 free_objects: raw_data, filtered_data      1488.7   4729   24211
-    5                        end of program      1488.7   4730   24211
-Peak memory: 24,211 MB; total elapsed: 1,488.7 sec
+    1                 after reading raw CSV        85.6  12924   21882
+    2             free_objects: keep_row, v       573.7  11263   21882
+    3                  free_objects: result       982.8  11380   24493
+    4 free_objects: raw_data, filtered_data      1381.8    907   24884
+    5                        end of program      1381.8    909   24884
+Peak memory: 24,884 MB; total elapsed: 1,381.8 sec
 
 *****END OF PROGRAM*****
 Status:              Completed successfully
-Execution started:   2026-09-27 19:10:04
-Execution ended:     2026-09-27 19:34:54
-Program run-time:    24 minutes, 49.9 seconds
+Execution started:   2026-09-28 18:37:15
+Execution ended:     2026-09-28 19:00:18
+Program run-time:    23 minutes, 2.9 seconds
 
