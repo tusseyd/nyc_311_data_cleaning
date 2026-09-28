@@ -265,7 +265,7 @@ and a yearly record of 3.5 million SRs in 2024.
 %
 %\begin{figure}[tbp]
 %  \centering
-%  \includegraphics[width=0.9\textwidth]{annual_trend_with_projection_bar_chart.pdf}
+%  \includegraphics[width=\textwidth]{annual_trend_with_projection_bar_chart.pdf}
 %  \caption{Annual SR Volume (with 2025 Projection)}
 %  \label{fig:annualSRs}
 %\end{figure}
@@ -306,11 +306,13 @@ kontokosta2021bias}, and urban issues such as noise pollution
 
 
 Our investigation uses a 311 SR dataset covering a five-year period (2020--2024), 
-collected on 10 October 2025. This dataset is used 
+collected on 23 September 2025. This dataset is used 
 to conduct analysis in data consistency, data validity, 
-redundant fields, and other data quality metrics. Instructions 
-on downloading this file from the NYC Open Data portal 
-are available in the supplementary material. Characteristics include:
+redundant fields, and other data quality metrics.
+Because the portal restructured the dataset in December 2025
+\citep{nyc311_updates}, the extract used here is archived on Figshare
+\citep{nyc311_data}; the supplementary material describes the changes
+and how to reproduce the analysis. Characteristics include:
 
 \begin{itemize}[left=1.5em, itemsep=0.25\baselineskip]
 \item The dataset is approximately \num{9} GB in size and contains 
@@ -412,7 +414,7 @@ Dept of Parks \& Recreation & DPR & \SI{3.97}{\percent} & \SI{90.19}{\percent} \
 
 %\begin{figure}[tbp]
 %  \centering
-%  \includegraphics[width=0.97\textwidth]{SR_by_agency_pareto_combo_chart.pdf}
+%  \includegraphics[width=\textwidth]{SR_by_agency_pareto_combo_chart.pdf}
 %  \caption{SRs by agency. Four agencies (NYPD, HPD, DSNY, DOT) comprise 80\% shown by the red line}
 %  \label{fig:SRcountbyAgency}
 %\end{figure}
@@ -540,7 +542,7 @@ decimal places (e.g., \texttt{latitude} = 40.7022221884127,
 
 However, precision ranges from eight to fifteen decimal places
 for \texttt{latitude} and from zero to fifteen for
-\texttt{longitude}. A small subset of \num{212} records contains
+\texttt{longitude}. A small subset of \num{216} records contains
 integer longitude values with no decimal component.
  Moreover, positional precision at thirteen decimal places
 implies a spatial resolution at the molecular scale—certainly 
@@ -558,8 +560,9 @@ provides coordinates to six decimal places. Decimal precision alone does
 not establish positional accuracy. Original coordinates were retained
 without rounding and checked against a bounding box derived from the
 \textsc{NYBBWI} metadata, with a tolerance of \SI{100}{\meter}.
-All nonmissing coordinates tested met this criterion; this check does
-not establish that every point lies within the city polygon.
+All nonmissing coordinates tested met this criterion except one DHS
+record with coordinates of approximately (0, 0), evidently a placeholder;
+this check does not establish that every point lies within the city polygon.
 
 \paragraph{Inconsistent Representation of Missing Data:} 
 \label{par:missingdata}
@@ -647,16 +650,16 @@ DST effects are found in Section~\ref{par:dst}.
 \label{sec:blanks}
 Understanding the absence of data by field greatly aids analysis. 
 For example, determining whether SRs were closed
-before or after their \texttt{due\_date} is difficult,
+before or after their \texttt{due\_date} is nigh on impossible,
 as \SI[round-mode=places, round-precision=2]{99.67}{\percent}
-of those field values are empty. Field completeness divides
+of the field is empty. Field completeness divides
 into three groups, as summarized in 
-Table~\ref{tab:completeness-lower}, which presents fields
+Table~\ref{tab:completeness-lower}, which presents select fields
 exhibiting moderate or low completeness rates.
 
 
 \begin{itemize}[left=1.5em, itemsep=0.25\baselineskip]
-    \item Complete: \SIrange{94}{99}{\percent} filled.
+    \item Complete: \SIrange{94}{100}{\percent} filled.
     \item Moderately Complete: \SIrange{57}{88}{\percent} filled.
     \item Sparse/Incomplete: \SIrange{0.05}{1.5}{\percent} filled.
 \end{itemize}
@@ -676,18 +679,18 @@ exhibiting moderate or low completeness rates.
 {Field} & {Filled count} & {Completeness (\%)} \\
 \midrule
 \texttt{taxi\_company\_borough} & 8564      & 0.05 \\
-\texttt{due\_date}              & 52346     & 0.33 \\
+\texttt{due\_date}              & 52345     & 0.33 \\
 \texttt{vehicle\_type}          & 181533    & 1.13 \\
 \texttt{facility\_type}         & 211240    & 1.32 \\
 \cmidrule(lr){1-3}
-\texttt{landmark}               & 9058628   & 56.56 \\
-\texttt{intersection\_street\_1}& 10251224  & 64.00 \\
-\texttt{intersection\_street\_2}& 10257371  & 64.04 \\
-\texttt{cross\_street\_2}       & 11693685  & 73.01 \\
-\texttt{cross\_street\_1}       & 11696472  & 73.03 \\
-\texttt{address\_type}          & 13246948  & 82.71 \\
+\texttt{landmark}               & 9058627   & 56.56 \\
+\texttt{intersection\_street\_1}& 10251223  & 64.00 \\
+\texttt{intersection\_street\_2}& 10257370  & 64.04 \\
+\texttt{cross\_street\_2}       & 11693684  & 73.01 \\
+\texttt{cross\_street\_1}       & 11696471  & 73.03 \\
+\texttt{address\_type}          & 13246924  & 82.71 \\
 \texttt{location\_type}         & 13823312  & 86.31 \\
-\texttt{bbl}                    & 14128219  & 88.21 \\
+\texttt{bbl}                    & 14128215  & 88.21 \\
 \bottomrule
 \end{tabular}
 \end{table}
@@ -696,12 +699,13 @@ exhibiting moderate or low completeness rates.
 For some analysis efforts, it is suggested to investigate as to 
 why some fields are almost always blank. Additionally, 
 field usage varies considerably across agencies. For instance,
-\texttt{landmark} and \texttt{facility\_type} are widely used across agencies,
-underscoring their importance in classifying SRs. By contrast,
+\texttt{landmark} are widely used across agencies, 
+whereas \texttt{facility\_type} is used exclusively by 
+DSNY. Not surprisingly, 
 \texttt{taxi\_pick\_up\_location} is used exclusively by TLC. 
 Table~\ref{tab:field-usage-by-agency} highlights the varied usage of
 certain fields across NYC agencies, revealing both specialization and
-redundancy. Fortunately, most of the fields used in 
+broad usage. Fortunately, most of the fields used in 
 this analysis are well populated.
 
 \begin{table}[tbp]
@@ -730,14 +734,14 @@ this analysis are well populated.
 \multicolumn{1}{c}{DSNY} &
 \multicolumn{1}{c}{TLC} \\
 \midrule
-\texttt{landmark}                 & 2935   & 70185  & 282   & 135150  & 254218  & 424284  & 63133  \\
-\texttt{facility\_type}           & 175549 & 0      & 51575 & 159667  & 0       & 66012   & 0      \\
-\texttt{due\_date}                & 0      & 0      & 0     & 0       & 0       & 32097   & 0      \\
-\texttt{vehicle\_type}            & 0      & 0      & 0     & 0       & 0       & 0       & 1696   \\
-\texttt{taxi\_company\_borough}   & 0      & 0      & 0     & 0       & 0       & 0       & 4025   \\
-\texttt{taxi\_pick\_up\_location} & 0      & 0      & 0     & 0       & 0       & 0       & 72558  \\
-\texttt{bridge\_highway\_name}    & 15     & 21012  & 0     & 7451    & 0       & 613     & 977    \\
-\texttt{road\_ramp}               & 15     & 2588   & 0     & 7450    & 0       & 613     & 999    \\
+\texttt{landmark}                 & 2935   & 142890 & 282   & 339427  & 595474  & 656882  & 113242 \\
+\texttt{facility\_type}           & 0      & 0      & 0     & 0       & 0       & 211240  & 0      \\
+\texttt{due\_date}                & 0      & 0      & 0     & 0       & 16      & 52329   & 0      \\
+\texttt{vehicle\_type}            & 0      & 0      & 0     & 0       & 0       & 0       & 3689   \\
+\texttt{taxi\_company\_borough}   & 0      & 0      & 0     & 0       & 0       & 0       & 8564   \\
+\texttt{taxi\_pick\_up\_location} & 0      & 0      & 0     & 0       & 0       & 0       & 136863 \\
+\texttt{bridge\_highway\_name}    & 15     & 45896  & 0     & 19234   & 0       & 894     & 1564   \\
+\texttt{road\_ramp}               & 15     & 4614   & 0     & 19213   & 0       & 891     & 1546   \\
 \bottomrule
 \end{tabular}%
 }
@@ -785,9 +789,10 @@ compliance with a domain of allowable values. These include
 
 \paragraph{ZIP Codes:}
 \label{sec:zipcodesissues}
-All \texttt{incident\_zip} values should validate against the
-United States Postal Service (USPS) database, which contains
-\num{42735} valid ZIP codes. The \texttt{incident\_zip} field
+All \texttt{incident\_zip} values should validate against a
+ZIP code database compiled from United States Postal Service (USPS)
+data \citep{zipcode_db}; the version used here contains
+\num{42735} ZIP codes. The \texttt{incident\_zip} field
 contains \SI[round-mode=places, round-precision=2]{0.02}{\percent}
 invalid values, corresponding to \num{3274} errors.
  This includes ZIP codes such as ``11111'', ``00000'', and ``00083''. The presence of 
@@ -833,23 +838,22 @@ detail later in this section.
 \label{par:duedate}
 The \texttt{due\_date} field is used almost exclusively by \textsc{DSNY} 
 and is populated in only about
-\SI[round-precision = 2]{0.33}{\percent} of cases. All values passed validation
-(no implausibly past or future dates), and no unusual patterns were observed.
-However, sixteen cases were found where the \texttt{due\_date} precedes the
-\texttt{created\_date}—a nonsensical condition. These ranged from just over
-one year early to more than two years early. 
+\SI[round-precision = 2]{0.33}{\percent} of cases. All values passed validation, and no unusual patterns were observed.
+However, sixteen cases, all from DPR, were found where the \texttt{due\_date} precedes the
+\texttt{created\_date}—a nonsensical condition. These ranged from \num{452} to
+\num{727} days early (roughly 1.2 to 2 years). 
 
 \paragraph{Closed Date:}
 \label{par:closeddate}
 Most nonmissing closing dates were within the expected temporal bounds.
-Exceptions include dates in 1899 and 1900 and three dates later than
+Exceptions include dates in 1899 and 1900 and four dates later than
 the extraction date, including one in 2033.
 However, there is a clustering of timestamps at exactly midnight
-(\num{1083862};
-\SI[round-mode=places, round-precision=2]{6.77}{\percent}
+(\num{1083760};
+\SI[round-mode=places, round-precision=2]{6.87}{\percent}
 of \texttt{closed\_date} values) and exactly noon
-(\num{294817};
-\SI[round-mode=places, round-precision=2]{1.84}{\percent}),
+(\num{294815};
+\SI[round-mode=places, round-precision=2]{1.87}{\percent}),
 representing an important artifact discussed further in
 Section~\ref{par:midnightnoonissues}.
 Additionally, \num{45296} records show
@@ -863,7 +867,7 @@ Section~\ref{subsec:duration}.
 \label{par:resolutionupdatedate}
 The \texttt{resolution\_action\_updated\_date} field records modifications or
 follow-up actions related to an SR. No values were found in implausible years; however,
-\num{374974} entries (\SI[round-mode=places, round-precision=2]{2.34}{\percent})
+\num{375116} entries (\SI[round-mode=places, round-precision=2]{2.34}{\percent})
 occur before the corresponding \texttt{created\_date}.
 Nearly \SI{80}{\percent} of these premature dates occur within
 one day (often within seconds) of the \texttt{created\_date},
@@ -874,7 +878,7 @@ While it is certainly possible---and even routine---to
 update an SR after it is closed, 
 \SI[round-precision=0]{54}{\percent} of updates
 do occur after the \texttt{closed\_date}.
-Figure~\ref{fig:resolution-violin} summarizes \num{27616} SRs with updates
+Figure~\ref{fig:resolution-violin} summarizes \num{27620} SRs with updates
 more than 30 and at most \num{1095} days after closure. This subset is
 concentrated within the 30--200 day range. TLC, DPR, and DOHMH account
 for approximately \SI{36}{\percent}, \SI{29}{\percent}, and
@@ -886,7 +890,7 @@ activity from timestamp errors.
 \begin{figure}[tbp]
 \centering
 \includegraphics[width=\textwidth]{post_closed_resolution_violin.pdf}
-\caption{Days from closure to resolution-action update for \num{27616} SRs
+\caption{Days from closure to resolution-action update for \num{27620} SRs
 with intervals greater than 30 and at most \num{1095} days. Violin width
 represents estimated density, the boxplot summarizes the distribution,
 and jittered points represent individual SRs. Most intervals are
@@ -900,8 +904,8 @@ As discussed in Section~\ref{par:dstsystemic}, local timestamps can be
 ambiguous during DST transitions. The fall-back diagnostic identified
 approximately \num{86} SRs per year with apparent negative wall-clock
 differences averaging \SI[round-mode=places, round-precision=2]{-42.24}{\minute}.
-The spring-forward diagnostic identified approximately \num{55000} SRs
-annually spanning the transition. This describes exposure to the clock
+The spring-forward diagnostic identified approximately \num{98500} SRs
+annually (\num{492652} over five years) spanning the transition. This describes exposure to the clock
 change, rather than confirmed errors in elapsed duration: correctly
 interpreted timezone-aware timestamps account for the missing hour.
 Reliable calculations require consistent timezone handling and, for
@@ -917,10 +921,10 @@ fields reveals spikes at midnight (00{:}00{:}00) and noon
 batch-processing, perhaps assigning timestamps of midnight (00:00:00) to 
 large batches of SRs prior to sending the data to the 311 database. 
 If timestamps are assigned this way, they may distort calculated durations
-and the apparent timing of system usage. Distribution by agency indicates that \SI{92}{\percent} of
+and the apparent timing of system usage. Distribution by agency indicates that \SI{97.6}{\percent} of
 the ``closed-exactly-at-midnight'' SRs originate 
-from just two agencies: the Department of Buildings (DOB)
-(\SI{69}{\percent}) and DSNY (\SI{23}{\percent}).
+from just two agencies: DSNY (\SI{60}{\percent})
+and the Department of Buildings (DOB) (\SI{38}{\percent}).
 
 
 One possible explanation for the midnight peak is that some records were
@@ -997,14 +1001,15 @@ concentration should be distinguished from the extreme subset.
 \paragraph{Zero and One-Second Durations:}
 A more substantial issue arises when \texttt{closed\_date} and
 \texttt{created\_date} share identical timestamps to the second,
-creating a zero-duration value that warrants investigation. There are \num{387329}
+creating a zero-duration value that warrants investigation. There are \num{387426}
 (\SI{2.5}{\percent}) such zero-duration SRs. 
 
 In addition, \num{3460} SRs are closed within one second of their 
 creation. While not logically impossible, these near-instantaneous 
-SR resolutions are statistically improbable. \SI{81}{\percent} of these cases 
+SR resolutions are statistically improbable. \SI{92}{\percent} of these cases 
 originate from just three agencies: the Department of Health and 
-Mental Hygiene (DOHMH), DOT, and DOB.
+Mental Hygiene (DOHMH) (\SI{54}{\percent}), the Economic Development
+Corporation (EDC) (\SI{24}{\percent}), and DPR (\SI{14}{\percent}).
 
 \paragraph{Near-Zero Durations:}
 \label{par:suspiciousdurations}
@@ -1031,24 +1036,24 @@ $\sigma_{\log}$ are the mean and standard deviation of log-transformed
 durations in the restricted sample. The cutoff of \SI{27.95}{\second}
 identifies \num{10231} durations of at least \SI{2}{\second} below
 this boundary. The duration-category summary instead uses a rounded
-boundary of at most \SI{28}{\second}, yielding \num{14741} positive
+boundary of at most \SI{28}{\second}, yielding \num{14734} positive
 durations, including the \num{3460} one-second cases.
 
-Combining \num{387329} zero-duration cases with these \num{14741}
-short positive durations gives \num{402070} SRs
-(\SI{2.55}{\percent} of the \num{15785892} SRs with a closing date).
+Combining \num{387426} zero-duration cases with these \num{14734}
+short positive durations gives \num{402160} SRs
+(\SI{2.55}{\percent} of the \num{15785257} SRs with a closing date).
 These are screening flags for investigation, rather than confirmed errors.
 
 \paragraph{Positive Durations:}
 \label{par:positivedurations}
 While a positive duration is the norm, some SRs exhibit
-extremely long lifespans. A total of \num{139713}
-(\SI[round-mode=places, round-precision=2]{0.89}{\percent})
+extremely long lifespans. A total of \num{139483}
+(\SI[round-mode=places, round-precision=2]{0.88}{\percent})
 SRs fall into the \emph{large-duration} category
 (greater than 730 and at most \num{1825} days, approximately 2--5 years).
 DPR, DOHMH, and EDC together account for approximately
 \SI{94}{\percent} of these cases. Additionally,
-\num{1258} SRs were classified as \emph{extreme} positive 
+\num{1251} SRs were classified as \emph{extreme} positive 
 durations (greater than 5~years). \SI{94}{\percent} of these extreme positive 
 durations occur within the DPR. Many of these extreme DPR durations
 may reflect tree planting, removal, trimming, or uprooting. Likewise,
@@ -1281,14 +1286,12 @@ entries are accurate and valid. Some examples include
  \end{itemize}
 
 \paragraph{Principle 3: Optimizing Storage Efficiency:}
-Efficient storage and data representation are essential for handling 
-large government datasets. Our research found several duplicate and
-near-duplicate fields in the 311 SR dataset. Removing these
-redundancies could reduce the dataset size by 18.5\%, provided that distinct information in nonmatching records is preserved. Eliminating redundant fields and
-encoding categorical variables can significantly reduce file 
-sizes and improve the efficiency of data analysis. Similarly, 
-categorical variables could be encoded in a standardized 
-format to optimize storage and streamline analyses. 
+Efficient storage matters for large government datasets. Removing the
+duplicate and near-duplicate fields identified in
+Section~\ref{par:filesize} would reduce the dataset size by 18.5\%,
+provided that distinct information in nonmatching records is preserved,
+and encoding categorical variables in a standardized format would
+further reduce file sizes and streamline analyses.
 
 
 \paragraph{Principle 4: Maintain and Update Data Dictionaries:}
@@ -1462,9 +1465,8 @@ as noted by \citet{rahm2000data} and \citet{borgman2012conundrum}.
 The intersection of data curation and machine learning for
 public policy applications opens new avenues for improving governance.
 High-quality data enables machine learning models to better predict
-trends, allocate resources, and address service delivery issues, such
-as delays in responding to 311 complaints. The COVID-19 pandemic
-underscored the importance of real-time, trustworthy data in crisis
+trends, allocate resources, and address service delivery issues. The 
+COVID-19 pandemic underscored the importance of real-time, trustworthy data in crisis
 management, where the accuracy and timeliness of data-driven insights
 were critical for public health responses. Without proper data
 curation, machine learning models used during the pandemic would have
@@ -1472,7 +1474,7 @@ been compromised, affecting decisions on resource allocation and
 service provision \citep{worby2020face, khemasuwan2021applications}.
 Future efforts could focus on automating data curation processes,
 particularly in real-time data pipelines, to ensure that the data used
-in machine learning models remains accurate, clean, and reliable
+remains accurate, clean, and reliable
 \citep{chu2016data, hurbean2021open}.
 
 
@@ -1481,15 +1483,13 @@ in machine learning models remains accurate, clean, and reliable
 %-------------------------------------------------------------------------------
 
 \section*{Supplementary Material}
-See Supplementary Materials for extended results and all supporting visualizations.
+The Supplementary Materials contain extended results, supporting
+visualizations, and instructions for reproducing the analysis.
 
 \begin{itemize}[leftmargin=*, nosep]
-  \item R source code:\\
-        \url{https://github.com/tusseyd/nyc_311_data_cleaning}
-  \item USPS ZIP Code dataset (Figshare):\\
-        \url{https://doi.org/10.6084/m9.figshare.31053361}
-  \item NYC 311 SR dataset (Figshare):\\
-        \url{https://doi.org/10.6084/m9.figshare.30699800}
+  \item R source code: \url{https://github.com/tusseyd/nyc_311_data_cleaning}
+  \item NYC 311 SR dataset (Figshare): \url{https://doi.org/10.6084/m9.figshare.30699800}
+  \item ZIP code database: \url{https://www.unitedstateszipcodes.org/zip-code-database/}
 \end{itemize}
 
 
