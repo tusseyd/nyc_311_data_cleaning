@@ -297,7 +297,7 @@ durations, regardless of magnitude---\num{15352535} observations
 of SRs with both a \texttt{created\_date} and a \texttt{closed\_date}). Figure~\ref{fig:bimodal-distribution}
 displays these durations on a logarithmic scale and
 reveals a bimodal distribution.
-Hartigan's dip test confirms statistically significant
+Hartigan's dip test \citep{hartigan1985dip} confirms statistically significant
 departure from unimodality
 ($D = 0.027$, $p < 2.2 \times 10^{-16}$). The distribution is also strongly right-skewed.
 The median duration is \SI{0.44}{\day}, whereas the
@@ -474,7 +474,7 @@ on the aggregate duration metric.
 
 
 \FloatBarrier  % Keep Positive Duration figures in their section
-
+	
 
 \subsection{Service Request Negative Duration Analysis}
 
@@ -659,7 +659,7 @@ Figshare archives to ensure persistent access and version stability.
 \subsection*{System Requirements}
 
 \begin{itemize}
-  \item R version 4.5.2 or later (\url{https://cran.r-project.org/})
+  \item R \citep{R2025} version 4.5.2 or later (\url{https://cran.r-project.org/})
   \item RStudio version 2026.01 or later (\url{https://posit.co/download/rstudio-desktop/})
   \item Minimum memory: \SI{16}{\giga\byte} (tested); \SI{32}{\giga\byte} recommended for improved performance
   \item Disk space: approximately \SI{15}{\giga\byte} (including \SI{9}{\giga\byte} of uncompressed data), plus additional space for intermediate files and outputs
@@ -672,11 +672,11 @@ Figshare archives to ensure persistent access and version stability.
 
 \begin{itemize}
   \item Source code: \url{https://github.com/tusseyd/nyc_311_data_cleaning}
-  \item NYC 311 dataset (approximately \SI{1.7}{\giga\byte} compressed; \SI{9}{\giga\byte} uncompressed):\\
+  \item NYC 311 dataset \citep{nyc311_data} (approximately \SI{1.7}{\giga\byte} compressed; \SI{9}{\giga\byte} uncompressed):\\
   \url{https://doi.org/10.6084/m9.figshare.30699800} (version~2, the
   23~September~2025 export; version~1 held a file that had already been
   through the data-preparation step)
-  \item ZIP code database (free version, \texttt{zip\_code\_database.csv}):
+  \item ZIP code database \citep{zipcode_db} (free version, \texttt{zip\_code\_database.csv}):
   \url{https://www.unitedstateszipcodes.org/zip-code-database/}.
   Its license does not permit public redistribution, so it is not included
   in the study archive; download it from the publisher.
@@ -696,8 +696,7 @@ versioned identifiers to preserve reproducibility.
 \paragraph{Changes to the source dataset after the extract.}
 The study extract was exported from NYC Open Data on 23~September~2025.
 In December 2025 the NYC Open Data team restructured the 311 Service
-Requests dataset
-(\url{https://www.nyc.gov/opendata/news/all-news/311-Service-Requests-Updates}):
+Requests dataset \citep{nyc311_updates}:
 \begin{itemize}
   \item The records were split into two datasets, ``311 Service Requests
   from 2020 to Present'' (at the original address) and ``311 Service
@@ -908,7 +907,7 @@ platform-appropriate path separators}
 \begin{enumerate}
 \item Execute \texttt{data\_prep\_for\_jds\_datacleansing.R} in RStudio.
 \item The script will create the required directory structure (if missing) and install necessary R packages.
-\item Expected runtime: approximately \SI{90}{\minute} with \SI{16}{\giga\byte} of memory,
+\item Expected runtime: approximately \SI{60}{\minute} with \SI{16}{\giga\byte} of memory,
 or approximately \SI{30}{\minute} with \SI{32}{\giga\byte}.
 Initial data loading is memory-intensive.
 \item Upon completion, verify that the following files exist:
@@ -925,10 +924,8 @@ Initial data loading is memory-intensive.
 
 \begin{enumerate}
 \item Execute \texttt{code/jds\_datacleansings.R} in RStudio.
-\item Expected runtime: approximately \SI{60}{\minute}
-on a system with \SI{16}{\giga\byte} of memory,
-or approximately \SI{31}{\minute}
-on a system with \SI{32}{\giga\byte}.
+\item Expected runtime: approximately \SI{30}{\minute}
+on a system with \SI{16}{\giga\byte} or \SI{32}{\giga\byte}.
 \item Monitor progress in RStudio's plot pane as charts are generated.
 \item The script will produce:
   \begin{itemize}
@@ -945,7 +942,7 @@ Compare your directory structure along with the associated files shown
 in the above tree structure. Compare the charts to those in the main 
 manuscript and in this supplementary document. Compare your console 
 output files against the reference outputs provided in the GitHub 
-repository to verify successful reproduction. The console outputs 
+repository to verify successful reproduction. The console outputs
 contain many tables of information which should match your 
 run. Validation console output files are located at:
 
@@ -961,12 +958,12 @@ run. Validation console output files are located at:
 
 \begin{itemize}
 \item Total processing time (data preparation and cleansing):
-approximately \SI{2.5}{\hour}
+approximately \SI{1.5}{\hour}
 on a system with \SI{16}{\giga\byte} of memory;
-execution is more than twice as fast on systems with
-\SI{32}{\giga\byte}.
-\item The scripts use \texttt{data.table} for memory-efficient processing
-of more than \num{15000000} records.
+execution is approximately twice as fast on systems with
+\SI{32}{\giga\byte} of memory.
+\item The scripts use \texttt{data.table} \citep{datatable2025} for memory-efficient processing
+of more than \num{16000000} records.
 \item All file paths are configured relative to \texttt{wd\_path}
 to ensure portability.
 \item Memory management: initial data loading requires substantial RAM;
@@ -974,5 +971,17 @@ the script reduces memory footprint after preprocessing.
 \end{itemize}
 
 
+\section*{AI Use Disclosure}
+The authors used Claude (Anthropic; model claude-opus-5-5, accessed
+September 2026) for coding assistance with R programming, 
+for validating reported figures against program output, and for 
+ \LaTeX{} editing of the manuscript, supplement, and response to the
+referee. All AI-assisted material was reviewed and 
+validated by the authors, who take full responsibility for 
+the manuscript's content, accuracy, originality, and integrity.
+
+
+\bibliographystyle{jds}
+\bibliography{refs}
 
 \end{document}

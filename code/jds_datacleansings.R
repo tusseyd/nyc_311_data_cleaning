@@ -6,7 +6,7 @@ main_data_file <-
  
 # Boolean flag. TRUE to redirect console output to text file
 # FALSE to display console outpx`t on the screen
-enable_sink <- TRUE        
+enable_sink <- FALSE        
 
 # Memory-management flags (to compare runs with them on and off)
 #   use_free_objects: TRUE = free_objects() removes the objects it is given
@@ -23,9 +23,9 @@ use_gc           <- TRUE
 # and logs them to memory_monitor_<computer>_<flags>_<time>.csv in the
 # console folder. mem_messages = TRUE also prints a line in this console at
 # each free_objects() / run_gc() point. Needs the ps package.
-monitor_memory       <- FALSE
+monitor_memory       <- TRUE
 monitor_interval_sec <- 60
-mem_messages         <- FALSE
+mem_messages         <- TRUE
 
 #The "as of" date in "YYYY-MM-DD" format
 projection_date <- "2025-11-30"   
@@ -150,13 +150,27 @@ max_closed_date <- max_closed_date + (23*3600 + 59*60 + 59)
 #print(paste("Final datetime:", max_closed_date))
 
 ################################################################################
-# Load the USPS zipcode file
+# Load the USPS zipcode file (optional).
+# The ZIP code database is third-party and cannot be redistributed, so a
+# reader may not have it. If USPS_zipcodes.rds is missing, the ZIP code
+# validation of incident_zip is skipped and the rest of the program runs.
 progress_msg("Step 1 of 29: Reading the USPS ZIP code file")
 
 USPS_zipcode_file_path <- file.path(data_dir, "USPS_zipcodes.rds")
+zip_available <- file.exists(USPS_zipcode_file_path)
 
-USPSzipcodes <- readRDS(USPS_zipcode_file_path)
-if (!is.data.table(USPSzipcodes)) setDT(USPSzipcodes)  # converts in place
+if (zip_available) {
+  USPSzipcodes <- readRDS(USPS_zipcode_file_path)
+  if (!is.data.table(USPSzipcodes)) setDT(USPSzipcodes)  # converts in place
+  cat(sprintf("\nUSPS ZIP code file loaded: %s ZIP codes\n",
+              format(nrow(USPSzipcodes), big.mark = ",")))
+} else {
+  msg <- paste0("USPS ZIP code file not found (", USPS_zipcode_file_path, ").\n",
+                "  incident_zip will not be validated against ZIP codes; ",
+                "all other analyses will run.")
+  cat("\nNOTE: ", msg, "\n", sep = "")
+  message("NOTE: ", msg)
+}
 
 ################################################################################
 # Load the main 311 SR data file. Set the read & write paths.
@@ -1262,8 +1276,9 @@ valid_community_boards <-
     "0 UNSPECIFIED"
   )
 
-# Check for invalid zip codes in d311$incident_zip using USPSzipcodesOnly
-valid_USPS_zipcodes <- as.list(USPSzipcodes$zip)
+# Check for invalid zip codes in d311$incident_zip using USPSzipcodes
+# (only when the ZIP code file was found; see Step 1)
+valid_USPS_zipcodes <- if (zip_available) as.list(USPSzipcodes$zip) else NULL
 
 # Field to include "agency" in the computed dataset
 valid_agencies <- unique(d311$agency)
@@ -1282,6 +1297,11 @@ valid_spec <- list(
   community_board        = valid_community_boards,
   incident_zip           = valid_USPS_zipcodes
 )
+# Drop the ZIP code check when the ZIP code file is not available
+if (!zip_available) {
+  valid_spec$incident_zip <- NULL
+  cat("\nSkipping incident_zip validation (no USPS ZIP code file).\n")
+}
 
 # --- Run all validations in one pass ------------------------------------------
 

@@ -13,7 +13,7 @@ main_data_file <- "5-year_311SR_01-01-2020_thru_12-31-2024_AS_OF_09-23-2025.csv"
 
 # Set to TRUE to redirect console output to text file (default)
 # Set to FALSE to display console output on the screen
-enable_sink <- FALSE      
+enable_sink <- TRUE      
 
 # Memory-management flags and monitor (same meaning as in jds_datacleansings.R;
 # the tools themselves are in functions/free_objects.R)
@@ -405,53 +405,60 @@ usps_data_file <- "zip_code_database.csv"
 usps_path      <- file.path(raw_data_dir, usps_data_file)
 usps_rds_file  <- file.path(data_dir, "USPS_zipcodes.rds")
 
-if (!file.exists(usps_path)) {
-  stop("USPS CSV not found at: ", usps_path)
-}
-
 progress_msg("Step 8 of 8: Processing USPS ZIP code data")
-cat("\nProcessing USPS Zipcode data...\n")
 
-# Read only the 'zip' column; if not found exactly, read headers and detect it
-zipcode_data <- tryCatch(
-  fread(
-    usps_path,
-    select      = "zip",
-    colClasses  = c(zip = "character"),
-    nThread     = max(1L, parallel::detectCores() - 1L),
-    check.names = FALSE,
-    strip.white = TRUE,
-    showProgress = TRUE
-  ),
-  error = function(e) {
-    # Fallback: read header to find a plausible ZIP column (case-insensitive)
-    hdr <- names(fread(usps_path, nrows = 0, check.names = FALSE, 
-                                                          showProgress = TRUE))
-    cand <- grep("^zip(code)?$", hdr, ignore.case = TRUE, value = TRUE)
-    if (length(cand) == 0L) 
-                  stop("No 'zip' column found (case-insensitive) in USPS CSV.")
+# The ZIP code database is optional (third-party; not redistributed). Without
+# it, no USPS_zipcodes.rds is written and the main program skips the ZIP code
+# validation of incident_zip.
+if (file.exists(usps_path)) {
+  cat("\nProcessing USPS Zipcode data...\n")
+
+  # Read only the 'zip' column; if not found exactly, read headers and detect it
+  zipcode_data <- tryCatch(
     fread(
       usps_path,
-      select      = cand[1],
-      colClasses  = setNames("character", cand[1]),
+      select      = "zip",
+      colClasses  = c(zip = "character"),
       nThread     = max(1L, parallel::detectCores() - 1L),
       check.names = FALSE,
       strip.white = TRUE,
       showProgress = TRUE
-    )
+    ),
+    error = function(e) {
+      # Fallback: read header to find a plausible ZIP column (case-insensitive)
+      hdr <- names(fread(usps_path, nrows = 0, check.names = FALSE, 
+                                                            showProgress = TRUE))
+      cand <- grep("^zip(code)?$", hdr, ignore.case = TRUE, value = TRUE)
+      if (length(cand) == 0L) 
+                    stop("No 'zip' column found (case-insensitive) in USPS CSV.")
+      fread(
+        usps_path,
+        select      = cand[1],
+        colClasses  = setNames("character", cand[1]),
+        nThread     = max(1L, parallel::detectCores() - 1L),
+        check.names = FALSE,
+        strip.white = TRUE,
+        showProgress = TRUE
+      )
+    }
+  )
+
+  # Ensure the column is named exactly 'zip'
+  if (!identical(names(zipcode_data), "zip")) {
+    setnames(zipcode_data, 1L, "zip")
   }
-)
 
-# Ensure the column is named exactly 'zip'
-if (!identical(names(zipcode_data), "zip")) {
-  setnames(zipcode_data, 1L, "zip")
+  # Light cleanup
+  zipcode_data[, zip := trimws(zip)]
+
+  # Save just the single column, always overwrite
+  saveRDS(zipcode_data[, .(zip)], usps_rds_file)
+} else {
+  msg <- paste0("USPS ZIP code file not found (", usps_path, "); skipping this step. ",
+                "The main program will run without ZIP code validation.")
+  cat("\nNOTE: ", msg, "\n", sep = "")
+  message("NOTE: ", msg)
 }
-
-# Light cleanup
-zipcode_data[, zip := trimws(zip)]
-
-# Save just the single column, always overwrite
-saveRDS(zipcode_data[, .(zip)], usps_rds_file)
 
 ################################################################################
 
