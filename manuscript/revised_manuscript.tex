@@ -1041,21 +1041,23 @@ These are screening flags for investigation, rather than confirmed errors.
 
 \paragraph{Positive Durations:}
 \label{par:positivedurations}
-While a positive duration is the norm, some SRs exhibit
-extremely long lifespans. A total of \num{139483}
+Some SRs exhibit very long lifespans with a total of \num{139483}
 (\SI[round-mode=places, round-precision=2]{0.88}{\percent})
-SRs fall into the \emph{large-duration} category
+SRs in the \emph{large-duration} category
 (greater than 730 and at most \num{1825} days, approximately 2--5 years).
 DPR, DOHMH, and EDC together account for approximately
-\SI{94}{\percent} of these cases. Additionally,
-\num{1251} SRs were classified as \emph{extreme} positive 
-durations (greater than 5~years). \SI{94}{\percent} of these extreme positive 
-durations occur within the DPR. Many of these extreme DPR durations
-may reflect tree planting, removal, trimming, or uprooting. Likewise,
+\SI{94}{\percent} of these cases. 
+
+Additionally,  \num{1251} SRs have \emph{extreme} positive durations (greater than
+5~years), not counting one invalid SR whose \texttt{closed\_date} is 2033.  
+Of these, \num{1176} (\SI{94}{\percent}) are DPR SRs, and \num{1149} of 
+them were closed on a single day, 22~April~2025, suggesting 
+a bulk administrative closure. Many of these extreme DPR durations
+reflect tree planting, removal, trimming, or uprooting. Likewise,
 DOB handles plumbing, building use, and construction issues that can
-involve lengthy operational or administrative processes. These types
-make long durations plausible, but do not establish that individual
-multi-year intervals are accurate.
+involve lengthy operational or administrative processes. 
+These complaint types imply that long durations are plausible, but 
+do not establish that individual multi-year intervals are accurate.
 
 
 %-------------------------------------------------------------------------------
@@ -1228,164 +1230,148 @@ exhibit similar inaccuracies in their specified domain values.
 
 \section{Recommendations for Government Open Data Curation}
 \label{sec:recommendations}
-
-Building on the insights from this case study,
- we propose a set of data curation principles tailored for government 
+Building on these insights, we propose a set of 
+data curation principles tailored for government 
 open data. These principles address the unique requirements 
-observed in the management of such data, helping ensure reliability, 
-consistency, and continued utility for public services, research, and 
+observed in the curation of such data, ensuring reliability, 
+consistency, and utility for public services, research, and 
 related applications. To facilitate implementation, these principles 
-are prioritized based on their impact and feasibility, offering a clear 
+are prioritized based on their impact and feasibility, offering a 
 roadmap for improving data curation practices.
 
 \subsection{Principles}
 \label{subsec:principles}
 
-\paragraph{Principle 1: Cross-Organizational Consistency:} A central 
-issue in government-released datasets is  harmonization
-of data fields across agencies and  maintaining that consistency
-over time. Inconsistent field definitions, data formats, or value
+\paragraph{Principle 1: Maintain Cross-Organizational Consistency:} A key
+challenge in government-released datasets is harmonizing data fields 
+across agencies and maintaining consistency over time. Inconsistent 
+field definitions, data formats, or value
 domains can lead to erroneous analyses and hinder 
-cross-agency collaboration. Agencies should consider 
-standardized naming conventions, value domains, usages, and 
-formats across all datasets. Utilize regular audits and data harmonization 
-processes to ensure consistency 
-across long-term datasets, particularly as agency structures 
-and reporting standards evolve. For instance, ensuring that 
-historical datasets reflect the same field naming conventions 
-over a span of years can prevent inconsistent analyses. 
-The Open Data governing authority should  promulgate 
-these agreed-upon standards.
+cross-agency collaboration. Agencies should standardize naming 
+conventions, value domains, usage, and formats across 
+all datasets. Implement regular audits and data harmonization 
+processes to ensure long-term consistency 
+across datasets, particularly as agency structures 
+and reporting standards evolve. For instance, applying the 
+same field naming conventions to historical datasets prevents 
+inaccurate analyses across years.
 
 \paragraph{Principle 2: Ensure Data Entry Accuracy:}
 Data accuracy and validity are fundamental to the utility of 
 open datasets. In the NYC 311 data, issues such as 
-invalid ZIP codes and nonsensical date entries 
+invalid ZIP codes and nonsensical dates 
 highlight the need for rigorous validation 
 processes. Governments should establish protocols for 
 data entry, ensuring that fields are populated with valid, legally 
-acceptable values.  To the maximum extent 
-possible, the software should assist in ensuring that data 
-entries are accurate and valid. Some examples include
+acceptable values. To the maximum extent 
+possible, the software should ensure that entries are 
+accurate and valid, for example:
 
 \begin{itemize}[left=1.5em,itemsep=0.15\baselineskip]
-    \item Certain date fields should be populated by the application software
-     versus manual entry. Dates should be populated
-    based upon an action in the system, such as a change in status.
-    \item Select fields should be subjected to automated checks 
-    that prevent logical errors, such as a closing date occurring before the creation date. 
-    \item A number of fields have explicitly defined domains of permissible
-    values. These fields should be validated against a reference dataset upon entry.
+    \item Having software populate certain date fields, 
+    triggered by a user action such as changing status.
+    \item Subjecting select fields to automated checks that prevent 
+    logical errors, such as a closing date before the creation date.
+    \item Validating each field that has a defined set of permissible 
+    values against a reference dataset at point of entry.
  \end{itemize}
 
-\paragraph{Principle 3: Optimizing Storage Efficiency:}
-Efficient storage matters for large datasets. Removing 
-duplicate and near-duplicate fields identified in
-Section~\ref{par:filesize} would reduce dataset size by 18.5\%,
-provided that distinct information in nonmatching records is 
-preserved. Encoding categorical variables in a standardized format would
-further reduce file sizes.
+\paragraph{Principle 3: Optimize Storage Efficiency:} Efficient storage 
+matters for large datasets. Removing duplicate and near-duplicate 
+fields identified in Section~\ref{par:filesize} would reduce 
+the dataset size by 18.5\%, provided that distinct information 
+in nonmatching records is preserved. Encoding categorical 
+variables in a standardized format could further reduce file sizes.
 
-
-\paragraph{Principle 4: Maintain and Update Data Dictionaries:}
-Clear, accurate, and up-to-date documentation 
-is essential for the effective use 
-of government datasets. The analysis found several instances where the 
-Data Dictionary did not accurately reflect the actual data. Allowable 
-values should be explicitly documented in the Data Dictionary, and regular 
-reviews and updates should be conducted, especially when there are 
+\paragraph{Principle 4: Maintain Up-to-Date Data Dictionaries:}
+Clear, accurate, and \mbox{up-to-date} documentation is essential for 
+effective use of government datasets. Our study found several 
+instances where the current Data Dictionary did not accurately 
+reflect the underlying data. Document allowable values 
+explicitly. Conduct regular reviews, especially when there are 
 changes in data structure, usage, or context.
 
-
-\paragraph{Principle 5: Automate Ongoing Quality Assurance Processes:}
+\paragraph{Principle 5: Automate Quality Assurance:}
 Automated data validation and quality assurance processes can 
-significantly improve the reliability of government 
-datasets. Unusual trends can be identified and irregularities highlighted.
-In the NYC 311 case, large spikes in SR creation and closure at
-exactly midnight and noon suggest systematic or automated 
-timestamp-generation processes that warrant investigation 
-and may distort calculated SR durations. Real-time validation systems could
-help prevent such errors, ensuring data integrity at the point of entry and
-maintaining data quality as it is continuously updated.
-
+significantly improve the reliability of government datasets. Such 
+automation can identify trends and flag irregularities. In 
+the NYC 311 case, large spikes in SR creation and closure 
+exactly at midnight and noon suggest systematic or 
+automated \mbox{timestamp-generation} processes 
+that warrant investigation. \mbox{Real-time} validation systems 
+could help detect and prevent such errors, ensuring data 
+integrity at the point of entry and maintaining data quality.
 
 \paragraph{Principle 6: Ensure Data Transparency:}
 Transparency is a core tenet of open data, and governments must ensure 
-that datasets are easily accessible and 
-readily understandable. This includes publishing clear 
-metadata, which enables users to understand the 
-dataset’s structure, limitations, and intended use
-cases. Additionally, governments should communicate transparently
-about data quality issues, such as notifying the public when errors in SR 
-fields (e.g., erroneous \texttt{closed\_date(s)}) are discovered, including
-an explanation about how such issues will be resolved.
+that datasets are easily accessible and readily understandable. This 
+includes publishing clear metadata, enabling users to understand the 
+dataset’s structure, limitations, and intended use. Most important, 
+agencies should be open about data quality issues, for example 
+by notifying the public when errors in SR fields (e.g., erroneous 
+closed dates) are discovered and explaining how they will be resolved.
 
 \subsection{Actionable Steps}
 \label{subsec:actions}
 
-The principles outlined above provide a conceptual 
-foundation. However, governments need practicable steps to 
-operationalize them. Clear priorities help agencies focus 
-efforts where they will have the greatest impact. The 
-following actions represent a structured path toward 
+These principles provide a conceptual foundation. However, 
+agencies need concrete steps to put them into practice. Clear 
+priorities help agencies focus efforts where they will have the 
+greatest impact. The following actions represent a structured path toward 
 improving data curation, validation, and long-term dataset stewardship.
 
-\paragraph{Real-Time Validation Tools:}
+\paragraph{Create Real-Time Validation Tools:}
 \label{par:realtime}
-Governments can begin by investing in real-time validation systems, 
-regularly updated data dictionaries, and tools for encoding and 
-standardizing data fields. Automated rule-based checks, such as those formalized in
-statistical data-validation frameworks \citep{van2018statistical},
-can significantly improve data quality at the point of data entry. Automated systems can proactively detect and possibly 
-correct common issues, reducing the downstream manual workload.
+Begin by investing in real-time validation software, 
+regularly updating data dictionaries, and building tools for encoding and 
+standardizing data. Automate rule-based checks, such as those formalized in
+statistical data-validation frameworks \citep{van2018statistical}, to 
+significantly improve data quality at the point of data entry. Use automated 
+systems to proactively detect and correct common issues, reducing 
+the downstream manual workload.
 
 
-\paragraph{Collaboration Among Stakeholders:}
+\paragraph{Improve Collaboration Among Stakeholders:}
 \label{par:collaboration}
 Effective data curation relies on collaboration among city agencies
 and engagement with the broader open-data community. Regular
-discussions regarding data standards, formats, and metadata help
+discussions regarding data standards, formats, and metadata 
 ensure that NYC datasets support the needs of policymakers,
-researchers, and the public. Clear communication helps surface
-recurring issues, clarify user requirements, and guide improvements
+researchers, and the public. Clear communication surfaces
+recurring issues, clarifies user requirements, and guides improvements
 to dataset documentation and structure.
 
-Collaboration, however, requires clear ownership. NYC already has a
+\paragraph{Establish Clear Responsibility for Data Quality:}
+\label{par:responsibiliy}
+Collaboration requires clear ownership. NYC already has a
 governance structure for open data: the Technical Standards Manual
-implementing Local Law~11 of 2012 \citep{nyc_ll11, nyc_tsm}
-requires each agency to designate an
-Open Data Coordinator (ODC), who works with
-a citywide Chief Open Platform Officer in the Office of Technology
-and Innovation (OTI, formerly DoITT) \citep{nyc_tsm}. The ODC's
-defined responsibilities center on publication and compliance:
-delivering datasets to the portal, contributing to the annual
-compliance report, liaising with the central Open Data team,
-responding to public feedback, and conducting outreach. None of these roles
-explicitly assigns data quality or curation responsibilities. In our experience, the
-role is often assigned in addition to other duties, with limited
-training and frequent turnover.
+implementing Local Law~11 of 2012 \citep{nyc_ll11, nyc_tsm}. This law 
+requires each agency to designate an Open Data Coordinator (ODC), 
+who works with a citywide Chief Open Platform Officer in OTI. 
+The ODC's responsibilities center on publication and 
+compliance: delivering datasets to the portal, 
+contributing to the annual compliance report, liaising with the 
+Open Data team, responding to public feedback, and conducting 
+outreach. None of these roles, however, explicitly assigns 
+data quality or curation responsibilities. 
 
-We therefore recommend that agencies formalize responsibility for
-data curation, either by extending the ODC role or by appointing a
-dedicated Data Curation Officer, with defined duties, training, and
-time allocated to the work. A named curator in each agency would give the
-collaboration described above a consistent point of contact and make
-data quality an explicit, accountable responsibility rather than an
-incidental one.
+We recommend that agencies formalize responsibility for
+data curation and quality, either by extending the ODC role or by appointing a
+dedicated Data Curation Officer. Give this role defined duties, training, and 
+dedicated time. A named curator in each agency would 
+give the collaboration described above a consistent point 
+of contact and make data quality an explicit, accountable 
+responsibility rather than an incidental one.
 
-\paragraph{Automated Quality-Assurance:}
+\paragraph{Develop Automated Quality Assurance Systems:}
 \label{par:qa}
-Implementation of automated QA systems could monitor 
-adherence to established validation standards. Such tools 
-could capture and display quality metrics of the data sets as presented
-on appropriate dashboards. These dashboards could provide 
-a real-time snapshot of data quality, making deviations 
-immediately visible and actionable. Deviations in quality metrics 
-would be highlighted, prompting appropriate corrective actions.
+Automated QA systems could monitor adherence to 
+established validation standards, providing a 
+real-time snapshot of data quality and 
+highlighting deviations for corrective actions.
 
-\paragraph{Expert Engagement:}
+\paragraph{Ensure Expert Engagement:}
 \label{par:experts}
-
 Engagement with data scientists and statisticians is key to improving 
 data quality. Experts can help design curation processes, 
 such as developing algorithms for automatic data 
@@ -1394,25 +1380,22 @@ rules are maintained over time. Their involvement also
 helps to establish best practices for validating data and
 maintaining consistency across data sources. 
 
-
-\paragraph{Robust Feedback Channels:}
+\paragraph{Maintain Robust Feedback Channels:}
 \label{par:feedback}
 Ongoing feedback from dataset users—including researchers, civic groups, 
 and the public—is essential for identifying issues 
-and refining data practices. Establishing such feedback loops 
+and refining data practices. Establishing feedback loops 
 for public engagement ensures that recommendations 
 for improving data curation and validation 
 are not only heard and discussed, but also implemented. 
 
-
-\paragraph{Public Engagement Through Community Initiatives:}
+\paragraph{Encourage Public Engagement Through Community Initiatives:}
 \label{par:engagement}
 Events such as NYC Open Data Week provide a valuable platform for 
 collaboration, learning, and innovation. This project originated from 
-such an event. Governments’ support of such 
-initiatives not only promotes data literacy but also 
-encourages community-driven improvements, 
-strengthens public engagement, and demonstrates the 
+such an event. Governments’ support of such initiatives not 
+only promotes data literacy but also encourages community-driven 
+improvements, strengthens public engagement, and demonstrates the 
 societal value of open data.
 
 
@@ -1424,21 +1407,20 @@ societal value of open data.
 \label{sec:conclusion}
 Our study highlights the critical role of robust data curation in
 ensuring the reliability and utility of open datasets, as demonstrated
-through the examination of the NYC 311 SR data. As these datasets are
-applied across diverse fields such as public services and academic
-research, inconsistencies, missing values, and formatting errors can
-significantly undermine the insights derived from them. 
-These data quality concerns become especially consequential when open
-datasets serve as inputs to automated analytical systems.
-Trustworthy machine learning systems, which rely heavily on high-quality data,
+through an examination of NYC 311 SR data. When researchers apply 
+these datasets in fields such as public services and academic research, 
+inconsistencies, invalid values, and data errors undermine their 
+findings. Quality concerns are especially consequential when the 
+data serve as inputs to automated analytical systems. Trustworthy 
+machine learning systems, which rely heavily on high-quality data, 
 are particularly vulnerable to such deficiencies. Errors in the underlying data,
 including biases or inconsistencies, can compromise both the accuracy
 and fairness of predictive models, thereby affecting real-world
 decisions in urban planning and policy \citep{rahm2000data, geiger2020garbage}.
 
 
-While the findings here are specific to NYC 311 data, the principles 
-proposed have broader applicability. Datasets in healthcare, 
+While the findings here are specific to NYC 311 data, the proposed principles 
+have broader applicability. Datasets in healthcare, 
 transportation, and environmental monitoring can similarly benefit 
 from these curation strategies, enabling improved outcomes across 
 domains. This research further emphasizes the 
@@ -1446,27 +1428,26 @@ necessity of harmonizing data across city agencies,
 particularly resolving discrepancies in field
 names, formats, usage, and definitions. Consistency in data is also 
 essential for trustworthy machine learning, where 
-inconsistencies across sources can
-lead to distorted outcomes. This issue is even more pronounced in 
+inconsistencies across sources can lead to distorted 
+outcomes. This issue is even more pronounced in 
 datasets spanning long time periods, as changes in agency 
 structures, reporting standards, or data usage can introduce 
-subtle biases and distortions. Long-term data 
-consistency is essential for longitudinal studies and 
-predictive modeling, as even minor 
-data shifts can lead to significant deviations in model outcomes, 
-as noted by \citet{rahm2000data} and \citet{borgman2012conundrum}.
+subtle biases and distortions. Long-term data consistency 
+is essential for longitudinal studies and predictive modeling, 
+as even minor data shifts can lead to significant deviations 
+in model outcomes, as noted by \citet{rahm2000data} 
+and \citet{borgman2012conundrum}.
 
-The intersection of data curation and machine learning for
-public policy applications opens new avenues for improving governance.
 High-quality data enables machine learning models to better predict
 trends, allocate resources, and address service delivery issues. The 
-COVID-19 pandemic underscored the importance of real-time, trustworthy data in crisis
-management, where the accuracy and timeliness of data-driven insights
-were critical for public health responses. Without proper data
-curation, machine learning models used during the pandemic would have
-been compromised, affecting decisions on resource allocation and
+COVID-19 pandemic underscored the importance of 
+real-time, trustworthy data in crisis management, where the 
+accuracy and timeliness of data-driven insights were critical 
+for public health responses. Without proper data curation, machine 
+learning models used during the pandemic would have been 
+compromised, affecting decisions on resource allocation and
 service provision \citep{worby2020face, khemasuwan2021applications}.
-Future efforts could focus on automating data curation processes,
+Future efforts could focus on automating data curation processes, 
 particularly in real-time data pipelines, to ensure that the data used
 remains accurate, clean, and reliable
 \citep{chu2016data, hurbean2021open}.

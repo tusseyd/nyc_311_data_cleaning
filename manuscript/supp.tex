@@ -37,7 +37,6 @@
 \usepackage{dirtree}
 \usepackage{tikz}
 \usetikzlibrary{positioning}
-\usepackage{placeins}  % for \FloatBarrier to control float placement
 \usepackage{xurl}      % let long URLs break at any character
 
 % image path
@@ -53,11 +52,6 @@
 \renewcommand{\fnum@figure}{\figurename~\thefigure}
 \makeatother
 
-%% float control
-\renewcommand\floatpagefraction{0.75}
-\setcounter{totalnumber}{50}
-\setcounter{topnumber}{50}
-\setcounter{bottomnumber}{50}
 
 % hyperref settings (safe to keep)
 \hypersetup{
@@ -201,8 +195,6 @@ and the Department of Sanitation (DSNY).
 \end{figure}
 
 
-\FloatBarrier  % Keep SR Status figures in their section
-
 
 \subsection{Temporal Pattern Analysis}
 
@@ -259,13 +251,16 @@ agency-specific patterns.
 In Figure~\ref{fig:boxplot-large-positive-durations} the box plot shows SR durations 
 calculated as $\texttt{closed\_date} - \texttt{created\_date}$. The anomaly 
 measured is SRs that have large positive durations, for this box plot 
-between two and five years (730--1825 days) --- duration limits that 
-seem reasonable to count as \emph{large}. This chosen range also 
-excludes \num{1252} durations longer than five years. Most of these
-(\num{1149}) are DPR SRs created in early 2020 and all closed on a single
-day, 22~April~2025, which suggests a bulk administrative closure rather
-than five years of work; one other reflects a \texttt{closed\_date}
-entered as 2033. There are \num{139483} such \emph{large-duration} SRs.
+more than 730 and at most \num{1825} days (two to five years) --- 
+duration limits that seem reasonable to count as \emph{large}. 
+
+This chosen range also excludes \num{1251} durations longer than five
+years, not counting one SR whose \texttt{closed\_date} of 2033 lies after
+the extract date and is treated as invalid. Most of these
+(\num{1176}, \SI[round-mode=places, round-precision=0]{94}{\percent}) are
+DPR SRs, and \num{1149} of these, all created in early 2020, were closed on
+a single day, 22~April~2025, which suggests a bulk administrative closure
+rather than five years of work. There are \num{139483} such \emph{large-duration} SRs.
 As shown in Figure~\ref{fig:boxplot-large-positive-durations}, most of these
 large durations come from three agencies: the Department of Parks and
 Recreation (DPR, \num{56238}), the Department of Health and Mental Hygiene
@@ -375,7 +370,6 @@ Total            & 15352535 & 100.0 & 0.439 & 23.7  \\
 \end{table}
 
 
-\FloatBarrier  % Keep mode summary table with its discussion
 
 Table~\ref{tab:agency_mode} provides a further breakdown of
 durations by agency. NYPD dominates the rapid-resolution
@@ -473,7 +467,6 @@ on the aggregate duration metric.
 
 
 
-\FloatBarrier  % Keep Positive Duration figures in their section
 	
 
 \subsection{Service Request Negative Duration Analysis}
@@ -495,7 +488,6 @@ negative duration anomaly.
 \label{fig:boxplot-negative}
 \end{figure}
 
-\FloatBarrier  % Keep Negative Duration figures in their section
 
 
 \subsection{Zero and Near-Zero Duration Analysis}
@@ -552,6 +544,8 @@ on-the-minute spikes.
 \label{fig:created-dates-by-seconds}
 \end{figure}
 
+
+%---------------------------------------------------------------
 
 %---------------------------------------------------------------
 \subsection{Dataset Field Usage by Agency}
@@ -866,7 +860,7 @@ directory contains after both programs have run.
 .3 analytics/.
 .4 field\_usage\_summary\_table.csv.
 .3 charts/.
-.4 [94 PDF files].
+.4 [87 PDF files].
 .3 code/.
 .4 data\_prep\_for\_jds\_datacleansing.R.
 .4 jds\_datacleansings.R.
@@ -978,17 +972,6 @@ to ensure portability.
 \item Memory management: initial data loading requires substantial RAM;
 the script reduces memory footprint after preprocessing.
 \end{itemize}
-
-
-\section*{AI Use Disclosure}
-The authors used Claude (Anthropic; model Claude Opus 5.5) and 
-ChatGPT (OpenAI; model GPT-5.6 Sol), accessed September 2026, for 
-coding assistance with R programming, validation of reported 
-figures against program output, and \LaTeX{} editing of the 
-manuscript, supplementary materials, and response to the 
-referee. All \mbox{AI-assisted} material was reviewed and validated by 
-the authors, who take full responsibility for the 
-manuscript's content, accuracy, originality, and integrity.
 
 
 \bibliographystyle{jds2}
