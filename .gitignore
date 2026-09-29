@@ -23,9 +23,7 @@ code/function_usage_details.csv
 /misc
 /analytics
 
-manuscript/jds.bst
-manuscript/jds.bst
-manuscript/jdsart.cls
+
 manuscript/.Rhistory
 code/.Rhistory
 
@@ -87,10 +85,20 @@ code/no_chart_titles_jds_datacleansings.R
 manuscript/manuscript_fixed.pdf
 -Lenovo_4_20_23.Rhistory
 /code/old_stuff
-/reference_console_output
 *.zip
 /clone_folder/nyc_311_data_cleaning
 /manuscript/archive
 response/Long duration SRs by Agency and Complaint Type.xlsx
 .Rhistory
 .Rhistory
+embedded_comma_scan.csv
+response/jds_reply.pdf
+response/jds_reply.tex
+response/JDS2602-001R1AE1.pdf
+response/reply.tex
+response/growth.bib
+*.pdf
+*.pdf
+/code/functions/Archive
+pre2020_open_by_year.json
+code/memory_monitor.R
